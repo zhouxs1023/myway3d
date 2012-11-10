@@ -1,0 +1,59 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+	float2 uv1 : TEXCOORD1;
+	float dist : TEXCOORD2;
+	float4 projPos : TEXCOORD3;
+};
+
+uniform float2 gWeight;
+uniform float gMass;
+uniform float2 gAlphaParam;
+uniform float4 gFadeParam;  // x - start, y - 1 / (end - start), z - intensity
+
+uniform float4 gAmbient;
+uniform float4 gDiffuse;
+
+uniform sampler2D gTex_Layer0;
+uniform sampler2D gTex_Layer1;
+uniform sampler2D gTex_Lighting;
+
+
+float Gaussian(float x, float gm)
+{
+    gm = 1.0f / gm;
+
+    float e = -x * x * 0.5f * gm * gm;
+
+    return  1.0f / sqrt(3.1415926 * 2) * gm * exp(e);
+}
+
+float4 main(PS_IN In) : COLOR
+{
+	float density = tex2D(gTex_Layer0, In.uv0).r * gWeight.x;
+	density += tex2D(gTex_Layer1, In.uv1).r * gWeight.y;
+	
+	density -= gMass;
+	density = saturate(density);
+	
+	float a = saturate((density - gAlphaParam.x) / (gAlphaParam.x + 0.0001f));
+	a = 1 - Gaussian(a * gAlphaParam.y, 2) / Gaussian(0, 2);
+	a = saturate(a);
+
+	float2 projUV = In.projPos.xy / In.projPos.w * float2(0.5, -0.5) + 0.5;
+	float lighting = tex2D(gTex_Lighting, projUV).r;
+	float4 clr = gDiffuse.a * gDiffuse * lighting + gAmbient.a * gAmbient * (1 - lighting);
+
+	float fade = 1 - (In.dist - gFadeParam.x) * gFadeParam.y;
+	fade = saturate(fade);
+	fade = pow(fade, gFadeParam.z);
+	
+	clr.a = a * fade;
+	
+	return clr;
+}

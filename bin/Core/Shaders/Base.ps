@@ -1,0 +1,35 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+    float2 tcoord : TEXCOORD0;
+    float4 normalDepth : TEXCOORD3;
+};
+
+struct PS_OUT
+{
+    float4 color	: COLOR0;
+    float4 normal	: COLOR1;
+    float4 material 	: COLOR2;
+    float4 depth	: COLOR3;
+};
+
+uniform sampler2D tex_diffuse : register(s0);
+
+uniform float4 gClipPlane;
+
+PS_OUT main(PS_IN In)
+{
+    PS_OUT Out;
+        
+    Out.color = tex2D(tex_diffuse, In.tcoord);
+    Out.normal = float4(In.normalDepth.xy, 0, 0);
+    Out.material = float4(1, 1, 1, 1);
+    Out.depth = float4(In.normalDepth.w * gClipPlane.w, 0, 0, 0);
+       
+    return Out;
+}
+

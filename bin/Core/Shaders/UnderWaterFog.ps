@@ -1,0 +1,37 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform sampler2D gTex_Depth;
+uniform sampler2D gTex_Color;
+
+uniform float4 gFogParam; // x: start, y: end, z: 1 / (end - start), w -
+uniform float4 gFogColor;
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * In.uv0.x + gCornerDownDir * In.uv0.y;
+	float d = tex2D(gTex_Depth, In.uv0).r;
+	float3 pos = p.xyz * d;
+	float len = length(pos);
+	
+	float fog = (len - gFogParam.x) * gFogParam.z;
+	fog = saturate(fog);
+	fog = lerp(gFogParam.w, 1, fog);
+	
+	float4 sceneColor = tex2D(gTex_Color, In.uv0);
+	
+	float4 clr = sceneColor * (1 - fog) + gFogColor * fog;
+	clr.a = 1;
+	
+	return clr;
+}

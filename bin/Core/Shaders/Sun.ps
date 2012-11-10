@@ -1,0 +1,29 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+
+uniform float4 gSunColor;
+uniform float4 gSunParam; // x - power, y - lum
+
+
+float4 main(PS_IN In) : COLOR
+{
+	float2 dir = 0.5 - In.uv0;
+	
+	float k = length(dir);
+	float sph = k < 0.5;
+	
+	float atten = pow(1 - (k - 0.25) / 0.25, gSunParam.x); 
+	
+	float4 clr = gSunColor;
+	clr.a = sph * atten * gSunParam.y;
+	
+	return clr;
+}

@@ -1,0 +1,24 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_OUT
+{
+	float4 color	: COLOR0;
+	float4 normal	: COLOR1;
+	float4 material : COLOR2;
+	float4 depth	: COLOR3;
+};
+
+PS_OUT main()
+{
+	PS_OUT Out;
+	
+	Out.color = float4(0, 0, 0, 1);
+	Out.normal = float4(0, 0, 0, 0);
+	Out.material = float4(0, 0, 0, 0);
+	Out.depth = float4(1, 0, 0, 0);
+	
+	return Out;
+}

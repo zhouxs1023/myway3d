@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1470171E-7B11-4D7D-B470-8D9EDD9BAFA6}</ProjectGuid>
+    <RootNamespace>Myway</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseOfMfc>Dynamic</UseOfMfc>
+    <CharacterSet>NotSet</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Configuration)\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Configuration)\</IntDir>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>Engine;Core;Math;RenderSystem;Gui;Sky;Physics;Plugin\cg\include;Plugin\FreeType2\include;Plugin\Mysql\include;Plugin\Sqlite3\include;Plugin\zzip\include;$(DXSDK_DIR)/include;AudioSystem;Plugin\fmod\include;AI;Plugin\xml;InputSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MW_EXPORT;MW_DEBUG_MEMORY;MW_PROFILE_CODE_TIMER;MW_DEBUG_MEMORY_POOL;MW_SQLITE3_DATABASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>freetype241_d.lib;sqlite3.lib;zzip_d.lib;winmm.lib;user32.lib;kernel32.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../bin/Myway_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>Plugin\cg\lib;Plugin\FreeType2\lib;Plugin\Mysql\lib;Plugin\Sqlite3\lib;Plugin\zzip\lib;$(DXSDK_DIR)/lib/x86;Plugin\fmod\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>../bin/lib/myway_d.pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>../bin/lib/Myway_d.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <AdditionalIncludeDirectories>Engine;Core;Math;RenderSystem;Gui;Sky;Physics;Plugin\cg\include;Plugin\FreeType2\include;Plugin\Mysql\include;Plugin\Sqlite3\include;Plugin\zzip\include;$(DXSDK_DIR)/include;AudioSystem;Plugin\fmod\include;AI;Plugin\xml;InputSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MW_EXPORT;MW_SQLITE3_DATABASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>freetype241.lib;sqlite3.lib;zzip.lib;winmm.lib;user32.lib;kernel32.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../bin/Myway.dll</OutputFile>
+      <AdditionalLibraryDirectories>Plugin\cg\lib;Plugin\FreeType2\lib;Plugin\Mysql\lib;Plugin\Sqlite3\lib;Plugin\zzip\lib;$(DXSDK_DIR)/lib/x86;Plugin\fmod\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+      <ImportLibrary>../bin/lib/Myway.lib</ImportLibrary>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="Myway.h" />
+    <ClInclude Include="Core\MWAllocObj.h" />
+    <ClInclude Include="Core\MWArchive.h" />
+    <ClInclude Include="Core\MWArchiveZip.h" />
+    <ClInclude Include="Core\MWCharSet.h" />
+    <ClInclude Include="Core\MWCodeTimer.h" />
+    <ClInclude Include="Core\MWCommand.h" />
+    <ClInclude Include="Core\MWCore.h" />
+    <ClInclude Include="Core\MWDataBase.h" />
+    <ClInclude Include="Core\MWDataStream.h" />
+    <ClInclude Include="Core\MWDataTable.h" />
+    <ClInclude Include="Core\MWDebug.h" />
+    <ClInclude Include="Core\MWDefine.h" />
+    <ClInclude Include="Core\MWDynamicLinkLib.h" />
+    <ClInclude Include="Core\MWException.h" />
+    <ClInclude Include="Core\MWFactory.h" />
+    <ClInclude Include="Core\MWFile.h" />
+    <ClInclude Include="Core\MWFileSystem.h" />
+    <ClInclude Include="Core\MWGuid.h" />
+    <ClInclude Include="Core\MWLogSystem.h" />
+    <ClInclude Include="Core\MWMemberPool.h" />
+    <ClInclude Include="Core\MWMemory.h" />
+    <ClInclude Include="Core\MWMemoryPool.h" />
+    <ClInclude Include="Core\MWMutex.h" />
+    <ClInclude Include="Core\MWOption.h" />
+    <ClInclude Include="Core\MWPlugin.h" />
+    <ClInclude Include="Core\MWScript.h" />
+    <ClInclude Include="Core\MWString.h" />
+    <ClInclude Include="Core\MWSystem.h" />
+    <ClInclude Include="Core\MWTaskManager.h" />
+    <ClInclude Include="Core\MWThread.h" />
+    <ClInclude Include="Core\MWTimer.h" />
+    <ClInclude Include="RenderSystem\MWTrigger.h" />
+    <ClInclude Include="Core\MWAllocator.h" />
+    <ClInclude Include="Core\MWBitFlag.h" />
+    <ClInclude Include="Core\MWDQueue.h" />
+    <ClInclude Include="Core\MWHashMap.h" />
+    <ClInclude Include="Core\MWList.h" />
+    <ClInclude Include="Core\MWMap.h" />
+    <ClInclude Include="Core\MWMultiMap.h" />
+    <ClInclude Include="Core\MWQueue.h" />
+    <ClInclude Include="Core\MWRefObj.h" />
+    <ClInclude Include="Core\MWRTTIObj.h" />
+    <ClInclude Include="Core\MWSearch.h" />
+    <ClInclude Include="Core\MWSingleton.h" />
+    <ClInclude Include="Core\MWSmartPtr.h" />
+    <ClInclude Include="Core\MWSort.h" />
+    <ClInclude Include="Core\MWStack.h" />
+    <ClInclude Include="Core\MWTree.h" />
+    <ClInclude Include="Core\MWVector.h" />
+    <ClInclude Include="Core\MWVisitor.h" />
+    <ClInclude Include="Core\MWXml.h" />
+    <ClInclude Include="Math\MWAABB.h" />
+    <ClInclude Include="Math\MWBox.h" />
+    <ClInclude Include="Math\MWColor.h" />
+    <ClInclude Include="Math\MWColor3.h" />
+    <ClInclude Include="Math\MWColor4.h" />
+    <ClInclude Include="Math\MWFrustum.h" />
+    <ClInclude Include="Math\MWLine.h" />
+    <ClInclude Include="Math\MWMath.h" />
+    <ClInclude Include="Math\MWMathGeneric.h" />
+    <ClInclude Include="Math\MWMathSSE.h" />
+    <ClInclude Include="Math\MWMatrix3.h" />
+    <ClInclude Include="Math\MWMatrix3x4.h" />
+    <ClInclude Include="Math\MWMatrix4.h" />
+    <ClInclude Include="Math\MWPlane.h" />
+    <ClInclude Include="Math\MWQuaternion.h" />
+    <ClInclude Include="Math\MWRay.h" />
+    <ClInclude Include="Math\MWRect.h" />
+    <ClInclude Include="Math\MWSkinInfl.h" />
+    <ClInclude Include="Math\MWSphere.h" />
+    <ClInclude Include="Math\MWTriangle.h" />
+    <ClInclude Include="Math\MWVector2.h" />
+    <ClInclude Include="Math\MWVector3.h" />
+    <ClInclude Include="Math\MWVector4.h" />
+    <ClInclude Include="Math\MWVectorX.h" />
+    <ClInclude Include="Engine\Engine.h" />
+    <ClInclude Include="RenderSystem\MWResourceManager.h" />
+    <ClInclude Include="RenderSystem\MWTerrain.h" />
+    <ClInclude Include="RenderSystem\MWTerrainChunked.h" />
+    <ClInclude Include="RenderSystem\MWTerrainChunkedSection.h" />
+    <ClInclude Include="RenderSystem\MWTerrainLoader.h" />
+    <ClInclude Include="RenderSystem\MWTerrainRoam.h" />
+    <ClInclude Include="RenderSystem\MWTerrainRoamSection.h" />
+    <ClInclude Include="RenderSystem\MWTerrainSection.h" />
+    <ClInclude Include="RenderSystem\MWTerrainTiled.h" />
+    <ClInclude Include="RenderSystem\MWTerrainTiledSection.h" />
+    <ClInclude Include="RenderSystem\MWTerrainUniform.h" />
+    <ClInclude Include="RenderSystem\MWTerrainUniformSection.h" />
+    <ClInclude Include="RenderSystem\MWAnimation.h" />
+    <ClInclude Include="RenderSystem\MWBone.h" />
+    <ClInclude Include="RenderSystem\MWEntity.h" />
+    <ClInclude Include="RenderSystem\MWMesh.h" />
+    <ClInclude Include="RenderSystem\MWMeshLoader.h" />
+    <ClInclude Include="RenderSystem\MWMeshLoaderUniform.h" />
+    <ClInclude Include="RenderSystem\MWMeshManager.h" />
+    <ClInclude Include="RenderSystem\MWSkeleton.h" />
+    <ClInclude Include="RenderSystem\MWSkeletonInstance.h" />
+    <ClInclude Include="RenderSystem\MWSkeletonLoader.h" />
+    <ClInclude Include="RenderSystem\MWSkeletonManager.h" />
+    <ClInclude Include="RenderSystem\MWSkyBox.h" />
+    <ClInclude Include="RenderSystem\MWSkyDome.h" />
+    <ClInclude Include="RenderSystem\MWSkyPlane.h" />
+    <ClInclude Include="RenderSystem\MWAABBRenderObj.h" />
+    <ClInclude Include="RenderSystem\MWBillboard.h" />
+    <ClInclude Include="RenderSystem\MWForeground.h" />
+    <ClInclude Include="RenderSystem\MWGeometry.h" />
+    <ClInclude Include="RenderSystem\MWLineObj.h" />
+    <ClInclude Include="RenderSystem\MWPrimtiveStream.h" />
+    <ClInclude Include="RenderSystem\MWRenderObj.h" />
+    <ClInclude Include="RenderSystem\MWSimpleObj.h" />
+    <ClInclude Include="RenderSystem\MWTextObj.h" />
+    <ClInclude Include="RenderSystem\MWTriangleObj.h" />
+    <ClInclude Include="RenderSystem\MWViewAlignedQuad.h" />
+    <ClInclude Include="RenderSystem\MWLight.h" />
+    <ClInclude Include="RenderSystem\MWLightScattering.h" />
+    <ClInclude Include="RenderSystem\MWFXComposer.h" />
+    <ClInclude Include="RenderSystem\MWFXComposerImport.h" />
+    <ClInclude Include="RenderSystem\MWFXComposerManager.h" />
+    <ClInclude Include="RenderSystem\MWFXComposerRenderObj.h" />
+    <ClInclude Include="RenderSystem\MWFXStep.h" />
+    <ClInclude Include="RenderSystem\MWShadowRender.h" />
+    <ClInclude Include="RenderSystem\MWShadowRenderESM.h" />
+    <ClInclude Include="RenderSystem\MWShadowRenderPSSM.h" />
+    <ClInclude Include="RenderSystem\MWShadowRenderUniform.h" />
+    <ClInclude Include="RenderSystem\MWCamera.h" />
+    <ClInclude Include="RenderSystem\MWNode.h" />
+    <ClInclude Include="RenderSystem\MWProjection.h" />
+    <ClInclude Include="RenderSystem\MWScene.h" />
+    <ClInclude Include="RenderSystem\MWSceneManager.h" />
+    <ClInclude Include="RenderSystem\MWSceneNode.h" />
+    <ClInclude Include="RenderSystem\MWSceneOctree.h" />
+    <ClInclude Include="RenderSystem\MWSceneQuad.h" />
+    <ClInclude Include="RenderSystem\MWSceneRender.h" />
+    <ClInclude Include="RenderSystem\MWSceneRenderUniform.h" />
+    <ClInclude Include="RenderSystem\MWSceneUniform.h" />
+    <ClInclude Include="RenderSystem\MWDynamicTTFont.h" />
+    <ClInclude Include="RenderSystem\MWFont.h" />
+    <ClInclude Include="RenderSystem\MWFontLoader.h" />
+    <ClInclude Include="RenderSystem\MWFontManager.h" />
+    <ClInclude Include="RenderSystem\MWFString.h" />
+    <ClInclude Include="RenderSystem\MWDepthStencil.h" />
+    <ClInclude Include="RenderSystem\MWDeviceCaps.h" />
+    <ClInclude Include="RenderSystem\MWImage.h" />
+    <ClInclude Include="RenderSystem\MWIndexBuffer.h" />
+    <ClInclude Include="RenderSystem\MWRenderDefine.h" />
+    <ClInclude Include="RenderSystem\MWRenderGroup.h" />
+    <ClInclude Include="RenderSystem\MWRenderQueue.h" />
+    <ClInclude Include="RenderSystem\MWRenderRegister.h" />
+    <ClInclude Include="RenderSystem\MWRenderSystem.h" />
+    <ClInclude Include="RenderSystem\MWRenderTarget.h" />
+    <ClInclude Include="RenderSystem\MWRenderTechnique.h" />
+    <ClInclude Include="RenderSystem\MWRenderWindow.h" />
+    <ClInclude Include="RenderSystem\MWTexture.h" />
+    <ClInclude Include="RenderSystem\MWVertexBuffer.h" />
+    <ClInclude Include="RenderSystem\MWVertexDeclaration.h" />
+    <ClInclude Include="RenderSystem\MWVideoBufferManager.h" />
+    <ClInclude Include="RenderSystem\MWViewPort.h" />
+    <ClInclude Include="RenderSystem\MWParticle.h" />
+    <ClInclude Include="RenderSystem\MWParticleImport.h" />
+    <ClInclude Include="RenderSystem\MWParticleSystem.h" />
+    <ClInclude Include="RenderSystem\MWPSAffector.h" />
+    <ClInclude Include="RenderSystem\MWPSEmitter.h" />
+    <ClInclude Include="RenderSystem\MWPSManager.h" />
+    <ClInclude Include="RenderSystem\MWPSRender.h" />
+    <ClInclude Include="RenderSystem\MWPSSystem.h" />
+    <ClInclude Include="RenderSystem\MWMaterial.h" />
+    <ClInclude Include="RenderSystem\MWMaterialLoader.h" />
+    <ClInclude Include="RenderSystem\MWMaterialManager.h" />
+    <ClInclude Include="RenderSystem\MWPass.h" />
+    <ClInclude Include="RenderSystem\MWTechnique.h" />
+    <ClInclude Include="RenderSystem\MWTextureLinker.h" />
+    <ClInclude Include="RenderSystem\MWTextureStage.h" />
+    <ClInclude Include="RenderSystem\MWShaderParam.h" />
+    <ClInclude Include="RenderSystem\MWShaderProgram.h" />
+    <ClInclude Include="RenderSystem\MWShaderProgramDefMgr.h" />
+    <ClInclude Include="RenderSystem\MWShaderProgramManager.h" />
+    <ClInclude Include="RenderSystem\MWShaderInstance.h" />
+    <ClInclude Include="RenderSystem\MWShaderLibrary.h" />
+    <ClInclude Include="RenderSystem\MWShaderLibraryLoader.h" />
+    <ClInclude Include="RenderSystem\MWShaderCodeFactory.h" />
+    <ClInclude Include="RenderSystem\MWShaderCodeGenerter.h" />
+    <ClInclude Include="RenderSystem\MWShaderCodeGenerterCg.h" />
+    <ClInclude Include="RenderSystem\MWShaderNode.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeAdd.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeClamp.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat1.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat2.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat3.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat4.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeInternal.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeMultiply.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeParamFloat4.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeSampler2D.h" />
+    <ClInclude Include="RenderSystem\MWShaderNodeSub.h" />
+    <ClInclude Include="AudioSystem\MWAudioSystem.h" />
+    <ClInclude Include="AudioSystem\MWMusic.h" />
+    <ClInclude Include="AudioSystem\MWSound.h" />
+    <ClInclude Include="AI\MWEvent.h" />
+    <ClInclude Include="AI\MWPath.h" />
+    <ClInclude Include="AI\MWValue.h" />
+    <ClInclude Include="InputSystem\MWInputSystem.h" />
+    <ClInclude Include="InputSystem\MWJoystick.h" />
+    <ClInclude Include="InputSystem\MWKeyboard.h" />
+    <ClInclude Include="InputSystem\MWKeyCode.h" />
+    <ClInclude Include="InputSystem\MWMouse.h" />
+    <ClInclude Include="Core\MWNetStream.h" />
+    <ClInclude Include="Core\MWSocket.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Core\MWAllocObj.inl" />
+    <None Include="Core\MWCodeTimer.inl" />
+    <None Include="Core\MWDataTable.inl" />
+    <None Include="Core\MWFile.inl" />
+    <None Include="Core\MWMemoryPool.inl" />
+    <None Include="Core\MWMutex.inl" />
+    <None Include="Core\MWString.inl" />
+    <None Include="Core\MWAllocator.inl" />
+    <None Include="Core\MWBitFlag.inl" />
+    <None Include="Core\MWDQueue.inl" />
+    <None Include="Core\MWHashMap.inl" />
+    <None Include="Core\MWList.inl" />
+    <None Include="Core\MWMap.inl" />
+    <None Include="Core\MWMultiMap.inl" />
+    <None Include="Core\MWQueue.inl" />
+    <None Include="Core\MWRefObj.inl" />
+    <None Include="Core\MWSingleton.inl" />
+    <None Include="Core\MWSmartPtr.inl" />
+    <None Include="Core\MWStack.inl" />
+    <None Include="Core\MWTree.inl" />
+    <None Include="Core\MWVector.inl" />
+    <None Include="Math\MWAABB.inl" />
+    <None Include="Math\MWBox.inl" />
+    <None Include="Math\MWColor.inl" />
+    <None Include="Math\MWColor3.inl" />
+    <None Include="Math\MWColor4.inl" />
+    <None Include="Math\MWMath.inl" />
+    <None Include="Math\MWMatrix3.inl" />
+    <None Include="Math\MWMatrix3x4.inl" />
+    <None Include="Math\MWMatrix4.inl" />
+    <None Include="Math\MWPlane.inl" />
+    <None Include="Math\MWQuaternion.inl" />
+    <None Include="Math\MWRay.inl" />
+    <None Include="Math\MWRect.inl" />
+    <None Include="Math\MWSphere.inl" />
+    <None Include="Math\MWVector2.inl" />
+    <None Include="Math\MWVector3.inl" />
+    <None Include="Math\MWVector4.inl" />
+    <None Include="Math\MWVectorX.inl" />
+    <None Include="RenderSystem\MWAnimation.inl" />
+    <None Include="RenderSystem\MWMesh.inl" />
+    <None Include="RenderSystem\MWRenderObj.inl" />
+    <None Include="RenderSystem\MWLight.inl" />
+    <None Include="RenderSystem\MWCamera.inl" />
+    <None Include="RenderSystem\MWDepthStencil.inl" />
+    <None Include="RenderSystem\MWIndexBuffer.inl" />
+    <None Include="RenderSystem\MWTexture.inl" />
+    <None Include="RenderSystem\MWVertexBuffer.inl" />
+    <None Include="RenderSystem\MWViewPort.inl" />
+    <None Include="RenderSystem\MWMaterial.inl" />
+    <None Include="RenderSystem\MWPass.inl" />
+    <None Include="RenderSystem\MWTechnique.inl" />
+    <None Include="Core\MWSocket.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Core\MWArchive.cpp" />
+    <ClCompile Include="Core\MWArchiveZip.cpp" />
+    <ClCompile Include="Core\MWCharSet.cpp" />
+    <ClCompile Include="Core\MWCodeTimer.cpp" />
+    <ClCompile Include="Core\MWCommand.cpp" />
+    <ClCompile Include="Core\MWCore.cpp" />
+    <ClCompile Include="Core\MWDataBase.cpp" />
+    <ClCompile Include="Core\MWDataStream.cpp" />
+    <ClCompile Include="Core\MWDebug.cpp" />
+    <ClCompile Include="Core\MWDynamicLinkLib.cpp" />
+    <ClCompile Include="Core\MWException.cpp" />
+    <ClCompile Include="Core\MWFile.cpp" />
+    <ClCompile Include="Core\MWFileSystem.cpp" />
+    <ClCompile Include="Core\MWLogSystem.cpp" />
+    <ClCompile Include="Core\MWMemory.cpp" />
+    <ClCompile Include="Core\MWMemoryPool.cpp" />
+    <ClCompile Include="Core\MWOption.cpp" />
+    <ClCompile Include="Core\MWPlugin.cpp" />
+    <ClCompile Include="Core\MWScript.cpp" />
+    <ClCompile Include="Core\MWString.cpp" />
+    <ClCompile Include="Core\MWSystem.cpp" />
+    <ClCompile Include="Core\MWTaskManager.cpp" />
+    <ClCompile Include="Core\MWThread.cpp" />
+    <ClCompile Include="Core\MWTimer.cpp" />
+    <ClCompile Include="RenderSystem\MWTrigger.cpp" />
+    <ClCompile Include="Core\MWXml.cpp" />
+    <ClCompile Include="Math\MWMath.cpp" />
+    <ClCompile Include="Math\MWMathGeneric.cpp" />
+    <ClCompile Include="Math\MWMathSSE.cpp" />
+    <ClCompile Include="Engine\Engine.cpp" />
+    <ClCompile Include="RenderSystem\MWResourceManager.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrain.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainChunked.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainChunkedSection.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainImport.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainLoader.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainRoam.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainRoamSection.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainSection.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainTiled.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainTiledSection.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainUniform.cpp" />
+    <ClCompile Include="RenderSystem\MWTerrainUniformSection.cpp" />
+    <ClCompile Include="RenderSystem\MWAnimation.cpp" />
+    <ClCompile Include="RenderSystem\MWBone.cpp" />
+    <ClCompile Include="RenderSystem\MWEntity.cpp" />
+    <ClCompile Include="RenderSystem\MWMesh.cpp" />
+    <ClCompile Include="RenderSystem\MWMeshLoaderUniform.cpp" />
+    <ClCompile Include="RenderSystem\MWMeshManager.cpp" />
+    <ClCompile Include="RenderSystem\MWSkeleton.cpp" />
+    <ClCompile Include="RenderSystem\MWSkeletonInstance.cpp" />
+    <ClCompile Include="RenderSystem\MWSkeletonLoader.cpp" />
+    <ClCompile Include="RenderSystem\MWSkeletonManager.cpp" />
+    <ClCompile Include="RenderSystem\MWSkyBox.cpp" />
+    <ClCompile Include="RenderSystem\MWSkyDome.cpp" />
+    <ClCompile Include="RenderSystem\MWSkyPlane.cpp" />
+    <ClCompile Include="RenderSystem\MWAABBRenderObj.cpp" />
+    <ClCompile Include="RenderSystem\MWBillboard.cpp" />
+    <ClCompile Include="RenderSystem\MWForeground.cpp" />
+    <ClCompile Include="RenderSystem\MWGeometry.cpp" />
+    <ClCompile Include="RenderSystem\MWLineObj.cpp" />
+    <ClCompile Include="RenderSystem\MWPrimtiveStream.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderObj.cpp" />
+    <ClCompile Include="RenderSystem\MWSimpleObj.cpp" />
+    <ClCompile Include="RenderSystem\MWTextObj.cpp" />
+    <ClCompile Include="RenderSystem\MWTriangleObj.cpp" />
+    <ClCompile Include="RenderSystem\MWViewAlignedQuad.cpp" />
+    <ClCompile Include="RenderSystem\MWLight.cpp" />
+    <ClCompile Include="RenderSystem\MWLightScattering.cpp" />
+    <ClCompile Include="RenderSystem\MWFXComposer.cpp" />
+    <ClCompile Include="RenderSystem\MWFXComposerImport.cpp" />
+    <ClCompile Include="RenderSystem\MWFXComposerManager.cpp" />
+    <ClCompile Include="RenderSystem\MWFXComposerRenderObj.cpp" />
+    <ClCompile Include="RenderSystem\MWFXStep.cpp" />
+    <ClCompile Include="RenderSystem\MWShadowRender.cpp" />
+    <ClCompile Include="RenderSystem\MWShadowRenderESM.cpp" />
+    <ClCompile Include="RenderSystem\MWShadowRenderPSSM.cpp" />
+    <ClCompile Include="RenderSystem\MWShadowRenderUniform.cpp" />
+    <ClCompile Include="RenderSystem\MWCamera.cpp" />
+    <ClCompile Include="RenderSystem\MWProjection.cpp" />
+    <ClCompile Include="RenderSystem\MWSceneManager.cpp" />
+    <ClCompile Include="RenderSystem\MWSceneNode.cpp" />
+    <ClCompile Include="RenderSystem\MWSceneOctree.cpp" />
+    <ClCompile Include="RenderSystem\MWSceneQuad.cpp" />
+    <ClCompile Include="RenderSystem\MWSceneRenderUniform.cpp" />
+    <ClCompile Include="RenderSystem\MWSceneUniform.cpp" />
+    <ClCompile Include="RenderSystem\MWDynamicTTFont.cpp" />
+    <ClCompile Include="RenderSystem\MWFont.cpp" />
+    <ClCompile Include="RenderSystem\MWFontLoader.cpp" />
+    <ClCompile Include="RenderSystem\MWFontManager.cpp" />
+    <ClCompile Include="RenderSystem\MWFString.cpp" />
+    <ClCompile Include="RenderSystem\MWDepthStencil.cpp" />
+    <ClCompile Include="RenderSystem\MWDeviceCaps.cpp" />
+    <ClCompile Include="RenderSystem\MWImage.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderGroup.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderQueue.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderRegister.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderSystem.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderTarget.cpp" />
+    <ClCompile Include="RenderSystem\MWRenderWindow.cpp" />
+    <ClCompile Include="RenderSystem\MWViewPort.cpp" />
+    <ClCompile Include="RenderSystem\MWParticleImport.cpp" />
+    <ClCompile Include="RenderSystem\MWParticleSystem.cpp" />
+    <ClCompile Include="RenderSystem\MWPSEmitter.cpp" />
+    <ClCompile Include="RenderSystem\MWPSManager.cpp" />
+    <ClCompile Include="RenderSystem\MWPSSystem.cpp" />
+    <ClCompile Include="RenderSystem\MWMaterial.cpp" />
+    <ClCompile Include="RenderSystem\MWMaterialLoader.cpp" />
+    <ClCompile Include="RenderSystem\MWMaterialManager.cpp" />
+    <ClCompile Include="RenderSystem\MWPass.cpp" />
+    <ClCompile Include="RenderSystem\MWTechnique.cpp" />
+    <ClCompile Include="RenderSystem\MWTextureLinker.cpp" />
+    <ClCompile Include="RenderSystem\MWTextureStage.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderParam.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderProgram.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderProgramDefMgr.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderInstance.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderLibrary.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderLibraryLoader.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderCodeFactory.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderCodeGenerter.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderCodeGenerterCg.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeAdd.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeClamp.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat1.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat2.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat3.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat4.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeInternal.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeMultiply.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeParamFloat4.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeSampler2D.cpp" />
+    <ClCompile Include="RenderSystem\MWShaderNodeSub.cpp" />
+    <ClCompile Include="AudioSystem\MWAudioSystem.cpp" />
+    <ClCompile Include="AudioSystem\MWMusic.cpp" />
+    <ClCompile Include="AudioSystem\MWSound.cpp" />
+    <ClCompile Include="AI\MWEvent.cpp" />
+    <ClCompile Include="AI\MWPath.cpp" />
+    <ClCompile Include="AI\MWValue.cpp" />
+    <ClCompile Include="AI\ttt.cpp" />
+    <ClCompile Include="InputSystem\MWInputSystem.cpp" />
+    <ClCompile Include="Core\MWNetStream.cpp" />
+    <ClCompile Include="Core\MWSocket.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

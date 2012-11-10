@@ -1,0 +1,233 @@
+
+<ShaderLib>
+
+	<Shaders>
+		<Shader name = "TerrainVS" language = "cg" profile = "vs30" source = "Terrain.vs" >
+			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+		</Shader>
+
+		<Shader name = "TerrainPS" language = "cg" profile = "ps30" source = "Terrain.ps" >
+			<param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+		</Shader>
+
+
+		<Shader name = "SunVS" language = "cg" profile = "vs30" source = "Sun.vs" >
+			<param name = "matView" type = "float4x4" btype = "matView" />
+			<param name = "matProj" type = "float4x4" btype = "matProj" />
+		</Shader>
+
+		<Shader name = "SunPS" language = "cg" profile = "ps30" source = "Sun.ps" >
+		</Shader>
+
+
+		<Shader name = "MoonVS" language = "cg" profile = "vs30" source = "Moon.vs" >
+			<param name = "matView" type = "float4x4" btype = "matView" />
+			<param name = "matProj" type = "float4x4" btype = "matProj" />
+		</Shader>
+
+		<Shader name = "MoonPS" language = "cg" profile = "ps30" source = "Moon.ps" >
+		</Shader>
+
+		<Shader name = "BubbleVS" language = "cg" profile = "vs30" source = "Bubble.vs" >
+			<param name = "matView" type = "float4x4" btype = "matView" />
+			<param name = "matProj" type = "float4x4" btype = "matProj" />
+		</Shader>
+
+		<Shader name = "BubblePS" language = "cg" profile = "ps30" source = "Bubble.ps" >
+		</Shader>
+
+		<Shader name = "SkyVS" language = "cg" profile = "vs30" source = "Sky.vs" >
+			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+		</Shader>
+
+		<Shader name = "SkyPS" language = "cg" profile = "ps30" source = "Sky.ps" >
+		</Shader>
+
+		<Shader name = "QuadVS" language = "cg" profile = "vs30" source = "Quad.vs" >
+		</Shader>
+
+		<Shader name = "FogPS" language = "cg" profile = "ps30" source = "Fog.ps" >
+		</Shader>
+
+		<Shader name = "BlurHPS" language = "cg" profile = "ps30" source = "BlurH.ps" >
+			<param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
+		</Shader>
+
+		<Shader name = "BlurVPS" language = "cg" profile = "ps30" source = "BlurV.ps" >
+			<param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
+		</Shader>
+
+		<Shader name = "GodRayPS" language = "cg" profile = "ps30" source = "GodRay.ps" >
+		</Shader>
+
+		<Shader name = "GodRayBlendPS" language = "cg" profile = "ps30" source = "GodRayBlend.ps" >
+		</Shader>
+
+		<Shader name = "ColorSharpPS" language = "cg" profile = "ps30" source = "ColorSharp.ps" >
+			<param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
+		</Shader>
+
+		<Shader name = "CloudShadingVS" language = "cg" profile = "vs30" source = "CloudShading.vs" >
+			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+		</Shader>
+
+		<Shader name = "CloudShadingPS" language = "cg" profile = "ps30" source = "CloudShading.ps" >
+		</Shader>
+
+    		<Shader name = "CloudLightingVS" language = "cg" profile = "vs30" source = "CloudLighting.vs" >
+      			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    		</Shader>
+
+    		<Shader name = "CloudLightingPS" language = "cg" profile = "ps30" source = "CloudLighting.ps" >
+    		</Shader>
+
+		<Shader name = "WaterVS" language = "cg" profile = "vs30" source = "Water.vs" >
+      			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+			<param name = "matWV" type = "float4x4" btype = "matView" />
+    		</Shader>
+
+    		<Shader name = "WaterPS" language = "cg" profile = "ps30" source = "Water.ps" >
+			
+    		</Shader>
+
+		<Shader name = "UnderWaterVS" language = "cg" profile = "vs30" source = "UnderWater.vs" >
+      			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    		</Shader>
+
+		<Shader name = "UnderWaterPS" language = "cg" profile = "ps30" source = "UnderWater.ps" >
+    		</Shader>
+
+		<Shader name = "UnderWaterFogPS" language = "cg" profile = "ps30" source = "UnderWaterFog.ps" >
+		</Shader>
+
+		<Shader name = "UnderWaterNoisePS" language = "cg" profile = "ps30" source = "UnderWaterNoise.ps" >
+		</Shader>
+
+		<Shader name = "UnderWaterGodRayVS" language = "cg" profile = "vs30" source = "UnderWaterGodRay.vs" >
+      			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    		</Shader>
+
+		<Shader name = "UnderWaterGodRayPS" language = "cg" profile = "ps30" source = "UnderWaterGodRay.ps" >
+    		</Shader>
+
+		<Shader name = "UnderWaterGodRayBlendPS" language = "cg" profile = "ps30" source = "UnderWaterGodRayBlend.ps" >
+    		</Shader>
+		
+		<Shader name = "UnderWaterCausticsPS" language = "cg" profile = "ps30" source = "UnderWaterCaustics.ps" >
+    		</Shader>
+
+		<Shader name = "DirLightingPS" language = "cg" profile = "ps30" source = "DirLighting.ps" >
+    		</Shader>
+
+		<Shader name = "DownScale2xPS" language = "cg" profile = "ps30" source = "DownScale2x.ps" >
+    		</Shader>
+
+		<Shader name = "DownScale4xPS" language = "cg" profile = "ps30" source = "DownScale4x.ps" >
+    		</Shader>
+
+		<Shader name = "HDR_LumInitialPS" language = "cg" profile = "ps30" source = "HDR_LumInitial.ps" >
+    		</Shader>
+
+		<Shader name = "HDR_LumFinalPS" language = "cg" profile = "ps30" source = "HDR_LumFinal.ps" >
+    		</Shader>
+
+		<Shader name = "HDR_AdaptedPS" language = "cg" profile = "ps30" source = "HDR_LumAdapted.ps" >
+    		</Shader>
+
+		<Shader name = "HDR_BrightPS" language = "cg" profile = "ps30" source = "HDR_Bright.ps" >
+    		</Shader>
+
+		<Shader name = "HDR_ToneMapPS" language = "cg" profile = "ps30" source = "HDR_ToneMap.ps" >
+    		</Shader>
+
+	</Shaders>
+
+	<Techniques>
+
+		<Technique name = "Terrain" vs = "TerrainVS" ps = "TerrainPS">
+		</Technique>
+
+		<Technique name = "Sun" vs = "SunVS" ps = "SunPS">
+		</Technique>
+
+		<Technique name = "Moon" vs = "MoonVS" ps = "MoonPS">
+		</Technique>
+
+		<Technique name = "Bubble" vs = "BubbleVS" ps = "BubblePS">
+		</Technique>
+
+		<Technique name = "Sky" vs = "SkyVS" ps = "SkyPS">
+		</Technique>
+
+		<Technique name = "Fog" vs = "QuadVS" ps = "FogPS">
+		</Technique>
+
+		<Technique name = "BlurH" vs = "QuadVS" ps = "BlurHPS">
+		</Technique>
+
+		<Technique name = "BlurV" vs = "QuadVS" ps = "BlurVPS">
+		</Technique>
+
+		<Technique name = "GodRay" vs = "QuadVS" ps = "GodRayPS">
+		</Technique>
+
+		<Technique name = "GodRayBlend" vs = "QuadVS" ps = "GodRayBlendPS">
+		</Technique>
+
+		<Technique name = "ColorSharp" vs = "QuadVS" ps = "ColorSharpPS">
+		</Technique>
+
+		<Technique name = "CloudShading" vs = "CloudShadingVS" ps = "CloudShadingPS">
+		</Technique>
+
+    		<Technique name = "CloudLighting" vs = "CloudLightingVS" ps = "CloudLightingPS">
+    		</Technique>
+
+		<Technique name = "Water" vs = "WaterVS" ps = "WaterPS">
+    		</Technique>
+
+		<Technique name = "UnderWater" vs = "UnderWaterVS" ps = "UnderWaterPS">
+    		</Technique>
+
+		<Technique name = "UnderWaterFog" vs = "QuadVS" ps = "UnderWaterFogPS">
+		</Technique>
+	
+		<Technique name = "UnderWaterNoise" vs = "QuadVS" ps = "UnderWaterNoisePS">
+		</Technique>
+
+		<Technique name = "UnderWaterGodRay" vs = "UnderWaterGodRayVS" ps = "UnderWaterGodRayPS">
+		</Technique>
+
+		<Technique name = "UnderWaterGodRayBlend" vs = "QuadVS" ps = "UnderWaterGodRayBlendPS">
+		</Technique>
+
+		<Technique name = "UnderWaterCaustics" vs = "QuadVS" ps = "UnderWaterCausticsPS">
+		</Technique>
+
+		<Technique name = "DirLighting" vs = "QuadVS" ps = "DirLightingPS">
+		</Technique>
+
+		<Technique name = "DownScale2x" vs = "QuadVS" ps = "DownScale2xPS">
+		</Technique>
+
+		<Technique name = "DownScale4x" vs = "QuadVS" ps = "DownScale4xPS">
+		</Technique>
+
+		<Technique name = "HDR_LumInitial" vs = "QuadVS" ps = "HDR_LumInitialPS">
+		</Technique>
+
+		<Technique name = "HDR_LumFinal" vs = "QuadVS" ps = "HDR_LumFinalPS">
+		</Technique>
+
+		<Technique name = "HDR_Adapted" vs = "QuadVS" ps = "HDR_AdaptedPS">
+		</Technique>
+
+		<Technique name = "HDR_Bright" vs = "QuadVS" ps = "HDR_BrightPS">
+		</Technique>
+
+		<Technique name = "HDR_ToneMap" vs = "QuadVS" ps = "HDR_ToneMapPS">
+		</Technique>
+
+	</Techniques>
+
+</ShaderLib>

@@ -1,0 +1,23 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0;
+};
+
+uniform float gElapsedTime;
+
+uniform sampler2D s0; // adapted
+uniform sampler2D s1; // current
+
+float4 main(PS_IN In) : COLOR
+{
+    float fAdaptedLum = tex2D(s0, float2(0.5f, 0.5f));
+    float fCurrentLum = tex2D(s1, float2(0.5f, 0.5f));
+    
+    float fNewAdaptation = fAdaptedLum + (fCurrentLum - fAdaptedLum) * (1 - pow(0.98f, 30 * gElapsedTime));
+    return float4(fNewAdaptation, fNewAdaptation, fNewAdaptation, 1.0f);
+}

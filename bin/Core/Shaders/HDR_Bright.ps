@@ -1,0 +1,27 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0;
+};
+
+uniform sampler2D s0;	// scene texture
+
+uniform float gThreshold;
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 vOrg = tex2D(s0, In.uv0);
+	
+	//float lum = dot( float3(0.299, 0.587, 0.114), vOrg.rgb );
+	float lum = dot( float3(0.3333, 0.3333, 0.3333), vOrg.rgb );
+	
+	float3 color = vOrg.rgb * (lum - gThreshold) / (1.0f - gThreshold);
+	
+	color = max(float3(0, 0, 0), color);
+	
+	return float4(color, 1);
+}

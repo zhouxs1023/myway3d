@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DIInputSystem">
+      <UniqueIdentifier>{d896dde9-1fc9-4951-952d-41424d1ecda5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MWDIInputSystem.cpp">
+      <Filter>DIInputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWDIJoystick.cpp">
+      <Filter>DIInputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWDIKeyboard.cpp">
+      <Filter>DIInputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWDIMouse.cpp">
+      <Filter>DIInputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MWDIInputSystemPlugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MWDIInputSystem.h">
+      <Filter>DIInputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWDIJoystick.h">
+      <Filter>DIInputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWDIKeyboard.h">
+      <Filter>DIInputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWDIMouse.h">
+      <Filter>DIInputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWDIInputSystemEntry.h" />
+    <ClInclude Include="MWDIInputSystemPlugin.h" />
+  </ItemGroup>
+</Project>

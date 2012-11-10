@@ -1,0 +1,673 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Chinese (P.R.C.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\WorldBuild.rc2""  // 非 Microsoft Visual C++ 编辑的资源\r\n"
+    "#include ""afxres.rc""         // 标准组件\r\n"
+    "#include ""afxprint.rc""       // 打印/打印预览资源\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\xInfinite.ico"
+IDR_WorldBuildTYPE      ICON                    "res\\xInfiniteDoc.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDR_MAINFRAME           BITMAP                  "res\\Toolbar.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Toolbar
+//
+
+IDR_MAINFRAME TOOLBAR  16, 15
+BEGIN
+    BUTTON      ID_FILE_NEW
+    BUTTON      ID_FILE_OPEN
+    BUTTON      ID_FILE_SAVE
+    SEPARATOR
+    BUTTON      ID_EDIT_CUT
+    BUTTON      ID_EDIT_COPY
+    BUTTON      ID_EDIT_PASTE
+    SEPARATOR
+    BUTTON      ID_FILE_PRINT
+    BUTTON      ID_APP_ABOUT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MAINFRAME MENU 
+BEGIN
+    POPUP "文件(&F)"
+    BEGIN
+        MENUITEM "新建(&N)\tCtrl+N",              IDC_FILE_NEW
+        MENUITEM "打开(&O)...\tCtrl+O",           IDC_FILE_OPEN
+        MENUITEM "保存(&S)\tCtrl+S",              IDC_FILE_SAVE
+    END
+    POPUP "编辑(&E)"
+    BEGIN
+        MENUITEM "撤消(&U)\tCtrl+Z",              ID_EDIT_UNDO
+        MENUITEM SEPARATOR
+        MENUITEM "剪切(&T)\tCtrl+X",              ID_EDIT_CUT
+        MENUITEM "复制(&C)\tCtrl+C",              ID_EDIT_COPY
+        MENUITEM "粘贴(&P)\tCtrl+V",              ID_EDIT_PASTE
+    END
+    MENUITEM "视图(&V)",                      65535
+    POPUP "帮助(&H)"
+    BEGIN
+        MENUITEM "关于 WorldBuild(&A)...",        ID_APP_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Accelerator
+//
+
+IDR_MAINFRAME ACCELERATORS 
+BEGIN
+    "N",            ID_FILE_NEW,            VIRTKEY, CONTROL
+    "O",            ID_FILE_OPEN,           VIRTKEY, CONTROL
+    "S",            ID_FILE_SAVE,           VIRTKEY, CONTROL
+    "P",            ID_FILE_PRINT,          VIRTKEY, CONTROL
+    "Z",            ID_EDIT_UNDO,           VIRTKEY, CONTROL
+    "X",            ID_EDIT_CUT,            VIRTKEY, CONTROL
+    "C",            ID_EDIT_COPY,           VIRTKEY, CONTROL
+    "V",            ID_EDIT_PASTE,          VIRTKEY, CONTROL
+    VK_BACK,        ID_EDIT_UNDO,           VIRTKEY, ALT
+    VK_DELETE,      ID_EDIT_CUT,            VIRTKEY, SHIFT
+    VK_INSERT,      ID_EDIT_COPY,           VIRTKEY, CONTROL
+    VK_INSERT,      ID_EDIT_PASTE,          VIRTKEY, SHIFT
+    VK_F6,          ID_NEXT_PANE,           VIRTKEY 
+    VK_F6,          ID_PREV_PANE,           VIRTKEY, SHIFT
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "关于 WorldBuild"
+FONT 9, "宋体", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "WorldBuild 1.0 版",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2010",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,16,WS_GROUP
+END
+
+IDD_NEW DIALOGEX 0, 0, 186, 198
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,32,169,50,14
+    PUSHBUTTON      "取消",IDCANCEL,107,169,50,14
+    CTEXT           "hight map:",IDC_STATIC,28,24,50,14
+    EDITTEXT        IDC_NEW_HIGHTMAP,103,22,50,14,ES_RIGHT | ES_AUTOHSCROLL
+    CTEXT           "world size:",IDC_STATIC,28,51,50,14
+    CTEXT           "max_hight:",IDC_STATIC,27,81,50,14
+    EDITTEXT        IDC_NEW_WORLD_SIZE,103,49,50,14,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_NEW_MAX_HIGHT,103,78,50,14,ES_RIGHT | ES_AUTOHSCROLL
+    CTEXT           "material:",IDC_STATIC,28,142,50,14
+    CTEXT           "row_size:",IDC_STATIC,27,111,50,14
+    EDITTEXT        IDC_NEW_ROW_SIZE,103,108,50,14,ES_RIGHT | ES_AUTOHSCROLL
+    EDITTEXT        IDC_NEW_MATERIAL,104,139,50,14,ES_RIGHT | ES_AUTOHSCROLL
+END
+
+IDD_TERRAIN DIALOGEX 0, 0, 139, 254
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LTEXT           "纹理:",IDC_STATIC,30,48,20,8
+    COMBOBOX        IDC_TR_LAYERS,54,46,71,69,CBS_DROPDOWN | CBS_SORT | WS_VSCROLL | WS_TABSTOP
+    CONTROL         "地表",IDC_TR_DECAL,"Button",BS_AUTORADIOBUTTON | WS_GROUP,15,20,32,10
+    CONTROL         "平滑",IDC_TR_SMOOTH,"Button",BS_AUTORADIOBUTTON,15,97,32,10
+    CONTROL         "凹下",IDC_TR_SINK,"Button",BS_AUTORADIOBUTTON,15,122,32,10
+    CONTROL         "凸起",IDC_TR_HEAVE,"Button",BS_AUTORADIOBUTTON,15,150,32,10
+    LTEXT           "brush size:",IDC_STATIC,18,193,36,8
+    LTEXT           "brush density:",IDC_STATIC,18,217,47,8
+    CONTROL         "",IDC_TR_BRUSH_SIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,72,190,59,15
+    CONTROL         "",IDC_TR_BRUSH_DENSITY,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,72,214,59,15
+    CTEXT           "1",IDC_TR_BRUSH_SIZE_TXT,78,179,54,8
+    CTEXT           "1",IDC_TR_BRUSH_DENSITY_TXT,78,206,54,8
+END
+
+IDD_MAIN_TAB DIALOGEX 0, 0, 171, 418
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_MT_TAB,"SysTabControl32",0x0,15,14,145,310
+    GROUPBOX        "Render Information",IDC_STATIC,8,333,156,56
+    LTEXT           "batch:",IDC_STATIC,28,346,22,8
+    LTEXT           "primitive:",IDC_STATIC,28,360,30,8
+    LTEXT           "FPS:",IDC_STATIC,28,374,16,8
+    CTEXT           "0",IDC_MT_BATCH,66,346,82,8
+    CTEXT           "0",IDC_MT_PRIMITIVE,66,360,82,8
+    CTEXT           "0",IDC_MT_FPS,66,374,82,8
+END
+
+IDD_GRASS DIALOGEX 0, 0, 139, 251
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_GRASS_LIST,14,27,113,148,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Load",IDC_GT_LOAD,75,7,50,14
+    CONTROL         "Add",IDC_GT_ADD,"Button",BS_AUTORADIOBUTTON,16,183,29,10
+    CONTROL         "Lock",IDC_GT_LOCK,"Button",BS_AUTORADIOBUTTON,62,183,30,10
+    CONTROL         "Delete",IDC_GT_DELETE,"Button",BS_AUTORADIOBUTTON,18,199,37,10
+    CONTROL         "Select",IDC_GT_SELECT,"Button",BS_AUTORADIOBUTTON,62,199,35,10
+    PUSHBUTTON      "Setting",IDC_GT_SETTING,14,222,50,14
+END
+
+IDD_GRASS_SETTING DIALOGEX 0, 0, 186, 179
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Grass Setting"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,24,141,50,14
+    PUSHBUTTON      "取消",IDCANCEL,118,142,50,14
+    LTEXT           "Row:",IDC_STATIC,24,23,18,8
+    EDITTEXT        IDC_GSS_ROW,128,21,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_GSS_COLUMN,128,50,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_GSS_SIZE,128,79,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_GSS_MATERIAL,128,110,40,14,ES_AUTOHSCROLL
+    LTEXT           "Material",IDC_STATIC,24,111,26,8
+    LTEXT           "Column:",IDC_STATIC,24,52,27,8
+    LTEXT           "Size:",IDC_STATIC,24,82,16,8
+END
+
+IDD_WATER DIALOGEX 0, 0, 185, 276
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_WT_LIST,17,28,152,167,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Load",IDC_WT_LOAD,119,7,50,14
+    PUSHBUTTON      "Setting",IDC_WT_SETTING,17,223,50,14
+    CONTROL         "Add",IDC_WT_ADD,"Button",BS_AUTORADIOBUTTON | WS_GROUP,17,206,29,10
+    CONTROL         "Select",IDC_WT_SELECT,"Button",BS_AUTORADIOBUTTON,75,206,35,10
+    CONTROL         "Lock",IDC_WT_LOCK,"Button",BS_AUTORADIOBUTTON,139,206,30,10
+    PUSHBUTTON      "Delete",IDC_WT_DELETE,119,223,50,14
+END
+
+IDD_ENTITY DIALOGEX 0, 0, 150, 296
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_ET_LIST,7,34,133,125,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Clear",IDC_ET_CLEAR,90,14,50,14
+    PUSHBUTTON      "Append",IDC_ET_APPEND,7,14,50,14
+    CONTROL         "Add",IDC_ET_ADD,"Button",BS_AUTORADIOBUTTON,15,168,29,10
+    CONTROL         "Select",IDC_ET_SELECT,"Button",BS_AUTORADIOBUTTON,45,168,35,10
+    CONTROL         "Lock",IDC_ET_LOCK,"Button",BS_AUTORADIOBUTTON,81,168,30,10
+    GROUPBOX        "transform",IDC_STATIC,14,191,114,91
+    LTEXT           "x:",IDC_STATIC,22,223,8,8
+    LTEXT           "y:",IDC_STATIC,22,242,8,8
+    LTEXT           "z:",IDC_STATIC,22,263,8,8
+    CONTROL         "平移",IDC_ET_TRANSLATE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,22,204,32,10
+    CONTROL         "旋转",IDC_ET_ROTATE,"Button",BS_AUTORADIOBUTTON,58,204,32,10
+    CONTROL         "缩放",IDC_ET_SCALE,"Button",BS_AUTORADIOBUTTON,92,204,32,10
+    CTEXT           "0",IDC_ET_X,40,225,37,8
+    CTEXT           "0",IDC_ET_Y,40,244,37,8
+    CTEXT           "0",IDC_ET_Z,40,264,37,8
+    PUSHBUTTON      "+",IDC_ET_X_INC,83,222,18,14
+    PUSHBUTTON      "-",IDC_ET_X_DEC,103,222,18,14
+    PUSHBUTTON      "+",IDC_ET_Y_INC,83,241,18,14
+    PUSHBUTTON      "-",IDC_ET_Y_DEC,103,241,18,14
+    PUSHBUTTON      "+",IDC_ET_Z_INC,83,262,18,14
+    PUSHBUTTON      "-",IDC_ET_Z_DEC,103,262,18,14
+    PUSHBUTTON      "delete",IDC_ET_DELETE,112,166,28,14
+END
+
+IDD_PARTICLE DIALOGEX 0, 0, 140, 219
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    PUSHBUTTON      "Append",IDC_PT_APPEND,7,15,50,14
+    LISTBOX         IDC_PT_LIST,7,37,126,150,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    PUSHBUTTON      "Clear",IDC_PT_CLEAR,83,15,50,14
+    CONTROL         "Add",IDC_PT_ADD,"Button",BS_AUTORADIOBUTTON,7,198,29,10
+    CONTROL         "Select",IDC_PT_SELECT,"Button",BS_AUTORADIOBUTTON,37,198,35,10
+    CONTROL         "Lock",IDC_PT_LOCK,"Button",BS_AUTORADIOBUTTON,77,198,30,10
+END
+
+IDD_ATTRIBUTE DIALOGEX 0, 0, 152, 436
+STYLE DS_SETFONT | WS_CHILD | WS_DISABLED | WS_BORDER
+FONT 9, "宋体", 0, 0, 0x0
+BEGIN
+    LTEXT           "Type:",IDC_STATIC,15,13,21,8
+    LTEXT           "Name:",IDC_STATIC,15,47,21,8
+    EDITTEXT        IDC_ATTRI_NAME,49,45,74,12,ES_RIGHT | ES_AUTOHSCROLL
+    LTEXT           "File:",IDC_STATIC,15,77,21,8
+    RTEXT           "",IDC_ATTRI_FILE,49,77,87,8
+    GROUPBOX        "Positon",IDC_STATIC,14,107,128,88
+    LTEXT           "x:",IDC_STATIC,30,124,9,8
+    RTEXT           "0",IDC_ATTRI_POS_X,49,125,74,8
+    LTEXT           "y:",IDC_STATIC,30,151,9,8
+    RTEXT           "0",IDC_ATTRI_POS_Y,49,151,74,8
+    LTEXT           "z:",IDC_STATIC,30,178,9,8
+    RTEXT           "0",IDC_ATTRI_POS_Z,49,178,74,8
+    GROUPBOX        "Orientation",IDC_STATIC,14,208,128,118
+    LTEXT           "x:",IDC_STATIC,31,227,9,8
+    LTEXT           "y:",IDC_STATIC,32,253,9,8
+    LTEXT           "z:",IDC_STATIC,31,279,9,8
+    LTEXT           "w:",IDC_STATIC,32,305,9,8
+    RTEXT           "0",IDC_ATTRI_ORT_X,49,227,74,8
+    RTEXT           "0",IDC_ATTRI_ORT_Y,49,253,74,8
+    RTEXT           "0",IDC_ATTRI_ORT_Z,49,279,74,8
+    RTEXT           "0",IDC_ATTRI_ORT_W,49,305,74,8
+    GROUPBOX        "Scale",IDC_STATIC,14,337,128,88
+    LTEXT           "x:",IDC_STATIC,32,355,9,8
+    RTEXT           "0",IDC_ATTRI_SCL_X,49,355,74,8
+    LTEXT           "y:",IDC_STATIC,32,381,9,8
+    RTEXT           "0",IDC_ATTRI_SCL_Y,49,381,74,8
+    LTEXT           "z:",IDC_STATIC,32,409,9,8
+    RTEXT           "0",IDC_ATTRI_SCL_Z,49,409,74,8
+    RTEXT           "",IDC_ATTRI_TYPE,49,15,74,8
+END
+
+IDD_ACTOR DIALOGEX 0, 0, 134, 289
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    LISTBOX         IDC_ACTOR_MODEL_LIST,18,25,96,83,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LISTBOX         IDC_ACTOR_LIST,18,136,96,83,LBS_SORT | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Model:",IDC_STATIC,18,14,22,8
+    LTEXT           "Actor:",IDC_STATIC,18,120,21,8
+    CONTROL         "Select",IDC_ACTOR_SELECT,"Button",BS_AUTORADIOBUTTON,49,238,31,10
+    CONTROL         "Lock",IDC_ACTOR_LOCK,"Button",BS_AUTORADIOBUTTON,88,238,26,10
+    PUSHBUTTON      "delete",IDC_ACTOR_DELETE,16,262,50,14
+    PUSHBUTTON      "edit",IDC_ACTOR_EDIT,67,262,50,14
+    CONTROL         "Add",IDC_ACTOR_ADD,"Button",BS_AUTORADIOBUTTON,18,238,23,10
+END
+
+IDD_MAP_CELL DIALOGEX 0, 0, 153, 321
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_CHILD | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    GROUPBOX        "Look",IDC_STATIC,15,17,124,67
+    LTEXT           "Display Size:",IDC_STATIC,25,32,41,8
+    EDITTEXT        IDC_MAP_DISPLAY_SIZE,75,30,58,14,ES_AUTOHSCROLL
+    LTEXT           "Brush Size:",IDC_STATIC,25,58,36,8
+    EDITTEXT        IDC_MAP_BRUSH_SIZE,75,54,57,14,ES_AUTOHSCROLL
+    GROUPBOX        "Cell",IDC_STATIC,15,98,123,81
+    LTEXT           "Width:",IDC_STATIC,25,117,22,8
+    LTEXT           "Height:",IDC_STATIC,25,136,24,8
+    EDITTEXT        IDC_MAP_WIDTH,75,113,55,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MAP_HEIGHT,75,135,55,14,ES_AUTOHSCROLL
+    LTEXT           "Depth Check:",IDC_STATIC,25,159,44,8
+    CONTROL         "true",IDC_MAP_DC_TRUE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,74,159,24,10
+    CONTROL         "false",IDC_MAP_DC_FASLE,"Button",BS_AUTORADIOBUTTON,105,159,28,10
+    GROUPBOX        "Operator",IDC_STATIC,15,188,124,114
+    GROUPBOX        "Action",IDC_STATIC,24,201,106,30
+    CONTROL         "Active",IDC_MAP_ACTIVE,"Button",BS_AUTORADIOBUTTON | WS_GROUP,33,214,36,10
+    CONTROL         "Lock",IDC_MAP_LOCK,"Button",BS_AUTORADIOBUTTON,84,215,30,10
+    GROUPBOX        "Op",IDC_STATIC,23,234,106,36
+    CONTROL         "Insert",IDC_MAP_INSERT,"Button",BS_AUTORADIOBUTTON | WS_GROUP,33,250,35,10
+    CONTROL         "Clear",IDC_MAP_CLEAR,"Button",BS_AUTORADIOBUTTON,84,250,33,10
+    LTEXT           "Y:",IDC_STATIC,25,281,8,8
+    PUSHBUTTON      "+",IDC_MAP_Y_INC,77,278,22,14
+    PUSHBUTTON      "-",IDC_MAP_Y_DEC,107,278,22,14
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "Myway"
+            VALUE "FileDescription", "All Right Reserved"
+            VALUE "FileVersion", "1.0"
+            VALUE "InternalName", "WorldBuild.exe"
+            VALUE "LegalCopyright", "Cobyright Myway All Right Reserved"
+            VALUE "OriginalFilename", "WorldBuild.exe"
+            VALUE "ProductName", "World Build"
+            VALUE "ProductVersion", "1.0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_NEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 191
+    END
+
+    IDD_TERRAIN, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 132
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 247
+    END
+
+    IDD_MAIN_TAB, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 164
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 411
+    END
+
+    IDD_GRASS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 132
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 244
+    END
+
+    IDD_GRASS_SETTING, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 172
+    END
+
+    IDD_WATER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 178
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 269
+    END
+
+    IDD_ENTITY, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 140
+        TOPMARGIN, 6
+        BOTTOMMARGIN, 289
+    END
+
+    IDD_PARTICLE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 133
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 212
+    END
+
+    IDD_ATTRIBUTE, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 435
+    END
+
+    IDD_ACTOR, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 127
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 282
+    END
+
+    IDD_MAP_CELL, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 146
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 314
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
+END
+
+STRINGTABLE 
+BEGIN
+    IDR_MAINFRAME           "WorldBuild\n\nWorldBuild\n\n\nWorldBuild.Document\nWorldBuild.Document"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_APP_TITLE       "WorldBuild"
+    AFX_IDS_IDLEMESSAGE     "就绪"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_INDICATOR_EXT        "EXT"
+    ID_INDICATOR_CAPS       "CAP"
+    ID_INDICATOR_NUM        "NUM"
+    ID_INDICATOR_SCRL       "SCRL"
+    ID_INDICATOR_OVR        "OVR"
+    ID_INDICATOR_REC        "REC"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_NEW             "创建新文档\n新建"
+    ID_FILE_OPEN            "打开现有文档\n打开"
+    ID_FILE_CLOSE           "关闭活动文档\n关闭"
+    ID_FILE_SAVE            "保存活动文档\n保存"
+    ID_FILE_SAVE_AS         "用新名称保存活动文档\n另存为"
+    ID_FILE_PAGE_SETUP      "更改打印选项\n页面设置"
+    ID_FILE_PRINT_SETUP     "更改打印机选项和打印选项\n打印设置"
+    ID_FILE_PRINT           "打印活动文档\n打印"
+    ID_FILE_PRINT_PREVIEW   "显示整页\n打印预览"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_APP_ABOUT            "显示程序信息、版本号和版权\n关于"
+    ID_APP_EXIT             "退出应用程序；提示保存文档\n退出"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_FILE_MRU_FILE1       "打开此文档"
+    ID_FILE_MRU_FILE2       "打开此文档"
+    ID_FILE_MRU_FILE3       "打开此文档"
+    ID_FILE_MRU_FILE4       "打开此文档"
+    ID_FILE_MRU_FILE5       "打开此文档"
+    ID_FILE_MRU_FILE6       "打开此文档"
+    ID_FILE_MRU_FILE7       "打开此文档"
+    ID_FILE_MRU_FILE8       "打开此文档"
+    ID_FILE_MRU_FILE9       "打开此文档"
+    ID_FILE_MRU_FILE10      "打开此文档"
+    ID_FILE_MRU_FILE11      "打开此文档"
+    ID_FILE_MRU_FILE12      "打开此文档"
+    ID_FILE_MRU_FILE13      "打开此文档"
+    ID_FILE_MRU_FILE14      "打开此文档"
+    ID_FILE_MRU_FILE15      "打开此文档"
+    ID_FILE_MRU_FILE16      "打开此文档"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_NEXT_PANE            "切换到下一个窗格\n下一窗格"
+    ID_PREV_PANE            "切换回上一个窗格\n上一窗格"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_WINDOW_SPLIT         "将活动窗口拆分为多个窗格\n拆分"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_EDIT_CLEAR           "清除选定内容\n清除"
+    ID_EDIT_CLEAR_ALL       "清除全部内容\n全部清除"
+    ID_EDIT_COPY            "复制选定内容并将其放到剪贴板上\n复制"
+    ID_EDIT_CUT             "剪切选定内容并将其放到剪贴板上\n剪切"
+    ID_EDIT_FIND            "查找指定的文本\n查找"
+    ID_EDIT_PASTE           "插入剪贴板内容\n粘贴"
+    ID_EDIT_REPEAT          "重复上一操作\n重复"
+    ID_EDIT_REPLACE         "用其他文本替换特定的文本\n替换"
+    ID_EDIT_SELECT_ALL      "选定整个文档\n全选"
+    ID_EDIT_UNDO            "撤消上一操作\n撤消"
+    ID_EDIT_REDO            "恢复上次撤消的操作\n重做"
+END
+
+STRINGTABLE 
+BEGIN
+    ID_VIEW_TOOLBAR         "显示或隐藏工具栏\n切换工具栏"
+    ID_VIEW_STATUS_BAR      "显示或隐藏状态栏\n切换状态栏"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCSIZE          "更改窗口大小"
+    AFX_IDS_SCMOVE          "更改窗口位置"
+    AFX_IDS_SCMINIMIZE      "将窗口缩小为图标"
+    AFX_IDS_SCMAXIMIZE      "使窗口最大化显示"
+    AFX_IDS_SCNEXTWINDOW    "切换到下一个文档窗口"
+    AFX_IDS_SCPREVWINDOW    "切换到前一个文档窗口"
+    AFX_IDS_SCCLOSE         "关闭活动窗口并提示保存文档"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_SCRESTORE       "将窗口恢复到正常大小"
+    AFX_IDS_SCTASKLIST      "激活任务列表"
+END
+
+STRINGTABLE 
+BEGIN
+    AFX_IDS_PREVIEW_CLOSE   "关闭打印预览模式\n取消预览"
+END
+
+#endif    // Chinese (P.R.C.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "afxres.rc"         // 标准组件
+#include "afxprint.rc"       // 打印/打印预览资源
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

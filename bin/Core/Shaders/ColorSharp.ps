@@ -1,0 +1,36 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform sampler2D gTex;
+
+uniform float4 gSharpParam;
+uniform float4 gInvTexSize;
+
+float4 main(PS_IN In) : COLOR
+{
+	float x = gInvTexSize.x;
+	float y = gInvTexSize.y;
+	float s = gSharpParam.x;
+	
+	float4 c_orig = tex2D(gTex, In.uv0);
+	
+	float4 c_blured = 0;
+	
+	c_blured += tex2D(gTex, In.uv0 + float2(-x, 0));
+	c_blured += tex2D(gTex, In.uv0 + float2(+x, 0));
+	c_blured += tex2D(gTex, In.uv0 + float2(0, -y));
+	c_blured += tex2D(gTex, In.uv0 + float2(0, +y));
+	c_blured /= 4;
+	
+	float4 clr = c_orig + (c_orig - c_blured) * gSharpParam.x;
+	clr.a = c_orig.a;
+	
+	return clr;
+}

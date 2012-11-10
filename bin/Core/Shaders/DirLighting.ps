@@ -1,0 +1,39 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform sampler2D gTex_Color;
+uniform sampler2D gTex_Normal;
+
+uniform float3 gLightDir;
+uniform float4 gAmbient;
+uniform float4 gDiffuse;
+uniform float4 gSpecular;
+
+float3 TexNormal(sampler2D tex, float2 uv)
+{
+	float2 xy = tex2D(tex, uv).rg;
+	float z = sqrt(1 - dot(xy, xy));
+	
+	return float3(xy, z);
+}
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 clr = tex2D(gTex_Color, In.uv0);
+	float3 nrm = TexNormal(gTex_Normal, In.uv0).rgb;
+	
+	float NdL = dot(nrm, gLightDir);
+	NdL = saturate(NdL);
+	
+	clr = clr * (gAmbient + NdL * gDiffuse); 
+	clr.a = 1;
+	
+	return clr;
+}

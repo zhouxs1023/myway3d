@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="D3D9RenderSystem">
+      <UniqueIdentifier>{ef691a5e-7841-472a-89c1-83f4b9b18ad3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MWD3D9DepthStencil.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9DeviceCaps.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9Image.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9IndexBuffer.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9Mapping.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9RenderSystem.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9RenderTarget.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9RenderWindow.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9ShaderProgram.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9ShaderProgramManager.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9SwapChain.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9Texture.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9VertexBuffer.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9VertexDeclaration.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9VertexShader.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D9VideoBufferManager.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MWD3D9RenderSystemPlugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MWD3D9DepthStencil.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9DeviceCaps.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9Image.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9IndexBuffer.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9Mapping.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9RenderSystem.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9RenderTarget.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9RenderWindow.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9ShaderProgram.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9ShaderProgramManager.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9SwapChain.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9Texture.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9VertexBuffer.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9VertexDeclaration.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9VertexShader.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9VideoBufferManager.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D9RenderSystemEntry.h" />
+    <ClInclude Include="MWD3D9RenderSystemPlugin.h" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,39 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform float4 gGodRayParam;
+
+uniform sampler2D gTex_Depth;
+uniform sampler2D gTex_Sun;
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 color = float4(0, 0, 0, 0);
+	
+	float2 sunUV = gGodRayParam.xy;
+	float uvStep = gGodRayParam.z;
+	
+	float2 dir = sunUV - In.uv0;
+	
+	for (int i = 0; i < 32; ++i)
+	{
+		float2 uv = In.uv0 + dir * uvStep * i;
+		
+		float depth = tex2D(gTex_Depth, uv);
+		float4 sunColor = tex2D(gTex_Sun, uv);
+		
+		if (depth > 0.999f)
+			color += sunColor;
+	}
+	
+	color /= 32;
+    
+	return color;
+}

@@ -1,0 +1,40 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+
+uniform float4 gHGg;
+uniform float gIntensity;
+uniform float4 gSunColor;
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+uniform float4 gSunDir;
+
+uniform sampler2D gTex_Ray;
+
+
+float4 main(PS_IN In) : COLOR
+{
+	float r = tex2D(gTex_Ray, In.uv0).r;
+	
+	float4 p = gCornerLeftTop + gCornerRightDir * In.uv0.x + gCornerDownDir * In.uv0.y;
+	float3 eyeDir = normalize(-p.xyz);
+	float d = dot(eyeDir, gSunDir);
+	
+	float num = gHGg.x;
+	float den = (gHGg.y - gHGg.z * d);
+	den = rsqrt(den);
+	float phase = num * (den*den*den);
+
+	float4 clr = (0.15f + gIntensity * r) * phase * gSunColor;
+	clr.a = 1;
+	
+	return clr;
+}

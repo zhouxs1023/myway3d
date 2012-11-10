@@ -1,0 +1,21 @@
+<Materials>
+	<Material>
+		<diffuse_map filename = "苏州民墙3.dds" />
+	</Material>
+	
+	<Material>
+		<diffuse_map filename = "苏州民墙2.dds" />
+	</Material>
+	
+	<Material>
+		<diffuse_map filename = "苏州民顶2.dds" />
+	</Material>
+	
+	<Material>
+		<diffuse_map filename = "标牌.dds" />
+	</Material>
+	
+	<Material>
+		<diffuse_map filename = "兵部招募站.dds" />
+	</Material>
+</Materials>

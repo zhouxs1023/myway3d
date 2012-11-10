@@ -1,0 +1,36 @@
+
+<ShaderLib>
+
+	<Shaders>
+		<Shader name = "baseVS" language = "cg" profile = "vs30" source = "base.vs" >
+			<param name = "matWorld" type = "float4x4" btype = "matWorld" />
+			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+		</Shader>
+
+		<Shader name = "basePS" language = "cg" profile = "ps30" source = "base.ps" >
+			<param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+		</Shader>
+
+		<Shader name = "QuadVS" language = "cg" profile = "vs30" source = "Quad.vs" >
+		</Shader>
+
+		<Shader name = "FrushPS" language = "cg" profile = "ps30" source = "Frush.ps" >
+		</Shader>
+
+		<Shader name = "ClearPS" language = "cg" profile = "ps30" source = "Clear.ps" >
+		</Shader>
+	</Shaders>
+
+	<Techniques>
+		<Technique name = "base" vs = "baseVS" ps = "basePS">
+			<sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
+		</Technique>
+
+		<Technique name = "Frush" vs = "QuadVS" ps = "FrushPS">
+		</Technique>
+
+		<Technique name = "Clear" vs = "QuadVS" ps = "ClearPS">
+		</Technique>
+	</Techniques>
+
+</ShaderLib>

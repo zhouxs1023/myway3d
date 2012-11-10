@@ -1,0 +1,45 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform sampler2D gTex_Depth;
+uniform sampler2D gTex_Color;
+uniform sampler2D gTex_Caustics;
+
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+uniform float4 gCameraPos;
+
+uniform float4 gCausticsParam;	// x - water y, y - depth limit, z - uv scale. 
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * In.uv0.x + gCornerDownDir * In.uv0.y;
+	float d = tex2D(gTex_Depth, In.uv0).r;
+	float3 pos = gCameraPos.xyz + p * d;
+	
+	float waterY = gCausticsParam.x;
+	float depthLimit = gCausticsParam.y;
+	float uvScale = gCausticsParam.z;
+	
+	float2 causticsUV = pos.xz * uvScale;
+	
+	float y = waterY - depthLimit;
+	float scale = abs(y - pos.y) / depthLimit;
+	scale = 1 - saturate(scale);
+	
+	float4 clr = tex2D(gTex_Color, In.uv0);
+	float caustics = tex2D(gTex_Caustics, causticsUV).r * (d < 0.9f);
+	clr += caustics * scale * clr * 0.5f;
+	
+	clr.a = 1;
+	
+	return clr;
+}

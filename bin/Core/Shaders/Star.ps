@@ -1,0 +1,22 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float4 clr : COLOR;
+	float2 uv0 : TEXCOORD0;
+};
+
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 rclr = In.clr;
+    float sqlen = dot(In.uv0, In,uv0);
+
+    // A gaussian bell of sorts.
+    rclr.a *= 1.5 * exp(-(sqlen * 8));
+    
+    return rclr;
+}

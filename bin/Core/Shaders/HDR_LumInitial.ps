@@ -1,0 +1,31 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0;
+};
+
+uniform float4 gUVOffsets[9];
+uniform sampler2D gTex_Color;
+
+
+float4 main(PS_IN In) : COLOR
+{
+    static const float3 LUMINANCE_VECTOR  = float3(0.299, 0.587, 0.114);
+
+    float3 clr = 0.0f;
+    float  logLum = 0.0f;
+
+    for(int i = 0; i < 9; ++i)
+    {
+        clr = tex2D(gTex_Color, In.uv0 + gUVOffsets[i].xy).rgb;
+        logLum += log(dot(clr, LUMINANCE_VECTOR) + 0.0001f);
+    }
+    
+    logLum /= 9;
+
+    return float4(logLum, logLum, logLum, 1.0f);
+}
