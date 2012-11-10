@@ -37,10 +37,10 @@ namespace Myway {
 
     void GodRay::OnCall(Event * sender, void * data)
     {
-        if (sender == &RenderEvent::OnResize)
+        /*if (sender == &RenderEvent::OnResize)
         {
             _initRenderTarget();
-        }
+        }*/
     }
 
     void GodRay::_initGeometry()

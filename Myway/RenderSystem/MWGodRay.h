@@ -10,7 +10,7 @@ namespace Myway {
 
     public:
         GodRay();
-        ~GodRay();
+        virtual ~GodRay();
 
         void Render(Texture * depthTex);
         void OnCall(Event * sender, void * data);

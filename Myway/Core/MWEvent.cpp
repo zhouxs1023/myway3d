@@ -4,10 +4,12 @@ namespace Myway {
 
     EventListener::EventListener()
     {
+        prev = next = NULL;
     }
 
     EventListener::~EventListener()
     {
+        prev = next = NULL;
     }
 
 
@@ -17,42 +19,52 @@ namespace Myway {
 
     Event::Event()
     {
+        head = NULL;
     }
 
     Event::~Event()
     {
-        d_assert (mListeners.Size() == 0);
+        d_assert (head == NULL);
     }
 
     void Event::Call(void * data)
     {
-        List<EventListener *>::Iterator whr = mListeners.Begin();
-        List<EventListener *>::Iterator end = mListeners.End();
+        EventListener * el = head;
 
-        while (whr != end)
+        while (el)
         {
-            (*whr)->OnCall(this, data);
-            ++whr;
+            el->OnCall(this, data);
+
+            el = el->next;
         }
     }
 
     void Event::operator += (EventListener * p)
     {
-        mListeners.PushBack(p);
+        d_assert (p->prev == NULL && p->next == NULL);
+
+        if (head)
+            head->prev = p;
+
+        p->next = head;
+        head = p;
     }
 
     void Event::operator -= (EventListener * p)
     {
-        List<EventListener *>::Iterator whr = mListeners.Begin();
-        List<EventListener *>::Iterator end = mListeners.End();
-
-        while (whr != end && (*whr) != p)
+        if (head == p)
         {
-            ++whr;
+            head = p->next;
+        }
+        else
+        {
+            if (p->prev)
+                p->prev->next = p->next;
+
+            if (p->next)
+                p->next->prev = p->prev;
         }
 
-        d_assert (whr != end);
-
-        mListeners.Erase(whr);
+        p->prev = p->next = NULL;
     }
 }

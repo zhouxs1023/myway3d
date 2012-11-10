@@ -122,8 +122,6 @@ namespace xInfi {
 
     void Controller::Init(HWND hWnd)
     {
-        return ;
-
         mhWnd = hWnd;
         _InitEngine();
 

@@ -10,11 +10,17 @@ class Event;
 
 class MW_ENTRY EventListener
 {
+    friend class Event;
+
 public:
     EventListener();
     virtual ~EventListener();
 
     virtual void OnCall(Event * sender, void * data) {}
+
+protected:
+    EventListener * prev;
+    EventListener * next;
 };
 
 class MW_ENTRY Event
@@ -29,7 +35,7 @@ public:
     void operator -= (EventListener * p);
 
 protected:
-    List<EventListener*> mListeners;
+    EventListener * head;
 };
 
 }

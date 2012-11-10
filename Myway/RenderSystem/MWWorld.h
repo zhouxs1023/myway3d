@@ -98,7 +98,7 @@ protected:
     List<Light*>        mLights;
     Scene *             mSceneManager;
 
-    Environment *         mEnvironment;
+    Environment *       mEnvironment;
 };
 
 }
