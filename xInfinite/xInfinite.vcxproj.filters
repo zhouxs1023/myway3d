@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Ui">
+      <UniqueIdentifier>{63c2b11b-5fe3-4dd7-8f5f-6ddc1d4f2e50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Control">
+      <UniqueIdentifier>{f019888c-cd6c-4578-98ff-667e9fe47136}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape">
+      <UniqueIdentifier>{188ca61e-4395-4d0b-b89f-bc1f635fec20}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ui\MFC App">
+      <UniqueIdentifier>{26436a16-b908-4036-a12d-068c8bd94231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Res">
+      <UniqueIdentifier>{649983c8-673e-4f25-a823-2383c709e1b4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Controller.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityShape.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainShape.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Utility.cpp" />
+    <ClCompile Include="PropertyDlg.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="UiManager.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ClassView.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="FileView.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="Infinate.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="InfinateDoc.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="InfinateView.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="MainFrm.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="OutputWnd.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="ViewTree.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Ui\MFC App</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Controller.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityShape.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainShape.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Utility.h" />
+    <ClInclude Include="PropertyDlg.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="UiManager.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ClassView.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="FileView.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="Infinate.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="InfinateDoc.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="InfinateView.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="MainFrm.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="OutputWnd.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="ViewTree.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Ui\MFC App</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Res</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="res\class_view.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\class_view_hc.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\classview.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\classview_hc.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\explorer.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\explorer_hc.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\file_view.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\file_view_hc.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\fileview.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\fileview_hc.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\Infinate.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\Infinate.rc2">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\InfinateDoc.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\menuimages.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\menuimages_hc.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\output_wnd.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\output_wnd_hc.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\properties.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\properties_hc.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\properties_wnd.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\properties_wnd_hc.ico">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\sort.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\sort_hc.bmp">
+      <Filter>Res</Filter>
+    </None>
+    <None Include="res\Toolbar256.bmp">
+      <Filter>Res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Infinate.rc">
+      <Filter>Res</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
