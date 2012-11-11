@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="D3D9RenderSystem">
-      <UniqueIdentifier>{ef691a5e-7841-472a-89c1-83f4b9b18ad3}</UniqueIdentifier>
+      <UniqueIdentifier>{2a644a2d-4a6c-4950-969d-a33981013913}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -34,9 +34,6 @@
       <Filter>D3D9RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="MWD3D9ShaderProgramManager.cpp">
-      <Filter>D3D9RenderSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="MWD3D9SwapChain.cpp">
       <Filter>D3D9RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="MWD3D9Texture.cpp">
@@ -86,9 +83,6 @@
       <Filter>D3D9RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="MWD3D9ShaderProgramManager.h">
-      <Filter>D3D9RenderSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="MWD3D9SwapChain.h">
       <Filter>D3D9RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="MWD3D9Texture.h">

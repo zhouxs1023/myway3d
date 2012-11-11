@@ -2,97 +2,103 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Myway">
-      <UniqueIdentifier>{984d6baf-2343-498f-9ba4-388c93ec35b4}</UniqueIdentifier>
+      <UniqueIdentifier>{404c8103-6e96-4412-a9b3-86cb82ae466e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Core">
-      <UniqueIdentifier>{5d8032f7-43aa-448a-a807-d6d6185ad1a8}</UniqueIdentifier>
+      <UniqueIdentifier>{50bcfcd4-e63d-4072-956f-ba226106ed97}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Core\Template">
-      <UniqueIdentifier>{06fd5cbe-626b-4055-a218-2617d059d37d}</UniqueIdentifier>
+      <UniqueIdentifier>{1562cfbc-25e8-4d12-9fda-4884a2a208dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Core\xml">
-      <UniqueIdentifier>{90452b9a-9f6c-4473-87cb-3d613a469736}</UniqueIdentifier>
+      <UniqueIdentifier>{e0c5da91-4a38-4ee8-bd21-0ecac1e3f93a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Math">
-      <UniqueIdentifier>{efd20967-9066-4c91-bd04-2d5838632a3a}</UniqueIdentifier>
+      <UniqueIdentifier>{9853bf32-c989-41ed-a99f-1176682e3f54}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Engine">
-      <UniqueIdentifier>{cc91da90-781b-4af0-9631-db520a31b93d}</UniqueIdentifier>
+      <UniqueIdentifier>{8a2b064f-007d-43c5-a75f-8c940f45930a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Gui">
-      <UniqueIdentifier>{4d9fe40f-8f3a-48b8-9238-5371cd6ef0f4}</UniqueIdentifier>
+      <UniqueIdentifier>{215515f8-2d94-43e0-91c7-f92df998167b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Physics">
-      <UniqueIdentifier>{847c410e-dc38-434e-8e03-8554e518d930}</UniqueIdentifier>
+      <UniqueIdentifier>{881bd66c-7b38-4fad-a27a-fafb3c054b95}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem">
-      <UniqueIdentifier>{7c766a53-1984-4c29-8859-e526ea33335b}</UniqueIdentifier>
+      <UniqueIdentifier>{ee7021fa-c33f-4407-bfc7-f04fad43ae48}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem\Resource">
-      <UniqueIdentifier>{7fd0cfea-5ab5-418d-95e9-e08d37654c50}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Terrain">
-      <UniqueIdentifier>{1cfde155-b1af-4d2a-8f2a-58e2b88644fb}</UniqueIdentifier>
+      <UniqueIdentifier>{430f9d93-bca2-4402-b3f5-354a574a1ae6}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem\Entity">
-      <UniqueIdentifier>{57055e8c-f2d0-4f91-a268-f46a09ecaf46}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Sky">
-      <UniqueIdentifier>{3d6654d2-c0e7-4d12-8b15-2a292184c997}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Primitive">
-      <UniqueIdentifier>{c25911ac-6bdb-43f2-bb35-41d320dccf89}</UniqueIdentifier>
+      <UniqueIdentifier>{8fbae6e3-6be7-4e7c-9e11-b468cf2d7247}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem\Light">
-      <UniqueIdentifier>{81376964-7c46-4514-893b-fae4d99c81bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Composer">
-      <UniqueIdentifier>{1dc7e290-27c1-4073-9811-952b673efad4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Shadow">
-      <UniqueIdentifier>{1804311f-4835-4b39-ad9e-7d1b9e504395}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\unused">
-      <UniqueIdentifier>{b77fdf7d-e8b1-420e-a2e9-709f530b5d8f}</UniqueIdentifier>
+      <UniqueIdentifier>{03c51359-5ce4-49d3-9982-d9a12a5994a2}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem\Scene">
-      <UniqueIdentifier>{50fdfe8d-417d-4457-b72e-46384413a6f7}</UniqueIdentifier>
+      <UniqueIdentifier>{a305f2fb-9b20-4591-b528-288cb9360f82}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\Font">
-      <UniqueIdentifier>{30ad904f-fa0c-428c-a1de-296498622797}</UniqueIdentifier>
+    <Filter Include="Myway\RenderSystem\Scene\Octree">
+      <UniqueIdentifier>{5d7d1a78-5165-4d0b-bd10-ea14f137a7a7}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem\RenderSystem">
-      <UniqueIdentifier>{49768d91-fec3-4f0d-b073-30042aeb90e8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\ParticleSystem">
-      <UniqueIdentifier>{5cf23f68-5132-4aef-add8-c54abfe6347b}</UniqueIdentifier>
+      <UniqueIdentifier>{9e04a2a0-b2a2-417e-8d40-e7216350764f}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\RenderSystem\Material">
-      <UniqueIdentifier>{1a53b395-8007-439c-8906-08be55ab66ac}</UniqueIdentifier>
+      <UniqueIdentifier>{8b2af2c0-2960-4721-bdf7-18408c28e9f6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\Shader">
-      <UniqueIdentifier>{ecc00cb9-06aa-407a-b8de-d0074e5e04a2}</UniqueIdentifier>
+    <Filter Include="Myway\RenderSystem\Material\Shader">
+      <UniqueIdentifier>{b7629446-fbfe-4c9f-bb56-e3d460fd0bb8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\Shader\Shader Tree">
-      <UniqueIdentifier>{8d482cc8-8f8f-4903-babd-0293999272c4}</UniqueIdentifier>
+    <Filter Include="Myway\RenderSystem\RenderScheme">
+      <UniqueIdentifier>{dd080074-ba79-4077-91ec-ee7597756085}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\Shader\Shader Tree\Code Generter">
-      <UniqueIdentifier>{0ef2371f-4c00-4854-8421-dfb814351acc}</UniqueIdentifier>
+    <Filter Include="Myway\RenderSystem\RenderScheme\PreZ">
+      <UniqueIdentifier>{e766590d-17d4-4779-b8c3-8ca1fb0a5f08}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\Shader\Shader Tree\Node">
-      <UniqueIdentifier>{e6f75eff-e105-4491-b929-ac2135bea3e1}</UniqueIdentifier>
+    <Filter Include="Myway\RenderSystem\Envorment">
+      <UniqueIdentifier>{4a817d6d-2513-46b0-91c0-3fd9ac9ae7cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\geometry">
+      <UniqueIdentifier>{15f494b5-7880-4833-9722-055a50e23cbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\geometry\Terrain">
+      <UniqueIdentifier>{635875b9-d7f4-4cf2-96f2-13cba7888470}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\geometry\Sky">
+      <UniqueIdentifier>{59a8d53b-c038-4309-99eb-044269e5394a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\geometry\Water">
+      <UniqueIdentifier>{4b4bbb49-7a2c-4b63-8a33-722c5ce3c9a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\Misc">
+      <UniqueIdentifier>{13a4106c-8aa4-4061-9b43-2e268b5f4e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\Shaders">
+      <UniqueIdentifier>{f9cf6936-7133-4bae-a56a-54f427a85880}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\Effect">
+      <UniqueIdentifier>{82586316-f423-4982-a9e8-635d5dc5552b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\RenderSystem\Primitive">
+      <UniqueIdentifier>{0804c624-be4d-45d8-af23-5bbd72168315}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\AudioSystem">
-      <UniqueIdentifier>{76d570d7-9b2d-4797-9c0e-0f39db90fe3b}</UniqueIdentifier>
+      <UniqueIdentifier>{6c415a54-c836-424e-8dcb-94f2fa6c7c9e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\AI">
-      <UniqueIdentifier>{f6b6985a-5203-4404-a2bc-ed5c489aa8c9}</UniqueIdentifier>
+      <UniqueIdentifier>{54c55b91-8cc5-4e37-9608-fe8eafe90ae5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\InputSystem">
-      <UniqueIdentifier>{ebaf7545-a1b3-4d95-9ae9-d9bdd4e96357}</UniqueIdentifier>
+      <UniqueIdentifier>{2f892833-dadb-4ef2-9352-b0360ecf888b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\Net">
-      <UniqueIdentifier>{6525c8aa-3f91-4bac-bd83-974d56df7e5b}</UniqueIdentifier>
+      <UniqueIdentifier>{21aaec86-b088-46cf-aa73-8a781a186df9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\App">
+      <UniqueIdentifier>{814556e8-b544-42f2-8350-57a475a5ecee}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -138,6 +144,9 @@
     <ClInclude Include="Core\MWDynamicLinkLib.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
+    <ClInclude Include="Core\MWEvent.h">
+      <Filter>Myway\Core</Filter>
+    </ClInclude>
     <ClInclude Include="Core\MWException.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
@@ -174,7 +183,7 @@
     <ClInclude Include="Core\MWPlugin.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Core\MWScript.h">
+    <ClInclude Include="Core\MWProperty.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWString.h">
@@ -196,6 +205,9 @@
       <Filter>Myway\Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWAllocator.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MWArray.h">
       <Filter>Myway\Core\Template</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWBitFlag.h">
@@ -240,10 +252,7 @@
     <ClInclude Include="Core\MWStack.h">
       <Filter>Myway\Core\Template</Filter>
     </ClInclude>
-    <ClInclude Include="Core\MWTree.h">
-      <Filter>Myway\Core\Template</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\MWVector.h">
+    <ClInclude Include="Core\MWTString.h">
       <Filter>Myway\Core\Template</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWVisitor.h">
@@ -252,16 +261,13 @@
     <ClInclude Include="Core\MWXml.h">
       <Filter>Myway\Core\xml</Filter>
     </ClInclude>
-    <ClInclude Include="Math\MWAABB.h">
+    <ClInclude Include="Math\MWAabb.h">
       <Filter>Myway\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MWBox.h">
       <Filter>Myway\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MWColor.h">
-      <Filter>Myway\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MWColor3.h">
       <Filter>Myway\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MWColor4.h">
@@ -274,9 +280,6 @@
       <Filter>Myway\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MWMath.h">
-      <Filter>Myway\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Math\MWMathGeneric.h">
       <Filter>Myway\Math</Filter>
     </ClInclude>
     <ClInclude Include="Math\MWMathSSE.h">
@@ -327,41 +330,11 @@
     <ClInclude Include="Engine\Engine.h">
       <Filter>Myway\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWResourceManager.h">
+    <ClInclude Include="RenderSystem\MWResource.h">
       <Filter>Myway\RenderSystem\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrain.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainChunked.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainChunkedSection.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainLoader.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainRoam.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainRoamSection.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainSection.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainTiled.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainTiledSection.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainUniform.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainUniformSection.h">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
+    <ClInclude Include="RenderSystem\MWResourceManager.h">
+      <Filter>Myway\RenderSystem\Resource</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWAnimation.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
@@ -376,9 +349,6 @@
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWMeshLoader.h">
-      <Filter>Myway\RenderSystem\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWMeshLoaderUniform.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWMeshManager.h">
@@ -396,80 +366,8 @@
     <ClInclude Include="RenderSystem\MWSkeletonManager.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWSkyBox.h">
-      <Filter>Myway\RenderSystem\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSkyDome.h">
-      <Filter>Myway\RenderSystem\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSkyPlane.h">
-      <Filter>Myway\RenderSystem\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWAABBRenderObj.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWBillboard.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWForeground.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWGeometry.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWLineObj.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPrimtiveStream.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderObj.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSimpleObj.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTextObj.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTriangleObj.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWViewAlignedQuad.h">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWLight.h">
       <Filter>Myway\RenderSystem\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWLightScattering.h">
-      <Filter>Myway\RenderSystem\Light</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFXComposer.h">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFXComposerImport.h">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFXComposerManager.h">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFXComposerRenderObj.h">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFXStep.h">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShadowRender.h">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShadowRenderESM.h">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShadowRenderPSSM.h">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShadowRenderUniform.h">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWCamera.h">
       <Filter>Myway\RenderSystem\Scene</Filter>
@@ -477,47 +375,17 @@
     <ClInclude Include="RenderSystem\MWNode.h">
       <Filter>Myway\RenderSystem\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWProjection.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWScene.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSceneManager.h">
       <Filter>Myway\RenderSystem\Scene</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWSceneNode.h">
       <Filter>Myway\RenderSystem\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSystem\MWWorld.h">
+      <Filter>Myway\RenderSystem\Scene</Filter>
+    </ClInclude>
     <ClInclude Include="RenderSystem\MWSceneOctree.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSceneQuad.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSceneRender.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSceneRenderUniform.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSceneUniform.h">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWDynamicTTFont.h">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFont.h">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFontLoader.h">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFontManager.h">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFString.h">
-      <Filter>Myway\RenderSystem\Font</Filter>
+      <Filter>Myway\RenderSystem\Scene\Octree</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWDepthStencil.h">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
@@ -534,12 +402,6 @@
     <ClInclude Include="RenderSystem\MWRenderDefine.h">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderGroup.h">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderQueue.h">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWRenderRegister.h">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClInclude>
@@ -547,12 +409,6 @@
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWRenderTarget.h">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderTechnique.h">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderWindow.h">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWTexture.h">
@@ -567,119 +423,122 @@
     <ClInclude Include="RenderSystem\MWVideoBufferManager.h">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWViewPort.h">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWParticle.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWParticleImport.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWParticleSystem.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPSAffector.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPSEmitter.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPSManager.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPSRender.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPSSystem.h">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWMaterial.h">
       <Filter>Myway\RenderSystem\Material</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWMaterialLoader.h">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <ClInclude Include="RenderSystem\MWShaderFX.h">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWMaterialManager.h">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPass.h">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTechnique.h">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTextureLinker.h">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTextureStage.h">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <ClInclude Include="RenderSystem\MWShaderFXLoader.h">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWShaderParam.h">
-      <Filter>Myway\RenderSystem\Shader</Filter>
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWShaderProgram.h">
-      <Filter>Myway\RenderSystem\Shader</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderProgramDefMgr.h">
-      <Filter>Myway\RenderSystem\Shader</Filter>
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClInclude>
     <ClInclude Include="RenderSystem\MWShaderProgramManager.h">
-      <Filter>Myway\RenderSystem\Shader</Filter>
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderInstance.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree</Filter>
+    <ClInclude Include="RenderSystem\MWShaderProvider.h">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderLibrary.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree</Filter>
+    <ClInclude Include="RenderSystem\MWRenderEvent.h">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderLibraryLoader.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree</Filter>
+    <ClInclude Include="RenderSystem\MWRenderHelper.h">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderCodeFactory.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Code Generter</Filter>
+    <ClInclude Include="RenderSystem\MWRenderQueue.h">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderCodeGenerter.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Code Generter</Filter>
+    <ClInclude Include="RenderSystem\MWRenderScheme.h">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderCodeGenerterCg.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Code Generter</Filter>
+    <ClInclude Include="RenderSystem\MWRenderLoopMain_Prz.h">
+      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNode.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWRenderScheme_Prz.h">
+      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeAdd.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWShaderProvider_Prz.h">
+      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeClamp.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWEnvironment.h">
+      <Filter>Myway\RenderSystem\Envorment</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat1.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWEvKeyFrame.h">
+      <Filter>Myway\RenderSystem\Envorment</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat2.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWTerrain.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat3.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWTerrainDef.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeConstFloat4.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWTerrainLod.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeInternal.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWTerrainSection.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeMultiply.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWCloud.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeParamFloat4.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWMoon.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeSampler2D.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWSky.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderNodeSub.h">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClInclude Include="RenderSystem\MWStarfield.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWSun.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWProjectionGrid.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWUnderWater.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWWater.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWAstronomy.h">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWBrightStarCatalogue.h">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWFFT.h">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWPerlin.h">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWColorSharp.h">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWFog.h">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWGodRay.h">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWHDR.h">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWMover.h">
+      <Filter>Myway\RenderSystem\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWPrimtiveStream.h">
+      <Filter>Myway\RenderSystem\Primitive</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWRenderer.h">
+      <Filter>Myway\RenderSystem\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="AudioSystem\MWAudioSystem.h">
       <Filter>Myway\AudioSystem</Filter>
@@ -689,9 +548,6 @@
     </ClInclude>
     <ClInclude Include="AudioSystem\MWSound.h">
       <Filter>Myway\AudioSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="AI\MWEvent.h">
-      <Filter>Myway\AI</Filter>
     </ClInclude>
     <ClInclude Include="AI\MWPath.h">
       <Filter>Myway\AI</Filter>
@@ -720,6 +576,9 @@
     <ClInclude Include="Core\MWSocket.h">
       <Filter>Myway\Net</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\MWApp_Win32.h">
+      <Filter>Myway\App</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -744,6 +603,9 @@
       <Filter>Myway\Core</Filter>
     </None>
     <None Include="Core\MWAllocator.inl">
+      <Filter>Myway\Core\Template</Filter>
+    </None>
+    <None Include="Core\MWArray.inl">
       <Filter>Myway\Core\Template</Filter>
     </None>
     <None Include="Core\MWBitFlag.inl">
@@ -779,61 +641,7 @@
     <None Include="Core\MWStack.inl">
       <Filter>Myway\Core\Template</Filter>
     </None>
-    <None Include="Core\MWTree.inl">
-      <Filter>Myway\Core\Template</Filter>
-    </None>
-    <None Include="Core\MWVector.inl">
-      <Filter>Myway\Core\Template</Filter>
-    </None>
-    <None Include="Math\MWAABB.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWBox.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWColor.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWColor3.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWColor4.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
     <None Include="Math\MWMath.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWMatrix3.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWMatrix3x4.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWMatrix4.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWPlane.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWQuaternion.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWRay.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWRect.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWSphere.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWVector2.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWVector3.inl">
-      <Filter>Myway\Math</Filter>
-    </None>
-    <None Include="Math\MWVector4.inl">
       <Filter>Myway\Math</Filter>
     </None>
     <None Include="Math\MWVectorX.inl">
@@ -842,41 +650,116 @@
     <None Include="RenderSystem\MWAnimation.inl">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </None>
-    <None Include="RenderSystem\MWMesh.inl">
-      <Filter>Myway\RenderSystem\Entity</Filter>
-    </None>
-    <None Include="RenderSystem\MWRenderObj.inl">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </None>
     <None Include="RenderSystem\MWLight.inl">
       <Filter>Myway\RenderSystem\Light</Filter>
     </None>
-    <None Include="RenderSystem\MWCamera.inl">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </None>
     <None Include="RenderSystem\MWDepthStencil.inl">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </None>
-    <None Include="RenderSystem\MWIndexBuffer.inl">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </None>
     <None Include="RenderSystem\MWTexture.inl">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </None>
-    <None Include="RenderSystem\MWVertexBuffer.inl">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
+    <None Include="..\bin\Core\Shaders\Base.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
     </None>
-    <None Include="RenderSystem\MWViewPort.inl">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
+    <None Include="..\bin\Core\Shaders\Base.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
     </None>
-    <None Include="RenderSystem\MWMaterial.inl">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <None Include="..\bin\Core\Shaders\BlurH.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
     </None>
-    <None Include="RenderSystem\MWPass.inl">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <None Include="..\bin\Core\Shaders\BlurV.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
     </None>
-    <None Include="RenderSystem\MWTechnique.inl">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <None Include="..\bin\Core\Shaders\Clear.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\CloudLighting.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\CloudLighting.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\CloudShading.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\CloudShading.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\ColorSharp.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\DownSampler2x.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\DownSampler4x.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Environment.ShaderLib">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Fog.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Frush.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\GodRay.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\GodRayBlend.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\HDR_Bright.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\HDR_LumAdapted.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\HDR_LumFinal.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\HDR_LumInitial.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\HDR_ToneMap.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Moon.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Moon.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\PZ_Main.ShaderLib">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Quad.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Sky.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Sky.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Star.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Star.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Sun.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Sun.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Terrain.ps">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
+    </None>
+    <None Include="..\bin\Core\Shaders\Terrain.vs">
+      <Filter>Myway\RenderSystem\Envorment\Shaders</Filter>
     </None>
     <None Include="Core\MWSocket.inl">
       <Filter>Myway\Net</Filter>
@@ -913,6 +796,9 @@
     <ClCompile Include="Core\MWDynamicLinkLib.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
+    <ClCompile Include="Core\MWEvent.cpp">
+      <Filter>Myway\Core</Filter>
+    </ClCompile>
     <ClCompile Include="Core\MWException.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
@@ -937,7 +823,7 @@
     <ClCompile Include="Core\MWPlugin.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core\MWScript.cpp">
+    <ClCompile Include="Core\MWProperty.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\MWString.cpp">
@@ -961,56 +847,83 @@
     <ClCompile Include="Core\MWXml.cpp">
       <Filter>Myway\Core\xml</Filter>
     </ClCompile>
+    <ClCompile Include="Math\MWAabb.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWColor.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWColor4.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
     <ClCompile Include="Math\MWMath.cpp">
       <Filter>Myway\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\MWMathGeneric.cpp">
+    <ClCompile Include="Math\MWMath_AABB.cpp">
       <Filter>Myway\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Math\MWMathSSE.cpp">
+    <ClCompile Include="Math\MWMath_Color.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Frustum.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Matrix.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Plane.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Quat.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Ray.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Sphere.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMath_Vector.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMatrix3.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMatrix3x4.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWMatrix4.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWPlane.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWQuaternion.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWRay.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWSphere.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWVector2.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWVector3.cpp">
+      <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWVector4.cpp">
       <Filter>Myway\Math</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Engine.cpp">
       <Filter>Myway\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWResourceManager.cpp">
+    <ClCompile Include="RenderSystem\MWResource.cpp">
       <Filter>Myway\RenderSystem\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrain.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainChunked.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainChunkedSection.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainImport.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainLoader.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainRoam.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainRoamSection.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainSection.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainTiled.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainTiledSection.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainUniform.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainUniformSection.cpp">
-      <Filter>Myway\RenderSystem\Terrain</Filter>
+    <ClCompile Include="RenderSystem\MWResourceManager.cpp">
+      <Filter>Myway\RenderSystem\Resource</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWAnimation.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
@@ -1024,7 +937,7 @@
     <ClCompile Include="RenderSystem\MWMesh.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWMeshLoaderUniform.cpp">
+    <ClCompile Include="RenderSystem\MWMeshLoader.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWMeshManager.cpp">
@@ -1042,119 +955,20 @@
     <ClCompile Include="RenderSystem\MWSkeletonManager.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWSkyBox.cpp">
-      <Filter>Myway\RenderSystem\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSkyDome.cpp">
-      <Filter>Myway\RenderSystem\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSkyPlane.cpp">
-      <Filter>Myway\RenderSystem\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWAABBRenderObj.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWBillboard.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWForeground.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWGeometry.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWLineObj.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWPrimtiveStream.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWRenderObj.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSimpleObj.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTextObj.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTriangleObj.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWViewAlignedQuad.cpp">
-      <Filter>Myway\RenderSystem\Primitive</Filter>
-    </ClCompile>
     <ClCompile Include="RenderSystem\MWLight.cpp">
       <Filter>Myway\RenderSystem\Light</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWLightScattering.cpp">
-      <Filter>Myway\RenderSystem\Light</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFXComposer.cpp">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFXComposerImport.cpp">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFXComposerManager.cpp">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFXComposerRenderObj.cpp">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFXStep.cpp">
-      <Filter>Myway\RenderSystem\Composer</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWShadowRender.cpp">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWShadowRenderESM.cpp">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWShadowRenderPSSM.cpp">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWShadowRenderUniform.cpp">
-      <Filter>Myway\RenderSystem\Shadow</Filter>
-    </ClCompile>
     <ClCompile Include="RenderSystem\MWCamera.cpp">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWProjection.cpp">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSceneManager.cpp">
       <Filter>Myway\RenderSystem\Scene</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWSceneNode.cpp">
       <Filter>Myway\RenderSystem\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="RenderSystem\MWWorld.cpp">
+      <Filter>Myway\RenderSystem\Scene</Filter>
+    </ClCompile>
     <ClCompile Include="RenderSystem\MWSceneOctree.cpp">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSceneQuad.cpp">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSceneRenderUniform.cpp">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSceneUniform.cpp">
-      <Filter>Myway\RenderSystem\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWDynamicTTFont.cpp">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFont.cpp">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFontLoader.cpp">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFontManager.cpp">
-      <Filter>Myway\RenderSystem\Font</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFString.cpp">
-      <Filter>Myway\RenderSystem\Font</Filter>
+      <Filter>Myway\RenderSystem\Scene\Octree</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWDepthStencil.cpp">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
@@ -1163,12 +977,6 @@
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWImage.cpp">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWRenderGroup.cpp">
-      <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWRenderQueue.cpp">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWRenderRegister.cpp">
@@ -1180,107 +988,128 @@
     <ClCompile Include="RenderSystem\MWRenderTarget.cpp">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWRenderWindow.cpp">
+    <ClCompile Include="RenderSystem\MWTexture.cpp">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWViewPort.cpp">
+    <ClCompile Include="RenderSystem\MWVertexDeclaration.cpp">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWParticleImport.cpp">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWParticleSystem.cpp">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWPSEmitter.cpp">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWPSManager.cpp">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWPSSystem.cpp">
-      <Filter>Myway\RenderSystem\ParticleSystem</Filter>
+    <ClCompile Include="RenderSystem\MWVideoBufferManager.cpp">
+      <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWMaterial.cpp">
       <Filter>Myway\RenderSystem\Material</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWMaterialLoader.cpp">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <ClCompile Include="RenderSystem\MWShaderFX.cpp">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWMaterialManager.cpp">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWPass.cpp">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTechnique.cpp">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTextureLinker.cpp">
-      <Filter>Myway\RenderSystem\Material</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTextureStage.cpp">
-      <Filter>Myway\RenderSystem\Material</Filter>
+    <ClCompile Include="RenderSystem\MWShaderFXLoader.cpp">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWShaderParam.cpp">
-      <Filter>Myway\RenderSystem\Shader</Filter>
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWShaderProgram.cpp">
-      <Filter>Myway\RenderSystem\Shader</Filter>
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderProgramDefMgr.cpp">
-      <Filter>Myway\RenderSystem\Shader</Filter>
+    <ClCompile Include="RenderSystem\MWShaderProgramManager.cpp">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderInstance.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree</Filter>
+    <ClCompile Include="RenderSystem\MWShaderProvider.cpp">
+      <Filter>Myway\RenderSystem\Material\Shader</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderLibrary.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree</Filter>
+    <ClCompile Include="RenderSystem\MWRenderEvent.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderLibraryLoader.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree</Filter>
+    <ClCompile Include="RenderSystem\MWRenderHelper.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderCodeFactory.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Code Generter</Filter>
+    <ClCompile Include="RenderSystem\MWRenderQueue.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderCodeGenerter.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Code Generter</Filter>
+    <ClCompile Include="RenderSystem\MWRenderScheme.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderCodeGenerterCg.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Code Generter</Filter>
+    <ClCompile Include="RenderSystem\MWRenderLoopMain_Prz.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeAdd.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWRenderScheme_Prz.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeClamp.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWShaderProvider_Prz.cpp">
+      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat1.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWEnvironment.cpp">
+      <Filter>Myway\RenderSystem\Envorment</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat2.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWEvKeyFrame.cpp">
+      <Filter>Myway\RenderSystem\Envorment</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat3.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWTerrain.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeConstFloat4.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWTerrainLod.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeInternal.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWTerrainSection.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeMultiply.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWCloud.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeParamFloat4.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWMoon.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeSampler2D.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWSky.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderNodeSub.cpp">
-      <Filter>Myway\RenderSystem\Shader\Shader Tree\Node</Filter>
+    <ClCompile Include="RenderSystem\MWStarfield.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWSun.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWProjectionGrid.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWUnderWater.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWWater.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWAstronomy.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWBrightStarCatalogue.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWFFT.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWPerlin.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWColorSharp.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWFog.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWGodRay.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWHDR.cpp">
+      <Filter>Myway\RenderSystem\Envorment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWMover.cpp">
+      <Filter>Myway\RenderSystem\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWPrimtiveStream.cpp">
+      <Filter>Myway\RenderSystem\Primitive</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWRenderer.cpp">
+      <Filter>Myway\RenderSystem\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystem\MWAudioSystem.cpp">
       <Filter>Myway\AudioSystem</Filter>
@@ -1291,16 +1120,10 @@
     <ClCompile Include="AudioSystem\MWSound.cpp">
       <Filter>Myway\AudioSystem</Filter>
     </ClCompile>
-    <ClCompile Include="AI\MWEvent.cpp">
-      <Filter>Myway\AI</Filter>
-    </ClCompile>
     <ClCompile Include="AI\MWPath.cpp">
       <Filter>Myway\AI</Filter>
     </ClCompile>
     <ClCompile Include="AI\MWValue.cpp">
-      <Filter>Myway\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\ttt.cpp">
       <Filter>Myway\AI</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem\MWInputSystem.cpp">
@@ -1311,6 +1134,9 @@
     </ClCompile>
     <ClCompile Include="Core\MWSocket.cpp">
       <Filter>Myway\Net</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\MWApp_Win32.cpp">
+      <Filter>Myway\App</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
   </ItemGroup>

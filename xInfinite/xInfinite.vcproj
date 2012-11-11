@@ -265,6 +265,10 @@
 			>
 		</File>
 		<File
+			RelativePath=".\res\Toolbar.bmp"
+			>
+		</File>
+		<File
 			RelativePath=".\Utility.cpp"
 			>
 		</File>
@@ -273,7 +277,15 @@
 			>
 		</File>
 		<File
+			RelativePath=".\res\xInfinite.ico"
+			>
+		</File>
+		<File
 			RelativePath=".\xInfinite.rc"
+			>
+		</File>
+		<File
+			RelativePath=".\res\xInfiniteDoc.ico"
 			>
 		</File>
 	</Files>

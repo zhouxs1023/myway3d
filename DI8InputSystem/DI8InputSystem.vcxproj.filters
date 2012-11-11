@@ -2,7 +2,7 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="DIInputSystem">
-      <UniqueIdentifier>{d896dde9-1fc9-4951-952d-41424d1ecda5}</UniqueIdentifier>
+      <UniqueIdentifier>{423ac72e-f1df-4a18-a268-11510e82c34a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

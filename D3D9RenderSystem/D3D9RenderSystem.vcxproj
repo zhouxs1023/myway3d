@@ -57,16 +57,17 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;../Myway/Plugin\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;$(CG_INC_PATH);fmod/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;..\ThirdParty\cg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MW_IMPORT;MW_DEBUG_MEMORY;MW_PROFILE_CODE_TIMER;MW_DEBUG_MEMORY_POOL;MW_SQLITE3_DATABASE;RS_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>myway_d.lib;d3d9.lib;d3dx9.lib;dxerr.lib;cg.lib;winmm.lib;user32.lib;kernel32.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../bin/D3D9RenderSystem_d.dll</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;$(CG_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>../bin/Debug/D3D9RenderSystem_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;../ThirdParty/cg/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AssemblyDebug>true</AssemblyDebug>
       <ImportLibrary>../bin/lib/D3D9RenderSystem_d.lib</ImportLibrary>
@@ -76,7 +77,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;../Myway/Plugin\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;$(CG_INC_PATH);fmod/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;..\ThirdParty\cg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MW_IMPORT;MW_SQLITE3_DATABASE;RS_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -84,8 +86,8 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>myway.lib;d3d9.lib;d3dx9.lib;dxerr.lib;cg.lib;winmm.lib;gdi32.lib;user32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../bin/D3D9RenderSystem.dll</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;$(CG_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>../bin/release/D3D9RenderSystem.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;../ThirdParty/cg/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <ImportLibrary>../bin/lib/D3D9RenderSystem.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -102,7 +104,6 @@
     <ClCompile Include="MWD3D9RenderWindow.cpp" />
     <ClCompile Include="MWD3D9ShaderProgram.cpp" />
     <ClCompile Include="MWD3D9ShaderProgramManager.cpp" />
-    <ClCompile Include="MWD3D9SwapChain.cpp" />
     <ClCompile Include="MWD3D9Texture.cpp" />
     <ClCompile Include="MWD3D9VertexBuffer.cpp" />
     <ClCompile Include="MWD3D9VertexDeclaration.cpp" />
@@ -122,7 +123,6 @@
     <ClInclude Include="MWD3D9RenderWindow.h" />
     <ClInclude Include="MWD3D9ShaderProgram.h" />
     <ClInclude Include="MWD3D9ShaderProgramManager.h" />
-    <ClInclude Include="MWD3D9SwapChain.h" />
     <ClInclude Include="MWD3D9Texture.h" />
     <ClInclude Include="MWD3D9VertexBuffer.h" />
     <ClInclude Include="MWD3D9VertexDeclaration.h" />

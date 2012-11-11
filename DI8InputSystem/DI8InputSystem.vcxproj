@@ -52,18 +52,19 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;../Myway/Plugin\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;$(CG_INC_PATH);fmod/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;..\ThirdParty\cg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MW_IMPORT;MW_DEBUG_MEMORY;MW_PROFILE_CODE_TIMER;MW_DEBUG_MEMORY_POOL;MW_SQLITE3_DATABASE;DI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <AdditionalDependencies>myway_d.lib;dinput8.lib;dxguid.lib;winmm.lib;user32.lib;kernel32.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../bin/DI8InputSystem_d.dll</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;$(CG_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>../bin/debug/DI8InputSystem_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>../bin/lib/DI8InputSystem_d.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
@@ -72,8 +73,9 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;../Myway/Plugin\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;$(CG_INC_PATH);fmod/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;..\ThirdParty\cg\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;MW_IMPORT;MW_SQLITE3_DATABASE;DI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -82,8 +84,8 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>myway.lib;dinput8.lib;dxguid.lib;winmm.lib;gdi32.lib;user32.lib;kernel32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../bin/DI8InputSystem.dll</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;$(CG_LIB_PATH);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>../bin/release/DI8InputSystem.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;..\ThirdParty\cg\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
