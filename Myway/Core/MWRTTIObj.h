@@ -86,16 +86,16 @@ public: \
 #define DeclareImplementRTTI(classname, baseclass) \
     const RTTIObj classname::ms_RTTI(#classname, &baseclass::ms_RTTI);
 
-#define IsTypeOf(classname, obj) \
+#define _IsTypeOf(classname, obj) \
     classname::IsTypeOf(&classname::ms_RTTI, obj)
 
-#define IsKindOf(classname, obj) \
+#define _IsKindOf(classname, obj) \
     classname::IsKindOf(&classname::ms_RTTI, obj)
 
-#define StaticCast(classname, obj) \
+#define _StaticCast(classname, obj) \
     (classname*) obj
 
-#define DynamicCast(classname, obj) \
+#define _DynamicCast(classname, obj) \
     classname::DynamicCast(&classname::ms_RTTI, obj)
 
 }

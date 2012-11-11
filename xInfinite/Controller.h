@@ -1,58 +1,53 @@
 #pragma once
 
-namespace xInfi {
+class Controller
+{
+	DECLARE_SINGLETON(Controller);
 
-    class Controller
-    {
-        DECLARE_SINGLETON(Controller);
+public:
+	static Event OnEngineInit;
+	static Event OnEngineDeInit;
 
-    public:
-        static Event OnEngineInit;
-        static Event OnEngineDeInit;
+public:
+	Controller();
+	~Controller();
 
-    public:
-        Controller();
-        ~Controller();
+	void Run();
 
-        void Run();
+	void Init(HWND hWnd);
+	void Shutdown();
 
-        void Init(HWND hWnd);
-        void Shutdown();
+	void Resize(int w, int h);
 
-        void Resize(int w, int h);
+	bool IsQuit() { return mQuit; }
 
-        bool IsQuit() { return mQuit; }
+	void _lock() { if (mMutex) mMutex->Lock(); }
+	void _unlock() { if (mMutex) mMutex->Unlock(); }
 
-        void _lock() { if (mMutex) mMutex->Lock(); }
-        void _unlock() { if (mMutex) mMutex->Unlock(); }
+	void _InitEngine();
 
-        void _InitEngine();
+	bool IsInited() { return mInited; }
 
-        bool IsInited() { return mInited; }
+protected:
+	void _input();
 
-    protected:
-        void _input();
+protected:
+	Engine * mEngine;
+	Thread mThread;
+	bool mQuit;
 
-    protected:
-        Engine * mEngine;
-        Thread mThread;
-        bool mQuit;
+	Mutex * mMutex;
+	HWND mhWnd;
+	bool mInited;
 
-        Mutex * mMutex;
-        HWND mhWnd;
-        bool mInited;
-
-        bool mNeedResize;
-    };
+	bool mNeedResize;
+};
 
 
-    struct _Locker
-    {
-        _Locker();
-        ~_Locker();
-    };
+struct _Locker
+{
+	_Locker();
+	~_Locker();
+};
 
 #define __enter() _Locker __locker
-
-
-}
