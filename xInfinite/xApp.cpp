@@ -1,34 +1,35 @@
 #include "stdafx.h"
-#include "Controller.h"
+#include "xApp.h"
 
 DWORD WINAPI MainLoop(LPVOID p)
 {
-    Controller::Instance()->_InitEngine();
+    xApp::Instance()->_InitEngine();
 
-    while (!Controller::Instance()->IsQuit())
-        Controller::Instance()->Run();
+    while (!xApp::Instance()->IsQuit())
+        xApp::Instance()->Run();
 
     return 0;
 }
 
-IMP_SLN(Controller);
+IMP_SLN(xApp);
 
-Controller gController;
+xApp gxApp;
 
-Event Controller::OnEngineInit;
-Event Controller::OnEngineDeInit;
+Event xApp::OnInit;
+Event xApp::OnInitUI;
+Event xApp::OnShutdown;
 
 _Locker::_Locker()
 { 
-    Controller::Instance()->_lock(); 
+    xApp::Instance()->_lock(); 
 }
 
 _Locker::~_Locker()
 { 
-    Controller::Instance()->_unlock();
+    xApp::Instance()->_unlock();
 }
 
-Controller::Controller()
+xApp::xApp()
 {
     INIT_SLN;
 
@@ -42,13 +43,13 @@ Controller::Controller()
     mInited = false;
 }
 
-Controller::~Controller()
+xApp::~xApp()
 {
     SHUT_SLN;
     mQuit = false;
 }
 
-void Controller::Run()
+void xApp::Run()
 {
     if (IsInited())
     {
@@ -80,7 +81,7 @@ void Controller::Run()
     System::Sleep(10);
 }
 
-void Controller::_input()
+void xApp::_input()
 {
     InputSystem::Instance()->Update();
 
@@ -118,7 +119,7 @@ void Controller::_input()
     }
 }
 
-void Controller::Init(HWND hWnd)
+void xApp::Init(HWND hWnd)
 {
     mhWnd = hWnd;
     _InitEngine();
@@ -128,7 +129,7 @@ void Controller::Init(HWND hWnd)
     //mThread.Run();
 }
 
-void Controller::_InitEngine()
+void xApp::_InitEngine()
 {
     __enter();
 
@@ -166,10 +167,11 @@ void Controller::_InitEngine()
 
     World::Instance()->Resize(1024, 1024, 1024);
 
-    OnEngineInit.Call();
+	OnInit.Call();
+    OnInitUI.Call();
 }
 
-void Controller::Shutdown()
+void xApp::Shutdown()
 {
     if (!IsInited())
         return ;
@@ -180,13 +182,13 @@ void Controller::Shutdown()
 
     mThread.Shudown(true);
 
-    OnEngineDeInit.Call();
+    OnShutdown.Call();
 
     mEngine->Shutdown();
     delete mEngine;
 }
 
-void Controller::Resize(int w, int h)
+void xApp::Resize(int w, int h)
 {
     __enter();
 

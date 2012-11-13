@@ -11,7 +11,7 @@
 
 #include "InfinateDoc.h"
 #include "InfinateView.h"
-#include "Controller.h"
+#include "xApp.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,16 +33,19 @@ BEGIN_MESSAGE_MAP(CInfinateView, CView)
 
 END_MESSAGE_MAP()
 
+
+IMP_SLN(CInfinateView);
 // CInfinateView 构造/析构
 
 CInfinateView::CInfinateView()
 {
 	// TODO: 在此处添加构造代码
-
+	INIT_SLN;
 }
 
 CInfinateView::~CInfinateView()
 {
+	SHUT_SLN;
 }
 
 BOOL CInfinateView::PreCreateWindow(CREATESTRUCT& cs)
@@ -66,7 +69,7 @@ void CInfinateView::OnDraw(CDC* /*pDC*/)
 	static bool bInited = false;
 	if (!bInited)
 	{
-		Controller::Instance()->Init(m_hWnd);
+		xApp::Instance()->Init(m_hWnd);
 		bInited = true;
 	}
 }
@@ -115,7 +118,7 @@ void CInfinateView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
 void CInfinateView::OnSize(UINT nType, int cx, int cy)
 {
 	if (nType != SIZE_MINIMIZED)
-		Controller::Instance()->Resize(cx, cy);
+		xApp::Instance()->Resize(cx, cy);
 }
 
 // CInfinateView 诊断

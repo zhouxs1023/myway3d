@@ -1,30 +1,32 @@
 #include "stdafx.h"
-#include "EntityShape.h"
+#include "xMesh.h"
 
 namespace xInfi {
 
-    DF_PROPERTY_BEGIN(EntityShape)
-        DF_PROPERTY(EntityShape, Name, "General", "Name", PT_String, 128)
-        DF_PROPERTY(EntityShape, MeshFile, "General", "File", PT_String, 128)
-        DF_PROPERTY(EntityShape, Position, "Transform", "Position", PT_Vec3, 12)
-        DF_PROPERTY(EntityShape, Orientation, "Transform", "Orientation", PT_Vec3, 12)
-        DF_PROPERTY(EntityShape, Scale, "Transform", "Scale", PT_Vec3, 12)
+    DF_PROPERTY_BEGIN(xMesh)
+        DF_PROPERTY(xMesh, Name, "General", "Name", PT_String, 128)
+        DF_PROPERTY(xMesh, MeshFile, "General", "File", PT_String, 128)
+        DF_PROPERTY(xMesh, Position, "Transform", "Position", PT_Vec3, 12)
+        DF_PROPERTY(xMesh, Orientation, "Transform", "Orientation", PT_Vec3, 12)
+        DF_PROPERTY(xMesh, Scale, "Transform", "Scale", PT_Vec3, 12)
     DF_PROPERTY_END();
 
-    EntityShape::EntityShape(const char * name)
-        : Shape(name)
+    xMesh::xMesh(const char * name)
+        : xObj(name)
     {
         Strcpy(Name, 128, name);
+		Strcpy(MeshFile, 128, "");
 
         mNode = World::Instance()->CreateSceneNode();
         mEntity = World::Instance()->CreateEntity(name);
+		mNode->Attach(mEntity);
 
         Position = Vec3::Zero; 
         Orientation = Vec3::Zero;
         Scale = Vec3::Unit;
     }
 
-    EntityShape::~EntityShape()
+    xMesh::~xMesh()
     {
         if (mEntity)
             World::Instance()->DestroyEntity(mEntity);
@@ -33,25 +35,26 @@ namespace xInfi {
             World::Instance()->DestroySceneNode(mNode);
     }
 
-    bool EntityShape::SetPosition(float x, float y, float z)
+    bool xMesh::SetPosition(float x, float y, float z)
     {
         Position = Vec3(x, y, z);
+		mNode->SetPosition(x, y, z);
         return true;
     }
 
-    bool EntityShape::SetOrientation(float x, float y, float z)
+    bool xMesh::SetOrientation(float x, float y, float z)
     {
         Orientation = Vec3(x, y, z);
         return true;
     }
 
-    bool EntityShape::SetScale(float x, float y, float z)
+    bool xMesh::SetScale(float x, float y, float z)
     {
         Scale = Vec3(x, y, z);
         return true;
     }
 
-    bool EntityShape::OnPropertyChanged(const Property * p)
+    bool xMesh::OnPropertyChanged(const Property * p)
     {
         if (p->name == "MeshFile")
         {
@@ -61,22 +64,22 @@ namespace xInfi {
         return true;
     }
 
-    void EntityShape::_setName(const TString128 & name)
+    void xMesh::_setName(const TString128 & name)
     {
         if (mEntity && World::Instance()->RenameEntity(name, mEntity))
         {
         }
     }
 
-    void EntityShape::_setMeshFile(const TString128 & meshFile)
+    void xMesh::_setMeshFile(const TString128 & meshFile)
     {
-        if (mEntity && mEntity->GetMesh()->GetSourceName() == meshFile)
+        if (mEntity && mEntity->GetMesh() != NULL && mEntity->GetMesh()->GetSourceName() == meshFile)
             return ;
 
         mEntity->SetMesh(meshFile, "core");
     }
 
-    void EntityShape::_setPosition(const Vec3 & position)
+    void xMesh::_setPosition(const Vec3 & position)
     {
         if (mNode)
         {
@@ -84,7 +87,7 @@ namespace xInfi {
         }
     }
 
-    void EntityShape::_setOrientation(const Vec3 & ort)
+    void xMesh::_setOrientation(const Vec3 & ort)
     {
         if (mNode)
         {
@@ -96,7 +99,7 @@ namespace xInfi {
         }
     }
 
-    void EntityShape::_setScale(const Vec3 & scale)
+    void xMesh::_setScale(const Vec3 & scale)
     {
         if (mNode)
         {
@@ -104,6 +107,5 @@ namespace xInfi {
         }
     }
 
-
-    EntityShapeCreatorListener gListener;
+    xMeshFactoryListener gListener;
 }

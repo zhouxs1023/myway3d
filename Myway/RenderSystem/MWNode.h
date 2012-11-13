@@ -63,6 +63,7 @@ public:
 
     virtual void                    _UpdateTransform() = 0;
     virtual bool                    _NeedUpdate() const = 0;
+	virtual void					_NotifyUpdate() {}
 };
 
 }

@@ -1,16 +1,17 @@
 #pragma once
 
-class Controller
+class xApp
 {
-	DECLARE_SINGLETON(Controller);
+	DECLARE_SINGLETON(xApp);
 
 public:
-	static Event OnEngineInit;
-	static Event OnEngineDeInit;
+	static Event OnInit;
+	static Event OnInitUI;
+	static Event OnShutdown;
 
 public:
-	Controller();
-	~Controller();
+	xApp();
+	~xApp();
 
 	void Run();
 

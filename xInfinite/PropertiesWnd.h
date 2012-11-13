@@ -1,5 +1,6 @@
-
 #pragma once
+
+#include "xObj.h"
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -12,33 +13,13 @@ public:
 	virtual BOOL AllowShowOnList() const { return FALSE; }
 };
 
+
+
 class CPropertiesWnd : public CDockablePane
 {
-// 构造
-public:
-	CPropertiesWnd();
+	DECLARE_SINGLETON(CPropertiesWnd);
+	DECLARE_MESSAGE_MAP()
 
-	void AdjustLayout();
-
-// 特性
-public:
-	void SetVSDotNetLook(BOOL bSet)
-	{
-		m_wndPropList.SetVSDotNetLook(bSet);
-		m_wndPropList.SetGroupNameFullWidth(bSet);
-	}
-
-protected:
-	CFont m_fntPropList;
-	CComboBox m_wndObjectCombo;
-	CPropertiesToolBar m_wndToolBar;
-	CMFCPropertyGridCtrl m_wndPropList;
-
-// 实现
-public:
-	virtual ~CPropertiesWnd();
-
-protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnExpandAllProperties();
@@ -52,9 +33,37 @@ protected:
 	afx_msg void OnSetFocus(CWnd* pOldWnd);
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 
-	DECLARE_MESSAGE_MAP()
+	afx_msg LRESULT OnPropertyChanged(WPARAM wParam, LPARAM lParam);
+
+
+// 构造
+public:
+	CPropertiesWnd();
+	virtual ~CPropertiesWnd();
+
+	void AdjustLayout();
+
+	void Show(xObj * obj);
+
+protected:
+	void _ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Property * p);
+
+// 特性
+public:
+	void SetVSDotNetLook(BOOL bSet)
+	{
+		m_wndPropList.SetVSDotNetLook(bSet);
+		m_wndPropList.SetGroupNameFullWidth(bSet);
+	}
+
+protected:
+	CFont m_fntPropList;
+	CPropertiesToolBar m_wndToolBar;
+	CMFCPropertyGridCtrl m_wndPropList;
 
 	void InitPropList();
 	void SetPropListFont();
+
+	xObj * mObj;
 };
 

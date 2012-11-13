@@ -38,24 +38,26 @@ public:
      {
          App_Win32::Init();
 
-         const char * cmdLine = GetCommandLine();
+         /*const char * cmdLine = GetCommandLine();
 
-         if (Strcmp(cmdLine, "") == 0)
-             return true;
+		 if (Strcmp(cmdLine, "") == 0)
+			 return true;
 
-         cmdLine = GetCommand(cmdLine);
+		 cmdLine = GetCommand(cmdLine);
 
-         TString128 meshFile = cmdLine;
-         TString128 base, path;
+		 TString128 meshFile = cmdLine;
+		 TString128 base, path;
 
-         meshFile.SplitFileNameR(base, path); 
+		 meshFile.SplitFileNameR(base, path); 
 
-         TString128 externName;
+		 TString128 externName;
 
-         externName = File::GetExternName(base);
+		 externName = File::GetExternName(base);
 
-         if (externName != "mesh")
-             return true;
+		 if (externName != "mesh")
+			 return true;*/
+
+		 const char * base = "temp.mesh";
 
          Entity * pEntity = World::Instance()->CreateEntity("xx", base, "core");
          SceneNode * pSceneNode = World::Instance()->CreateSceneNode();

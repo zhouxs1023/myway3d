@@ -7,7 +7,7 @@ namespace Myway
 {
     struct MW_ENTRY EvKeyFrame : public IPropertyObj
     {
-        DECLARE_PROPERTY();
+        DECLARE_PROPERTY(IPropertyObj);
 
         float SkyLum;
 
@@ -64,19 +64,11 @@ namespace Myway
         float UnderWaterGodRayExp1;
 
         EvKeyFrame();
-
-        int GetPropertySize_()
-        { 
-            int size = 0; 
-            while (msPropertys[size].type != PT_UNKNOWN) 
-                ++size;  
-            return size; 
-        }  
     };
 
     struct EvGlobalParam : public IPropertyObj
     {
-        DECLARE_PROPERTY();
+        DECLARE_PROPERTY(IPropertyObj);
 
         float SkyVOffset;
         TString128 SkyTexture;

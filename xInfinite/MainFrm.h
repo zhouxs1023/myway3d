@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "FileView.h"
+#include "ObjCreatorView.h"
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
@@ -14,6 +14,7 @@ class CMainFrame : public CFrameWndEx
 protected: // 仅从序列化创建
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
+	virtual ~CMainFrame();
 
 // 特性
 public:
@@ -28,7 +29,6 @@ public:
 
 // 实现
 public:
-	virtual ~CMainFrame();
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
@@ -39,9 +39,9 @@ protected:  // 控件条嵌入成员
 	CMFCToolBar       m_wndToolBar;
 	CMFCStatusBar     m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
-	CFileView         m_wndFileView;
-	CClassView        m_wndClassView;
-	COutputWnd        m_wndOutput;
+	ObjCreatorView    mObjCreatorView;
+	/*CClassView        m_wndClassView;
+	COutputWnd        m_wndOutput;*/
 	CPropertiesWnd    m_wndProperties;
 
 // 生成的消息映射函数

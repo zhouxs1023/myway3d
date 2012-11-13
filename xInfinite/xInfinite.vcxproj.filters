@@ -7,9 +7,6 @@
     <Filter Include="Control">
       <UniqueIdentifier>{f019888c-cd6c-4578-98ff-667e9fe47136}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Shape">
-      <UniqueIdentifier>{188ca61e-4395-4d0b-b89f-bc1f635fec20}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Ui\MFC App">
       <UniqueIdentifier>{26436a16-b908-4036-a12d-068c8bd94231}</UniqueIdentifier>
     </Filter>
@@ -18,29 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Controller.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityShape.cpp">
-      <Filter>Shape</Filter>
-    </ClCompile>
-    <ClCompile Include="Shape.cpp">
-      <Filter>Shape</Filter>
-    </ClCompile>
-    <ClCompile Include="TerrainShape.cpp">
-      <Filter>Shape</Filter>
-    </ClCompile>
-    <ClCompile Include="Utility.cpp" />
-    <ClCompile Include="PropertyDlg.cpp">
-      <Filter>Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="UiManager.cpp">
-      <Filter>Ui</Filter>
-    </ClCompile>
     <ClCompile Include="ClassView.cpp">
-      <Filter>Ui\MFC App</Filter>
-    </ClCompile>
-    <ClCompile Include="FileView.cpp">
       <Filter>Ui\MFC App</Filter>
     </ClCompile>
     <ClCompile Include="Infinate.cpp">
@@ -58,40 +33,30 @@
     <ClCompile Include="OutputWnd.cpp">
       <Filter>Ui\MFC App</Filter>
     </ClCompile>
-    <ClCompile Include="PropertiesWnd.cpp">
-      <Filter>Ui\MFC App</Filter>
-    </ClCompile>
     <ClCompile Include="ViewTree.cpp">
       <Filter>Ui\MFC App</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Ui\MFC App</Filter>
     </ClCompile>
+    <ClCompile Include="PropertiesWnd.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ObjCreatorView.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="xApp.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
+    <ClCompile Include="xMesh.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
+    <ClCompile Include="xObj.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Controller.h">
-      <Filter>Control</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityShape.h">
-      <Filter>Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Shape.h">
-      <Filter>Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="TerrainShape.h">
-      <Filter>Shape</Filter>
-    </ClInclude>
-    <ClInclude Include="Utility.h" />
-    <ClInclude Include="PropertyDlg.h">
-      <Filter>Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="UiManager.h">
-      <Filter>Ui</Filter>
-    </ClInclude>
     <ClInclude Include="ClassView.h">
-      <Filter>Ui\MFC App</Filter>
-    </ClInclude>
-    <ClInclude Include="FileView.h">
       <Filter>Ui\MFC App</Filter>
     </ClInclude>
     <ClInclude Include="Infinate.h">
@@ -109,9 +74,6 @@
     <ClInclude Include="OutputWnd.h">
       <Filter>Ui\MFC App</Filter>
     </ClInclude>
-    <ClInclude Include="PropertiesWnd.h">
-      <Filter>Ui\MFC App</Filter>
-    </ClInclude>
     <ClInclude Include="targetver.h">
       <Filter>Ui\MFC App</Filter>
     </ClInclude>
@@ -123,6 +85,21 @@
     </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Res</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertiesWnd.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ObjCreatorView.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xApp.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="xObj.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="xMesh.h">
+      <Filter>Control</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

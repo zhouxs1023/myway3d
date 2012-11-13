@@ -15,12 +15,17 @@ static char THIS_FILE[]=__FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar
 
+IMP_SLN (CPropertiesWnd);
+
 CPropertiesWnd::CPropertiesWnd()
 {
+	mObj = NULL;
+	INIT_SLN;
 }
 
 CPropertiesWnd::~CPropertiesWnd()
 {
+	SHUT_SLN;
 }
 
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
@@ -36,11 +41,14 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
+
+	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
+
 END_MESSAGE_MAP()
+
 
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar 消息处理程序
-
 void CPropertiesWnd::AdjustLayout()
 {
 	if (GetSafeHwnd() == NULL)
@@ -51,12 +59,9 @@ void CPropertiesWnd::AdjustLayout()
 	CRect rectClient,rectCombo;
 	GetClientRect(rectClient);
 
-	m_wndObjectCombo.GetWindowRect(&rectCombo);
-
 	int cyCmb = rectCombo.Size().cy;
 	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndObjectCombo.SetWindowPos(NULL, rectClient.left, rectClient.top, rectClient.Width(), 200, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndToolBar.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
 	m_wndPropList.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() -(cyCmb+cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
 }
@@ -69,26 +74,13 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	// 创建组合:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-
-	if (!m_wndObjectCombo.Create(dwViewStyle, rectDummy, this, 1))
-	{
-		TRACE0("未能创建属性组合 \n");
-		return -1;      // 未能创建
-	}
-
-	m_wndObjectCombo.AddString(_T("应用程序"));
-	m_wndObjectCombo.AddString(_T("属性窗口"));
-	m_wndObjectCombo.SetCurSel(0);
-
 	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2))
 	{
 		TRACE0("未能创建属性网格\n");
 		return -1;      // 未能创建
 	}
 
-	InitPropList();
+	//InitPropList();
 
 	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_PROPERTIES);
 	m_wndToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE /* 已锁定*/);
@@ -101,6 +93,8 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// 所有命令将通过此控件路由，而不是通过主框架路由:
 	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
+
+	SetVSDotNetLook(TRUE);
 
 	AdjustLayout();
 	return 0;
@@ -234,6 +228,93 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.AddProperty(pGroup4);
 }
 
+void CPropertiesWnd::Show(xObj * obj)
+{
+	mObj = obj;
+	m_wndPropList.RemoveAll();
+
+	if (!obj)
+		return ;
+
+	int propSize = obj->GetPropertySize();
+
+	MultiMap<TString128, const Property *> mmap;
+
+	for (int i = 0; i < propSize; ++i)
+	{
+		const Property * p = obj->GetProperty(i);
+		mmap.Insert(p->group, p);
+	}
+
+	MultiMap<TString128, const Property *>::Iterator whr = mmap.Begin();
+	MultiMap<TString128, const Property *>::Iterator end = mmap.End();
+
+	while (whr != end)
+	{
+		CMFCPropertyGridProperty * gp = new CMFCPropertyGridProperty(whr->first.c_str());
+
+		List<const Property *>::Iterator w = whr->second.Begin();
+		List<const Property *>::Iterator e = whr->second.End();
+
+		while (w != e)
+		{
+			const Property * p = *w;
+
+			_ToCtrl(gp, obj, p);
+
+			++w;
+		}
+
+		m_wndPropList.AddProperty(gp);
+
+		++whr;
+	}
+}
+
+void CPropertiesWnd::_ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Property * p)
+{
+	if (p->type == PT_String)
+	{
+		const char * data = p->AsString(obj->GetPropertyData(p));
+		gp->AddSubItem(new CMFCPropertyGridProperty(p->name.c_str(), (_variant_t)(data), ""));
+	}
+	else if (p->type == PT_Vec3)
+	{
+		Vec3 data = p->AsVec3(obj->GetPropertyData(p));
+
+		CMFCPropertyGridProperty* gp1 = new CMFCPropertyGridProperty(p->name.c_str());
+		gp->AddSubItem(gp1);
+
+		gp1->AddSubItem(new CMFCPropertyGridProperty("x", (_variant_t)(data.x), ""));
+		gp1->AddSubItem(new CMFCPropertyGridProperty("y", (_variant_t)(data.y), ""));
+		gp1->AddSubItem(new CMFCPropertyGridProperty("z", (_variant_t)(data.z), ""));
+	}
+}
+
+LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
+{
+	CMFCPropertyGridProperty * prop = (CMFCPropertyGridProperty *)lParam;
+
+	const char * name = prop->GetName();
+
+	const Property * p = mObj->GetProperty(name);
+
+	if (p)
+	{
+		char cdata[128];
+		const COleVariant & strValue = prop->GetValue();
+		CString val = (CString)strValue;
+
+		Strcpy(cdata, 128, (const char *)val);
+
+		if (p->type == PT_String)
+			mObj->SetPropertyData(p, cdata);
+	}
+
+	return S_OK;
+}
+
+
 void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
@@ -265,5 +346,4 @@ void CPropertiesWnd::SetPropListFont()
 	m_fntPropList.CreateFontIndirect(&lf);
 
 	m_wndPropList.SetFont(&m_fntPropList);
-	m_wndObjectCombo.SetFont(&m_fntPropList);
 }

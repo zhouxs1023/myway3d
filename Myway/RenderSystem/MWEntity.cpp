@@ -3,6 +3,7 @@
 #include "MWMeshManager.h"
 #include "MWSkeletonManager.h"
 #include "MWMaterialManager.h"
+#include "MWResourceManager.h"
 
 
 using namespace Myway;
@@ -260,7 +261,7 @@ Entity::Entity(const TString128 & name, MeshPtr mesh)
 
 Entity::~Entity(void)
 {
-    
+    _DeInit();
 }
 
 void Entity::_Init()
@@ -347,8 +348,15 @@ void Entity::_DeInit()
 
 void Entity::SetMesh(const TString128 & source, const TString128 & group)
 {
-    MeshPtr mesh = MeshManager::Instance()->Load(source, source, group);
-    SetMesh(mesh);
+	if (ResourceManager::Instance()->Exist(source.c_str(), group.c_str()))
+	{
+		MeshPtr mesh = MeshManager::Instance()->Load(source, source, group);
+		SetMesh(mesh);
+	}
+	else
+	{
+		SetMesh(NULL);
+	}
 }
 
 void Entity::SetMesh(MeshPtr mesh)
@@ -361,6 +369,9 @@ void Entity::SetMesh(MeshPtr mesh)
     mMesh = mesh;
 
     _Init();
+
+	if (mNode)
+		mNode->_NotifyUpdate();
 }
 
 MeshPtr Entity::GetMesh()

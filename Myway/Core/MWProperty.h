@@ -99,12 +99,13 @@ namespace Myway {
 
 #define DF_PROPERTY(classname, varname, group, displayName, type, size) Property(#varname, group, displayName, type, offsetof(classname, varname), size),
 
-#define DECLARE_PROPERTY()                                          \
+
+#define DECLARE_PROPERTY(superClass)								\
 protected:                                                          \
     static const Property msPropertys[];                            \
                                                                     \
 public:                                                             \
-    const Property * GetProperty(const char * name)                 \
+    virtual const Property * GetProperty(const char * name)         \
     {                                                               \
         int index = 0;                                              \
         while (msPropertys[index].type != PT_UNKNOWN)               \
@@ -114,35 +115,47 @@ public:                                                             \
                                                                     \
             ++index;                                                \
         }                                                           \
-                                                                    \
-        return NULL;                                                \
+																	\
+		return superClass::GetProperty(name);						\
     }                                                               \
                                                                     \
-    const Property * GetProperty(int index)                         \
+    virtual const Property * GetProperty(int index)                 \
     {                                                               \
-        return &msPropertys[index];                                 \
+		int superSize = superClass::GetPropertySize();				\
+		int mySize = _GetPropertySize();							\
+		if (index < superSize)										\
+			return superClass::GetProperty(index);					\
+																	\
+        return &msPropertys[index - superSize];                     \
     }                                                               \
                                                                     \
-    int GetPropertySize()                                           \
-    {                                                               \
-        int size = 0;                                               \
-        while (msPropertys[size].type != PT_UNKNOWN)                \
-            ++size;                                                 \
-        return size;                                                \
+    virtual int GetPropertySize()                                   \
+	{																\
+        return _GetPropertySize() + superClass::_GetPropertySize(); \
     }                                                               \
                                                                     \
-    const void * GetPropertyData(const Property * p)                \
+    virtual const void * GetPropertyData(const Property * p)        \
     {                                                               \
         return (const char *)this + p->offset;                      \
     }                                                               \
                                                                     \
-    bool SetPropertyData(const Property * p, const void * data)     \
+    virtual bool SetPropertyData(const Property * p, const void * data)     \
     {                                                               \
         int size = p->size;                                         \
         char * addr = (char *)this + p->offset;                     \
         memcpy(addr, data, size);                                   \
         return OnPropertyChanged(p);                                \
-    }
+    }																\
+																	\
+	int _GetPropertySize()											\
+	{                                                               \
+		int size = 0;												\
+		while (msPropertys[size].type != PT_UNKNOWN)				\
+			++size;													\
+		return size;                                                \
+	}																
+
+
 
 
     struct MW_ENTRY IPropertyObj
@@ -151,12 +164,14 @@ public:                                                             \
         IPropertyObj() {}
         virtual ~IPropertyObj() {}
 
-        virtual int GetPropertySize() = 0;
-        virtual const Property * GetProperty(int index) = 0;
-        virtual const Property * GetProperty(const char * name) = 0;
-        virtual const void * GetPropertyData(const Property * p) = 0;
-        virtual bool SetPropertyData(const Property * p, const void * data) = 0;
+		virtual int GetPropertySize() { return 0; };
+		virtual const Property * GetProperty(int index) { return NULL; }
+		virtual const Property * GetProperty(const char * name) { return NULL; }
+		virtual const void * GetPropertyData(const Property * p)  { return NULL; }
+        virtual bool SetPropertyData(const Property * p, const void * data) { return false; }
 
-        virtual bool OnPropertyChanged(const Property * p) { return true; };
+        virtual bool OnPropertyChanged(const Property * p) { return true; }
+
+				int _GetPropertySize() { return 0; }
     };
 }

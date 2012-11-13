@@ -11,7 +11,7 @@
 #include "InfinateDoc.h"
 #include "InfinateView.h"
 
-#include "Controller.h"
+#include "xApp.h"
 
 // CInfinateApp
 
@@ -236,7 +236,7 @@ int CInfinateApp::Run()
 
 void CInfinateApp::OnIdle()
 {
-	Controller::Instance()->Run();
+	xApp::Instance()->Run();
 }
 
 // CInfinateApp 消息处理程序

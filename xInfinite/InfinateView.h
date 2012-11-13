@@ -1,12 +1,10 @@
-
-// InfinateView.h : CInfinateView 类的接口
-//
-
 #pragma once
 
 
 class CInfinateView : public CView
 {
+	DECLARE_SINGLETON(CInfinateView);
+
 protected: // 仅从序列化创建
 	CInfinateView();
 	DECLARE_DYNCREATE(CInfinateView)

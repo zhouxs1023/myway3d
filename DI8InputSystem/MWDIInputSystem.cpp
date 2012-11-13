@@ -19,7 +19,7 @@ DIInputSystem::DIInputSystem(HINSTANCE hInst, HWND hWnd)
 	}
 	else
 	{
-		m_pKeyboard = new DIKeyboard(m_pDISystem, hWnd);
+		m_pKeyboard = new DIKeyboard(m_pDISystem, hWnd); 
 		m_pMouse = new DIMouse(m_pDISystem, hWnd);
 		m_pJoystick = new DIJoystick(m_pDISystem, hWnd);
 	}
