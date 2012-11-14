@@ -82,7 +82,7 @@ protected:
     Array<Technique*>  mTechniques;
 };
 
-class ShaderLibManager
+class MW_ENTRY ShaderLibManager
 {
     DECLARE_ALLOC();
     DECLARE_SINGLETON(ShaderLibManager);

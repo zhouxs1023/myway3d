@@ -31,17 +31,17 @@ namespace Myway {
         float farclip = cam->GetFarClip() * 0.9f;
         Vec3 pos = cam->GetPosition();
 
-        ShaderParam * uTransform = mTech->GetVertexShaderParamTable()->GetParam("gTransform");
-        ShaderParam * uU = mTech->GetVertexShaderParamTable()->GetParam("gU");
+		ShaderParam * uTransform = mTech->GetVertexShaderParamTable()->GetParam("gTransform");
+		ShaderParam * uU = mTech->GetVertexShaderParamTable()->GetParam("gU");
 
-        uTransform->SetUnifom(pos.x, pos.y, pos.z, farclip);
-        uU->SetUnifom(mU, mVOff, 1 / (1 + mVOff), 0);
+		uTransform->SetUnifom(pos.x, pos.y, pos.z, farclip);
+		uU->SetUnifom(mU, mVOff, 1 / (1 + mVOff), 0);
 
-        SamplerState state;
-        state.Address = TEXA_CLAMP;
-        render->SetTexture(0, state, mTexture.c_ptr());
+		SamplerState state;
+		state.Address = TEXA_CLAMP;
+		render->SetTexture(0, state, mTexture.c_ptr());
 
-        render->Render(mTech, &mRender);
+		render->Render(mTech, &mRender);
     }
 
     void Sky::_geometry()

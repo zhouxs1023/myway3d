@@ -71,49 +71,50 @@ namespace Myway {
 
     void Sun::_geometry()
     {
-        VertexStream * vxStream = &mRender.vxStream;
-        IndexStream * ixStream = &mRender.ixStream;
+		VertexStream * vxStream = &mRender.vxStream;
+		IndexStream * ixStream = &mRender.ixStream;
 
-        int iVertexCount = 4;
-        int iPrimCount = 2;
+		int iVertexCount = 8;
+		int iIndexCount = 12 * 3;
+		int iPrimCount = 12;
 
-        VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-        decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
-        decl->AddElement(0, 12, DT_FLOAT2, DU_TEXCOORD, 0);
-        decl->Init();
+		VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+		decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
+		decl->AddElement(0, 12, DT_FLOAT2, DU_TEXCOORD, 0);
+		decl->Init();
 
-        vxStream->SetDeclaration(decl);
+		vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20);
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20);
 
-        float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);
-        {
-            float x = 0, y = 0, z = 0;
+		float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);
+		{
+			float x = 0, y = 0, z = 0;
 
-            *vert++ = x; *vert++ = y; *vert++ = z;
-            *vert++ = 0; *vert++ = 0;
+			*vert++ = x; *vert++ = y; *vert++ = z;
+			*vert++ = 0; *vert++ = 0;
 
-            *vert++ = x; *vert++ = y; *vert++ = z;
-            *vert++ = 1; *vert++ = 0;
+			*vert++ = x; *vert++ = y; *vert++ = z;
+			*vert++ = 1; *vert++ = 0;
 
-            *vert++ = x; *vert++ = y; *vert++ = z;
-            *vert++ = 0; *vert++ = 1;
+			*vert++ = x; *vert++ = y; *vert++ = z;
+			*vert++ = 0; *vert++ = 1;
 
-            *vert++ = x; *vert++ = y; *vert++ = z;
-            *vert++ = 1; *vert++ = 1;
-        }
-        vb->Unlock();
+			*vert++ = x; *vert++ = y; *vert++ = z;
+			*vert++ = 1; *vert++ = 1;
+		}
+		vb->Unlock();
 
-        vxStream->Bind(0, vb, 20);
-        vxStream->SetCount(iVertexCount);
+		vxStream->Bind(0, vb, 20);
+		vxStream->SetCount(iVertexCount);
 
-        mRender.iPrimCount = iPrimCount;
-        mRender.ePrimType = PRIM_TRIANGLESTRIP;
+		mRender.iPrimCount = iPrimCount;
+		mRender.ePrimType = PRIM_TRIANGLESTRIP;
 
-        mRender.rState.cullMode = CULL_NONE;
-        mRender.rState.blendMode = BM_ALPHA_BLEND;
-        mRender.rState.depthWrite = false;
-        mRender.rState.depthCheck = DCM_LESS_EQUAL;
+		mRender.rState.cullMode = CULL_NONE;
+		mRender.rState.blendMode = BM_ALPHA_BLEND;
+		mRender.rState.depthWrite = false;
+		mRender.rState.depthCheck = DCM_LESS_EQUAL;
     }
 
 }

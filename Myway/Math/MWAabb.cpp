@@ -6,7 +6,6 @@ namespace Myway
 
 /* :) Aabb
 ---------------------------------------------------------------------------------------
-    @Remaximumrk:
         Axis Algined Bounding box
 ---------------------------------------------------------------------------------------
 */
@@ -14,6 +13,7 @@ namespace Myway
 const Aabb Aabb::Invalid   = Aabb(MAX_FLOAT, MAX_FLOAT, MAX_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
 const Aabb Aabb::Infinite  = Aabb(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT, MAX_FLOAT, MAX_FLOAT, MAX_FLOAT);
 const Aabb Aabb::Zero      = Aabb(0, 0, 0, 0, 0, 0);
+const Aabb Aabb::Identiy   = Aabb(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f);
 
 inline Aabb::Aabb()
 {
@@ -33,6 +33,11 @@ inline Aabb::Aabb(float fMinX, float fMinY, float fMinZ, float fMaxX, float fMax
 
 inline Aabb::~Aabb()
 {
+}
+
+inline Vec3 Aabb::GetSize() const
+{
+	return Vec3(GetWidth(), GetHeight(), GetDepth());
 }
 
 inline float Aabb::GetWidth() const

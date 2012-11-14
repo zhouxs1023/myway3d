@@ -23,6 +23,7 @@ namespace xInfi {
         virtual bool SetPosition(float x, float y, float z);
         virtual bool SetOrientation(float x, float y, float z);
         virtual bool SetScale(float x, float y, float z);
+		virtual Aabb GetBound();
 
         virtual const char * GetName() { return Name; }
         virtual const char * GetTypeName() { return "Mesh"; }

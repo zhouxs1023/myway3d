@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xObj.h"
+#include "xApp.h"
 
 class CPropertiesToolBar : public CMFCToolBar
 {
@@ -15,7 +15,7 @@ public:
 
 
 
-class CPropertiesWnd : public CDockablePane
+class CPropertiesWnd : public CDockablePane, EventListener
 {
 	DECLARE_SINGLETON(CPropertiesWnd);
 	DECLARE_MESSAGE_MAP()
@@ -43,9 +43,9 @@ public:
 
 	void AdjustLayout();
 
-	void Show(xObj * obj);
-
 protected:
+	virtual void OnCall(Event * sender, void * data);
+	void Show(xObj * obj);
 	void _ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Property * p);
 
 // Ьиад
@@ -63,7 +63,5 @@ protected:
 
 	void InitPropList();
 	void SetPropListFont();
-
-	xObj * mObj;
 };
 

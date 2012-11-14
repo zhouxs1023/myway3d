@@ -15,10 +15,10 @@ namespace xInfi {
         : xObj(name)
     {
         Strcpy(Name, 128, name);
-		Strcpy(MeshFile, 128, "");
+		Strcpy(MeshFile, 128, "temp.mesh");
 
         mNode = World::Instance()->CreateSceneNode();
-        mEntity = World::Instance()->CreateEntity(name);
+        mEntity = World::Instance()->CreateEntity(name, MeshFile, "core");
 		mNode->Attach(mEntity);
 
         Position = Vec3::Zero; 
@@ -51,8 +51,14 @@ namespace xInfi {
     bool xMesh::SetScale(float x, float y, float z)
     {
         Scale = Vec3(x, y, z);
+		mNode->SetScale(x, y, z);
         return true;
     }
+
+	Aabb xMesh::GetBound()
+	{
+		return mNode->GetWorldAabb();
+	}
 
     bool xMesh::OnPropertyChanged(const Property * p)
     {

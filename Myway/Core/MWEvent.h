@@ -38,4 +38,29 @@ protected:
     EventListener * head;
 };
 
+
+template <class T>
+class tEventListener : public EventListener
+{
+public:
+	tEventListener(T * p, Event & e) : listener(p), evt(e)
+	{ 
+		evt += this;
+	}
+
+	~tEventListener()
+	{
+		evt -= this;
+	}
+
+	virtual void OnCall(Event * sender, void * data)
+	{
+		listener->OnCall(sender, data);
+	}
+
+protected:
+	T * listener;
+	Event & evt;
+};
+
 }

@@ -13,6 +13,7 @@ public:
 	virtual bool SetPosition(float x, float y, float z) { return true; }
 	virtual bool SetOrientation(float x, float y, float z) { return false; }
 	virtual bool SetScale(float x, float y, float z) { return false; }
+	virtual Aabb GetBound() { return Aabb::Identiy; }
 };
 
 class xObjFactory
@@ -51,3 +52,25 @@ protected:
 	Array<xObj *> mObjs;
 };
     
+class xObjBound : public EventListener
+{
+	DECLARE_SINGLETON(xObjManager);
+
+public:
+	xObjBound();
+	virtual ~xObjBound();
+
+	void Init();
+	void Shutdown();
+	void Render();
+
+	void OnCall(Event * sender, void * data);
+
+protected:
+	Technique * mTech;
+	RenderDesc * mRender;
+
+	tEventListener<xObjBound> OnInit;
+	tEventListener<xObjBound> OnShutdown;
+	tEventListener<xObjBound> OnRender;
+};

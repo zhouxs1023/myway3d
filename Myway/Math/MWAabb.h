@@ -15,7 +15,8 @@ class MW_ENTRY Aabb
 public:
     static const Aabb Invalid;
     static const Aabb Infinite;
-    static const Aabb Zero;
+	static const Aabb Zero;
+    static const Aabb Identiy;
 
 public:
     Aabb();
@@ -24,6 +25,7 @@ public:
          float fMaxX, float fMaxY, float fMaxZ);
     ~Aabb();
 
+	Vec3 GetSize() const;
     float GetWidth() const;
     float GetHeight() const;
     float GetDepth() const;

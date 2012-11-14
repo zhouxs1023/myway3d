@@ -18,6 +18,8 @@ xApp gxApp;
 Event xApp::OnInit;
 Event xApp::OnInitUI;
 Event xApp::OnShutdown;
+Event xApp::OnSelectObj;
+Event xApp::OnUnSelectObj;
 
 _Locker::_Locker()
 { 
@@ -41,6 +43,8 @@ xApp::xApp()
     mNeedResize = false;
 
     mInited = false;
+
+	mHelperShaderLib = NULL;
 }
 
 xApp::~xApp()
@@ -167,6 +171,8 @@ void xApp::_InitEngine()
 
     World::Instance()->Resize(1024, 1024, 1024);
 
+	mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib", "core");
+
 	OnInit.Call();
     OnInitUI.Call();
 }
@@ -186,6 +192,9 @@ void xApp::Shutdown()
 
     mEngine->Shutdown();
     delete mEngine;
+
+	mSelectedObjs.Clear();
+	mHelperShaderLib = NULL;
 }
 
 void xApp::Resize(int w, int h)
@@ -195,3 +204,38 @@ void xApp::Resize(int w, int h)
     mNeedResize =  true;
 }
 
+void xApp::SetSelectedObj(xObj * obj)
+{
+	mSelectedObjs.Clear();
+
+	if (obj == NULL)
+	{
+		OnUnSelectObj.Call();
+	}
+
+	mSelectedObjs.PushBack(obj);
+
+	OnSelectObj.Call();
+}
+
+void xApp::SetSelectedObjs(xObj ** objs, int size)
+{
+	mSelectedObjs.Clear();
+
+	for (int i = 0; i < size; ++i)
+	{
+		mSelectedObjs.PushBack(objs[i]);
+	}
+
+	OnSelectObj.Call();
+}
+
+int xApp::GetSelectedObjSize()
+{
+	return mSelectedObjs.Size();
+}
+
+xObj * xApp:: GetSelectedObj(int index)
+{
+	return GetSelectedObjSize() ? mSelectedObjs[index] : NULL;
+}

@@ -23,12 +23,19 @@ class MW_ENTRY RenderScheme
     DECLARE_SINGLETON(RenderScheme);
 
 public:
+	static Event OnBeginRender;
+
+	static Event OnAfterRenderSolid;
+	static Event OnAfterDeffererShading;
+
+	static Event OnAfterRender;
+
+public:
     RenderScheme();
     virtual ~RenderScheme();
 
     virtual void DoRender() = 0;
 };
-
 
 
 }

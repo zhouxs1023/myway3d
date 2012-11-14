@@ -19,12 +19,17 @@ IMP_SLN (CPropertiesWnd);
 
 CPropertiesWnd::CPropertiesWnd()
 {
-	mObj = NULL;
 	INIT_SLN;
+
+	xApp::OnSelectObj += this;
+	xApp::OnUnSelectObj += this;
 }
 
 CPropertiesWnd::~CPropertiesWnd()
 {
+	xApp::OnSelectObj -= this;
+	xApp::OnUnSelectObj -= this;
+
 	SHUT_SLN;
 }
 
@@ -228,9 +233,26 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.AddProperty(pGroup4);
 }
 
+void CPropertiesWnd::OnCall(Event * sender, void * data)
+{
+	if (sender == &xApp::OnSelectObj)
+	{
+		xObj * obj = xApp::Instance()->GetSelectedObj(0);
+
+		if (xApp::Instance()->GetSelectedObjSize() > 1)
+			obj = NULL;
+
+		Show(obj);
+	}
+	else if (sender == &xApp::OnUnSelectObj)
+	{
+		Show(NULL);
+	}
+}
+
+
 void CPropertiesWnd::Show(xObj * obj)
 {
-	mObj = obj;
 	m_wndPropList.RemoveAll();
 
 	if (!obj)
@@ -294,10 +316,11 @@ void CPropertiesWnd::_ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Pr
 LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
 	CMFCPropertyGridProperty * prop = (CMFCPropertyGridProperty *)lParam;
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
 
 	const char * name = prop->GetName();
 
-	const Property * p = mObj->GetProperty(name);
+	const Property * p = obj->GetProperty(name);
 
 	if (p)
 	{
@@ -308,7 +331,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 		Strcpy(cdata, 128, (const char *)val);
 
 		if (p->type == PT_String)
-			mObj->SetPropertyData(p, cdata);
+			obj->SetPropertyData(p, cdata);
 	}
 
 	return S_OK;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xObj.h"
+
 class xApp
 {
 	DECLARE_SINGLETON(xApp);
@@ -8,6 +10,8 @@ public:
 	static Event OnInit;
 	static Event OnInitUI;
 	static Event OnShutdown;
+	static Event OnSelectObj;
+	static Event OnUnSelectObj;
 
 public:
 	xApp();
@@ -29,11 +33,19 @@ public:
 
 	bool IsInited() { return mInited; }
 
+	ShaderLib * GetHelperShaderLib() { return mHelperShaderLib; }
+
+	void SetSelectedObj(xObj * obj);
+	void SetSelectedObjs(xObj ** objs, int size);
+	int GetSelectedObjSize();
+	xObj * GetSelectedObj(int index);
+
 protected:
 	void _input();
 
 protected:
 	Engine * mEngine;
+	ShaderLib * mHelperShaderLib;
 	Thread mThread;
 	bool mQuit;
 
@@ -42,6 +54,8 @@ protected:
 	bool mInited;
 
 	bool mNeedResize;
+
+	Array<xObj *> mSelectedObjs;
 };
 
 

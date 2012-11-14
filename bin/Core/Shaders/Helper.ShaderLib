@@ -1,0 +1,17 @@
+<ShaderLib>
+
+	<Shaders>
+		<Shader name = "ColorVS" language = "cg" profile = "vs30" source = "Color.vs" >
+			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+		</Shader>
+
+		<Shader name = "ColorPS" language = "cg" profile = "ps30" source = "Color.ps" >
+		</Shader>
+	</Shaders>
+
+	<Techniques>
+		<Technique name = "Color" vs = "ColorVS" ps = "ColorPS">
+		</Technique>
+	</Techniques>
+
+</ShaderLib>
