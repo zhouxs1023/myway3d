@@ -31,21 +31,35 @@ class MyApp : public App_Win32
     char cmpLine[2048];
 
 public:
-    MyApp() {}
+    MyApp()
+	{
+		mEntity = NULL;
+		mSceneNode = NULL;
+	}
+
     ~MyApp() {}
 
      virtual bool Init()
      {
          App_Win32::Init();
 
-         /*const char * cmdLine = GetCommandLine();
+		 DragAcceptFiles(mhWnd, TRUE);
+
+         const char * cmdLine = GetCommandLine();
 
 		 if (Strcmp(cmdLine, "") == 0)
 			 return true;
 
 		 cmdLine = GetCommand(cmdLine);
 
-		 TString128 meshFile = cmdLine;
+		 LookMesh(cmdLine);
+		
+         return true;
+     }
+
+	 void LookMesh(const char * filename)
+	 {
+		 TString128 meshFile = filename;
 		 TString128 base, path;
 
 		 meshFile.SplitFileNameR(base, path); 
@@ -55,29 +69,55 @@ public:
 		 externName = File::GetExternName(base);
 
 		 if (externName != "mesh")
-			 return true;*/
+			 return true;
 
-		 const char * base = "temp.mesh";
+		 if (mEntity)
+		 {
+			 World::Instance()->DestroyEntity(mEntity);
+			 mEntity = NULL;
+		 }
 
-         Entity * pEntity = World::Instance()->CreateEntity("xx", base, "core");
-         SceneNode * pSceneNode = World::Instance()->CreateSceneNode();
+		 if (mSceneNode)
+		 {
+			 World::Instance()->DestroySceneNode(mSceneNode);
+		 }
 
-         pSceneNode->Attach(pEntity);
+		 mEntity = World::Instance()->CreateEntity("xxx", base, "core");
 
-         Aabb bound = pEntity->GetWorldAabb();
+		 mSceneNode = World::Instance()->CreateSceneNode();
 
-         float size = 0;
+		 mSceneNode->Attach(pEntity);
 
-         size = Math::Maximum(size, bound.GetWidth());
-         size = Math::Maximum(size, bound.GetHeight());
-         size = Math::Maximum(size, bound.GetDepth());
+		 Aabb bound = pEntity->GetWorldAabb();
 
-         Camera * pCamera = World::Instance()->MainCamera();
-         pCamera->SetPosition(bound.GetCenter() + Vec3(0, 0, -1.5f) * size);
-         pCamera->LookAt(bound.GetCenter());
+		 float size = 0;
 
-         return true;
-     }
+		 size = Math::Maximum(size, bound.GetWidth());
+		 size = Math::Maximum(size, bound.GetHeight());
+		 size = Math::Maximum(size, bound.GetDepth());
+
+		 Camera * pCamera = World::Instance()->MainCamera();
+		 pCamera->SetPosition(bound.GetCenter() + Vec3(0, 0, -1.5f) * size);
+		 pCamera->LookAt(bound.GetCenter());
+
+	 }
+
+	 virtual void OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
+	 {
+		 switch (iMsg)
+		 {
+		 case WM_DROPFILES:
+			 {
+				 TCHAR meshFile[MAX_PATH] = { 0 };
+				 HDROP hDrop = (HDROP)wParam;
+				 int len = DragQueryFile(hDrop, 0, meshFile, MAX_PATH);
+
+				 if (len > 0)
+					 LookMesh(meshFile);
+			 }
+			 break;
+		 }
+	 }
 
      virtual void Update()
      {
@@ -118,6 +158,10 @@ public:
              }
          }
      }
+
+ protected:
+	 Entity * mEntity;
+	 SceneNode * mSceneNode;
 };
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
