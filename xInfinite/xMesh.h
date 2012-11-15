@@ -9,20 +9,13 @@ namespace xInfi {
     {
         DECLARE_PROPERTY(xObj);
 
-    public:
-        char Name[128];
+	public:
 		char MeshFile[128];
-		Vec3 Position;
-		Vec3 Orientation;
-		Vec3 Scale;
 
     public:
         xMesh(const char * name);
         virtual ~xMesh();
 
-        virtual bool SetPosition(float x, float y, float z);
-        virtual bool SetOrientation(float x, float y, float z);
-        virtual bool SetScale(float x, float y, float z);
 		virtual Aabb GetBound();
 
         virtual const char * GetName() { return Name; }
@@ -34,7 +27,7 @@ namespace xInfi {
         void _setName(const TString128 & name);
         void _setMeshFile(const TString128 & meshFile);
         void _setPosition(const Vec3 & position);
-        void _setOrientation(const Vec3 & ort);
+        void _setOrientation(const Quat & ort);
         void _setScale(const Vec3 & scale);
 
     protected:

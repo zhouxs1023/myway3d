@@ -3,8 +3,7 @@
 using namespace Myway;
 
 
-ResourceGroup::ResourceGroup(const TString128 & group)
-: mGroup(group)
+ResourceGroup::ResourceGroup()
 {
 }
 
@@ -40,11 +39,6 @@ void ResourceGroup::Shudown()
     }
 
     mArchives.Clear();
-}
-
-const TString128 & ResourceGroup::GetName() const
-{
-    return mGroup;
 }
 
 bool ResourceGroup::Exist(const TString128 & name) const
@@ -150,8 +144,12 @@ DataStreamPtr ResourceGroup::Open(const TString128 & name)
         ++whr;
     }
 
-    assert (whr != end);
-    
+	if (whr == end)
+	{
+		LOG_PRINT_FORMAT("Source: %s not exit", name.c_str());
+		return NULL;
+	}
+
     return (*whr)->Open(name);
 }
 
@@ -177,15 +175,7 @@ ResourceManager::~ResourceManager()
 
 void ResourceManager::Init()
 {
-    ResourceGroupMap::Iterator whr = mGroups.Begin();
-    ResourceGroupMap::Iterator end = mGroups.End();
-
-    while (whr != end)
-    {
-        whr->second->Init();
-        ++whr;
-    }
-
+	mResourceGroup.Init();
 }
 
 void ResourceManager::Shutdown()
@@ -200,18 +190,7 @@ void ResourceManager::Shutdown()
     }
 
     mFactorys.Clear();
-
-    ResourceGroupMap::Iterator rwhr = mGroups.Begin();
-    ResourceGroupMap::Iterator rend = mGroups.End();
-
-    while (rwhr != rend)
-    {
-        rwhr->second->Shudown();
-        delete rwhr->second;
-        ++rwhr;
-    }
-
-    mGroups.Clear();
+    mResourceGroup.Shudown();
 }
 
 void ResourceManager::AddArchiveFactory(ArchiveFactory * factory)
@@ -231,149 +210,34 @@ void ResourceManager::RemoveArchiveFactory(const TString128 & type)
     }
 }
 
-void ResourceManager::AddArchive(const TString128 & name, const TString128 & type, const TString128 & group)
+void ResourceManager::AddArchive(const TString128 & name, const TString128 & type)
 {
-    ResourceGroupMap::Iterator rwhr = mGroups.Find(group);
-    ResourceGroupMap::Iterator rend = mGroups.End();
-
-    if (rwhr == rend)
-    {
-        AddGroup(group);
-
-        rwhr = mGroups.Find(group);
-        rend = mGroups.End();
-
-        d_assert (rwhr != rend);
-    }
-
     FactoryMap::Iterator fwhr = mFactorys.Find(type);
     FactoryMap::Iterator fend = mFactorys.End();
 
-    if (fwhr == fend)
-    {
-        EXCEPTION("Source: " + name + " unknown type '" + type + "'.");
-    }
-
     Archive * archive = fwhr->second->CreateInstance(name);
 
-    rwhr->second->AddArchive(archive);
+    mResourceGroup.AddArchive(archive);
 }
 
-bool ResourceManager::Exist(const TString128 & name, const TString128 & group) const
+bool ResourceManager::Exist(const TString128 & name) const
 {
-    ResourceGroupMap::ConstIterator whr = mGroups.Find(group);
-    ResourceGroupMap::ConstIterator end = mGroups.End();
-
-    if (whr != end)
-    {
-        return whr->second->Exist(name);
-    }
-
-    return FALSE;
+    return mResourceGroup.Exist(name);
 }
 
-Archive * ResourceManager::GetArchive(const TString128 & name, const TString128 & group)
+Archive * ResourceManager::GetArchive(const TString128 & name)
 {
-    ResourceGroupMap::Iterator whr = mGroups.Find(group);
-    ResourceGroupMap::Iterator end = mGroups.End();
-
-    if (whr != end)
-    {
-        return whr->second->GetArchive(name);
-    }
-
-    return FALSE;
-}
-
-const Archive::FileInfo * ResourceManager::GetFileInfo(const TString128 & name, const TString128 & group) const
-{
-    ResourceGroupMap::ConstIterator whr = mGroups.Find(group);
-    ResourceGroupMap::ConstIterator end = mGroups.End();
-
-    if (whr == end)
-    {
-        EXCEPTION("Source: " + name + " not exit in resource group '" + group + "'.");
-    }
-
-    return whr->second->GetFileInfo(name);
+    return mResourceGroup.GetArchive(name);
 }
 
 void ResourceManager::GetFileInfosByKey(Archive::FileInfoList & list, const TString128 & key) const
 {
-    ResourceGroupMap::ConstIterator whr = mGroups.Begin();
-    ResourceGroupMap::ConstIterator end = mGroups.End();
-
-    while (whr != end)
-    {
-        whr->second->GetFileInfosByKey(list, key);
-        ++whr;
-    }
-}
-
-void ResourceManager::AddGroup(const TString128 & group)
-{
-    mGroups.Insert(group, new ResourceGroup(group));
-}
-
-ResourceGroup * ResourceManager::GetGroup(const TString128 & group)
-{
-    ResourceGroupMap::Iterator whr = mGroups.Find(group);
-    ResourceGroupMap::Iterator end = mGroups.End();
-
-    return whr != end ? whr->second : NULL;
-}
-
-ResourceManager::ResourceGroupVisitor ResourceManager::GetGroups() const
-{
-    return ResourceGroupVisitor(mGroups.Begin(), mGroups.End());
-}
-
-void ResourceManager::RemoveGroup(const TString128 & group)
-{
-    ResourceGroupMap::Iterator whr = mGroups.Find(group);
-    ResourceGroupMap::Iterator end = mGroups.End();
-
-    if (whr != end)
-    {
-        delete whr->second;
-        mGroups.Erase(whr);
-    }
-}
-
-void ResourceManager::RemoveGroup(ResourceGroup * group)
-{
-    RemoveGroup(group->GetName());
-}
-
-DataStreamPtr ResourceManager::OpenResource(const char * source, const char * group)
-{
-    if (strcmp(group, "") == 0)
-        return OpenResource(source);
-
-    ResourceGroupMap::Iterator whr = mGroups.Find(group);
-    ResourceGroupMap::Iterator end = mGroups.End();
-
-    if (whr == end || !whr->second->Exist(source))
-    {
-        LOG_PRINT_FORMAT("Source: %s not exit in resource group %s", source, group);
-        return NULL;
-    }
-
-    return whr->second->Open(source);
+	mResourceGroup.GetFileInfosByKey(list, key);
 }
 
 DataStreamPtr ResourceManager::OpenResource(const char * source)
 {
-    ResourceGroupMap::Iterator whr = mGroups.Begin();
-    ResourceGroupMap::Iterator end = mGroups.End();
-
-    while (whr != end && whr->second->Exist(source))
-    {
-        return whr->second->Open(source);
-    }
-
-    LOG_PRINT_FORMAT("Source: %s not exit", source);
-    return NULL;
+    return mResourceGroup.Open(source);
 }
 
 void ResourceManager::SetResourceLoader(ResourceLoader * loader)

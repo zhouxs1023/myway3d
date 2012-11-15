@@ -32,9 +32,6 @@ namespace Myway
         void SetSourceName(const TString128 & source) { mSourceName = source; }
         const TString128 & GetSourceName() const { return mSourceName; }
 
-        void SetGroupName(const TString128 & group) { mGroupName = group; }
-        const TString128 & GetGroupName() const { return mGroupName; }
-
     protected:
         TString128 mSourceName;
         TString128 mGroupName;

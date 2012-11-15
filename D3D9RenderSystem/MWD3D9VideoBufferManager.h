@@ -70,7 +70,7 @@ public:
     TexturePtr LoadCubeTexture(const TString128 & name, const TString128 & source);
 
    virtual ImagePtr CreateImage(int iWidth, int iHeight, FORMAT Format);
-   virtual ImagePtr LoadImageSource(const TString128 & source, const TString128 & group, IMAGE_FILTER filter);
+   virtual ImagePtr LoadImageSource(const TString128 & source, IMAGE_FILTER filter);
    virtual void SaveImage(ImagePtr image, const TString128 & sImageFile, IMAGE_FILE_FORMAT Format);
 
    virtual void BitBlt(ImagePtr imageDest, TexturePtr texSrc, const Rect * pDest, const Rect * pSrc);

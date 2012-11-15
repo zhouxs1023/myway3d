@@ -72,7 +72,7 @@ public:
     Entity(const TString128 & name, MeshPtr mesh);
     ~Entity();
 
-    void                SetMesh(const TString128 & source, const TString128 & group);
+    void                SetMesh(const TString128 & source);
     void                SetMesh(MeshPtr mesh);
     MeshPtr             GetMesh();
 

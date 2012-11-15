@@ -38,12 +38,12 @@ protected:
     EventListener * head;
 };
 
-
 template <class T>
 class tEventListener : public EventListener
 {
+	typedef void (T::*F)(void *);
 public:
-	tEventListener(T * p, Event & e) : listener(p), evt(e)
+	tEventListener(Event & e, T * p, F f) : listener(p), evt(e), func(f)
 	{ 
 		evt += this;
 	}
@@ -55,11 +55,13 @@ public:
 
 	virtual void OnCall(Event * sender, void * data)
 	{
-		listener->OnCall(sender, data);
+		if (sender == &evt)
+			(listener->*func)(data);
 	}
 
 protected:
 	T * listener;
+	F func;
 	Event & evt;
 };
 

@@ -106,7 +106,7 @@ void Terrain::AllocSection()
 
 float * Terrain::LoadHightmap()
 {
-    ImagePtr image = VideoBufferManager::Instance()->LoadImageSource(mConfig.hightmap, mConfig.mResourceGroup, IMAGE_FILTER_NONE);
+    ImagePtr image = VideoBufferManager::Instance()->LoadImageSource(mConfig.hightmap, IMAGE_FILTER_NONE);
 
     d_assert (image != NULL);
 
@@ -459,7 +459,6 @@ void Terrain::LoadConfig(const TString128 & source)
 
     xml_node * root = doc.first_node("Terrain");
 
-    xml_node * ndResGourp = root->first_node("group");
     xml_node * ndWidth = root->first_node("width");
     xml_node * ndHeight = root->first_node("height");
     xml_node * ndHight = root->first_node("hight");
@@ -470,9 +469,8 @@ void Terrain::LoadConfig(const TString128 & source)
     xml_node * ndMorphEnable = root->first_node("morph");
     xml_node * ndMorphStart = root->first_node("start");
 
-    d_assert (ndResGourp && ndWidth && ndHeight && ndHight && ndHightmap && ndWeightmap && ndWeightmap1 && ndDecal);
+    d_assert (ndWidth && ndHeight && ndHight && ndHightmap && ndWeightmap && ndWeightmap1 && ndDecal);
 
-    mConfig.mResourceGroup = ndResGourp->first_attribute("value")->value();
     mConfig.width = (float)atof(ndWidth->first_attribute("value")->value());
     mConfig.height = (float)atof(ndHeight->first_attribute("value")->value());
     mConfig.hight = (float)atof(ndHight->first_attribute("value")->value());

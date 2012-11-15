@@ -40,7 +40,6 @@ void Engine::Init(const DeviceProperty * pDeviceProperty,
     mDllManager = new DllManager();
     mResourceManager = new ResourceManager();
 
-    ResourceManager::Instance()->AddGroup("generic");
     ResourceManager::Instance()->AddArchiveFactory(new FileSystemFactory());
     ResourceManager::Instance()->AddArchiveFactory(new ArchiveZipFactory());
 
@@ -137,8 +136,7 @@ void Engine::ParseConfig(const char * sFileName)
     {
         const char * type = node->first_attribute("type")->value();
         const char * path = node->first_attribute("path")->value();
-        const char * group = node->first_attribute("group")->value();
-        ResourceManager::Instance()->AddArchive(path, type, group);
+        ResourceManager::Instance()->AddArchive(path, type);
 
         node = node->next_sibling("resources");
     }

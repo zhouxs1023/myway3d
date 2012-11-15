@@ -41,7 +41,7 @@ public:
     SceneNode *         MainCameraNode() { return mMainCameraNode; }
 
     //entity
-    Entity *            CreateEntity(const TString128 & name, const TString128 & mesh, const TString128 & group);
+    Entity *            CreateEntity(const TString128 & name, const TString128 & mesh);
     Entity *            CreateEntity(const TString128 & name, MeshPtr mesh);
     Entity *            CreateEntity(const TString128 & name);
     bool                RenameEntity(const TString128 & name, Entity * entity);

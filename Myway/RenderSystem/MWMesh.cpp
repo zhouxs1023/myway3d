@@ -209,10 +209,8 @@ void Mesh::Load()
     ResourceManager::Instance()->GetResourceLoader()->Load(this);
 
     TString128 source = File::RemoveExternName(GetSourceName()) + ".material";
-    const char * group = GetGroupName().c_str();
 
     mMaterialResource->SetSourceName(source);
-    mMaterialResource->SetGroupName(group);
     mMaterialResource->Load();
 }
 

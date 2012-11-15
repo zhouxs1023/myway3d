@@ -24,7 +24,7 @@ public:
     MeshManager();
     ~MeshManager();
 
-    MeshPtr         Load(const TString128 & name, const TString128 & source, const TString128 & group);
+    MeshPtr         Load(const TString128 & name, const TString128 & source);
 
     MeshPtr         CreateMesh(const TString128 & sMeshName);
 

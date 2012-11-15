@@ -15,13 +15,11 @@ public:
     typedef Visitor<ArchiveList::ConstIterator>             ArchiveVisitor;
 
 public:
-    ResourceGroup(const TString128 & group);
+    ResourceGroup();
     ~ResourceGroup();
 
     void Init();
     void Shudown();
-
-    const TString128 & GetName() const;
 
     bool Exist(const TString128 & name) const;
 
@@ -35,7 +33,6 @@ public:
 
     void RemoveArchive(const TString128 & name);
     void RemoveArchive(Archive * archive);
-
 
     DataStreamPtr Open(const TString128 & name);
 
@@ -51,8 +48,6 @@ class MW_ENTRY ResourceManager
     DECLARE_SINGLETON (ResourceManager);
 public:
     typedef Map<TString128, ArchiveFactory*>                FactoryMap;
-    typedef Map<TString128, ResourceGroup*>                 ResourceGroupMap;
-    typedef Visitor<ResourceGroupMap::ConstIterator>        ResourceGroupVisitor;
 
 public:
     ResourceManager();
@@ -65,29 +60,22 @@ public:
     void RemoveArchiveFactory(const TString128 & type);
     ArchiveFactory * GetArchiveFactory(const TString128 & type);
 
-    void AddArchive(const TString128 & name, const TString128 & type, const TString128 & group);
-    bool Exist(const TString128 & name, const TString128 & group) const;
-    Archive * GetArchive(const TString128 & name, const TString128 & group);
+    void AddArchive(const TString128 & name, const TString128 & type);
+    bool Exist(const TString128 & name) const;
+    Archive * GetArchive(const TString128 & name);
 
-    const Archive::FileInfo * GetFileInfo(const TString128 & name, const TString128 & group) const;
+    const Archive::FileInfo * GetFileInfo(const TString128 & name) const;
     void GetFileInfosByKey(Archive::FileInfoList & list, const TString128 & key) const;
 
-    void AddGroup(const TString128 & group);
-    ResourceGroup * GetGroup(const TString128 & group);
-    ResourceGroupVisitor GetGroups() const;
-    void RemoveGroup(const TString128 & group);
-    void RemoveGroup(ResourceGroup * group);
-
     DataStreamPtr OpenResource(const char * source);
-    DataStreamPtr OpenResource(const char * source, const char * group);
 
     void SetResourceLoader(ResourceLoader * loader);
     ResourceLoader * GetResourceLoader();
 
 protected:
-    ResourceGroupMap                mGroups;
     FactoryMap                      mFactorys;
     ResourceLoader *                mResourceLoader;
+	ResourceGroup					mResourceGroup;
 };
 
 }

@@ -93,8 +93,8 @@ void ObjCreatorTree::OnLButtonUp(UINT nFlags, CPoint point)
 
 			Vec3 pos = ray.origin + ray.direction * 80;
 
-			obj->SetPosition(pos.x, pos.y, pos.z);
-			obj->SetScale(0.01f, 0.01f, 0.01f);
+			obj->SetPosition(pos);
+			obj->SetScale(0.01f);
 
 			d_assert (obj);
 

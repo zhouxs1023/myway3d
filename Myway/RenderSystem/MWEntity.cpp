@@ -346,16 +346,16 @@ void Entity::_DeInit()
     mMesh = NULL;
 }
 
-void Entity::SetMesh(const TString128 & source, const TString128 & group)
+void Entity::SetMesh(const TString128 & source)
 {
-	if (ResourceManager::Instance()->Exist(source.c_str(), group.c_str()))
+	if (ResourceManager::Instance()->Exist(source))
 	{
-		MeshPtr mesh = MeshManager::Instance()->Load(source, source, group);
+		MeshPtr mesh = MeshManager::Instance()->Load(source, source);
 		SetMesh(mesh);
 	}
 	else
 	{
-		SetMesh(NULL);
+		SetMesh(MeshPtr(NULL));
 	}
 }
 

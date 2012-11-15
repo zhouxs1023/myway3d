@@ -91,7 +91,7 @@ public:
     ShaderLibManager();
     ~ShaderLibManager();
 
-    ShaderLib * LoadShaderLib(const TString128 & name, const TString128 & source, const TString128 & group);
+    ShaderLib * LoadShaderLib(const TString128 & name, const TString128 & source);
     ShaderLib * CreateShaderLib(const TString128 & name);
     ShaderLib * GetShaderLib(const TString128 & name);
     ShaderLib * GetShaderLib(int index);

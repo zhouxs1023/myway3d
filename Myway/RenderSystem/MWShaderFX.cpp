@@ -276,13 +276,13 @@ ShaderLibManager::~ShaderLibManager()
     }
 }
 
-ShaderLib * ShaderLibManager::LoadShaderLib(const TString128 & name, const TString128 & source, const TString128 & group)
+ShaderLib * ShaderLibManager::LoadShaderLib(const TString128 & name, const TString128 & source)
 {
     ShaderLib * lib = GetShaderLib(name);
 
     if (lib == NULL)
     {
-        DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source.c_str(), group.c_str());
+        DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source.c_str());
 
         if (stream == NULL)
         {

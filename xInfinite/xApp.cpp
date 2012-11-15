@@ -171,7 +171,7 @@ void xApp::_InitEngine()
 
     World::Instance()->Resize(1024, 1024, 1024);
 
-	mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib", "core");
+	mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib");
 
 	OnInit.Call();
     OnInitUI.Call();

@@ -149,11 +149,11 @@ void World::DestroyAllCamera()
 }
 
 
-Entity * World::CreateEntity(const TString128 & name, const TString128 & mesh, const TString128 & group)
+Entity * World::CreateEntity(const TString128 & name, const TString128 & mesh)
 {
     d_assert(!HasEntity(name) && "entity has been created.");
 
-    Entity * pEntity = new Entity(name, MeshManager::Instance()->Load(mesh, mesh, group));
+    Entity * pEntity = new Entity(name, MeshManager::Instance()->Load(mesh, mesh));
 
     mEntitys.PushBack(pEntity);
 

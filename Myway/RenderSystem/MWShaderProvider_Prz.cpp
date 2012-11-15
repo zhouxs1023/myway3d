@@ -5,7 +5,7 @@ namespace Myway
 {
     ShaderProvider_Main::ShaderProvider_Main()
     {
-        mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("main", "PZ_Main.ShaderLib", "core");
+        mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("main", "PZ_Main.ShaderLib");
         d_assert (mShaderLib);
 
         mTechs[R_Base] = mShaderLib->GetTechnique("base");

@@ -42,9 +42,8 @@ namespace Myway
             return ;
 
         const char * source = res->GetSourceName().c_str();
-        const char * group = res->GetGroupName().c_str();
 
-        DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source, group);
+        DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source);
         res->LoadImp(stream);
     }
 }

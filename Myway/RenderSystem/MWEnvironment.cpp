@@ -9,7 +9,7 @@ namespace Myway {
     {
         INIT_SLN;
 
-        mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Core_Environment", "Environment.ShaderLib", "core");
+        mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Core_Environment", "Environment.ShaderLib");
         d_assert (mShaderLib);
 
         mTerrain = NULL;

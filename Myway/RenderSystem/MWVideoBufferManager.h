@@ -129,7 +129,7 @@ public:
         Create a image
     */
     virtual ImagePtr CreateImage(int iWidth, int iHeight, FORMAT Format) = 0;
-    virtual ImagePtr LoadImageSource(const TString128 & source, const TString128 & group, IMAGE_FILTER filter = IMAGE_FILTER_NONE) = 0;
+    virtual ImagePtr LoadImageSource(const TString128 & source, IMAGE_FILTER filter = IMAGE_FILTER_NONE) = 0;
     virtual void SaveImage(ImagePtr image, const TString128 & sImageFile, IMAGE_FILE_FORMAT Format) = 0;
 
     virtual void BitBlt(ImagePtr imageDest, TexturePtr texSrc, const Rect * pDest, const Rect * pSrc) = 0;

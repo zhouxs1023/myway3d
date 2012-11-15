@@ -18,7 +18,7 @@ MeshManager::~MeshManager()
     d_assert(mMeshs.Size() == 0);
 }
 
-MeshPtr MeshManager::Load(const TString128 & name, const TString128 & source, const TString128 & group)
+MeshPtr MeshManager::Load(const TString128 & name, const TString128 & source)
 {
     MeshPtr mesh = Find(name);
 
@@ -27,7 +27,6 @@ MeshPtr MeshManager::Load(const TString128 & name, const TString128 & source, co
 
     mesh = new Mesh(name);
     mesh->SetSourceName(source);
-    mesh->SetGroupName(group);
 
     mMeshs.PushBack(mesh.c_ptr());
 

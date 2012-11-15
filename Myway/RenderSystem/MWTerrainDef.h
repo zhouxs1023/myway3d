@@ -31,7 +31,6 @@ namespace Myway {
     };
 
     struct TnConfig {
-        TString128 mResourceGroup;
         float width, height, hight;
         TString128 hightmap;
         TString128 weightmap0;
