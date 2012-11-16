@@ -28,7 +28,8 @@ public:
     virtual Point2i GetOldPositionGlobal();
     virtual Point2f GetOldPositionUnit();
 
-    virtual Point2i GetPositionDiff();
+	virtual Point2i GetPositionDiff();
+    virtual Point2f GetPositionDiffUnit();
 
 	virtual bool IsActive();
 

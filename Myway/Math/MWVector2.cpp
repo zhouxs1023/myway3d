@@ -171,6 +171,16 @@ Vec2 Vec2::Normalize() const
     return vOut;
 }
 
+float Vec2::NormalizeL()
+{
+	float len = Length();
+
+	x /= len;
+	y /= len;
+
+	return len;
+}
+
 float Vec2::Dot(const Vec2 & rk) const
 {
     return Math::VecDot(*this, rk);

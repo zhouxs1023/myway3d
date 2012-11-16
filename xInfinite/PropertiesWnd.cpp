@@ -311,6 +311,18 @@ void CPropertiesWnd::_ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Pr
 		gp1->AddSubItem(new CMFCPropertyGridProperty("y", (_variant_t)(data.y), ""));
 		gp1->AddSubItem(new CMFCPropertyGridProperty("z", (_variant_t)(data.z), ""));
 	}
+	else if (p->type == PT_Vec4)
+	{
+		Vec4 data = p->AsVec4(obj->GetPropertyData(p));
+
+		CMFCPropertyGridProperty* gp1 = new CMFCPropertyGridProperty(p->name.c_str());
+		gp->AddSubItem(gp1);
+
+		gp1->AddSubItem(new CMFCPropertyGridProperty("x", (_variant_t)(data.x), ""));
+		gp1->AddSubItem(new CMFCPropertyGridProperty("y", (_variant_t)(data.y), ""));
+		gp1->AddSubItem(new CMFCPropertyGridProperty("z", (_variant_t)(data.z), ""));
+		gp1->AddSubItem(new CMFCPropertyGridProperty("w", (_variant_t)(data.w), ""));
+	}
 }
 
 LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)

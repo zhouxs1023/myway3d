@@ -57,7 +57,8 @@ public:
 
 public:
     Vec2 Minimum(const Vec2 & rk) const;
-    Vec2 Normalize() const;
+	Vec2 Normalize() const;
+    float NormalizeL();
     float Dot(const Vec2 & rk) const;
     float Length() const;
     float LengthSq() const;

@@ -54,6 +54,12 @@
     <ClCompile Include="xObj.cpp">
       <Filter>Control</Filter>
     </ClCompile>
+    <ClCompile Include="xGizmo.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
+    <ClCompile Include="xObjBound.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h">
@@ -99,6 +105,12 @@
       <Filter>Control</Filter>
     </ClInclude>
     <ClInclude Include="xMesh.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="xGizmo.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="xObjBound.h">
       <Filter>Control</Filter>
     </ClInclude>
   </ItemGroup>

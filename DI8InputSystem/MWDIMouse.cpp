@@ -132,6 +132,16 @@ Point2i DIMouse::GetPositionDiff()
     return diff;
 }
 
+Point2f DIMouse::GetPositionDiffUnit()
+{
+	Point2f diff;
+
+	diff.x = m_positionUnit.x - m_oldPositionUnit.x;
+	diff.y = m_positionUnit.y - m_oldPositionUnit.y;
+
+	return diff;
+}
+
 bool DIMouse::IsActive()
 {
 	return m_bActive;

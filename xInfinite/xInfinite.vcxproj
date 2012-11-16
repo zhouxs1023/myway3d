@@ -99,12 +99,14 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="xApp.cpp" />
+    <ClCompile Include="xGizmo.cpp" />
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xObj.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
+    <ClCompile Include="xObjBound.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h" />
@@ -116,12 +118,14 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="xApp.h" />
+    <ClInclude Include="xGizmo.h" />
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xObj.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
+    <ClInclude Include="xObjBound.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\classview.bmp" />

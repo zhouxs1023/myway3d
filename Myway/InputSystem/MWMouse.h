@@ -26,6 +26,7 @@ public:
 	virtual Point2f GetPositionUnit() = 0;
 
     virtual Point2i GetPositionDiff() = 0;
+	virtual Point2f GetPositionDiffUnit() = 0;
 
 	virtual bool IsActive() = 0;
 };

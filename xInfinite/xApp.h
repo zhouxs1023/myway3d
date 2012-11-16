@@ -12,6 +12,7 @@ public:
 	static Event OnShutdown;
 	static Event OnSelectObj;
 	static Event OnUnSelectObj;
+	static Event OnUpdate;
 
 public:
 	xApp();

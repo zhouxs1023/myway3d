@@ -20,6 +20,7 @@ Event xApp::OnInitUI;
 Event xApp::OnShutdown;
 Event xApp::OnSelectObj;
 Event xApp::OnUnSelectObj;
+Event xApp::OnUpdate;
 
 _Locker::_Locker()
 { 
@@ -77,6 +78,8 @@ void xApp::Run()
 
             mNeedResize = false;
         }
+
+		OnUpdate.Call(NULL);
 
         _input();
         mEngine->Run();
