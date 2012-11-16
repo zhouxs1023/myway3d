@@ -27,7 +27,4 @@ typedef Triangle<Vec2>    Tri2;
 typedef Triangle<Vec3>    Tri3;
 typedef Triangle<Vec4>    Tri4;
 
-typedef Triangle<int>    Trii32;
-typedef Triangle<int>   Triu32;
-
 }

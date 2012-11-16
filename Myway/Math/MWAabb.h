@@ -83,4 +83,33 @@ public:
     Vec3 maximum;
 };
 
+
+class MW_ENTRY Obb
+{
+	DECLARE_ALLOC();
+
+public:
+	static const Obb Zero;
+	static const Obb Identiy;
+
+public:
+	Obb();
+	Obb(const Vec3 * axis, const Vec3 & center, const Vec3 & extent);
+	Obb(const Vec3 & vMin, const Vec3 & vMax);
+	~Obb();
+	
+	bool Contain(const Vec3 & p) const;
+
+	float Width() const { return extent.x * 2; }
+	float Height() const { return extent.y * 2; }
+	float Depth() const { return extent.z * 2; }
+	float Volume() const { return Width() * Height() * Depth(); }
+	Vec3 Size() const { return extent * 2; }
+
+public:
+	Vec3 axis[3];
+	Vec3 center;
+	Vec3 extent;
+};
+
 }

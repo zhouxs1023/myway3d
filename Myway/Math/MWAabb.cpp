@@ -293,4 +293,60 @@ int Aabb::Intersection(const Sphere & rk) const
     return Math::AABBIntersection(*this, rk);
 }
 
+
+
+
+
+const Obb Obb::Zero = Obb(0, 0);
+const Obb Obb::Identiy = Obb(-0.5f, 0.5f);
+
+Obb::Obb()
+{
+}
+
+Obb::Obb(const Vec3 * a, const Vec3 & c, const Vec3 & e)
+{
+	axis[0] = a[0];
+	axis[1] = a[1];
+	axis[2] = a[2];
+
+	center = c;
+	extent = e;
+}
+
+Obb::Obb(const Vec3 & vMin, const Vec3 & vMax)
+{
+	axis[0] = Vec3::UnitX;
+	axis[1] = Vec3::UnitY;
+	axis[2] = Vec3::UnitZ;
+
+	center = (vMax + vMin) * 0.5f;
+	extent = (vMax - vMin) * 0.5f;
+}
+
+Obb::~Obb()
+{
+}
+
+
+bool Obb::Contain(const Vec3 & p) const
+{
+	Vec3 local_p = p - center;
+	float proj = local_p.Dot(axis[0]);
+	
+	if (proj > extent[0] || proj < -extent[0])
+		return false;
+
+	proj = local_p.Dot(axis[1]);
+	if (proj > extent[1] || proj < -extent[1])
+		return false;
+
+	proj = local_p.Dot(axis[2]);
+	if (proj > extent[2] || proj < -extent[2])
+		return false;
+
+	return true;
+}
+
+
 }

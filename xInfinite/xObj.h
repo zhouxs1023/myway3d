@@ -94,10 +94,19 @@ public:
 	void Init(void * data);
 	void Shutdown(void * data);
 	void Render(void * data);
+	void Update(void * data);
+
+protected:
+	void _InitGeo();
 
 protected:
 	Technique * mTech;
 	RenderDesc * mRender;
+
+	int mNumVertex_Move;
+	int mNumIndex_Move;
+	Vec3 * mVertex_Move;
+	short * mIndex_Move;
 
 	tEventListener<xGizmo> OnInit;
 	tEventListener<xGizmo> OnShutdown;

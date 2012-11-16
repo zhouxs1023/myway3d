@@ -336,7 +336,7 @@ void xObjBound::Render(void * data)
 xGizmo::xGizmo()
 	: OnInit(xApp::OnInit, this, &xGizmo::Init)
 	, OnShutdown(xApp::OnShutdown, this, &xGizmo::Shutdown)
-	, OnRender(RenderScheme::OnAfterDeffererShading, this, &xGizmo::Render)
+	, OnRender(RenderScheme::OnAfterRender, this, &xGizmo::Render)
 {
 }
 
@@ -351,9 +351,9 @@ void xGizmo::Init(void * data)
 	VertexStream * vxStream = &mRender->vxStream;
 	IndexStream * ixStream = &mRender->ixStream;
 
-	int iVertexCount = 8;
-	int iIndexCount = 12 * 3;
-	int iPrimCount = 12;
+	int iVertexCount = 8 + 5;
+	int iIndexCount = 12 * 3 + 4 * 3;
+	int iPrimCount = iIndexCount / 3;
 
 	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
 	decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
@@ -361,88 +361,23 @@ void xGizmo::Init(void * data)
 
 	vxStream->SetDeclaration(decl);
 
-	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 12);
+	VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
 
-	float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);
+	float * verteces;
+	verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
 	{
-		const float half_w = 0.5f;
-		const float half_h = 0.5f;
-		const float half_d = 0.5f;
-		Vec3 pos;
-
-		//front
-		pos = Vec3(-half_w, half_h, -half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		pos = Vec3(half_w, half_h, -half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		pos = Vec3(-half_w, -half_h, -half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		pos = Vec3(half_w, -half_h, -half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		//back
-		pos = Vec3(-half_w, half_h, half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		pos = Vec3(half_w, half_h, half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		pos = Vec3(-half_w, -half_h, half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
-
-		pos = Vec3(half_w, -half_h, half_d);
-		*vert++ = pos.x;
-		*vert++ = pos.y;
-		*vert++ = pos.z;
+		Memcpy(verteces, mVertex_Move, iVertexCount * sizeof (Vec3));
 	}
-	vb->Unlock();
+	buffer->Unlock();
 
 	vxStream->Bind(0, vb, 12);
 	vxStream->SetCount(iVertexCount);
 
 	IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
-	short * indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
+	short * indices;
+	indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
 	{
-		//front
-		*indices++ = 0, *indices++ = 1, *indices++ = 2;
-		*indices++ = 2, *indices++ = 1, *indices++ = 3;
-
-		//back
-		*indices++ = 5, *indices++ = 4, *indices++ = 7;
-		*indices++ = 7, *indices++ = 4, *indices++ = 6;
-
-		//left
-		*indices++ = 4, *indices++ = 0, *indices++ = 6;
-		*indices++ = 6, *indices++ = 0, *indices++ = 2;
-
-		//right
-		*indices++ = 1, *indices++ = 5, *indices++ = 3;
-		*indices++ = 3, *indices++ = 5, *indices++ = 7;
-
-		//top
-		*indices++ = 0, *indices++ = 1, *indices++ = 4;
-		*indices++ = 4, *indices++ = 1, *indices++ = 5;
-
-		//bottom
-		*indices++ = 2, *indices++ = 3, *indices++ = 6;
-		*indices++ = 6, *indices++ = 3, *indices++ = 7;
+		Memcpy(indices, mIndex_Move, iIndexCount * sizeof (short));
 	}
 	ibuffer->Unlock();
 
@@ -468,22 +403,302 @@ void xGizmo::Shutdown(void * data)
 
 void xGizmo::Render(void * data)
 {
-	/*if (xApp::Instance()->GetSelectedObjSize() == 0 ||
-	xApp::Instance()->GetSelectedObjSize() > 1)
-	return ;
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = xObj->GetPosition();
+	Quat orientation = xObj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
 
 	RenderSystem * render = RenderSystem::Instance();
 
-	ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+	// xAxis
+	{
+		Mat4 matLocal, matWorld;
 
-	uColor->SetUnifom(0, 1, 1, 1);
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+		mRender->xform = matWorld;
 
-	mRender->xform.MakeTransform(pos, Quat::Identity, scale);
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
 
-	SamplerState state;
-	state.Address = TEXA_CLAMP;
+		uColor->SetUnifom(1, 0, 0, 1);
 
-	render->Render(mTech, mRender);*/
+		render->Render(mTech, mRender);
+	}
+
+	// yAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		uColor->SetUnifom(0, 1, 0, 1);
+
+		render->Render(mTech, mRender);
+	}
+
+	// zAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationY(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		uColor->SetUnifom(0, 0, 1, 1);
+
+		render->Render(mTech, mRender);
+	}
+}
+
+void xGizmo::Update(void * data)
+{
+	Point2f pt = IMouse::Instance()->GetPositionUnit();
+
+	Camera * cam = World::Instance()->MainCamera();
+	Ray ray = cam->GetViewportRay(pt.x, pt.y);
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = xObj->GetPosition();
+	Quat orientation = xObj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	float dx, dy, dz;
+
+	// x axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Move; ++i)
+		{
+			Vec3 p = mVertex_Move[i] * matWorld;
+			bound.Merge(bound);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dx = result.distance;
+		else
+			dx = -1;
+	}
+
+	// y axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Move; ++i)
+		{
+			Vec3 p = mVertex_Move[i] * matWorld;
+			bound.Merge(bound);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dy = result.distance;
+		else
+			dy = -2;
+	}
+
+	// z axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal = matLocal.MakeRotationY(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Move; ++i)
+		{
+			Vec3 p = mVertex_Move[i] * matWorld;
+			bound.Merge(bound);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dz = result.distance;
+		else
+			dz = -3;
+	}
+
+	int flag = -1;
+
+	if (dx > 0)
+		flag = 0;
+
+	if (dy > 0 && dy > dx)
+		flag = 1;
+
+	if (dz > 0 && dz > dy && dz > dx)
+		flag = 2;
+
+
+}
+
+
+void xGizmo::_InitGeo()
+{
+	mVertex_Move = 8 + 5;
+	mIndex_Move = 12 * 3 + 4 * 3;
+
+	mVertex_Move = new Vec3[mNumVertex_Move];
+	mIndex_Move = new Vec3[mNumIndex_Move];
+
+	float * vert = (float *)mVertex_Move;
+	{
+		const float off = 0.1f;
+		const float half_w = 1 + off;
+		const float half_h = 0.1f;
+		const float half_d = 0.1f;
+		Vec3 pos;
+
+		//front
+		pos = Vec3(off, half_h, -half_d);
+		*vert++ = off;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w, half_h, -half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(off, -half_h, -half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w, -half_h, -half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		//back
+		pos = Vec3(off, half_h, half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w, half_h, half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(off, -half_h, half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w, -half_h, half_d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		//
+		pos = Vec3(half_w + 0.3f, 0, 0);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w - 0.1f,  half_h + 0.1f,  half_d + 0.1f);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w - 0.1f, -half_h - 0.1f,  half_d + 0.1f);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w - 0.1f, -half_h - 0.1f, -half_d - 0.1f);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(half_w - 0.1f,  half_h + 0.1f, -half_d - 0.1f);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+	}
+
+	short * indices = (short *)mIndex_Move;
+	{
+		//front
+		*indices++ = 0, *indices++ = 1, *indices++ = 2;
+		*indices++ = 2, *indices++ = 1, *indices++ = 3;
+
+		//back
+		*indices++ = 5, *indices++ = 4, *indices++ = 7;
+		*indices++ = 7, *indices++ = 4, *indices++ = 6;
+
+		//left
+		*indices++ = 4, *indices++ = 0, *indices++ = 6;
+		*indices++ = 6, *indices++ = 0, *indices++ = 2;
+
+		//right
+		*indices++ = 1, *indices++ = 5, *indices++ = 3;
+		*indices++ = 3, *indices++ = 5, *indices++ = 7;
+
+		//top
+		*indices++ = 4, *indices++ = 5, *indices++ = 0;
+		*indices++ = 0, *indices++ = 5, *indices++ = 1;
+
+		//bottom
+		*indices++ = 2, *indices++ = 3, *indices++ = 6;
+		*indices++ = 6, *indices++ = 3, *indices++ = 7;
+
+		//
+		*indices++ = 8, *indices++ =  9, *indices++ = 10;
+		*indices++ = 8, *indices++ = 10, *indices++ = 11;
+		*indices++ = 8, *indices++ = 11, *indices++ = 12;
+		*indices++ = 8, *indices++ = 12, *indices++ = 9;
+	}
 }
