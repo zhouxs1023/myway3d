@@ -74,9 +74,8 @@ namespace Myway {
 		VertexStream * vxStream = &mRender.vxStream;
 		IndexStream * ixStream = &mRender.ixStream;
 
-		int iVertexCount = 8;
-		int iIndexCount = 12 * 3;
-		int iPrimCount = 12;
+		int iVertexCount = 4;
+		int iPrimCount = 2;
 
 		VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
 		decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);

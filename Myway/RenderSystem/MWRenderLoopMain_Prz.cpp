@@ -68,6 +68,10 @@ namespace Myway {
 
         _updateTexture();
 
+		render->SetRenderTarget(1, NULL);
+		render->SetRenderTarget(2, NULL);
+		render->SetRenderTarget(3, NULL);
+
         // --->sun lighting
         if (Environment::Instance()->GetSun())
             Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Normal.c_ptr());
