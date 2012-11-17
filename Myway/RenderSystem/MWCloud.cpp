@@ -50,8 +50,8 @@ namespace Myway {
         VertexStream * vxStream = &mRender.vxStream;
         IndexStream * ixStream = &mRender.ixStream;
 
-        int xSegments = 1;
-        int zSegments = 1;
+        int xSegments = 100;
+        int zSegments = 100;
 
         int iVertexCount = (xSegments + 1) * (zSegments + 1);
         int iIndexCount = xSegments * zSegments * 2 * 3;
@@ -84,7 +84,7 @@ namespace Myway {
 
                 float px = -1 + x * xstep;
                 float pz = +1 - z * zstep;
-                float py = Math::Sin(dt * Math::PI_1 / 2);
+                float py = Math::Cos(dt * Math::PI_1 / 2);
 
                 float u = 0 + x * ustep;
                 float v = 0 + z * vstep;
