@@ -78,8 +78,8 @@ namespace Myway {
         {
             for (int x = 0; x < xSegments + 1; ++x)
             {
-                float dx = (x - xSegments / 2) / (float)xSegments;
-                float dz = (z - zSegments / 2) / (float)zSegments;
+                float dx = (x - xSegments / 2.0f) / (float)xSegments;
+                float dz = (z - zSegments / 2.0f) / (float)zSegments;
                 float dt = Math::Sqrt(dx * dx + dz * dz) / (Math::SQRT_2 * 0.5f);
 
                 float px = -1 + x * xstep;
@@ -136,7 +136,7 @@ namespace Myway {
         mRender.rState.cullMode = CULL_NONE;
         mRender.rState.fillMode = FILL_SOLID;
         mRender.rState.depthWrite = false;
-        mRender.rState.depthCheck = DCM_LESS_EQUAL;
+		mRender.rState.depthCheck = DCM_ALWAYS;
     }
 
     void Cloud::_initTechnique()
