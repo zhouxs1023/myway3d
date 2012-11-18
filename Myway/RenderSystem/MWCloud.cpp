@@ -50,8 +50,8 @@ namespace Myway {
         VertexStream * vxStream = &mRender.vxStream;
         IndexStream * ixStream = &mRender.ixStream;
 
-        int xSegments = 100;
-        int zSegments = 100;
+        int xSegments = 80;
+        int zSegments = 80;
 
         int iVertexCount = (xSegments + 1) * (zSegments + 1);
         int iIndexCount = xSegments * zSegments * 2 * 3;
@@ -136,7 +136,7 @@ namespace Myway {
         mRender.rState.cullMode = CULL_NONE;
         mRender.rState.fillMode = FILL_SOLID;
         mRender.rState.depthWrite = false;
-		mRender.rState.depthCheck = DCM_ALWAYS;
+		mRender.rState.depthCheck = DCM_LESS_EQUAL;
     }
 
     void Cloud::_initTechnique()
