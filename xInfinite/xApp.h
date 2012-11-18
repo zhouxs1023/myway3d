@@ -2,6 +2,14 @@
 
 #include "xObj.h"
 
+enum eTransformOperator
+{
+	eTO_Unknown,
+	eTO_Move,
+	eTO_Rotate,
+	eTO_Scale,
+};
+
 class xApp
 {
 	DECLARE_SINGLETON(xApp);
@@ -41,6 +49,9 @@ public:
 	int GetSelectedObjSize();
 	xObj * GetSelectedObj(int index);
 
+	void SetTransformOp(eTransformOperator op) { mTransformOp = op; }
+	eTransformOperator GetTransformOp() { return mTransformOp; }
+
 protected:
 	void _input();
 
@@ -57,7 +68,10 @@ protected:
 	bool mNeedResize;
 
 	Array<xObj *> mSelectedObjs;
+
+	eTransformOperator mTransformOp;
 };
+
 
 
 struct _Locker

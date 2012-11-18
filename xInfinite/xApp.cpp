@@ -46,6 +46,8 @@ xApp::xApp()
     mInited = false;
 
 	mHelperShaderLib = NULL;
+
+	mTransformOp = eTO_Unknown;
 }
 
 xApp::~xApp()

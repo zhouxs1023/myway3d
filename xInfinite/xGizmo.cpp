@@ -9,6 +9,8 @@ xGizmo::xGizmo()
 	, OnShutdown(xApp::OnShutdown, this, &xGizmo::Shutdown)
 	, OnRender(RenderScheme::OnAfterRender, this, &xGizmo::Render)
 	, OnUpdate(xApp::OnUpdate, this, &xGizmo::Update)
+	, mPicked(false)
+	, mPickedAxis(-1)
 {
 }
 
@@ -18,53 +20,15 @@ xGizmo::~xGizmo()
 
 void xGizmo::Init(void * data)
 {
-	_initGeo();
+	_initGeo_Move();
+	_initGeo_Move_Render();
 
-	mRender = new RenderDesc();
+	_initGeo_Rotate();
+	_initGeo_Rotate_Render();
 
-	VertexStream * vxStream = &mRender->vxStream;
-	IndexStream * ixStream = &mRender->ixStream;
-
-	int iVertexCount = 8 + 5;
-	int iIndexCount = 12 * 3 + 4 * 3;
-	int iPrimCount = iIndexCount / 3;
-
-	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-	decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
-	decl->Init();
-
-	vxStream->SetDeclaration(decl);
-
-	VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
-
-	float * verteces;
-	verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
-	{
-		Memcpy(verteces, mVertex_Move, iVertexCount * sizeof (Vec3));
-	}
-	buffer->Unlock();
-
-	vxStream->Bind(0, buffer, 12);
-	vxStream->SetCount(iVertexCount);
-
-	IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
-	short * indices;
-	indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
-	{
-		Memcpy(indices, mIndex_Move, iIndexCount * sizeof (short));
-	}
-	ibuffer->Unlock();
-
-	ixStream->SetCount(iIndexCount);
-	ixStream->Bind(ibuffer, 0);
-
-	mRender->iPrimCount = iPrimCount;
-	mRender->ePrimType = PRIM_TRIANGLELIST;
-
-	mRender->rState.cullMode = CULL_NONE;
-	mRender->rState.blendMode = BM_OPATICY;
-	mRender->rState.depthWrite = false;
-	mRender->rState.depthCheck = DCM_ALWAYS;
+	_initGeo_Scale();
+	_initGeo_Scale_Render();
+	
 
 	mTech = xApp::Instance()->GetHelperShaderLib()->GetTechnique("Color");
 
@@ -75,88 +39,24 @@ void xGizmo::Shutdown(void * data)
 {
 	delete[] mVertex_Move;
 	delete[] mIndex_Move;
-	delete mRender;
+	delete mRender_Move;
+
+	delete[] mVertex_Rotate;
+	delete[] mIndex_Rotate;
+	delete mRender_Rotate;
+
+	delete[] mVertex_Scale;
+	delete[] mIndex_Scale;
+	delete mRender_Scale;
 }
 
 void xGizmo::Render(void * data)
 {
 	Update(data);
 
-	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
-		xApp::Instance()->GetSelectedObjSize() > 1)
-		return ;
-
-	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
-
-	Vec3 position = obj->GetPosition();
-	Quat orientation = obj->GetOrientation();
-	Vec3 scale = Vec3(w, w, w);
-
-	RenderSystem * render = RenderSystem::Instance();
-
-	// xAxis
-	{
-		Mat4 matLocal, matWorld;
-
-		matLocal = Mat4::Identity;
-		matWorld.MakeTransform(position, Quat::Identity, scale);
-		matWorld = matLocal * matWorld;
-		mRender->xform = matWorld;
-
-		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
-
-		if (mPickedAxis == 0)
-			uColor->SetUnifom(1, 1, 1, 1);
-		else
-			uColor->SetUnifom(1, 0, 0, 1);
-
-		render->Render(mTech, mRender);
-	}
-
-	// yAxis
-	{
-		Mat4 matLocal, matWorld;
-
-		matLocal.MakeRotationZ(Math::PI_1 / 2);
-		matWorld.MakeTransform(position, orientation, scale);
-		matWorld = matLocal * matWorld;
-		mRender->xform = matWorld;
-
-		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
-
-		if (mPickedAxis == 1)
-			uColor->SetUnifom(1, 1, 1, 1);
-		else
-			uColor->SetUnifom(0, 1, 0, 1);
-
-		render->Render(mTech, mRender);
-	}
-
-	// zAxis
-	{
-		Mat4 matLocal, matWorld;
-
-		matLocal.MakeRotationY(-Math::PI_1 / 2);
-		matWorld.MakeTransform(position, orientation, scale);
-		matWorld = matLocal * matWorld;
-		mRender->xform = matWorld;
-
-		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
-
-		if (mPickedAxis == 2)
-			uColor->SetUnifom(1, 1, 1, 1);
-		else
-			uColor->SetUnifom(0, 0, 1, 1);
-
-		render->Render(mTech, mRender);
-	}
+	//_renderMove();
+	//_renderRotate();
+	_renderScale();
 }
 
 void xGizmo::Update(void * data)
@@ -165,12 +65,12 @@ void xGizmo::Update(void * data)
 
 	if (IMouse::Instance()->KeyUp(MKC_BUTTON0))
 	{
-		mNeedMove = false;
+		mPicked = false;
 	}
 
 	_mouseMoved();
 
-	if (mNeedMove)
+	if (mPicked)
 		return ;
 
 	Point2f pt = IMouse::Instance()->GetPositionUnit();
@@ -281,13 +181,13 @@ void xGizmo::Update(void * data)
 
 	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
 	{
-		mNeedMove = true;
+		mPicked = true;
 	}
 
 }
 
 
-void xGizmo::_initGeo()
+void xGizmo::_initGeo_Move()
 {
 	mNumVertex_Move = 8 + 5;
 	mNumIndex_Move = 12 * 3 + 4 * 3;
@@ -406,6 +306,311 @@ void xGizmo::_initGeo()
 	}
 }
 
+void xGizmo::_initGeo_Move_Render()
+{
+	mRender_Move = new RenderDesc();
+
+	VertexStream * vxStream = &mRender_Move->vxStream;
+	IndexStream * ixStream = &mRender_Move->ixStream;
+
+	int iVertexCount = mNumVertex_Move;
+	int iIndexCount = mNumIndex_Move;
+	int iPrimCount = iIndexCount / 3;
+
+	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
+	decl->Init();
+
+	vxStream->SetDeclaration(decl);
+
+	VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
+
+	float * verteces;
+	verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
+	{
+		Memcpy(verteces, mVertex_Move, iVertexCount * sizeof (Vec3));
+	}
+	buffer->Unlock();
+
+	vxStream->Bind(0, buffer, 12);
+	vxStream->SetCount(iVertexCount);
+
+	IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
+	short * indices;
+	indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
+	{
+		Memcpy(indices, mIndex_Move, iIndexCount * sizeof (short));
+	}
+	ibuffer->Unlock();
+
+	ixStream->SetCount(iIndexCount);
+	ixStream->Bind(ibuffer, 0);
+
+	mRender_Move->iPrimCount = iPrimCount;
+	mRender_Move->ePrimType = PRIM_TRIANGLELIST;
+
+	mRender_Move->rState.cullMode = CULL_NONE;
+	mRender_Move->rState.blendMode = BM_OPATICY;
+	mRender_Move->rState.depthWrite = false;
+	mRender_Move->rState.depthCheck = DCM_ALWAYS;
+}
+
+void xGizmo::_initGeo_Rotate()
+{
+	int segments = 20;
+
+	mNumVertex_Rotate = (segments + 1) * 4;
+	mNumIndex_Rotate = segments * 8 * 3;
+	
+	mVertex_Rotate = new Vec3[mNumVertex_Rotate];
+	mIndex_Rotate = new short[mNumIndex_Rotate];
+
+	Memzero(mIndex_Rotate, mNumIndex_Rotate * 2);
+
+	const float w = 0.015f;
+	for (int i = 0; i < segments + 1; ++i)
+	{
+		float rads = i / float(segments) * Math::PI_2;
+
+		float cosine = Math::Cos(rads);
+		float sine = Math::Sin(rads);
+
+		Vec3 dir = Vec3(cosine, 0, sine);
+
+		mVertex_Rotate[i * 4 + 0] = Vec3(0, -w, 0) + dir * (1 - w);
+		mVertex_Rotate[i * 4 + 1] = Vec3(0, -w, 0) + dir * (1 + w);
+		mVertex_Rotate[i * 4 + 2] = Vec3(0, +w, 0) + dir * (1 - w);
+		mVertex_Rotate[i * 4 + 3] = Vec3(0, +w, 0) + dir * (1 + w);
+	}
+
+	for (int i = 0; i < segments; ++i)
+	{
+		int s = i * 4;
+		int n = s + 4;
+		int idx = i * 24;
+
+		// bottom
+		mIndex_Rotate[idx++] = s; 
+		mIndex_Rotate[idx++] = s + 1; 
+		mIndex_Rotate[idx++] = n;
+
+		mIndex_Rotate[idx++] = n;
+		mIndex_Rotate[idx++] = s + 1;
+		mIndex_Rotate[idx++] = n + 1;
+
+		// top
+		mIndex_Rotate[idx++] = s + 2;
+		mIndex_Rotate[idx++] = s + 3;
+		mIndex_Rotate[idx++] = n + 2;
+
+		mIndex_Rotate[idx++] = n + 2;
+		mIndex_Rotate[idx++] = s + 3;
+		mIndex_Rotate[idx++] = n + 3;
+
+		// left
+		mIndex_Rotate[idx++] = s;
+		mIndex_Rotate[idx++] = n;
+		mIndex_Rotate[idx++] = s + 2;
+
+		mIndex_Rotate[idx++] = s + 2;
+		mIndex_Rotate[idx++] = n;
+		mIndex_Rotate[idx++] = n + 2;
+
+		// right
+		mIndex_Rotate[idx++] = s + 1;
+		mIndex_Rotate[idx++] = n + 1;
+		mIndex_Rotate[idx++] = s + 3;
+
+		mIndex_Rotate[idx++] = s + 3;
+		mIndex_Rotate[idx++] = n + 1;
+		mIndex_Rotate[idx++] = n + 3;
+	}
+}
+
+void xGizmo::_initGeo_Rotate_Render()
+{
+	mRender_Rotate = new RenderDesc();
+
+	VertexStream * vxStream = &mRender_Rotate->vxStream;
+	IndexStream * ixStream = &mRender_Rotate->ixStream;
+
+	int iVertexCount = mNumVertex_Rotate;
+	int iIndexCount = mNumIndex_Rotate;
+	int iPrimCount = iIndexCount / 3;
+
+	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
+	decl->Init();
+
+	vxStream->SetDeclaration(decl);
+
+	VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
+
+	float * verteces;
+	verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
+	{
+		Memcpy(verteces, mVertex_Rotate, iVertexCount * sizeof (Vec3));
+	}
+	buffer->Unlock();
+
+	vxStream->Bind(0, buffer, 12);
+	vxStream->SetCount(iVertexCount);
+
+	IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
+	short * indices;
+	indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
+	{
+		Memcpy(indices, mIndex_Rotate, iIndexCount * sizeof (short));
+	}
+	ibuffer->Unlock();
+
+	ixStream->SetCount(iIndexCount);
+	ixStream->Bind(ibuffer, 0);
+
+	mRender_Rotate->iPrimCount = iPrimCount;
+	mRender_Rotate->ePrimType = PRIM_TRIANGLELIST;
+
+	mRender_Rotate->rState.cullMode = CULL_NONE;
+	mRender_Rotate->rState.blendMode = BM_OPATICY;
+	mRender_Rotate->rState.depthWrite = false;
+	mRender_Rotate->rState.depthCheck = DCM_ALWAYS;
+}
+
+void xGizmo::_initGeo_Scale()
+{
+	mNumVertex_Scale = 8;
+	mNumIndex_Scale = 36;
+
+	mVertex_Scale= new Vec3[mNumVertex_Scale];
+	mIndex_Scale = new short[mNumIndex_Scale];
+
+	float * vert = (float *)mVertex_Scale;
+	{
+		const float w = 0.02f;
+		const float h = 0.02f;
+		const float d = 0.02f;
+		Vec3 pos;
+
+		//front
+		pos = Vec3(1 - w, h, -d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(1 + w, h, -d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(1 - w, -h, -d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(1 + w, -h, -d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		//back
+		pos = Vec3(1 - w, h, d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(1 + w, h, d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(1 - w, -h, d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+
+		pos = Vec3(1 + w, -h, d);
+		*vert++ = pos.x;
+		*vert++ = pos.y;
+		*vert++ = pos.z;
+	}
+
+	short * indices = (short *)mIndex_Scale;
+	{
+		//front
+		*indices++ = 0, *indices++ = 1, *indices++ = 2;
+		*indices++ = 2, *indices++ = 1, *indices++ = 3;
+
+		//back
+		*indices++ = 5, *indices++ = 4, *indices++ = 7;
+		*indices++ = 7, *indices++ = 4, *indices++ = 6;
+
+		//left
+		*indices++ = 4, *indices++ = 0, *indices++ = 6;
+		*indices++ = 6, *indices++ = 0, *indices++ = 2;
+
+		//right
+		*indices++ = 1, *indices++ = 5, *indices++ = 3;
+		*indices++ = 3, *indices++ = 5, *indices++ = 7;
+
+		//top
+		*indices++ = 4, *indices++ = 5, *indices++ = 0;
+		*indices++ = 0, *indices++ = 5, *indices++ = 1;
+
+		//bottom
+		*indices++ = 2, *indices++ = 3, *indices++ = 6;
+		*indices++ = 6, *indices++ = 3, *indices++ = 7;
+	}
+}
+
+void xGizmo::_initGeo_Scale_Render()
+{
+	mRender_Scale = new RenderDesc();
+
+	VertexStream * vxStream = &mRender_Scale->vxStream;
+	IndexStream * ixStream = &mRender_Scale->ixStream;
+
+	int iVertexCount = mNumVertex_Scale;
+	int iIndexCount = mNumIndex_Scale;
+	int iPrimCount = iIndexCount / 3;
+
+	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
+	decl->Init();
+
+	vxStream->SetDeclaration(decl);
+
+	VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
+
+	float * verteces;
+	verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
+	{
+		Memcpy(verteces, mVertex_Scale, iVertexCount * sizeof (Vec3));
+	}
+	buffer->Unlock();
+
+	vxStream->Bind(0, buffer, 12);
+	vxStream->SetCount(iVertexCount);
+
+	IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
+	short * indices;
+	indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
+	{
+		Memcpy(indices, mIndex_Scale, iIndexCount * sizeof (short));
+	}
+	ibuffer->Unlock();
+
+	ixStream->SetCount(iIndexCount);
+	ixStream->Bind(ibuffer, 0);
+
+	mRender_Scale->iPrimCount = iPrimCount;
+	mRender_Scale->ePrimType = PRIM_TRIANGLELIST;
+
+	mRender_Scale->rState.cullMode = CULL_NONE;
+	mRender_Scale->rState.blendMode = BM_OPATICY;
+	mRender_Scale->rState.depthWrite = false;
+	mRender_Scale->rState.depthCheck = DCM_ALWAYS;
+}
+
 void xGizmo::_mouseMoved()
 {
 	Camera * cam = World::Instance()->MainCamera();
@@ -424,7 +629,7 @@ void xGizmo::_mouseMoved()
 	w = Math::Maximum(w, size.y);
 	w = Math::Maximum(w, size.z);
 
-	if (mPickedAxis != -1 && mNeedMove && IMouse::Instance()->MouseMoved())
+	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
 	{
 		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
 
@@ -457,5 +662,243 @@ void xGizmo::_mouseMoved()
 		dt = d.x * pt.x + d.y * pt.y;
 
 		obj->SetPosition(pos + p1 * dt * w);
+	}
+}
+
+
+void xGizmo::_renderMove()
+{
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = obj->GetPosition();
+	Quat orientation = obj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	RenderSystem * render = RenderSystem::Instance();
+
+	// xAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Move->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 0)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(1, 0, 0, 1);
+
+		render->Render(mTech, mRender_Move);
+	}
+
+	// yAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Move->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 1)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(0, 1, 0, 1);
+
+		render->Render(mTech, mRender_Move);
+	}
+
+	// zAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationY(-Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Move->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 2)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(0, 0, 1, 1);
+
+		render->Render(mTech, mRender_Move);
+	}
+}
+
+void xGizmo::_renderRotate()
+{
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = obj->GetPosition();
+	Quat orientation = obj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	RenderSystem * render = RenderSystem::Instance();
+
+	// xAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Rotate->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 0)
+		uColor->SetUnifom(1, 1, 1, 1);
+		else
+		uColor->SetUnifom(1, 0, 0, 1);
+
+		render->Render(mTech, mRender_Rotate);
+	}
+
+	// yAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Rotate->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 1)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(0, 1, 0, 1);
+
+		render->Render(mTech, mRender_Rotate);
+	}
+
+	// zAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationX(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Rotate->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 2)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(0, 0, 1, 1);
+
+		render->Render(mTech, mRender_Rotate);
+	}
+}
+
+void xGizmo::_renderScale()
+{
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = obj->GetPosition();
+	Quat orientation = obj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	RenderSystem * render = RenderSystem::Instance();
+
+	// xAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Scale->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 0)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(1, 0, 0, 1);
+
+		render->Render(mTech, mRender_Scale);
+	}
+
+	// yAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Scale->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 1)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(0, 1, 0, 1);
+
+		render->Render(mTech, mRender_Scale);
+	}
+
+	// zAxis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationY(-Math::PI_1 / 2);
+		matWorld.MakeTransform(position, orientation, scale);
+		matWorld = matLocal * matWorld;
+		mRender_Scale->xform = matWorld;
+
+		ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+		if (mPickedAxis == 2)
+			uColor->SetUnifom(1, 1, 1, 1);
+		else
+			uColor->SetUnifom(0, 0, 1, 1);
+
+		render->Render(mTech, mRender_Scale);
 	}
 }
