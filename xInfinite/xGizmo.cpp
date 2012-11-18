@@ -276,7 +276,7 @@ void xGizmo::_initGeo_Move_Render()
 
 void xGizmo::_initGeo_Rotate()
 {
-	int segments = 20;
+	int segments = 3;
 
 	mNumVertex_Rotate = (segments + 1) * 4;
 	mNumIndex_Rotate = segments * 8 * 3;
@@ -943,16 +943,347 @@ void xGizmo::_mouseMoved_Move()
 
 void xGizmo::_update_Rotate()
 {
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Vec3 pos = obj->GetPosition();
+
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+
+	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
+	{
+		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
+
+		const Mat4 & matVP = cam->GetViewProjMatrix();
+
+		float dt = 0;
+
+		Vec3 p0 = pos;
+		Vec3 p1, axis;
+
+		if (mPickedAxis == 0)
+		{
+			p1 = Vec3(0, 0, 1);
+			axis = Vec3::UnitX;
+		}
+		else if (mPickedAxis == 1)
+		{
+			p1 = Vec3(1, 0, 0);
+			axis = Vec3::UnitY;
+		}
+		else
+		{
+			p1 = Vec3(0, 1, 0);
+			axis = Vec3::UnitZ;
+		}
+
+		Vec3 p2 = p0 * matVP;
+		Vec3 p3 = (p0 + p1) * matVP;
+
+		p2.x = (p2.x + 1) / 2;
+		p2.y = (1 - p2.y) / 2;
+
+		p3.x = (p3.x + 1) / 2;
+		p3.y = (1 - p3.y) / 2;
+
+		Vec2 d = Vec2(p3.x - p2.x, p3.y - p2.y);
+		d.NormalizeL();
+
+		dt = d.x * pt.x + d.y * pt.y;
+
+		Quat ort = obj->GetOrientation();
+
+		if (mPickedAxis == 0)
+		{
+			Quat q;
+			q.FromAxis(axis, dt * Math::PI_1);
+			ort = ort * q;
+			obj->SetOrientation(ort);
+		}
+	}
 }
 
 void xGizmo::_mouseMoved_Rotate()
 {
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (mPicked)
+		return ;
+
+	Point2f pt = IMouse::Instance()->GetPositionUnit();
+
+	Ray ray = cam->GetViewportRay(pt.x, pt.y);
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	Vec3 position = obj->GetPosition();
+	Quat orientation = obj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	float dx, dy, dz;
+
+	// x axis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		RayIntersectionInfo result;
+
+		Math::RayIntersection(result, ray, mVertex_Rotate, mIndex_Rotate,
+			mNumIndex_Rotate / 3, matWorld);
+
+
+		if (result.iterscetion)
+			dx = result.distance;
+		else
+			dx = -1;
+	}
+
+	// y axis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationY(-Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		RayIntersectionInfo result;
+
+		Math::RayIntersection(result, ray, mVertex_Rotate, mIndex_Rotate,
+			mNumIndex_Rotate / 3, matWorld);
+
+		if (result.iterscetion)
+			dy = result.distance;
+		else
+			dy = -2;
+	}
+
+	// z axis
+	{
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationX(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		RayIntersectionInfo result;
+
+		Math::RayIntersection(result, ray, mVertex_Rotate, mIndex_Rotate,
+			mNumIndex_Rotate / 3, matWorld);
+
+		if (result.iterscetion)
+			dz = result.distance;
+		else
+			dz = -3;
+	}
+
+	mPickedAxis = -1;
+
+	if (dx > 0)
+		mPickedAxis = 0;
+
+	if (dy > 0 && dy > dx)
+		mPickedAxis = 1;
+
+	if (dz > 0 && dz > dy && dz > dx)
+		mPickedAxis = 2;
+
+	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
+	{
+		mPicked = true;
+	}
 }
 
 void xGizmo::_update_Scale()
 {
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (mPicked)
+		return ;
+
+	Point2f pt = IMouse::Instance()->GetPositionUnit();
+
+	Ray ray = cam->GetViewportRay(pt.x, pt.y);
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = obj->GetPosition();
+	Quat orientation = obj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	float dx, dy, dz;
+
+	// x axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Scale; ++i)
+		{
+			Vec3 p = mVertex_Scale[i] * matWorld;
+			bound = bound.Merge(p);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dx = result.distance;
+		else
+			dx = -1;
+	}
+
+	// y axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Scale; ++i)
+		{
+			Vec3 p = mVertex_Scale[i] * matWorld;
+			bound = bound.Merge(p);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dy = result.distance;
+		else
+			dy = -2;
+	}
+
+	// z axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationY(-Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Scale; ++i)
+		{
+			Vec3 p = mVertex_Scale[i] * matWorld;
+			bound = bound.Merge(p);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dz = result.distance;
+		else
+			dz = -3;
+	}
+
+	mPickedAxis = -1;
+
+	if (dx > 0)
+		mPickedAxis = 0;
+
+	if (dy > 0 && dy > dx)
+		mPickedAxis = 1;
+
+	if (dz > 0 && dz > dy && dz > dx)
+		mPickedAxis = 2;
+
+	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
+	{
+		mPicked = true;
+	}
 }
 
 void xGizmo::_mouseMoved_Scale()
 {
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Vec3 pos = obj->GetPosition();
+
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+
+	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
+	{
+		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
+
+		const Mat4 & matVP = cam->GetViewProjMatrix();
+
+		float dt = 0;
+
+		Vec3 p0 = pos;
+		Vec3 p1;
+
+		if (mPickedAxis == 0)
+			p1 = Vec3(1, 0, 0);
+		else if (mPickedAxis == 1)
+			p1 = Vec3(0, 1, 0);
+		else
+			p1 = Vec3(0, 0, 1);
+
+		Vec3 p2 = p0 * matVP;
+		Vec3 p3 = (p0 + p1) * matVP;
+
+		p2.x = (p2.x + 1) / 2;
+		p2.y = (1 - p2.y) / 2;
+
+		p3.x = (p3.x + 1) / 2;
+		p3.y = (1 - p3.y) / 2;
+
+		Vec2 d = Vec2(p3.x - p2.x, p3.y - p2.y);
+		d.NormalizeL();
+
+		dt = d.x * pt.x + d.y * pt.y;
+
+		Vec3 scale = obj->GetScale();
+		scale *= 1 + dt;
+		obj->SetScale(scale);
+	}
 }

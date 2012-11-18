@@ -294,4 +294,92 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Tr
 }
 
 
+void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray, 
+						   const Vec3 * vert, const short * idx, 
+						   int numTris, const Mat4 & form)
+{
+	info.iterscetion = false;
+	info.distance = MAX_FLOAT;
+
+	for (int i = 0; i < numTris; ++i)
+	{
+		int j = i * 3;
+		int i0 = idx[j++], i1 = idx[j++], i2 = idx[j++];
+
+		Vec3 v0 = vert[i0] * form;
+		Vec3 v1 = vert[i1] * form;
+		Vec3 v2 = vert[i2] * form;
+
+		RayIntersectionInfo tInfo;
+		RayIntersection(tInfo, ray, v0, v1, v2);
+
+		if (tInfo.iterscetion && tInfo.distance < info.distance)
+			info = tInfo;
+	}
+}
+
+void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray,
+	                       const Vec3 & v0, const Vec3 & v1, const Vec3 & v2)
+{
+	info.iterscetion = false;
+	info.distance = MAX_FLOAT;
+
+	// E1
+	Vec3 E1 = v1 - v0;
+
+	// E2
+	Vec3 E2 = v2 - v0;
+
+	// P
+	Vec3 P = ray.direction.Cross(E2);
+
+	// determinant
+	float det = E1.Dot(P);
+
+	// keep det > 0, modify T accordingly
+	Vec3 T;
+
+	if( det > 0 )
+	{
+		T = ray.origin - v0;
+	}
+	else
+	{
+		T = v0 - ray.origin;
+		det = -det;
+	}
+
+	// If determinant is near zero, ray lies in plane of triangle
+	if( det < 0.0001f )
+		return ;
+
+	// Calculate u and make sure u <= 1
+	float u = T.Dot(P);
+
+	if(u < 0.0f || u > det )
+		return ;
+
+	Vec3 Q = T.Cross(E1);
+
+	// Calculate v and make sure u + v <= 1
+
+	float v = ray.direction.Dot(Q);
+
+	if( v < 0.0f || u + v > det )
+		return ;
+
+	// Calculate t, scale parameters, ray intersects triangle
+
+	info.distance = E2.Dot(Q);
+
+	float fInvDet = 1.0f / det;
+
+	info.distance *= fInvDet;
+
+	u *= fInvDet;
+	v *= fInvDet;
+
+	info.iterscetion = true;
+}
+
 }

@@ -339,6 +339,10 @@ public:
                         static  void        RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Sphere & sph);
                         static  void        RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Aabb & aabb);
                         static  void        RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Tri3 & tri);
+						static  void		RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Vec3 * vert,
+															const short * idx, int numTris, const Mat4 & form);
+						static  void		RayIntersection(RayIntersectionInfo & info, const Ray & ray,
+							                                const Vec3 & a, const Vec3 & b, const Vec3 & c);
 
                         static  bool        Intersection2Line(Vec2 & vOut, const Vec2 & a, const Vec2 & b, const Vec2 & c, const Vec2 & d);
 

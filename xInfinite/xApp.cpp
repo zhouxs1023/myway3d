@@ -47,7 +47,7 @@ xApp::xApp()
 
 	mHelperShaderLib = NULL;
 
-	mTransformOp = eTO_Unknown;
+	mTransformOp = eTO_Scale;
 }
 
 xApp::~xApp()
