@@ -54,9 +54,25 @@ void xGizmo::Render(void * data)
 {
 	Update(data);
 
-	//_renderMove();
-	//_renderRotate();
-	_renderScale();
+	eTransformOperator op = xApp::Instance()->GetTransformOp();
+
+	switch (op)
+	{
+	case eTO_Unknown:
+		break;
+
+	case eTO_Move:
+		_renderMove();
+		break;
+
+	case eTO_Rotate:
+		_renderRotate();
+		break;
+
+	case eTO_Scale:
+		_renderScale();
+		break;
+	}
 }
 
 void xGizmo::Update(void * data)
@@ -68,122 +84,25 @@ void xGizmo::Update(void * data)
 		mPicked = false;
 	}
 
-	_mouseMoved();
+	eTransformOperator op = xApp::Instance()->GetTransformOp();
 
-	if (mPicked)
-		return ;
-
-	Point2f pt = IMouse::Instance()->GetPositionUnit();
-
-	Ray ray = cam->GetViewportRay(pt.x, pt.y);
-
-	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
-		xApp::Instance()->GetSelectedObjSize() > 1)
-		return ;
-
-	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
-
-	Vec3 position = obj->GetPosition();
-	Quat orientation = obj->GetOrientation();
-	Vec3 scale = Vec3(w, w, w);
-
-	float dx, dy, dz;
-
-	// x axis
+	switch (op)
 	{
-		Aabb bound = Aabb::Invalid;
+	case eTO_Move:
+		_mouseMoved_Move();
+		_update_Move();
+		break;
 
-		Mat4 matLocal, matWorld;
+	case eTO_Rotate:
+		_mouseMoved_Rotate();
+		_update_Rotate();
+		break;
 
-		matLocal = Mat4::Identity;
-		matWorld.MakeTransform(position, Quat::Identity, scale);
-		matWorld = matLocal * matWorld;
-
-		for (int i = 0; i < mNumVertex_Move; ++i)
-		{
-			Vec3 p = mVertex_Move[i] * matWorld;
-			bound = bound.Merge(p);
-		}
-
-		RayIntersectionInfo result = ray.Intersection(bound);
-
-		if (result.iterscetion)
-			dx = result.distance;
-		else
-			dx = -1;
+	case eTO_Scale:
+		_mouseMoved_Scale();
+		_update_Scale();
+		break;
 	}
-
-	// y axis
-	{
-		Aabb bound = Aabb::Invalid;
-
-		Mat4 matLocal, matWorld;
-
-		matLocal.MakeRotationZ(Math::PI_1 / 2);
-		matWorld.MakeTransform(position, Quat::Identity, scale);
-		matWorld = matLocal * matWorld;
-
-		for (int i = 0; i < mNumVertex_Move; ++i)
-		{
-			Vec3 p = mVertex_Move[i] * matWorld;
-			bound = bound.Merge(p);
-		}
-
-		RayIntersectionInfo result = ray.Intersection(bound);
-
-		if (result.iterscetion)
-			dy = result.distance;
-		else
-			dy = -2;
-	}
-
-	// z axis
-	{
-		Aabb bound = Aabb::Invalid;
-
-		Mat4 matLocal, matWorld;
-
-		matLocal.MakeRotationY(-Math::PI_1 / 2);
-		matWorld.MakeTransform(position, Quat::Identity, scale);
-		matWorld = matLocal * matWorld;
-
-		for (int i = 0; i < mNumVertex_Move; ++i)
-		{
-			Vec3 p = mVertex_Move[i] * matWorld;
-			bound = bound.Merge(p);
-		}
-
-		RayIntersectionInfo result = ray.Intersection(bound);
-
-		if (result.iterscetion)
-			dz = result.distance;
-		else
-			dz = -3;
-	}
-
-	mPickedAxis = -1;
-
-	if (dx > 0)
-		mPickedAxis = 0;
-
-	if (dy > 0 && dy > dx)
-		mPickedAxis = 1;
-
-	if (dz > 0 && dz > dy && dz > dx)
-		mPickedAxis = 2;
-
-	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
-	{
-		mPicked = true;
-	}
-
 }
 
 
@@ -611,61 +530,6 @@ void xGizmo::_initGeo_Scale_Render()
 	mRender_Scale->rState.depthCheck = DCM_ALWAYS;
 }
 
-void xGizmo::_mouseMoved()
-{
-	Camera * cam = World::Instance()->MainCamera();
-
-	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
-		xApp::Instance()->GetSelectedObjSize() > 1)
-		return ;
-
-	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Vec3 pos = obj->GetPosition();
-
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-
-	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
-	{
-		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
-
-		const Mat4 & matVP = cam->GetViewProjMatrix();
-
-		float dt = 0;
-
-		Vec3 p0 = pos;
-		Vec3 p1;
-
-		if (mPickedAxis == 0)
-			p1 = Vec3(1, 0, 0);
-		else if (mPickedAxis == 1)
-			p1 = Vec3(0, 1, 0);
-		else
-			p1 = Vec3(0, 0, 1);
-
-		Vec3 p2 = p0 * matVP;
-		Vec3 p3 = (p0 + p1) * matVP;
-
-		p2.x = (p2.x + 1) / 2;
-		p2.y = (1 - p2.y) / 2;
-
-		p3.x = (p3.x + 1) / 2;
-		p3.y = (1 - p3.y) / 2;
-
-		Vec2 d = Vec2(p3.x - p2.x, p3.y - p2.y);
-		d.NormalizeL();
-
-		dt = d.x * pt.x + d.y * pt.y;
-
-		obj->SetPosition(pos + p1 * dt * w);
-	}
-}
-
-
 void xGizmo::_renderMove()
 {
 	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
@@ -901,4 +765,194 @@ void xGizmo::_renderScale()
 
 		render->Render(mTech, mRender_Scale);
 	}
+}
+
+
+void xGizmo::_update_Move()
+{
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (mPicked)
+		return ;
+
+	Point2f pt = IMouse::Instance()->GetPositionUnit();
+
+	Ray ray = cam->GetViewportRay(pt.x, pt.y);
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	Vec3 position = obj->GetPosition();
+	Quat orientation = obj->GetOrientation();
+	Vec3 scale = Vec3(w, w, w);
+
+	float dx, dy, dz;
+
+	// x axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal = Mat4::Identity;
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Move; ++i)
+		{
+			Vec3 p = mVertex_Move[i] * matWorld;
+			bound = bound.Merge(p);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dx = result.distance;
+		else
+			dx = -1;
+	}
+
+	// y axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationZ(Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Move; ++i)
+		{
+			Vec3 p = mVertex_Move[i] * matWorld;
+			bound = bound.Merge(p);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dy = result.distance;
+		else
+			dy = -2;
+	}
+
+	// z axis
+	{
+		Aabb bound = Aabb::Invalid;
+
+		Mat4 matLocal, matWorld;
+
+		matLocal.MakeRotationY(-Math::PI_1 / 2);
+		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld = matLocal * matWorld;
+
+		for (int i = 0; i < mNumVertex_Move; ++i)
+		{
+			Vec3 p = mVertex_Move[i] * matWorld;
+			bound = bound.Merge(p);
+		}
+
+		RayIntersectionInfo result = ray.Intersection(bound);
+
+		if (result.iterscetion)
+			dz = result.distance;
+		else
+			dz = -3;
+	}
+
+	mPickedAxis = -1;
+
+	if (dx > 0)
+		mPickedAxis = 0;
+
+	if (dy > 0 && dy > dx)
+		mPickedAxis = 1;
+
+	if (dz > 0 && dz > dy && dz > dx)
+		mPickedAxis = 2;
+
+	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
+	{
+		mPicked = true;
+	}
+}
+
+void xGizmo::_mouseMoved_Move()
+{
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Vec3 pos = obj->GetPosition();
+
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+
+	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
+	{
+		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
+
+		const Mat4 & matVP = cam->GetViewProjMatrix();
+
+		float dt = 0;
+
+		Vec3 p0 = pos;
+		Vec3 p1;
+
+		if (mPickedAxis == 0)
+			p1 = Vec3(1, 0, 0);
+		else if (mPickedAxis == 1)
+			p1 = Vec3(0, 1, 0);
+		else
+			p1 = Vec3(0, 0, 1);
+
+		Vec3 p2 = p0 * matVP;
+		Vec3 p3 = (p0 + p1) * matVP;
+
+		p2.x = (p2.x + 1) / 2;
+		p2.y = (1 - p2.y) / 2;
+
+		p3.x = (p3.x + 1) / 2;
+		p3.y = (1 - p3.y) / 2;
+
+		Vec2 d = Vec2(p3.x - p2.x, p3.y - p2.y);
+		d.NormalizeL();
+
+		dt = d.x * pt.x + d.y * pt.y;
+
+		obj->SetPosition(pos + p1 * dt * w);
+	}
+}
+
+void xGizmo::_update_Rotate()
+{
+}
+
+void xGizmo::_mouseMoved_Rotate()
+{
+}
+
+void xGizmo::_update_Scale()
+{
+}
+
+void xGizmo::_mouseMoved_Scale()
+{
 }
