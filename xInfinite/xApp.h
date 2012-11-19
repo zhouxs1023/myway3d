@@ -49,8 +49,8 @@ public:
 	int GetSelectedObjSize();
 	xObj * GetSelectedObj(int index);
 
-	void SetTransformOp(eTransformOperator op) { mTransformOp = op; }
-	eTransformOperator GetTransformOp() { return mTransformOp; }
+	void SetOperator(int op) { mOperator = op; }
+	int GetOperator() { return mOperator; }
 
 protected:
 	void _input();
@@ -69,7 +69,7 @@ protected:
 
 	Array<xObj *> mSelectedObjs;
 
-	eTransformOperator mTransformOp;
+	int mOperator;
 };
 
 

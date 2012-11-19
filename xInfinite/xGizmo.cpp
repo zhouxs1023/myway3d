@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xGizmo.h"
 #include "xApp.h"
+#include "xBaseOperator.h"
 
 xGizmo gGizmo;
 
@@ -54,25 +55,14 @@ void xGizmo::Render(void * data)
 {
 	Update(data);
 
-	eTransformOperator op = xApp::Instance()->GetTransformOp();
+	int op = xApp::Instance()->GetOperator();
 
-	switch (op)
-	{
-	case eTO_Unknown:
-		break;
-
-	case eTO_Move:
+	if (op == xMoveOp::eOp_Move)
 		_renderMove();
-		break;
-
-	case eTO_Rotate:
+	else if (op == xRotateOp::eOp_Rotate)
 		_renderRotate();
-		break;
-
-	case eTO_Scale:
+	else if (op == xScaleOp::eOp_Scale)
 		_renderScale();
-		break;
-	}
 }
 
 void xGizmo::Update(void * data)
@@ -84,24 +74,22 @@ void xGizmo::Update(void * data)
 		mPicked = false;
 	}
 
-	eTransformOperator op = xApp::Instance()->GetTransformOp();
+	int op = xApp::Instance()->GetOperator();
 
-	switch (op)
+	if (op == xMoveOp::eOp_Move)
 	{
-	case eTO_Move:
 		_mouseMoved_Move();
 		_update_Move();
-		break;
-
-	case eTO_Rotate:
+	}
+	else if (op == xRotateOp::eOp_Rotate)
+	{
 		_mouseMoved_Rotate();
 		_update_Rotate();
-		break;
-
-	case eTO_Scale:
+	}
+	else if (op == xScaleOp::eOp_Scale)
+	{
 		_mouseMoved_Scale();
 		_update_Scale();
-		break;
 	}
 }
 
@@ -276,7 +264,7 @@ void xGizmo::_initGeo_Move_Render()
 
 void xGizmo::_initGeo_Rotate()
 {
-	int segments = 3;
+	int segments = 20;
 
 	mNumVertex_Rotate = (segments + 1) * 4;
 	mNumIndex_Rotate = segments * 8 * 3;
@@ -286,7 +274,7 @@ void xGizmo::_initGeo_Rotate()
 
 	Memzero(mIndex_Rotate, mNumIndex_Rotate * 2);
 
-	const float w = 0.015f;
+	const float w = 0.025f;
 	for (int i = 0; i < segments + 1; ++i)
 	{
 		float rads = i / float(segments) * Math::PI_2;
@@ -537,16 +525,10 @@ void xGizmo::_renderMove()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
+	float w = _getObjSize(obj);
 
 	Vec3 position = obj->GetPosition();
-	Quat orientation = obj->GetOrientation();
+	Quat orientation = Quat::Identity;
 	Vec3 scale = Vec3(w, w, w);
 
 	RenderSystem * render = RenderSystem::Instance();
@@ -556,7 +538,7 @@ void xGizmo::_renderMove()
 		Mat4 matLocal, matWorld;
 
 		matLocal = Mat4::Identity;
-		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld.MakeTransform(position, orientation, scale);
 		matWorld = matLocal * matWorld;
 		mRender_Move->xform = matWorld;
 
@@ -616,16 +598,10 @@ void xGizmo::_renderRotate()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
+	float w = _getObjSize(obj);
 
 	Vec3 position = obj->GetPosition();
-	Quat orientation = obj->GetOrientation();
+	Quat orientation = Quat::Identity;
 	Vec3 scale = Vec3(w, w, w);
 
 	RenderSystem * render = RenderSystem::Instance();
@@ -635,7 +611,7 @@ void xGizmo::_renderRotate()
 		Mat4 matLocal, matWorld;
 
 		matLocal.MakeRotationZ(Math::PI_1 / 2);
-		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld.MakeTransform(position, orientation, scale);
 		matWorld = matLocal * matWorld;
 		mRender_Rotate->xform = matWorld;
 
@@ -695,16 +671,10 @@ void xGizmo::_renderScale()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
+	float w = _getObjSize(obj);
 
 	Vec3 position = obj->GetPosition();
-	Quat orientation = obj->GetOrientation();
+	Quat orientation = Quat::Identity;
 	Vec3 scale = Vec3(w, w, w);
 
 	RenderSystem * render = RenderSystem::Instance();
@@ -714,7 +684,7 @@ void xGizmo::_renderScale()
 		Mat4 matLocal, matWorld;
 
 		matLocal = Mat4::Identity;
-		matWorld.MakeTransform(position, Quat::Identity, scale);
+		matWorld.MakeTransform(position, orientation, scale);
 		matWorld = matLocal * matWorld;
 		mRender_Scale->xform = matWorld;
 
@@ -784,13 +754,7 @@ void xGizmo::_update_Move()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
+	float w = _getObjSize(obj);
 
 	Vec3 position = obj->GetPosition();
 	Quat orientation = obj->GetOrientation();
@@ -896,14 +860,8 @@ void xGizmo::_mouseMoved_Move()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Vec3 pos = obj->GetPosition();
 
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
+	float w = _getObjSize(obj);
 
 	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
 	{
@@ -913,7 +871,7 @@ void xGizmo::_mouseMoved_Move()
 
 		float dt = 0;
 
-		Vec3 p0 = pos;
+		Vec3 p0 = obj->GetPosition();
 		Vec3 p1;
 
 		if (mPickedAxis == 0)
@@ -937,82 +895,11 @@ void xGizmo::_mouseMoved_Move()
 
 		dt = d.x * pt.x + d.y * pt.y;
 
-		obj->SetPosition(pos + p1 * dt * w);
+		obj->SetPosition(obj->GetPosition() + p1 * dt * w);
 	}
 }
 
 void xGizmo::_update_Rotate()
-{
-	Camera * cam = World::Instance()->MainCamera();
-
-	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
-		xApp::Instance()->GetSelectedObjSize() > 1)
-		return ;
-
-	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Vec3 pos = obj->GetPosition();
-
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-
-	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
-	{
-		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
-
-		const Mat4 & matVP = cam->GetViewProjMatrix();
-
-		float dt = 0;
-
-		Vec3 p0 = pos;
-		Vec3 p1, axis;
-
-		if (mPickedAxis == 0)
-		{
-			p1 = Vec3(0, 0, 1);
-			axis = Vec3::UnitX;
-		}
-		else if (mPickedAxis == 1)
-		{
-			p1 = Vec3(1, 0, 0);
-			axis = Vec3::UnitY;
-		}
-		else
-		{
-			p1 = Vec3(0, 1, 0);
-			axis = Vec3::UnitZ;
-		}
-
-		Vec3 p2 = p0 * matVP;
-		Vec3 p3 = (p0 + p1) * matVP;
-
-		p2.x = (p2.x + 1) / 2;
-		p2.y = (1 - p2.y) / 2;
-
-		p3.x = (p3.x + 1) / 2;
-		p3.y = (1 - p3.y) / 2;
-
-		Vec2 d = Vec2(p3.x - p2.x, p3.y - p2.y);
-		d.NormalizeL();
-
-		dt = d.x * pt.x + d.y * pt.y;
-
-		Quat ort = obj->GetOrientation();
-
-		if (mPickedAxis == 0)
-		{
-			Quat q;
-			q.FromAxis(axis, dt * Math::PI_1);
-			ort = ort * q;
-			obj->SetOrientation(ort);
-		}
-	}
-}
-
-void xGizmo::_mouseMoved_Rotate()
 {
 	Camera * cam = World::Instance()->MainCamera();
 
@@ -1028,9 +915,8 @@ void xGizmo::_mouseMoved_Rotate()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
+
+	float w = _getObjSize(obj);
 
 	Vec3 position = obj->GetPosition();
 	Quat orientation = obj->GetOrientation();
@@ -1113,6 +999,69 @@ void xGizmo::_mouseMoved_Rotate()
 	}
 }
 
+void xGizmo::_mouseMoved_Rotate()
+{
+	Camera * cam = World::Instance()->MainCamera();
+
+	if (xApp::Instance()->GetSelectedObjSize() == 0 ||
+		xApp::Instance()->GetSelectedObjSize() > 1)
+		return ;
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	Vec3 pos = obj->GetPosition();
+
+	float w = _getObjSize(obj);
+
+	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
+	{
+		Point2f pt = IMouse::Instance()->GetPositionDiffUnit();
+
+		const Mat4 & matVP = cam->GetViewProjMatrix();
+
+		float dt = 0;
+
+		Vec3 p0 = pos;
+		Vec3 p1, axis;
+
+		if (mPickedAxis == 0)
+		{
+			p1 = Vec3(0, 0, 1);
+			axis = Vec3::UnitX;
+		}
+		else if (mPickedAxis == 1)
+		{
+			p1 = Vec3(-1, 0, 0);
+			axis = Vec3::UnitY;
+		}
+		else
+		{
+			p1 = Vec3(0, -1, 0);
+			axis = Vec3::UnitZ;
+		}
+
+		Vec3 p2 = p0 * matVP;
+		Vec3 p3 = (p0 + p1) * matVP;
+
+		p2.x = (p2.x + 1) / 2;
+		p2.y = (1 - p2.y) / 2;
+
+		p3.x = (p3.x + 1) / 2;
+		p3.y = (1 - p3.y) / 2;
+
+		Vec2 d = Vec2(p3.x - p2.x, p3.y - p2.y);
+		d.NormalizeL();
+
+		dt = d.x * pt.x + d.y * pt.y;
+
+		Quat ort = obj->GetOrientation();
+
+		Quat q;
+		q.FromAxis(axis, dt * Math::PI_1);
+		ort = ort * q;
+		obj->SetOrientation(ort);
+	}
+}
+
 void xGizmo::_update_Scale()
 {
 	Camera * cam = World::Instance()->MainCamera();
@@ -1129,13 +1078,8 @@ void xGizmo::_update_Scale()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
 
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
-	w *= 0.5f;
+	float w = _getObjSize(obj);
 
 	Vec3 position = obj->GetPosition();
 	Quat orientation = obj->GetOrientation();
@@ -1241,14 +1185,6 @@ void xGizmo::_mouseMoved_Scale()
 		return ;
 
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
-	Vec3 pos = obj->GetPosition();
-
-	Aabb box = obj->GetBound();
-	Vec3 size = box.GetSize();
-	float w = size.x;
-
-	w = Math::Maximum(w, size.y);
-	w = Math::Maximum(w, size.z);
 
 	if (mPickedAxis != -1 && mPicked && IMouse::Instance()->MouseMoved())
 	{
@@ -1258,7 +1194,7 @@ void xGizmo::_mouseMoved_Scale()
 
 		float dt = 0;
 
-		Vec3 p0 = pos;
+		Vec3 p0 = obj->GetPosition();
 		Vec3 p1;
 
 		if (mPickedAxis == 0)
@@ -1286,4 +1222,17 @@ void xGizmo::_mouseMoved_Scale()
 		scale *= 1 + dt;
 		obj->SetScale(scale);
 	}
+}
+
+float xGizmo::_getObjSize(xObj * obj)
+{
+	Aabb box = obj->GetBound();
+	Vec3 size = box.GetSize();
+	float w = size.x;
+
+	w = Math::Maximum(w, size.y);
+	w = Math::Maximum(w, size.z);
+	w *= 0.5f;
+
+	return w;
 }

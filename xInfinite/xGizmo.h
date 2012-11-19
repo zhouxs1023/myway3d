@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xObj.h"
 
 class xGizmo
 {
@@ -33,6 +34,7 @@ protected:
 	void _update_Scale();
 	void _mouseMoved_Scale();
 
+	float _getObjSize(xObj * obj);
 
 protected:
 	Technique * mTech;

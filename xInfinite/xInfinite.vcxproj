@@ -99,6 +99,7 @@
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="xApp.cpp" />
+    <ClCompile Include="xBaseOperator.cpp" />
     <ClCompile Include="xGizmo.cpp" />
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xObj.cpp" />
@@ -107,6 +108,7 @@
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
     <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="xToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h" />
@@ -118,6 +120,7 @@
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="xApp.h" />
+    <ClInclude Include="xBaseOperator.h" />
     <ClInclude Include="xGizmo.h" />
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xObj.h" />
@@ -126,6 +129,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
     <ClInclude Include="xObjBound.h" />
+    <ClInclude Include="xToolBar.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\classview.bmp" />
@@ -141,6 +145,7 @@
     <None Include="res\Infinate.ico" />
     <None Include="res\Infinate.rc2" />
     <None Include="res\InfinateDoc.ico" />
+    <None Include="res\mainfram.bmp" />
     <None Include="res\menuimages.bmp" />
     <None Include="res\menuimages_hc.bmp" />
     <None Include="res\output_wnd.ico" />

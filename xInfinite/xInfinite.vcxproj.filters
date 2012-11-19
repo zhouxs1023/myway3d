@@ -60,6 +60,12 @@
     <ClCompile Include="xObjBound.cpp">
       <Filter>Control</Filter>
     </ClCompile>
+    <ClCompile Include="xToolBar.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="xBaseOperator.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h">
@@ -111,6 +117,12 @@
       <Filter>Control</Filter>
     </ClInclude>
     <ClInclude Include="xObjBound.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="xToolBar.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xBaseOperator.h">
       <Filter>Control</Filter>
     </ClInclude>
   </ItemGroup>
@@ -187,6 +199,7 @@
     <None Include="res\Toolbar256.bmp">
       <Filter>Res</Filter>
     </None>
+    <None Include="res\mainfram.bmp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Infinate.rc">

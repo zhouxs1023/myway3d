@@ -33,6 +33,7 @@ public:
 
     void operator += (EventListener * p);
     void operator -= (EventListener * p);
+	void operator ()(void * data) { Call(data); }
 
 protected:
     EventListener * head;
