@@ -223,7 +223,6 @@
     <ClInclude Include="RenderSystem\MWEnvironment.h" />
     <ClInclude Include="RenderSystem\MWEvKeyFrame.h" />
     <ClInclude Include="RenderSystem\MWTerrain.h" />
-    <ClInclude Include="RenderSystem\MWTerrainDef.h" />
     <ClInclude Include="RenderSystem\MWTerrainLod.h" />
     <ClInclude Include="RenderSystem\MWTerrainSection.h" />
     <ClInclude Include="RenderSystem\MWCloud.h" />

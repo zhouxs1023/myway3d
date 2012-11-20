@@ -1,4 +1,5 @@
 #include "MWTerrainLod.h"
+
 #include "MWVideoBufferManager.h"
 
 #define __North         (1 << 0)
@@ -16,11 +17,11 @@ namespace Myway {
 
 bool TerrainLod::InvalidKey(_Key key)
 {
-	return key.level >= TnConst::kMaxDetailLevel ||
-		   key.east >= TnConst::kMaxDetailLevel ||
-		   key.south >= TnConst::kMaxDetailLevel ||
-		   key.west >= TnConst::kMaxDetailLevel ||
-		   key.north >= TnConst::kMaxDetailLevel;
+	return key.level >= Terrain::kMaxDetailLevel ||
+		   key.east >= Terrain::kMaxDetailLevel ||
+		   key.south >= Terrain::kMaxDetailLevel ||
+		   key.west >= Terrain::kMaxDetailLevel ||
+		   key.north >= Terrain::kMaxDetailLevel;
 }
 
 
@@ -28,8 +29,8 @@ TerrainLod::TerrainLod(int lodLevel)
 {
     mLevelDetails = lodLevel;
 
-    memset(mBodyIndex, 0, TnConst::kMaxDetailLevel * sizeof(_IndexPool));
-    memset(mConecterIndex, 0, TnConst::kMaxDetailLevel * TnConst::kMaxDetailLevel * 4 * sizeof(_IndexPool));
+    memset(mBodyIndex, 0, Terrain::kMaxDetailLevel * sizeof(_IndexPool));
+    memset(mConecterIndex, 0, Terrain::kMaxDetailLevel * Terrain::kMaxDetailLevel * 4 * sizeof(_IndexPool));
 
     GenerateBodyIndex();
     GenerateConecterIndex();
@@ -37,11 +38,11 @@ TerrainLod::TerrainLod(int lodLevel)
 
 TerrainLod::~TerrainLod()
 {
-    for (int i = 0; i < TnConst::kMaxDetailLevel; ++i)
+    for (int i = 0; i < Terrain::kMaxDetailLevel; ++i)
     {
         safe_free(mBodyIndex[i].indeces);
 
-        for (int j = 0; j < TnConst::kMaxDetailLevel; ++j)
+        for (int j = 0; j < Terrain::kMaxDetailLevel; ++j)
         {
             safe_free(mConecterIndex[i][j][__NorthIndex].indeces);
             safe_free(mConecterIndex[i][j][__SouthIndex].indeces);
@@ -184,8 +185,8 @@ void TerrainLod::_GenerateBodyIndex(int level)
     d_assert (mBodyIndex[level].size == 0 &&
               mBodyIndex[level].indeces == NULL);
 
-    int xtile = (TnConst::kSectionVertexSize - 1) >> level;
-    int ytile = (TnConst::kSectionVertexSize - 1) >> level;
+    int xtile = (Terrain::kSectionVertexSize - 1) >> level;
+    int ytile = (Terrain::kSectionVertexSize - 1) >> level;
     int step = 1 << level;
 
     int start = 0;
@@ -194,7 +195,7 @@ void TerrainLod::_GenerateBodyIndex(int level)
     {
         xtile -= 2;
         ytile -= 2;
-        start = step * TnConst::kSectionVertexSize + step;
+        start = step * Terrain::kSectionVertexSize + step;
     }
 
     if (xtile == 0 || ytile == 0)
@@ -210,7 +211,7 @@ void TerrainLod::_GenerateBodyIndex(int level)
     //
     int x = 0, y = 0;
     short row_c = start;
-    short row_n = row_c + TnConst::kSectionVertexSize * step;
+    short row_n = row_c + Terrain::kSectionVertexSize * step;
     for (y = 0; y < ytile; ++y)
     {
         for (x = 0; x < xtile + 1; ++x)
@@ -219,8 +220,8 @@ void TerrainLod::_GenerateBodyIndex(int level)
             indeces[index++] = row_c + x * step;  
         }
 
-        row_c += TnConst::kSectionVertexSize * step;
-        row_n += TnConst::kSectionVertexSize * step;
+        row_c += Terrain::kSectionVertexSize * step;
+        row_n += Terrain::kSectionVertexSize * step;
 
         // degenerate triangle
         indeces[index++] = indeces[index - 1];
@@ -258,8 +259,8 @@ void TerrainLod::_GenerateConecterIndexNorth(int level, int conecter)
 
     int self_step = 1 << level;
     int neighbor_step = 1 << conecter;
-    int self_tile = (TnConst::kSectionVertexSize - 1) >> level;
-    int neighbor_tile = (TnConst::kSectionVertexSize - 1) >> conecter;
+    int self_tile = (Terrain::kSectionVertexSize - 1) >> level;
+    int neighbor_tile = (Terrain::kSectionVertexSize - 1) >> conecter;
 
     assert (self_tile >= neighbor_tile);
 
@@ -282,16 +283,16 @@ void TerrainLod::_GenerateConecterIndexNorth(int level, int conecter)
         int x0 = x1 / neighbor_step * neighbor_step;
         int y0 = y1 - self_step;
 
-        int index0 = y1 * TnConst::kSectionVertexSize + x1;
-        int index1 = y0 * TnConst::kSectionVertexSize + x0;
+        int index0 = y1 * Terrain::kSectionVertexSize + x1;
+        int index1 = y0 * Terrain::kSectionVertexSize + x0;
 
         indeces[index++] = index0;
         indeces[index++] = index1;
     }
 
     //ender
-    indeces[index++] = TnConst::kSectionVertexSize - 1;
-    indeces[index++] = TnConst::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize - 1;
 
     assert (index == count);
 }
@@ -310,8 +311,8 @@ void TerrainLod::_GenerateConecterIndexSouth(int level, int conecter)
 
     int self_step = 1 << level;
     int neighbor_step = 1 << conecter;
-    int self_tile = (TnConst::kSectionVertexSize - 1) >> level;
-    int neighbor_tile = (TnConst::kSectionVertexSize - 1) >> conecter;
+    int self_tile = (Terrain::kSectionVertexSize - 1) >> level;
+    int neighbor_tile = (Terrain::kSectionVertexSize - 1) >> conecter;
 
     assert (self_tile >= neighbor_tile);
 
@@ -323,27 +324,27 @@ void TerrainLod::_GenerateConecterIndexSouth(int level, int conecter)
     short * indeces = mConecterIndex[level][conecter][__SouthIndex].indeces;
 
     //starter
-    indeces[index++] = (TnConst::kSectionVertexSize - 1) * TnConst::kSectionVertexSize;
-    indeces[index++] = (TnConst::kSectionVertexSize - 1) * TnConst::kSectionVertexSize;
+    indeces[index++] = (Terrain::kSectionVertexSize - 1) * Terrain::kSectionVertexSize;
+    indeces[index++] = (Terrain::kSectionVertexSize - 1) * Terrain::kSectionVertexSize;
 
     // middler
     for (int i = 1; i < self_tile; ++i)
     {
         int x0 = i * self_step;
-        int y0 = TnConst::kSectionVertexSize - 1 - self_step;
+        int y0 = Terrain::kSectionVertexSize - 1 - self_step;
         int x1 = x0 / neighbor_step * neighbor_step;
         int y1 = y0 + self_step;
 
-        int index0 = y1 * TnConst::kSectionVertexSize + x1;
-        int index1 = y0 * TnConst::kSectionVertexSize + x0;
+        int index0 = y1 * Terrain::kSectionVertexSize + x1;
+        int index1 = y0 * Terrain::kSectionVertexSize + x0;
 
         indeces[index++] = index0;
         indeces[index++] = index1;
     }
 
     //ender
-    indeces[index++] = TnConst::kSectionVertexSize * TnConst::kSectionVertexSize - 1;
-    indeces[index++] = TnConst::kSectionVertexSize * TnConst::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize * Terrain::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize * Terrain::kSectionVertexSize - 1;
 
     assert (index == count);
 }
@@ -362,8 +363,8 @@ void TerrainLod::_GenerateConecterIndexWest(int level, int conecter)
 
     int self_step = 1 << level;
     int neighbor_step = 1 << conecter;
-    int self_tile = (TnConst::kSectionVertexSize - 1) >> level;
-    int neighbor_tile = (TnConst::kSectionVertexSize - 1) >> conecter;
+    int self_tile = (Terrain::kSectionVertexSize - 1) >> level;
+    int neighbor_tile = (Terrain::kSectionVertexSize - 1) >> conecter;
 
     assert (self_tile >= neighbor_tile);
 
@@ -386,16 +387,16 @@ void TerrainLod::_GenerateConecterIndexWest(int level, int conecter)
         int x1 = self_step;
         int y1 = i * self_step;
 
-        int index0 = y0 * TnConst::kSectionVertexSize + x0;
-        int index1 = y1 * TnConst::kSectionVertexSize + x1;
+        int index0 = y0 * Terrain::kSectionVertexSize + x0;
+        int index1 = y1 * Terrain::kSectionVertexSize + x1;
 
         indeces[index++] = index0;
         indeces[index++] = index1;
     }
 
     //ender
-    indeces[index++] = (TnConst::kSectionVertexSize - 1) * TnConst::kSectionVertexSize;
-    indeces[index++] = (TnConst::kSectionVertexSize - 1) * TnConst::kSectionVertexSize;
+    indeces[index++] = (Terrain::kSectionVertexSize - 1) * Terrain::kSectionVertexSize;
+    indeces[index++] = (Terrain::kSectionVertexSize - 1) * Terrain::kSectionVertexSize;
 
     assert (index == count);
 }
@@ -414,8 +415,8 @@ void TerrainLod::_GenerateConecterIndexEast(int level, int conecter)
 
     int self_step = 1 << level;
     int neighbor_step = 1 << conecter;
-    int self_tile = (TnConst::kSectionVertexSize - 1) >> level;
-    int neighbor_tile = (TnConst::kSectionVertexSize - 1) >> conecter;
+    int self_tile = (Terrain::kSectionVertexSize - 1) >> level;
+    int neighbor_tile = (Terrain::kSectionVertexSize - 1) >> conecter;
 
     assert (self_tile >= neighbor_tile);
 
@@ -427,27 +428,27 @@ void TerrainLod::_GenerateConecterIndexEast(int level, int conecter)
     short * indeces = mConecterIndex[level][conecter][__EastIndex].indeces;
 
     //starter
-    indeces[index++] = TnConst::kSectionVertexSize - 1;
-    indeces[index++] = TnConst::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize - 1;
 
     // middler
     for (int i = 1; i < self_tile; ++i)
     {
-        int x0 = TnConst::kSectionVertexSize - 1 - self_step;
+        int x0 = Terrain::kSectionVertexSize - 1 - self_step;
         int y0 = i * self_step;
-        int x1 = TnConst::kSectionVertexSize - 1;
+        int x1 = Terrain::kSectionVertexSize - 1;
         int y1 = i * self_step / neighbor_step * neighbor_step;
 
-        int index0 = y0 * TnConst::kSectionVertexSize + x0;
-        int index1 = y1 * TnConst::kSectionVertexSize + x1;
+        int index0 = y0 * Terrain::kSectionVertexSize + x0;
+        int index1 = y1 * Terrain::kSectionVertexSize + x1;
 
         indeces[index++] = index0;
         indeces[index++] = index1;
     }
 
     //ender
-    indeces[index++] = TnConst::kSectionVertexSize * TnConst::kSectionVertexSize - 1;
-    indeces[index++] = TnConst::kSectionVertexSize * TnConst::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize * Terrain::kSectionVertexSize - 1;
+    indeces[index++] = Terrain::kSectionVertexSize * Terrain::kSectionVertexSize - 1;
 
     assert (index == count);
 }

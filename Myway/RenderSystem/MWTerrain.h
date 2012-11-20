@@ -7,88 +7,99 @@ namespace Myway {
 
 class TerrainLod;
 
-class MW_ENTRY Terrain : public EventListener
+class MW_ENTRY Terrain
 {
     DECLARE_ALLOC();
+	DECLARE_SINGLETON(Terrain);
 
     friend class TerrainSection;
 
 public:
-    Terrain(const TString128 & source);
+	enum Consts
+	{
+		kMaxLayers = 4,
+		kSectionVertexSize = 65,
+		kSectionVertexSize_2 =  kSectionVertexSize * kSectionVertexSize,
+		kMaxDetailLevel = 4,
+		kWeightMapSize = 256,
+		kMaxPixelError = 4,
+		kMaxResolution = 768,
+	};
+
+	struct Layer
+	{
+		TString128 detail;
+		TString128 normal;
+		TString128 specular;
+		float scale;
+
+		Layer() : scale(0) {}
+	};
+
+	struct Config {
+		float xSize, zSize;
+		int xVertexCount, zVertexCount;
+		Layer layers[kMaxLayers];
+		bool morphEnable;
+		float morphStart;
+
+		float xSectionSize, zSectionSize;
+		int xSectionCount, zSectionCount;
+
+		float fSectionWidth;
+		float fSectionHeight;
+
+		Config()
+		{
+			xSize = zSize = 0;
+			xVertexCount = zVertexCount = 0;
+			morphEnable = false;
+			morphStart = 0;
+
+			xSectionCount = zSectionCount = 0;
+			xSectionSize = zSectionSize = 0;
+		}
+	};
+
+public:
+    Terrain();
     virtual ~Terrain();
 
-    const Vec3 &        GetPosition(int x, int y) const;
-    const Vec3 &        GetNormal(int x, int y) const;
-    const Vec2 &        GetTexcoord(int x, int y) const;
+	void				Create(const Config & config);
 
-    const Vec3 *        GetPositions() const;
-    const Vec3 *        GetNormals() const;
-    const Vec2 *        GetTexcoords() const;
-
-    TerrainSection *    GetSection(int x, int y);
-
-    float               GetHeight(int x, int y);
-    float               GetHeight(int index);
-    float               GetHeight(float x, float z);
-
-    Vec3                GetPosition(const Ray & ray);
-
-    const Aabb &        GetBound() const;
-
-    const TnConfig &    GetConfig() const { return mConfig; }
-
-    int                 GetXVertexSize() const { return mxVertSize; }
-    int                 GetYVertexSize() const { return myVertSize; }
-    int                 GetVertexSize() const { return mVertSize; }
-    int                 GetXSectionSize() const { return mxSectionSize; }
-    int                 GetYSectionSize() const { return mySectionSize; }
-
-    bool                IsMorphEnable() const { return mConfig.morphEnable; }
-    float               GetMorphStart() const { return mConfig.morphStart; }
-
+    const Config &		GetConfig() const { return mConfig; }
     TerrainLod *        GetTerrainLod() { return mLod; }
 
-    void                Render();
-    void                RenderInMirror();
-    void                OnCall(Event * sender, void * data);
+	TerrainSection *	GetSection(int x, int z);
+	float				GetHeight(int x, int z);
+	Vec3				GetNormal(int x, int z);
+
+	const float *		GetHeights() const { return mHeights; }
+	const Vec3 *		GetNormals() const { return mNormals; }
 
 protected:
-    void                Init();
-    void                AllocSection();
-    void                LoadConfig(const TString128 & source);
-    float *             LoadHightmap();
-
-    void                CalcuPositions(const float * pHeights, float xStart, float yStart, float xEnd, float yEnd);
-    void                CalcuNormals();
-    void                CalcuTexcoords(float startu, float startv, float endu, float endv);
-    void                CalcuBounds();
+    void                OnPreVisibleCull(void * data);
+	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
 
 protected:
-    TnConfig mConfig;
-
-    int mxVertSize;
-    int myVertSize;
-    int mVertSize;
-
-    Vec3 * mPositions;
-    Vec3 * mNormals;
-    Vec2 * mTexcoords;
-
-    int mxSectionSize;
-    int mySectionSize;
-
-    Aabb mBound;
+    Config mConfig;
 
     Array<SceneNode*> mSceneNodes;
     Array<TerrainSection*> mSections;
-    Array<TerrainSection*> mVisibleSections;
+	Array<TerrainSection*> mVisibleSections;
 
     TerrainLod * mLod;
-
     Technique * mTech;
-    TexturePtr mWeightmap[2];
-    TexturePtr mLayer[TnConst::kMaxLayers];
-    float mUVScale[TnConst::kMaxLayers];
+	VertexBufferPtr mXYStream;
+
+	float *	mHeights;
+	Vec3 *	mNormals;
+
+	Array<TexturePtr> mDetailMaps;
+	Array<TexturePtr> mNormalMaps;
+	Array<TexturePtr> mSpecularMaps;
+
+	tEventListener<Terrain> tOnPreVisibleCull;
 };
 
 }

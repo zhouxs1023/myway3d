@@ -474,9 +474,6 @@
     <ClInclude Include="RenderSystem\MWTerrain.h">
       <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainDef.h">
-      <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWTerrainLod.h">
       <Filter>Myway\RenderSystem\Envorment\geometry\Terrain</Filter>
     </ClInclude>

@@ -1,9 +1,9 @@
 #pragma once
 
+#include "MWTerrain.h"
 #include "MWTerrainLod.h"
 
 namespace Myway {
-
 
 class MW_ENTRY TerrainSection : public Mover
 {
@@ -12,14 +12,14 @@ class MW_ENTRY TerrainSection : public Mover
     friend class Terrain;
 
 public:
-    TerrainSection(Terrain * pTerrain, int x, int y);
+    TerrainSection(Terrain * pTerrain, int x, int z);
     ~TerrainSection();
 
     virtual void AddRenderQueue(RenderQueue * rq);
 
     int GetLevel() const { return mLevel; }
     int GetSectionX() const { return mSectionX; }
-    int GetSectionY() const { return mSectionY; }
+    int GetSectionZ() const { return mSectionZ; }
 
     void UpdateLod();
     void PreRender();
@@ -37,14 +37,15 @@ protected:
 protected:
     Terrain *               mTerrain;
     int                     mSectionX;
-    int                     mSectionY;
-    int                     mxVertex;
-    int                     myVertex;
+    int                     mSectionZ;
+	float					mOffX, mOffZ;
+
+	int						mLayer[Terrain::kMaxLayers];
 
     int                     mLevel;
-    float                   mErrorMetric[TnConst::kMaxDetailLevel];
-    float                   mLevelDistSq[TnConst::kMaxDetailLevel];
-    VertexBufferPtr         mMorphBuffer[TnConst::kMaxDetailLevel];
+    float                   mErrorMetric[Terrain::kMaxDetailLevel];
+    float                   mLevelDistSq[Terrain::kMaxDetailLevel];
+    VertexBufferPtr         mMorphBuffer[Terrain::kMaxDetailLevel];
     TerrainLod::_Key        mkKey;
     float                   mMorph;
 

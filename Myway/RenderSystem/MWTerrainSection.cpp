@@ -4,20 +4,20 @@
 namespace Myway {
 
 #define _POSITION    0
-#define _NORMAL      1
-#define _TEXCOORD    2
+#define _HEIGHT		 1
+#define _NORMAL      2
 #define _MORPH       3
 
 
-TerrainSection::TerrainSection(Terrain * pTerrain, int x, int y)
+TerrainSection::TerrainSection(Terrain * pTerrain, int x, int z)
 : Mover("TerrainSection")
 , mTerrain(pTerrain)
 , mSectionX(x)
-, mSectionY(y)
+, mSectionZ(z)
 , mMorph(0)
 {
-    mxVertex = mSectionX * (TnConst::kSectionVertexSize - 1);
-    myVertex = mSectionY * (TnConst::kSectionVertexSize - 1);
+	mOffX = mTerrain->GetConfig().xSectionSize * x;
+	mOffZ = mTerrain->GetConfig().zSize + mTerrain->GetConfig().zSectionSize * (z - 1);
 
     CalcuMorphBuffer();
     CalcuErrorMetrics();
@@ -32,64 +32,55 @@ TerrainSection::~TerrainSection()
 
 void TerrainSection::Init()
 {
-    int xSectionVertSize = TnConst::kSectionVertexSize;
-    int ySectionVertSize = TnConst::kSectionVertexSize;
-    short xVertSize = mTerrain->GetXVertexSize();
-    short yVertSize = mTerrain->GetYVertexSize();
+    int xSectionVertSize = Terrain::kSectionVertexSize;
+    int zSectionVertSize = Terrain::kSectionVertexSize;
+    int xVertSize = mTerrain->GetConfig().xVertexCount;
     int xtile = xSectionVertSize - 1;
-    int ytile = ySectionVertSize - 1;
+    int ztile = zSectionVertSize - 1;
 
-    const Vec3 * pPositions = mTerrain->GetPositions();
+	const float * pHeights = mTerrain->GetHeights();
     const Vec3 * pNormals = mTerrain->GetNormals();
-    const Vec2 * pTexcoords = mTerrain->GetTexcoords();
-
-    const Vec3 * pOffset = pPositions + mSectionY * ytile * xVertSize + mSectionX * xtile;
 
    //create vertex declaration
     VertexDeclarationPtr pVertexDecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-    pVertexDecl->AddElement(_POSITION, 0,  DT_FLOAT3, DU_POSITION, 0);
+	pVertexDecl->AddElement(_POSITION, 0,  DT_FLOAT2, DU_POSITION, 0);
+    pVertexDecl->AddElement(_HEIGHT, 0,  DT_FLOAT1, DU_TEXCOORD, 0);
     pVertexDecl->AddElement(_NORMAL, 0,  DT_FLOAT3, DU_NORMAL, 0);
-    pVertexDecl->AddElement(_TEXCOORD, 0, DT_FLOAT2, DU_TEXCOORD, 0);
     pVertexDecl->AddElement(_MORPH, 0, DT_FLOAT1, DU_BLENDWEIGHT, 0);
     pVertexDecl->Init();
 
     //create vertex buffer
     VideoBufferManager & mgr = *VideoBufferManager::Instance();
 
-    int iVertexCount = xSectionVertSize * ySectionVertSize;
+    int iVertexCount = xSectionVertSize * zSectionVertSize;
 
-    int iStride0 = sizeof(Vec3);
-    VertexBufferPtr pVertexBuffer0 = mgr.CreateVertexBuffer(iVertexCount * iStride0);
+    int iStride0 = sizeof(Vec2);
+    VertexBufferPtr pVertexBuffer0 = mTerrain->GetXYVertexBuffer();
 
-    int iStride1 = sizeof(Vec3);
+    int iStride1 = sizeof(float);
     VertexBufferPtr pVertexBuffer1 = mgr.CreateVertexBuffer(iVertexCount * iStride1);
 
     int iStride2 = sizeof(Vec2);
     VertexBufferPtr pVertexBuffer2 = mgr.CreateVertexBuffer(iVertexCount * iStride2);
 
-    int iSrcOffset = mSectionY * ytile * xVertSize + mSectionX * xtile;
+    int iSrcOffset = mSectionZ * ztile * xVertSize + mSectionX * xtile;
 
-    Vec3 * positions = (Vec3 *)pVertexBuffer0->Lock(0, 0, LOCK_DISCARD);
-    Vec3 * normals = (Vec3 *)pVertexBuffer1->Lock(0, 0, LOCK_DISCARD);
-    Vec2 * texcoords = (Vec2 *)pVertexBuffer2->Lock(0, 0, LOCK_DISCARD);
-
+    float * heights = (float *)pVertexBuffer1->Lock(0, 0, LOCK_DISCARD);
+    Vec3 * normals = (Vec3 *)pVertexBuffer2->Lock(0, 0, LOCK_DISCARD);
     {
-        pPositions += iSrcOffset;
+        pHeights += iSrcOffset;
         pNormals += iSrcOffset;
-        pTexcoords += iSrcOffset;
-        for (int i = 0; i < ySectionVertSize; ++i)
+
+        for (int i = 0; i < zSectionVertSize; ++i)
         {
-            Memcpy(positions, pPositions, xSectionVertSize * sizeof(Vec3));
+            Memcpy(heights, pHeights, xSectionVertSize * sizeof(float));
             Memcpy(normals, pNormals, xSectionVertSize * sizeof(Vec3));
-            Memcpy(texcoords, pTexcoords, xSectionVertSize * sizeof(Vec2));
 
-            positions += xSectionVertSize;
+            heights += xSectionVertSize;
             normals += xSectionVertSize;
-            texcoords += xSectionVertSize;
 
-            pPositions += xVertSize;
+            pHeights += xVertSize;
             pNormals += xVertSize;
-            pTexcoords += xVertSize;
         }
     }
 
@@ -114,19 +105,27 @@ void TerrainSection::Init()
     mRender.ePrimType = PRIM_TRIANGLESTRIP;
 
     //calculate bounds
-    pPositions = mTerrain->GetPositions() + iSrcOffset;
+    pHeights = mTerrain->GetHeights() + iSrcOffset;
 
     mAabbLocal = Aabb::Invalid;
 
-    for (int i = 0; i < ySectionVertSize; ++i)
+	mAabbLocal.minimum.x = 0 + mOffX;
+	mAabbLocal.minimum.z = 0 + mOffZ;
+
+	mAabbLocal.maximum.x = mTerrain->GetConfig().xSectionSize + mOffX;;
+	mAabbLocal.maximum.z = mTerrain->GetConfig().zSectionSize + mOffZ;
+
+	
+
+    for (int j = 0; j < zSectionVertSize; ++j)
     {
-        for (int j = 0; j < xSectionVertSize; ++j)
+        for (int i = 0; i < xSectionVertSize; ++i)
         {
-            Math::VecMinimum(mAabbLocal.minimum, mAabbLocal.minimum, pPositions[j]);
-            Math::VecMaximum(mAabbLocal.maximum, mAabbLocal.maximum, pPositions[j]);
+            mAabbLocal.minimum.y = Math::Minimum(mAabbLocal.minimum.y, pHeights[j]);
+            mAabbLocal.maximum.y = Math::Maximum(mAabbLocal.maximum.y, pHeights[j]);
         }
 
-        pPositions += xVertSize;
+        pHeights += xVertSize;
     }
 
     mSphLocal.center = mAabbLocal.GetCenter();
@@ -148,7 +147,7 @@ void TerrainSection::UpdateLod()
     d = Math::Minimum(d, Math::VecDistanceSq(aabb.minimum, cam->GetPosition()));
 
     bool finished = false;
-    int max_level = TnConst::kMaxDetailLevel - 1;
+    int max_level = Terrain::kMaxDetailLevel - 1;
 
     while (!finished && mLevel < max_level)
     {
@@ -165,9 +164,9 @@ void TerrainSection::UpdateLod()
         }
     }
 
-    if (mTerrain->IsMorphEnable())
+    if (mTerrain->GetConfig().morphEnable)
     {
-        float start = mTerrain->GetMorphStart();
+        float start = mTerrain->GetConfig().morphStart;
 
         if (mLevel == max_level || d < start)
         {
@@ -192,20 +191,23 @@ void TerrainSection::PreRender()
     key.east = mLevel;
 
     int x = mSectionX;
-    int y = mSectionY;
+    int z = mSectionZ;
 
-    if (y > 0)
+	int xSectionCount = mTerrain->GetConfig().xSectionCount;
+	int zSectionCount = mTerrain->GetConfig().zSectionCount;
+
+    if (z > 0)
     {
-        TerrainSection * section = mTerrain->GetSection(x, y - 1);
+        TerrainSection * section = mTerrain->GetSection(x, z - 1);
         key.north = section->GetLevel();
 
         if (key.north < mLevel)
             key.north = mLevel;
     }
 
-    if (y < mTerrain->GetYSectionSize() - 1)
+    if (z < zSectionCount - 1)
     {
-        TerrainSection * section = mTerrain->GetSection(x, y + 1);
+        TerrainSection * section = mTerrain->GetSection(x, z + 1);
         key.south = section->GetLevel();
 
         if (key.south < mLevel)
@@ -214,16 +216,16 @@ void TerrainSection::PreRender()
 
     if (x > 0)
     {
-        TerrainSection * section = (TerrainSection*)mTerrain->GetSection(x - 1, y);
+        TerrainSection * section = (TerrainSection*)mTerrain->GetSection(x - 1, z);
         key.west = section->GetLevel();
 
         if (key.west < mLevel)
             key.west = mLevel;
     }
 
-    if (x < mTerrain->GetXSectionSize() - 1)
+    if (x < xSectionCount - 1)
     {
-        TerrainSection * section = (TerrainSection*)mTerrain->GetSection(x + 1, y);
+        TerrainSection * section = (TerrainSection*)mTerrain->GetSection(x + 1, z);
         key.east = section->GetLevel();
 
         if (key.east < mLevel)
@@ -252,10 +254,10 @@ void TerrainSection::AddRenderQueue(RenderQueue * rq)
 
 void TerrainSection::CalcuMorphBuffer()
 {
-    if (mTerrain->IsMorphEnable())
+    if (mTerrain->GetConfig().morphEnable)
     {
-        int size = TnConst::kSectionVertexSize * TnConst::kSectionVertexSize * sizeof(float);
-        for (int i = 0; i < TnConst::kMaxDetailLevel - 1; ++i)
+        int size = Terrain::kSectionVertexSize * Terrain::kSectionVertexSize * sizeof(float);
+        for (int i = 0; i < Terrain::kMaxDetailLevel - 1; ++i)
         {
             mMorphBuffer[i] = VideoBufferManager::Instance()->CreateVertexBuffer(size);
             _CalcuMorphBuffer(i);
@@ -269,13 +271,11 @@ void TerrainSection::_CalcuMorphBuffer(int level)
 
     int step = 1 << level;
 
-    int xVertSize = mTerrain->GetXVertexSize();
-    int yVertSize = mTerrain->GetYVertexSize();
-    int xSectionVertSize = TnConst::kSectionVertexSize;
-    int ySectionVertSize = TnConst::kSectionVertexSize;
+    int xSectionVertSize = Terrain::kSectionVertexSize;
+    int ySectionVertSize = Terrain::kSectionVertexSize;
 
     int xOffset = mSectionX * (xSectionVertSize - 1);
-    int yOffset = mSectionY * (ySectionVertSize - 1);
+    int yOffset = mSectionZ * (ySectionVertSize - 1);
 
     int xSides = (xSectionVertSize - 1) >> level;
     int ySides = (ySectionVertSize - 1) >> level;
@@ -360,13 +360,13 @@ void TerrainSection::CalcuErrorMetrics()
 {
     mErrorMetric[0] = 0;
 
-    for (int i = 1; i < TnConst::kMaxDetailLevel; ++i)
+    for (int i = 1; i < Terrain::kMaxDetailLevel; ++i)
     {
         mErrorMetric[i] = _CalcuErrorMetric(i);
     }
 
     //lod大的必须误差值必须大
-    for (int i = 2; i < TnConst::kMaxDetailLevel; ++i)
+    for (int i = 2; i < Terrain::kMaxDetailLevel; ++i)
     {
         mErrorMetric[i] = Math::Maximum(mErrorMetric[i], mErrorMetric[i - 1]);
     }
@@ -379,17 +379,14 @@ float TerrainSection::_CalcuErrorMetric(int level)
     // 对于该栅格求误差值, 取最大值.
     // 
     //
-    ///////////////////////////////////////////////////////////////////////////
 
     int step = 1 << level;
 
-    int xVertSize = mTerrain->GetXVertexSize();
-    int yVertSize = mTerrain->GetYVertexSize();
-    int xSectionVertSize = TnConst::kSectionVertexSize;
-    int ySectionVertSize = TnConst::kSectionVertexSize;
+    int xSectionVertSize = Terrain::kSectionVertexSize;
+    int ySectionVertSize = Terrain::kSectionVertexSize;
 
     int xOffset = mSectionX * (xSectionVertSize - 1);
-    int yOffset = mSectionY * (ySectionVertSize - 1);
+    int yOffset = mSectionZ * (ySectionVertSize - 1);
 
     int xSides = (xSectionVertSize - 1) >> level;
     int ySides = (ySectionVertSize - 1) >> level;
@@ -467,21 +464,21 @@ float TerrainSection::_CalcuErrorMetric(int level)
 
 void TerrainSection::CalcuLevelDistance()
 {
-    float pixelerr = TnConst::kMaxPixelError;
-    float resolution = TnConst::kMaxResolution;
+    float pixelerr = Terrain::kMaxPixelError;
+    float resolution = Terrain::kMaxResolution;
 
     float c = 1.0f / (2 * pixelerr / resolution);
 
-    for (int i = 0; i < TnConst::kMaxDetailLevel; ++i)
+    for (int i = 0; i < Terrain::kMaxDetailLevel; ++i)
     {
         float e = mErrorMetric[i];
         float d = e * c;
         mLevelDistSq[i] = d * d;
     }
 
-    if (mTerrain->IsMorphEnable())
+    if (mTerrain->GetConfig().morphEnable)
     {
-        for (int i = 1; i < TnConst::kMaxDetailLevel - 1; ++i)
+        for (int i = 1; i < Terrain::kMaxDetailLevel - 1; ++i)
         {
             float d0 = mLevelDistSq[i - 1];
             float d1 = mLevelDistSq[i];

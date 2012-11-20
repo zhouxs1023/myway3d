@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MWTerrainDef.h"
+#include "MWTerrain.h"
 
 namespace Myway {
 
@@ -106,8 +106,8 @@ protected:
 	bool				InvalidKey(_Key k);
 
 protected:
-    _IndexPool                  mBodyIndex[TnConst::kMaxDetailLevel];
-    _IndexPool                  mConecterIndex[TnConst::kMaxDetailLevel][TnConst::kMaxDetailLevel][4];
+    _IndexPool                  mBodyIndex[Terrain::kMaxDetailLevel];
+    _IndexPool                  mConecterIndex[Terrain::kMaxDetailLevel][Terrain::kMaxDetailLevel][4];
     Map<_Key, _IndexData>       mMIndexBuffer;
     int                         mLevelDetails;
 };
