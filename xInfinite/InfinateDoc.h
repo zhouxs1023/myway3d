@@ -20,6 +20,8 @@ public:
 
 // ÖØÐ´
 public:
+	void SetTitle(LPCTSTR lpszTitle);
+
 	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 #ifdef SHARED_HANDLERS

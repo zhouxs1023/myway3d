@@ -49,7 +49,10 @@ BOOL CInfinateDoc::OnNewDocument()
 }
 
 
-
+void CInfinateDoc::SetTitle(LPCTSTR lpszTitle)
+{
+	CDocument::SetTitle("");
+}
 
 // CInfinateDoc –Ú¡–ªØ
 
