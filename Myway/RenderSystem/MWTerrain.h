@@ -33,7 +33,7 @@ public:
 		float scale;
 		char material;
 
-		Layer() : scale(200), material(-1) {}
+		Layer() : scale(100), material(-1) {}
 	};
 
 	struct Config {

@@ -81,7 +81,7 @@ namespace Myway
         FogEnd = 2000;
         FogColor = Color4::White;
 
-        GodRaySunLum = 0.5f;
+        GodRaySunLum = 0.3f;
         GodRaySunPower = 1;
         GodRaySunSize = 4000;
         GodRayUVStep = 48;

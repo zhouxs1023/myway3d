@@ -17,7 +17,7 @@ TerrainSection::TerrainSection(Terrain * pTerrain, int x, int z)
 , mMorph(0)
 {
 	mOffX = mTerrain->GetConfig().xSectionSize * x;
-	mOffZ = mTerrain->GetConfig().zSize + mTerrain->GetConfig().zSectionSize * (z - 1);
+	mOffZ = mTerrain->GetConfig().zSize - mTerrain->GetConfig().zSectionSize * (z + 1);
 
     CalcuMorphBuffer();
     CalcuErrorMetrics();
@@ -119,8 +119,6 @@ void TerrainSection::Init()
 
 	mAabbLocal.maximum.x = mTerrain->GetConfig().xSectionSize + mOffX;;
 	mAabbLocal.maximum.z = mTerrain->GetConfig().zSectionSize + mOffZ;
-
-	
 
     for (int j = 0; j < zSectionVertSize; ++j)
     {

@@ -100,6 +100,7 @@
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="xApp.cpp" />
     <ClCompile Include="xBaseOperator.cpp" />
+    <ClCompile Include="xEditTerrain.cpp" />
     <ClCompile Include="xGizmo.cpp" />
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xObj.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="xApp.h" />
     <ClInclude Include="xBaseOperator.h" />
+    <ClInclude Include="xEditTerrain.h" />
     <ClInclude Include="xGizmo.h" />
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xObj.h" />

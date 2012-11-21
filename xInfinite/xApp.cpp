@@ -65,26 +65,37 @@ void xApp::Run()
         if (mQuit)
             return ;
 
-        if (mNeedResize)
-        {
-            System::Sleep(10);
+		try
+		{
+			if (mNeedResize)
+			{
+				System::Sleep(10);
 
-            RECT rc;
+				RECT rc;
 
-            GetWindowRect(mhWnd, &rc);
+				GetWindowRect(mhWnd, &rc);
 
-            int width = rc.right - rc.left;
-            int height = rc.bottom - rc.top;
+				int width = rc.right - rc.left;
+				int height = rc.bottom - rc.top;
 
-            mEngine->Resize(width, height);
+				mEngine->Resize(width, height);
 
-            mNeedResize = false;
-        }
+				mNeedResize = false;
+			}
 
-		OnUpdate.Call(NULL);
+			OnUpdate.Call(NULL);
 
-        _input();
-        mEngine->Run();
+			_input();
+			mEngine->Run();
+		}
+		catch (Exception & e)
+		{
+			d_assert (0);
+		}
+		catch (...)
+		{
+			d_assert (0);
+		}
     }
 
     System::Sleep(10);
@@ -142,48 +153,56 @@ void xApp::_InitEngine()
 {
     __enter();
 
-    RECT rc;
+	try
+	{
+		RECT rc;
 
-    mEngine = new Engine();
+		mEngine = new Engine();
 
-    GetWindowRect(mhWnd, &rc);
+		GetWindowRect(mhWnd, &rc);
 
-    int width = rc.right - rc.left;
-    int height = rc.bottom - rc.top;
+		int width = rc.right - rc.left;
+		int height = rc.bottom - rc.top;
 
-    DeviceProperty dp;
-    dp.hInst = GetModuleHandle(NULL);
-    dp.hWnd = mhWnd;
-    dp.bWnded = TRUE;
-    dp.Width = width;
-    dp.Height = height;
-    dp.bVSync = FALSE;
-    dp.RefreshRate = 0;
-    dp.bNVPerfHUD = TRUE;
+		DeviceProperty dp;
+		dp.hInst = GetModuleHandle(NULL);
+		dp.hWnd = mhWnd;
+		dp.bWnded = TRUE;
+		dp.Width = width;
+		dp.Height = height;
+		dp.bVSync = FALSE;
+		dp.RefreshRate = 0;
+		dp.bNVPerfHUD = TRUE;
 
-    Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
+		Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
 
-    //Environment::Instance()->LoadTerrain("Terrain.terrain");
-    //Environment::Instance()->InitEv();
+		//Environment::Instance()->LoadTerrain("Terrain.terrain");
+		Environment::Instance()->InitEv();
+		//Environment::Instance()->SetKey(EVKT_Noon);
 
-	Terrain::Config tconfig;
+		SceneNode * cam = World::Instance()->MainCameraNode();
 
-	Environment::Instance()->CreateTerrain(tconfig);
+		cam->SetPosition(0, 200, 0);
 
-    SceneNode * cam = World::Instance()->MainCameraNode();
+		Quat q; 
+		q.FromAxis(Vec3::UnitX, Vec3::UnitZ, Vec3::NegUnitY);
+		cam->SetOrientation(q);
 
-    cam->SetPosition(500, 200, 500);
+		World::Instance()->Resize(2048, 2048, 2048);
 
-    Quat q; 
-    q.FromAxis(Vec3::UnitX, Vec3::UnitZ, Vec3::NegUnitY);
-    cam->SetOrientation(q);
+		mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib");
 
-    World::Instance()->Resize(1024, 1024, 1024);
-
-	mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib");
-
-	OnInit.Call();
-    OnInitUI.Call();
+		OnInit.Call();
+		OnInitUI.Call();
+	}
+	catch (Exception & e)
+	{
+		d_assert (0);
+	}
+	catch (...)
+	{
+		d_assert (0);
+	}
 }
 
 void xApp::Shutdown()

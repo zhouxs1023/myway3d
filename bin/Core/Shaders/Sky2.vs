@@ -12,9 +12,6 @@ float scale(float cos, float uScaleDepth)
 struct VS_IN
 {
 	float4 iPosition	        : POSITION;
-	float3 iNPosition           : TEXCOORD0;
-	float2 iUV                  : TEXCOORD1;
-	float  iOpacity             : TEXCOORD2;
 };
 
 struct VS_OUT
@@ -47,19 +44,22 @@ uniform float uScale;               // 1 / (outerRadius - innerRadius)
 uniform float uScaleDepth;          // Where the average atmosphere density is found
 uniform float uScaleOverScaleDepth; // Scale / ScaleDepth
 
-// Number of samples
-uniform int   uNumberOfSamples;
-uniform float uSamples;
-
-
-VS_OUT main_vp(VS_IN In)
+VS_OUT main(VS_IN In)
 {
 	VS_OUT Out;
+
+	int   uNumberOfSamples = 6;
+	float uSamples = 6;
 	
     // Clip space position
-	oPosition   = mul(uWorldViewProj, In.iPosition);
+	Out.oPosition   = mul(In.iPosition, uWorldViewProj);
 
-	float3 v3Pos = In.iNPosition;
+	float3 NPos = In.iPosition.xyz;
+
+	NPos.y = max(0, NPos.y);
+	NPos = normalize(NPos);
+
+	float3 v3Pos = NPos;
 	v3Pos.y += uInnerRadius;
 
     float3 v3Ray = v3Pos - uCameraPos;
@@ -102,10 +102,10 @@ VS_OUT main_vp(VS_IN In)
 	}
 
     // Outputs
-    oRayleighColor = color * (uInvWaveLength * uKrESun); // TODO <--- parameter
-    oMieColor      = color * uKmESun; // TODO <--- *uInvMieWaveLength
-    oDirection     = uCameraPos - v3Pos;
-    oUV = iUV;
-    oOpacity = iOpacity;
-    oHeight = 1-iNPosition.y;
+    Out.oRayleighColor = color * (uInvWaveLength * uKrESun); // TODO <--- parameter
+    Out.oMieColor = color * uKmESun; // TODO <--- *uInvMieWaveLength
+    Out.oDirection = uCameraPos - v3Pos;
+    Out.oHeight = 1-In.iPosition.y;
+
+	return Out;
 }

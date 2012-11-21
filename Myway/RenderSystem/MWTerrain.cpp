@@ -41,8 +41,8 @@ Terrain::~Terrain()
     mSceneNodes.Clear();
     mSections.Clear();
 
-	safe_delete(mHeights);
-	safe_delete(mNormals);
+	safe_delete_array(mHeights);
+	safe_delete_array(mNormals);
 }
 
 void Terrain::Create(const Config & config)
@@ -69,7 +69,7 @@ void Terrain::Create(const Config & config)
 	mConfig.xSectionSize = mConfig.xSize / mConfig.xSectionCount;
 	mConfig.zSectionSize = mConfig.zSize / mConfig.zSectionCount;
 
-	// create shared xy stream
+	// create shared x & y stream
 	mXYStream = VideoBufferManager::Instance()->CreateVertexBuffer(8 * kSectionVertexSize * kSectionVertexSize);
 	
 	float * vert = (float *)mXYStream->Lock(0, 0, LOCK_NORMAL);
@@ -77,9 +77,9 @@ void Terrain::Create(const Config & config)
 		float w = mConfig.xSize / mConfig.xSectionCount;
 		float h = mConfig.zSize / mConfig.zSectionCount;
 
-		for (int i = 0; i < kSectionVertexSize; ++i)
+		for (int j = 0; j < kSectionVertexSize; ++j)
 		{
-			for (int j = 0; j < kSectionVertexSize; ++j)
+			for (int i = 0; i < kSectionVertexSize; ++i)
 			{
 				*vert++ = i / (float)(kSectionVertexSize - 1) * w;
 				*vert++ = (1 - j / (float)(kSectionVertexSize - 1)) * h;
@@ -111,11 +111,13 @@ void Terrain::Create(const Config & config)
 			mSceneNodes[index] = World::Instance()->CreateSceneNode();
 
 			mSceneNodes[index]->Attach(mSections[index]);
+
+			++index;
 		}
 	}
 
 	// load default detail map
-	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault.dds", "TerrainDefault.dds");
+	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault.png", "TerrainDefault.png");
 	mDefaultNormalMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault_n.dds", "TerrainDefault_n.dds");
 
 	for (int i = 0; i < kMaxLayers; ++i)
@@ -286,7 +288,10 @@ void Terrain::Render()
 		float uvScale3 = mLayer[layer3].scale;
 
 		SamplerState state;
+		state.Address = TEXA_CLAMP;
 		render->SetTexture(0, state, weightMap.c_ptr());
+
+		state.Address = TEXA_WRAP;
 		render->SetTexture(1, state, detailMap0.c_ptr());
 		render->SetTexture(2, state, detailMap1.c_ptr());
 		render->SetTexture(3, state, detailMap2.c_ptr());

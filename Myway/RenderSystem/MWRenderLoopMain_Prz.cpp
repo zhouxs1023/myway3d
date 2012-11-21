@@ -83,8 +83,8 @@ namespace Myway {
             Environment::Instance()->GetFog()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
         // ---> render sky
-        if (Environment::Instance()->GetSky())
-            Environment::Instance()->GetSky()->Render();
+        if (Environment::Instance()->GetSky2())
+            Environment::Instance()->GetSky2()->Render();
 
         // ---> render sun
         if (Environment::Instance()->GetSun())

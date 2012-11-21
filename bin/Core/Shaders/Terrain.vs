@@ -63,14 +63,14 @@ VS_OUT main(VS_IN In)
 	
 	float4 position = CalcuPosition(In.xz, In.y);
 	
-	float2 detailUV = CalcuDetailUV(In.xz);
+	float2 detailUV = CalcuDetailUV(position.xz);
 
 	// morph
     //position.y += morph * In.delta;
 
     Out.position = mul(position, matWVP);
     
-    Out.tcoord0 = CalcuBlendUV(position.xz);
+    Out.tcoord0 = CalcuBlendUV(In.xz);
     Out.tcoord12.xy = detailUV * gUVScale.x;
     Out.tcoord12.zw = detailUV * gUVScale.y;
     Out.tcoord34.xy = detailUV * gUVScale.z;

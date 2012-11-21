@@ -38,7 +38,8 @@ namespace Myway {
         ShaderLib * GetShaderLib() { return mShaderLib; }
 
         Terrain * GetTerrain() { return mTerrain; }
-        Sky * GetSky() { return mSky; }
+		Sky * GetSky() { return mSky; }
+        Sky2 * GetSky2() { return mSky2; }
         Sun * GetSun() { return mSun; }
         Moon * GetMoon() { return mMoon; }
         Cloud * GetCloud() { return mCloud; }
@@ -80,7 +81,8 @@ namespace Myway {
     protected:
         ShaderLib * mShaderLib;
 
-        Sky * mSky;
+		Sky * mSky;
+        Sky2 * mSky2;
         Sun * mSun;
         Moon * mMoon;
         Cloud * mCloud;

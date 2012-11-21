@@ -14,7 +14,8 @@ namespace Myway {
 
         mTerrain = NULL;
 
-        mSky = NULL;
+		mSky = NULL;
+        mSky2 = NULL;
         mSun = NULL;
         mMoon = NULL;
         mCloud = NULL;
@@ -45,6 +46,7 @@ namespace Myway {
     {
         DeInitEv();
 
+		mSky2 = new Sky2();
         mSky = new Sky();
         mSun = new Sun();
         mMoon = new Moon();
@@ -58,7 +60,8 @@ namespace Myway {
 
     void Environment::DeInitEv()
     {
-        safe_delete (mSky);
+		safe_delete (mSky);
+        safe_delete (mSky2);
         safe_delete (mSun);
         safe_delete (mMoon);
         safe_delete (mCloud);

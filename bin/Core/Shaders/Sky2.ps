@@ -3,16 +3,39 @@
 //
 //
 
-struct PS_IN
-{
-	float2 uv0 : TEXCOORD0;
-};
+void main(
+    // IN
+    float2 iUV              : TEXCOORD0,
+	float3 iRayleighColor   : TEXCOORD1,
+	float3 iMieColor        : TEXCOORD2,
+	float3 iDirection       : TEXCOORD3,
+	float  iOpacity         : TEXCOORD4,
+	float  iHeight          : TEXCOORD5,
 
-uniform sampler2D gTex;
+	// OUT 
+	out float4 oColor		: COLOR,
 
-float4 main(PS_IN In) : COLOR
+	// UNIFORM
+	uniform float3 uLightDir,
+    // Phase function
+	uniform float  uG,
+	uniform float  uG2
+	//uniform float  uExposure
+	)
 {
-	float4 clr = tex2D(gTex, In.uv0);
+    float cos = dot(uLightDir, iDirection) / length(iDirection);
+	float cos2 = cos*cos;
 	
-	return clr;
+	float rayleighPhase = 0.75 * (1.0 + 0.5*cos2);
+	
+	float miePhase = 1.5f * ((1.0f - uG2) / (2.0f + uG2)) *
+					 (1.0f + cos2) / pow(1.0f + uG2 - 2.0f * uG * cos, 1.5f);
+
+	//oColor = float4((1 - exp(-uExposure * (rayleighPhase * iRayleighColor + miePhase * iMieColor))), iOpacity);
+    oColor = float4(rayleighPhase * iRayleighColor + miePhase * iMieColor, 1);
+	
+	// For night rendering
+	//float nightmult = saturate(1 - max(oColor.x, max(oColor.y, oColor.z))*10);
+	//oColor.xyz += nightmult *(float3(0.05, 0.05, 0.1)*(2-0.75*saturate(-uLightDir.y))*pow(iHeight,3));
+	oColor.rgb = lerp(oColor.rgb, 0, (iHeight - 1) * 1);
 }

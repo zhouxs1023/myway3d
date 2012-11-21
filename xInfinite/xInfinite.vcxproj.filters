@@ -66,6 +66,9 @@
     <ClCompile Include="xBaseOperator.cpp">
       <Filter>Control</Filter>
     </ClCompile>
+    <ClCompile Include="xEditTerrain.cpp">
+      <Filter>Control</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h">
@@ -123,6 +126,9 @@
       <Filter>Ui</Filter>
     </ClInclude>
     <ClInclude Include="xBaseOperator.h">
+      <Filter>Control</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrain.h">
       <Filter>Control</Filter>
     </ClInclude>
   </ItemGroup>

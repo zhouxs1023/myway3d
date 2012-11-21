@@ -14,7 +14,6 @@ struct VS_OUT
 	float2 uv0 : TEXCOORD0;
 };
 
-uniform float4 gTransform;
 uniform float4 gU; // x: u, y: voff, z: 1 / (1 + voff)
 
 uniform float4x4 matWVP;
@@ -28,8 +27,6 @@ VS_OUT main(VS_IN In)
 
 	Out.uv0 = float2(u, v);
 
-	In.pos.xyz *= gTransform.w;
-	In.pos.xyz += gTransform.xyz;
 	Out.pos = mul(In.pos, matWVP);
 
 	return Out;
