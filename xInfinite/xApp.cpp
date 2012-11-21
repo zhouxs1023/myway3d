@@ -163,8 +163,12 @@ void xApp::_InitEngine()
 
     Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
 
-    Environment::Instance()->LoadTerrain("Terrain.terrain");
-    Environment::Instance()->InitEv();
+    //Environment::Instance()->LoadTerrain("Terrain.terrain");
+    //Environment::Instance()->InitEv();
+
+	Terrain::Config tconfig;
+
+	Environment::Instance()->CreateTerrain(tconfig);
 
     SceneNode * cam = World::Instance()->MainCameraNode();
 

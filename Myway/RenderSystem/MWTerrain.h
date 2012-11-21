@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MWRenderSystem.h"
-#include "MWTerrainDef.h"
 
 namespace Myway {
 
@@ -10,14 +9,14 @@ class TerrainLod;
 class MW_ENTRY Terrain
 {
     DECLARE_ALLOC();
-	DECLARE_SINGLETON(Terrain);
 
     friend class TerrainSection;
 
 public:
 	enum Consts
 	{
-		kMaxLayers = 4,
+		kMaxLayers = 128,
+		kMaxBlendLayers = 4,
 		kSectionVertexSize = 65,
 		kSectionVertexSize_2 =  kSectionVertexSize * kSectionVertexSize,
 		kMaxDetailLevel = 4,
@@ -32,40 +31,47 @@ public:
 		TString128 normal;
 		TString128 specular;
 		float scale;
+		char material;
 
-		Layer() : scale(0) {}
+		Layer() : scale(200), material(-1) {}
 	};
 
 	struct Config {
 		float xSize, zSize;
+
 		int xVertexCount, zVertexCount;
-		Layer layers[kMaxLayers];
+		int iVertexCount;
+
 		bool morphEnable;
 		float morphStart;
 
 		float xSectionSize, zSectionSize;
 		int xSectionCount, zSectionCount;
-
-		float fSectionWidth;
-		float fSectionHeight;
+		int iSectionCount;
 
 		Config()
 		{
-			xSize = zSize = 0;
-			xVertexCount = zVertexCount = 0;
+			xSize = zSize = 1024;
+
+			xVertexCount = zVertexCount = 1025;
+			iVertexCount = 1025 * 1025;
+
 			morphEnable = false;
 			morphStart = 0;
 
-			xSectionCount = zSectionCount = 0;
+			xSectionCount = zSectionCount = 16;
 			xSectionSize = zSectionSize = 0;
+			iSectionCount = 16 * 16;
 		}
 	};
 
 public:
-    Terrain();
+    Terrain(const Config & config);
+	Terrain(const char * source);
     virtual ~Terrain();
 
-	void				Create(const Config & config);
+	int					AddLayer(const Layer & layer);
+	void				RemoveLayer(int layer);
 
     const Config &		GetConfig() const { return mConfig; }
     TerrainLod *        GetTerrainLod() { return mLod; }
@@ -73,13 +79,25 @@ public:
 	TerrainSection *	GetSection(int x, int z);
 	float				GetHeight(int x, int z);
 	Vec3				GetNormal(int x, int z);
+	TexturePtr			GetWeightMap(int x, int z);
 
 	const float *		GetHeights() const { return mHeights; }
 	const Vec3 *		GetNormals() const { return mNormals; }
 
+	void				Render();
+	void				RenderInMirror();
+
+
 protected:
     void                OnPreVisibleCull(void * data);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
+
+	void				Create(const Config & config);
+	void				Load(const char * source);
+
+	TexturePtr			_getDetailMap(int layer);
+	TexturePtr			_getNormalMap(int layer);
+	TexturePtr			_getSpecularMap(int layer);
 
 protected:
     Config mConfig;
@@ -87,6 +105,7 @@ protected:
     Array<SceneNode*> mSceneNodes;
     Array<TerrainSection*> mSections;
 	Array<TerrainSection*> mVisibleSections;
+	Array<TexturePtr> mWeightMaps;
 
     TerrainLod * mLod;
     Technique * mTech;
@@ -95,9 +114,14 @@ protected:
 	float *	mHeights;
 	Vec3 *	mNormals;
 
-	Array<TexturePtr> mDetailMaps;
-	Array<TexturePtr> mNormalMaps;
-	Array<TexturePtr> mSpecularMaps;
+	TexturePtr mDefaultDetailMap;
+	TexturePtr mDefaultNormalMap;
+	TexturePtr mDefaultSpecularMap;
+
+	Layer mLayer[kMaxLayers];
+	TexturePtr mDetailMaps[kMaxLayers];
+	TexturePtr mNormalMaps[kMaxLayers];
+	TexturePtr mSpecularMaps[kMaxLayers];
 
 	tEventListener<Terrain> tOnPreVisibleCull;
 };

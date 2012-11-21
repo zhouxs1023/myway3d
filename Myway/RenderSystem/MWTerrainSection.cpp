@@ -24,6 +24,11 @@ TerrainSection::TerrainSection(Terrain * pTerrain, int x, int z)
     CalcuLevelDistance();
 
     Init();
+
+	for (int i = 0; i < Terrain::kMaxBlendLayers; ++i)
+	{
+		mLayer[i] = 0;
+	}
 }
 
 TerrainSection::~TerrainSection()
@@ -60,7 +65,7 @@ void TerrainSection::Init()
     int iStride1 = sizeof(float);
     VertexBufferPtr pVertexBuffer1 = mgr.CreateVertexBuffer(iVertexCount * iStride1);
 
-    int iStride2 = sizeof(Vec2);
+    int iStride2 = sizeof(Vec3);
     VertexBufferPtr pVertexBuffer2 = mgr.CreateVertexBuffer(iVertexCount * iStride2);
 
     int iSrcOffset = mSectionZ * ztile * xVertSize + mSectionX * xtile;

@@ -77,12 +77,19 @@ namespace Myway {
         }
     }
 
-    void Environment::LoadTerrain(const char * source)
+    /*void Environment::LoadTerrain(const char * source)
     {
         UnloadTerrain();
 
         mTerrain = new Terrain(source);
-    }
+    }*/
+
+	void Environment::CreateTerrain(const Terrain::Config & config)
+	{
+		UnloadTerrain();
+
+		mTerrain = new Terrain(config);
+	}
 
     void Environment::UnloadTerrain()
     {

@@ -20,6 +20,9 @@ public:
     int GetLevel() const { return mLevel; }
     int GetSectionX() const { return mSectionX; }
     int GetSectionZ() const { return mSectionZ; }
+	int GetLayer(int index) const { d_assert (index < Terrain::kMaxBlendLayers); return mLayer[index]; }
+	float GetOffX() const { return mOffX; }
+	float GetOffZ() const { return mOffZ; }
 
     void UpdateLod();
     void PreRender();
@@ -40,7 +43,7 @@ protected:
     int                     mSectionZ;
 	float					mOffX, mOffZ;
 
-	int						mLayer[Terrain::kMaxLayers];
+	int						mLayer[Terrain::kMaxBlendLayers];
 
     int                     mLevel;
     float                   mErrorMetric[Terrain::kMaxDetailLevel];

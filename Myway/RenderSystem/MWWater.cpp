@@ -356,8 +356,8 @@ namespace Myway {
         render->ClearBuffer(NULL, true, true, false, Color::Black, 1, 0);
 
         // --->render terrain
-        if (Environment::Instance()->GetTerrain())
-            Environment::Instance()->GetTerrain()->RenderInMirror();
+        /*if (Environment::Instance()->GetTerrain())
+            Environment::Instance()->GetTerrain()->RenderInMirror();*/
 
         // ---> render sky
         if (Environment::Instance()->GetSky())

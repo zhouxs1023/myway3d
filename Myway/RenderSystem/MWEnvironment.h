@@ -30,8 +30,9 @@ namespace Myway {
 
         void InitEv();
         void DeInitEv();
-
-        void LoadTerrain(const char * source);
+		
+		void CreateTerrain(const Terrain::Config & config);
+        //void LoadTerrain(const char * source);
         void UnloadTerrain();
 
         ShaderLib * GetShaderLib() { return mShaderLib; }
