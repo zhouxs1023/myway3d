@@ -93,15 +93,15 @@ namespace Myway
         HdrBrightWeight1 = 0.3f;
         HdrBrightWeight2 = 1.0f;
 
-        CloudHeight = 0.25f;
+        CloudHeight = 0.15f;
         CloudCurved = 0.4f;
-        CloudMass = 0.35f;
+        CloudMass = 0.4f;
         CloudWeight0 = 0.7f;
         CloudWeight1 = 0.3f;
         CloudUVScale0 = 1.5f;
         CloudUVScale1 = 2.5f;
-        CloudUVScroll0 = 0.2f;
-        CloudUVScroll1 = 0.2f;
+        CloudUVScroll0 = 0.02f;
+        CloudUVScroll1 = 0.02f;
         CloudAlpha = 0.25f;
         CloudAlphaStrength = 15;
         CloudLightStrength = 9.0f;

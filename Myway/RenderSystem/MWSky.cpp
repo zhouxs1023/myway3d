@@ -316,7 +316,7 @@ namespace Myway {
 		}
 
 		{
-			//uExposure->SetUnifom(mOptions.Exposure, 0, 0, 0);
+			uExposure->SetUnifom(mOptions.Exposure, 0, 0, 0);
 		}
 	}
 }

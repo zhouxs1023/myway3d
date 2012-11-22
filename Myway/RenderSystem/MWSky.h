@@ -73,7 +73,7 @@ namespace Myway {
 				, SunIntensity(30)
 				, WaveLength(0.57f, 0.54f, 0.44f)
 				, G(-0.991f)
-				, Exposure(2.0f)
+				, Exposure(1.5f)
 			{
 			}
 		};
