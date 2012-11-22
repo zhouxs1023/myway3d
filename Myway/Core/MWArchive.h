@@ -26,8 +26,6 @@ public:
         Archive *   archive;
         FileType    type;
         TString128  name;
-        TString128  base;
-        TString128  path;
     };
 
     typedef List<FileInfo>  FileInfoList;

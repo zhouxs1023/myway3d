@@ -25,47 +25,51 @@ void FileSystem::Load()
     if (GetFileInfoSize())
         return ;
 
+	_load("", mName);
+}
+
+void FileSystem::_load(const TString128 & prex, const TString128 & dir)
+{
 #ifdef MW_PLATFORM_WIN32
 
-    TString128 file_path = mName + "\\*.*";
-    WIN32_FIND_DATA file;
-    HANDLE hFind = FindFirstFile(file_path.c_str(), &file);
+	TString128 file_path = dir + "\\*.*";
+	WIN32_FIND_DATA file;
+	HANDLE hFind = FindFirstFile(file_path.c_str(), &file);
 
-    if (hFind == INVALID_HANDLE_VALUE) 
-        return;
+	if (hFind == INVALID_HANDLE_VALUE) 
+		return;
 
-    Archive::FileInfo info;
-    info.archive = this;
-    info.path = mName;
+	Archive::FileInfo info;
+	info.archive = this;
 
-    do
-    {
-        if (file.cFileName[0] == '.')
-            continue;
+	do
+	{
+		if (file.cFileName[0] == '.')
+			continue;
 
-        if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
-        {
-            info.base = file.cFileName;
-            info.name = mName + '/' + info.base;
-            info.type = FILE_DIRECTORY;
-            info.base.Lower();
-            info.name.Lower();
-            mFiles.Insert(info.base, info);
-        }
-        else if (file.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)
-        {
-            info.base = file.cFileName;
-            info.name = mName + '/' + info.base;
-            info.type = FILE_DIRECTORY;
-            info.type = FILE_ARCHIVE;
-            info.base.Lower();
-            info.name.Lower();
-            mFiles.Insert(info.base, info);
-        }
+		if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+		{
+			info.name = prex + file.cFileName;
+			info.type = FILE_DIRECTORY;
+			info.name.Lower();
+			mFiles.Insert(info.name, info);
 
-    } while (FindNextFile(hFind, &file));
+			TString128 prex = info.name + "\\";
 
-    FindClose(hFind);
+			_load(prex, dir + "\\" + info.name);
+		}
+		else if (file.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)
+		{
+			info.name = prex + file.cFileName;
+			info.type = FILE_DIRECTORY;
+			info.type = FILE_ARCHIVE;
+			info.name.Lower();
+			mFiles.Insert(info.name, info);
+		}
+
+	} while (FindNextFile(hFind, &file));
+
+	FindClose(hFind);
 
 #else
 

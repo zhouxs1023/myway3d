@@ -164,7 +164,7 @@ namespace Myway {
 
     void Sky2::_init()
     {
-		int iRings = 10, iSegments = 10;
+		int iRings = 30, iSegments = 30;
 		int iVertexCount = (iRings + 1) * (iSegments + 1);
 		int iIndexCount = iRings * iSegments * 6;
 		int iPrimCount = iIndexCount / 3;

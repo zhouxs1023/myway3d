@@ -49,6 +49,9 @@ public:
     virtual void Unload();
 
     virtual DataStreamPtr Open(const TString128 & filename);
+
+protected:
+	void _load(const TString128 & prex, const TString128 & dir);
 };
 
 class MW_ENTRY FileSystemFactory : public ArchiveFactory

@@ -61,7 +61,8 @@ ArchiveZip::~ArchiveZip()
 
 void ArchiveZip::Load()
 {
-    if (!mDir)
+	d_assert (0);
+    /*if (!mDir)
     {
         zzip_error_t error;
         mDir = zzip_dir_open(mName.c_str(), &error);
@@ -76,16 +77,16 @@ void ArchiveZip::Load()
             info.name.SplitFileNameR(info.base, info.path);
             info.type = Archive::FILE_ARCHIVE;
 
-            if (info.base.Length() == 0)
+            if (info.name.Length() == 0)
             {
                 info.name = info.name.SubStr(0, info.name.Length() - 1);
                 info.name.SplitFileNameR(info.base, info.path);
                 info.type = Archive::FILE_DIRECTORY;
             }
 
-            mFiles.Insert(info.base, info);
+            mFiles.Insert(info.name, info);
         }
-    }
+    }*/
 }
 
 void ArchiveZip::Unload()
