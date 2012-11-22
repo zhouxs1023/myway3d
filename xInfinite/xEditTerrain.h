@@ -5,8 +5,13 @@ class xTerrainBrush
 {
 public:
 	xTerrainBrush();
+	~xTerrainBrush();
 
 protected:
+	ImagePtr mImage;
+	float mSize;
+	float mDensity;
+	Vec3 mPosition;
 };
 
 class xEditTerrain
