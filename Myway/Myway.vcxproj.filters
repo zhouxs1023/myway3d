@@ -100,6 +100,9 @@
     <Filter Include="Myway\App">
       <UniqueIdentifier>{814556e8-b544-42f2-8350-57a475a5ecee}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Myway\RenderSystem\Envorment\geometry\Sky\VCloud">
+      <UniqueIdentifier>{7426833e-d47a-4e9f-9e48-0f7fd3d69464}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Myway.h">
