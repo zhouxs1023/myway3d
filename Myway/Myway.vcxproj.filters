@@ -576,6 +576,9 @@
     <ClInclude Include="Engine\MWApp_Win32.h">
       <Filter>Myway\App</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\MWKDTree.h">
+      <Filter>Myway\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">

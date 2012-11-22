@@ -132,6 +132,7 @@
     <ClInclude Include="Core\MWTaskManager.h" />
     <ClInclude Include="Core\MWThread.h" />
     <ClInclude Include="Core\MWTimer.h" />
+    <ClInclude Include="Physics\MWKDTree.h" />
     <ClInclude Include="RenderSystem\MWTrigger.h" />
     <ClInclude Include="Core\MWAllocator.h" />
     <ClInclude Include="Core\MWArray.h" />
