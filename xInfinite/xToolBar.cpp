@@ -2,11 +2,7 @@
 #include "xToolBar.h"
 #include "xApp.h"
 #include "resource.h"
-
-xOpToolBar gOpToolBar;
-
-Event xOpToolBar::OnChecked;
-Event xOpToolBar::OnChecked1;
+#include "xBaseOperator.h"
 
 IMP_SLN(xOpToolBar);
 
@@ -77,8 +73,7 @@ void xOpToolBar::Update(void *)
 		{
 			mCheckedButton = mButtons[i].id;
 
-			OnChecked(&mCheckedButton);
-			OnChecked1(NULL);
+			xBaseOp::OnChecked(&mCheckedButton);
 
 			return ;
 		}

@@ -10,6 +10,9 @@ protected:
 	static int OP_Id;
 
 public:
+	static Event OnChecked;
+
+public:
 	xBaseOp();
 	virtual ~xBaseOp();
 

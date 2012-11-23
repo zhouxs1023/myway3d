@@ -14,10 +14,6 @@ class xOpToolBar
 	DECLARE_SINGLETON(xOpToolBar);
 
 public:
-	static Event OnChecked;
-	static Event OnChecked1;
-
-public:
 	xOpToolBar();
 	virtual ~xOpToolBar();
 
