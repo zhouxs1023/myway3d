@@ -146,7 +146,7 @@ DataStreamPtr ResourceGroup::Open(const TString128 & name)
 
 	if (whr == end)
 	{
-		LOG_PRINT_FORMAT("Source: %s not exit", name.c_str());
+		LOG_PRINT_FORMAT("Source: %s not exit\n", name.c_str());
 		return NULL;
 	}
 

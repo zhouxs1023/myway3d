@@ -510,7 +510,7 @@ ImagePtr D3D9VideoBufferManager::CreateImage(int iWidth, int iHeight, FORMAT For
     return ImagePtr(image);
 }
 
-ImagePtr D3D9VideoBufferManager::LoadImageSource(const TString128 & source, IMAGE_FILTER filter)
+ImagePtr D3D9VideoBufferManager::LoadImage_(const TString128 & source, IMAGE_FILTER filter)
 {
     DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source.c_str());
 

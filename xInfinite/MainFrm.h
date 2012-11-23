@@ -7,7 +7,6 @@
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
-#include "xToolBar.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -42,8 +41,6 @@ protected:  // 控件条嵌入成员
 	CMFCToolBarImages m_UserImages;
 
 	ObjCreatorView mObjCreatorView;
-	xToolBar mToolbar;
-
 	CPropertiesWnd m_wndProperties;
 
 // 生成的消息映射函数

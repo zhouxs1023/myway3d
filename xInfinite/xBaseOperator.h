@@ -6,7 +6,7 @@
 class xBaseOp
 {
 protected:
-	static UINT OP_Command;
+	static int OP_Command;
 	static int OP_Id;
 
 public:
@@ -27,6 +27,8 @@ protected:
 	UINT mOperatorId;
 };
 
+#define xImplementOp(classname, op) const int classname::##op = xBaseOp::OP_Id++
+
 class xSelectOp : public xBaseOp
 {
 public:
@@ -39,7 +41,7 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\move.ico";
+		return "select.jpg";
 	}
 };
 
@@ -56,7 +58,7 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\move.ico";
+		return "move.jpg";
 	}
 };
 
@@ -72,7 +74,7 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\rotate.ico";
+		return "rotate.jpg";
 	}
 };
 
@@ -88,6 +90,6 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\scale.ico";
+		return "scale.jpg";
 	}
 };

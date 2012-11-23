@@ -129,7 +129,7 @@ public:
         Create a image
     */
     virtual ImagePtr CreateImage(int iWidth, int iHeight, FORMAT Format) = 0;
-    virtual ImagePtr LoadImageSource(const TString128 & source, IMAGE_FILTER filter = IMAGE_FILTER_NONE) = 0;
+    virtual ImagePtr LoadImage_(const TString128 & source, IMAGE_FILTER filter = IMAGE_FILTER_NONE) = 0;
     virtual void SaveImage(ImagePtr image, const TString128 & sImageFile, IMAGE_FILE_FORMAT Format) = 0;
 
     virtual void BitBlt(ImagePtr imageDest, TexturePtr texSrc, const Rect * pDest, const Rect * pSrc) = 0;
@@ -149,7 +149,7 @@ public:
     virtual void DestroyVertexDeclaration(VertexDeclaration * pDecl) = 0;
     virtual void DestroyVertexBuffer(VertexBuffer * pVertexBuffer) = 0;
     virtual void DestroyIndexBuffer(IndexBuffer * pIndexBuffer) = 0;
-    virtual void DestroyTexture(Texture * pTextuer) = 0;
+    virtual void DestroyTexture(Texture * pTexture) = 0;
     virtual void DestroyRenderTarget(RenderTarget * pRenderTarget) = 0;
     virtual void DestroyDepthStencil(DepthStencil * pDepthStencil) = 0;
 };

@@ -44,6 +44,8 @@ namespace Myway
         const char * source = res->GetSourceName().c_str();
 
         DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source);
-        res->LoadImp(stream);
+
+		if (stream != NULL)
+			res->LoadImp(stream);
     }
 }

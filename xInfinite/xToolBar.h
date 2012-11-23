@@ -1,35 +1,48 @@
 #pragma once
 
-class xToolBar : public CMFCToolBar
+class xOpToolBar
 {
 	static const int MAX_BUTTONS = 32;
+	static const int ICON_SIZE = 16;
 
-	DECLARE_SINGLETON(xToolBar);
+	struct Button
+	{
+		TString128 image;
+		int id;
+	};
+
+	DECLARE_SINGLETON(xOpToolBar);
 
 public:
-	static Event OnCommand;
+	static Event OnChecked;
+	static Event OnChecked1;
 
 public:
-	xToolBar();
-	virtual ~xToolBar();
+	xOpToolBar();
+	virtual ~xOpToolBar();
 
-	/*BOOL CreateEx(CWnd* pParentWnd, DWORD dwCtrlStyle = TBSTYLE_FLAT, DWORD dwStyle = AFX_DEFAULT_TOOLBAR_STYLE,
-		          CRect rcBorders = CRect(1, 1, 1, 1), UINT nID = AFX_IDW_TOOLBAR);
-
-	virtual void DoPaint(CDC* pDC);
-*/
-	void Add(const char * icon, UINT btn);
-	
+	void Add(const char * image, int id);
 
 protected:
-	void Init(void * data);
+	void Init(void *);
+	void Shutdown(void *);
 
-	virtual BOOL PreTranslateMessage(MSG * msg);
+	void Update(void *);
+	void Render(void *);
 
 protected:
-	CMFCToolBarImages mImageList;
 	int mNumButtons;
-	UINT mButtons[MAX_BUTTONS];
+	Button mButtons[MAX_BUTTONS];
+	TexturePtr mTexture[MAX_BUTTONS];
 
-	tEventListener<xToolBar> mOnInitUI;
+	int mCheckedButton;
+
+	Technique * mTech_Back;
+	Technique * mTech_Button;
+	Technique * mTech_Checked;
+
+	tEventListener<xOpToolBar> mOnInitUI;
+	tEventListener<xOpToolBar> mOnRender;
+	tEventListener<xOpToolBar> mOnUpdate;
+	tEventListener<xOpToolBar> mOnShutdown;
 };

@@ -1,17 +1,42 @@
 <ShaderLib>
 
 	<Shaders>
+    
 		<Shader name = "ColorVS" language = "cg" profile = "vs30" source = "Color.vs" >
 			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
 		</Shader>
 
 		<Shader name = "ColorPS" language = "cg" profile = "ps30" source = "Color.ps" >
 		</Shader>
+
+    <Shader name = "OpToolBarVS" language = "cg" profile = "vs30" source = "OpToolBar.vs" >
+    </Shader>
+
+    <Shader name = "OpToolBarBackPS" language = "cg" profile = "ps30" source = "OpToolBarBack.ps" >
+    </Shader>
+
+    <Shader name = "OpToolBarButtonPS" language = "cg" profile = "ps30" source = "OpToolBarButton.ps" >
+    </Shader>
+
+    <Shader name = "OpToolBarCheckedPS" language = "cg" profile = "ps30" source = "OpToolBarChecked.ps" >
+    </Shader>
+    
 	</Shaders>
 
 	<Techniques>
+    
 		<Technique name = "Color" vs = "ColorVS" ps = "ColorPS">
 		</Technique>
+    
+    <Technique name = "OpToolBarBack" vs = "OpToolBarVS" ps = "OpToolBarBackPS">
+    </Technique>
+
+    <Technique name = "OpToolBarButton" vs = "OpToolBarVS" ps = "OpToolBarButtonPS">
+    </Technique>
+
+    <Technique name = "OpToolBarChecked" vs = "OpToolBarVS" ps = "OpToolBarCheckedPS">
+    </Technique>
+    
 	</Techniques>
 
 </ShaderLib>

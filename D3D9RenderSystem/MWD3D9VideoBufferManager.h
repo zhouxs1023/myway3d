@@ -70,12 +70,11 @@ public:
     TexturePtr LoadCubeTexture(const TString128 & name, const TString128 & source);
 
    virtual ImagePtr CreateImage(int iWidth, int iHeight, FORMAT Format);
-   virtual ImagePtr LoadImageSource(const TString128 & source, IMAGE_FILTER filter);
+   virtual ImagePtr LoadImage_(const TString128 & source, IMAGE_FILTER filter);
    virtual void SaveImage(ImagePtr image, const TString128 & sImageFile, IMAGE_FILE_FORMAT Format);
 
    virtual void BitBlt(ImagePtr imageDest, TexturePtr texSrc, const Rect * pDest, const Rect * pSrc);
    virtual void BitBlt(TexturePtr texDest, ImagePtr imageSrc, const Rect * pDest, const Rect * pSrc);
-
 
    TexturePtr FindTexture(const TString128 & sName);
    DepthStencilPtr FindDepthStencil(const TString128 & sName);
@@ -83,7 +82,7 @@ public:
    void DestroyVertexDeclaration(VertexDeclaration * pDecl);
    void DestroyVertexBuffer(VertexBuffer * pVertexBuffer);
    void DestroyIndexBuffer(IndexBuffer * pIndexBuffer);
-   void DestroyTexture(Texture * pTextuer);
+   void DestroyTexture(Texture * pTexture);
    void DestroyRenderTarget(RenderTarget * pRenderTarget);
    void DestroyDepthStencil(DepthStencil * pDepthStencil);
 

@@ -115,8 +115,6 @@ void D3D9Texture::ResetDevice()
 
         d_assert (hr == S_OK);
     }
-
-    d_assert (mD3D9Texture);
 }
 
 void D3D9Texture::Load()

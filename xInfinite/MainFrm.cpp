@@ -70,13 +70,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 防止菜单栏在激活时获得焦点
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
-	if (!mToolbar.CreateEx(this, TBSTYLE_FLAT,
-		WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC))
-	{
-		TRACE0("未能创建工具栏\n");
-		return -1;      // 未能创建
-	}
-
 	// 允许用户定义的工具栏操作:
 	InitUserToolbars(NULL, uiFirstUserToolBarId, uiLastUserToolBarId);
 
@@ -89,10 +82,8 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
 	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
-	mToolbar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndMenuBar);
-	DockPane(&mToolbar);
 
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);

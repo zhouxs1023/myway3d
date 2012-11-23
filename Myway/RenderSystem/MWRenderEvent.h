@@ -21,5 +21,12 @@ namespace Myway {
         static Event OnResetDevice;
 
         static Event OnResize;
+
+		static Event OnBeginRender;
+
+		static Event OnAfterRenderSolid;
+		static Event OnAfterDeffererShading;
+
+		static Event OnAfterRender;
     };
 }

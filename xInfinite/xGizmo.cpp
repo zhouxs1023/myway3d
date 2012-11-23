@@ -8,7 +8,7 @@ xGizmo gGizmo;
 xGizmo::xGizmo()
 	: OnInit(xApp::OnInit, this, &xGizmo::Init)
 	, OnShutdown(xApp::OnShutdown, this, &xGizmo::Shutdown)
-	, OnRender(RenderScheme::OnAfterRender, this, &xGizmo::Render)
+	, OnRender(RenderEvent::OnAfterRender, this, &xGizmo::Render)
 	, OnUpdate(xApp::OnUpdate, this, &xGizmo::Update)
 	, mPicked(false)
 	, mPickedAxis(-1)

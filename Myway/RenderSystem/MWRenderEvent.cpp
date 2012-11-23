@@ -15,4 +15,13 @@ namespace Myway {
     Event RenderEvent::OnResetDevice;
 
     Event RenderEvent::OnResize;
+
+	Event RenderEvent::OnBeginRender;
+
+	Event RenderEvent::OnAfterRenderSolid;
+
+	Event RenderEvent::OnAfterDeffererShading;
+
+	Event RenderEvent::OnAfterRender;
+
 }
