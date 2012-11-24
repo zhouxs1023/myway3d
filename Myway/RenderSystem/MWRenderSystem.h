@@ -89,7 +89,7 @@ public:
     virtual void            EnableScissorTest(bool enable) = 0;
 
     virtual void            Render(Technique * efx, Renderer * obj) = 0;
-    virtual void            Render(Technique * efx, RenderDesc * rd) = 0;
+    virtual void            Render(Technique * efx, RenderOp * rd) = 0;
 
     virtual int             GetFramePrimitiveCount() = 0;
     virtual int             GetFrameBatchCount() = 0;

@@ -14,7 +14,7 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\TerrainTuQi.ico";
+		return "TuQi.jpg";
 	}
 };
 
@@ -30,7 +30,7 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\TerrainAoXiao.ico";
+		return "AoXia.jpg";
 	}
 };
 
@@ -46,7 +46,7 @@ public:
 
 	virtual const char * GetIcon()
 	{
-		return "..\\ui\\TerrainBlend.ico";
+		return "blend.jpg";
 	}
 };
 
@@ -58,6 +58,8 @@ class xEditTerrain
 
 		float size;
 		float density;
+
+		Vec3 position;
 	};
 
 	DECLARE_SINGLETON(xEditTerrain);
@@ -78,10 +80,20 @@ public:
 	float GetDensity() { return mBrush.density; }
 
 protected:
+	void _Init(void *);
 	void _Update(void *);
 	void _Shutdown(void *);
 	void _Render(void *);
 
 protected:
 	Brush mBrush;
+	Array<TString128> mBrushImages;
+
+	Technique * mTech_Brush;
+	Terrain * mTerrain;
+
+	tEventListener<xEditTerrain> OnInit;
+	tEventListener<xEditTerrain> OnUpdate;
+	tEventListener<xEditTerrain> OnShutdown;
+	tEventListener<xEditTerrain> OnRender;
 };

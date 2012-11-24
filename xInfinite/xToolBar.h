@@ -3,7 +3,7 @@
 class xOpToolBar
 {
 	static const int MAX_BUTTONS = 32;
-	static const int ICON_SIZE = 16;
+	static const int ICON_SIZE = 24;
 
 	struct Button
 	{

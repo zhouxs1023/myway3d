@@ -215,7 +215,7 @@ void xGizmo::_initGeo_Move()
 
 void xGizmo::_initGeo_Move_Render()
 {
-	mRender_Move = new RenderDesc();
+	mRender_Move = new RenderOp();
 
 	VertexStream * vxStream = &mRender_Move->vxStream;
 	IndexStream * ixStream = &mRender_Move->ixStream;
@@ -336,7 +336,7 @@ void xGizmo::_initGeo_Rotate()
 
 void xGizmo::_initGeo_Rotate_Render()
 {
-	mRender_Rotate = new RenderDesc();
+	mRender_Rotate = new RenderOp();
 
 	VertexStream * vxStream = &mRender_Rotate->vxStream;
 	IndexStream * ixStream = &mRender_Rotate->ixStream;
@@ -471,7 +471,7 @@ void xGizmo::_initGeo_Scale()
 
 void xGizmo::_initGeo_Scale_Render()
 {
-	mRender_Scale = new RenderDesc();
+	mRender_Scale = new RenderOp();
 
 	VertexStream * vxStream = &mRender_Scale->vxStream;
 	IndexStream * ixStream = &mRender_Scale->ixStream;

@@ -26,6 +26,7 @@ namespace Myway {
 
 		static Event OnAfterRenderSolid;
 		static Event OnAfterDeffererShading;
+		static Event OnAfterTerrainRender;
 
 		static Event OnAfterRender;
     };

@@ -26,7 +26,7 @@ namespace Myway {
         void _blend();
 
     protected:
-        RenderDesc mRender_Sun;
+        RenderOp mRender_Sun;
 
         Technique * mTech_Sun;
         Technique * mTech_GodRay;

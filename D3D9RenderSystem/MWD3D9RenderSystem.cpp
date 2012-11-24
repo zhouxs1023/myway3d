@@ -685,7 +685,7 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
     mPrimitivCount += primcount;
 }
 
-void D3D9RenderSystem::Render(Technique * tech, RenderDesc * rd)
+void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
 {
     RenderRegister::Instance()->Reset();
 

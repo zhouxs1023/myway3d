@@ -53,7 +53,7 @@ namespace Myway {
 
         void Update(float elapsedTime);
 
-        RenderDesc * GetRender() { return &mRender; }
+        RenderOp * GetRender() { return &mRender; }
 
     protected:
         void _init();
@@ -86,6 +86,6 @@ namespace Myway {
         Perlin * mNoise;
         float mWaterHeight;
 
-        RenderDesc mRender;
+        RenderOp mRender;
     };
 }

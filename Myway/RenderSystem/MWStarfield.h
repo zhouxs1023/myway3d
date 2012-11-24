@@ -36,7 +36,7 @@ namespace Myway { namespace Env {
         Star * mStars;
         int mSize;
 
-        RenderDesc mRender;
+        RenderOp mRender;
         Technique * mTech;
     };
 

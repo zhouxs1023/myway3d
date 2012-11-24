@@ -190,7 +190,7 @@ namespace Myway {
         render->SetTexture(5, state1, mTex_Wave.c_ptr());
         render->SetTexture(6, state1, mTex_Wave.c_ptr());
 
-        RenderDesc * rd = mProjGrid->GetRender();
+        RenderOp * rd = mProjGrid->GetRender();
 
         render->Render(mTech, rd);
     }

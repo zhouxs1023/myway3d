@@ -39,7 +39,7 @@ protected:
     
     TEXTURE_FILTER_TYPE mDefaultTextureFilter;
 
-    RenderDesc mScreenQuad;
+    RenderOp mScreenQuad;
 };
 
    

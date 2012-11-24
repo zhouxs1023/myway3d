@@ -17,7 +17,7 @@ xObjBound::~xObjBound()
 
 void xObjBound::Init(void * data)
 {
-	mRender = new RenderDesc();
+	mRender = new RenderOp();
 
 	VertexStream * vxStream = &mRender->vxStream;
 	IndexStream * ixStream = &mRender->ixStream;

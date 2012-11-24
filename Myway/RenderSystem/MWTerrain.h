@@ -87,6 +87,8 @@ public:
 	void				Render();
 	void				RenderInMirror();
 
+	int					GetVisibleSectionCount() const { return mVisibleSections.Size(); }
+	TerrainSection *	GetVisibleSection(int i) { return mVisibleSections[i]; }
 
 protected:
     void                OnPreVisibleCull(void * data);

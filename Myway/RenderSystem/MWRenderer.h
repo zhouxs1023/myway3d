@@ -41,7 +41,7 @@ protected:
     Material                mMaterial;
 };
 
-struct RenderDesc
+struct RenderOp
 {
     Mat4 xform;
     RenderState rState;
@@ -50,7 +50,7 @@ struct RenderDesc
     int iPrimCount;
     PRIMITIVE_TYPE ePrimType;
 
-    RenderDesc()
+    RenderOp()
     {
         xform = Mat4::Identity;
         iPrimCount = 0;

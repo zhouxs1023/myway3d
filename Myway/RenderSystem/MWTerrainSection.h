@@ -24,6 +24,8 @@ public:
 	float GetOffX() const { return mOffX; }
 	float GetOffZ() const { return mOffZ; }
 
+	RenderOp * GetRender() { return &mRender; }
+
     void UpdateLod();
     void PreRender();
 
@@ -52,7 +54,7 @@ protected:
     TerrainLod::_Key        mkKey;
     float                   mMorph;
 
-    RenderDesc              mRender;
+    RenderOp              mRender;
 };
 
 }

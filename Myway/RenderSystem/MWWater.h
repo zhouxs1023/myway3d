@@ -43,7 +43,7 @@ namespace Myway {
         void _renderRelfection();
 
     protected:
-        RenderDesc mRender;
+        RenderOp mRender;
 
         TexturePtr mTex_Wave;
         TexturePtr mTex_Fresnel;

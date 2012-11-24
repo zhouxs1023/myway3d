@@ -25,7 +25,7 @@ namespace Myway {
         void _shading(bool lighting);
 
     protected:
-        RenderDesc mRender;
+        RenderOp mRender;
 
         Technique * mTech_Lighting;
         Technique * mTech_BlurH;

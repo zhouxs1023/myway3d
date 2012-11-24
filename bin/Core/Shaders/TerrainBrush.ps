@@ -1,0 +1,27 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+    float2 tcoord0		: TEXCOORD0;
+};
+
+struct PS_OUT
+{
+    float4 color	: COLOR0;
+};
+
+uniform sampler2D gTex_Brush : register(s0);
+
+PS_OUT main(PS_IN In)
+{
+    PS_OUT Out;
+    
+    Out.color = tex2D(gTex_Brush, In.tcoord0);
+       
+    return Out;
+}
+
+

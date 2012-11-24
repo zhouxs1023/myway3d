@@ -12,7 +12,7 @@ public:
 
 protected:
 	Technique * mTech;
-	RenderDesc * mRender;
+	RenderOp * mRender;
 
 	tEventListener<xObjBound> OnInit;
 	tEventListener<xObjBound> OnShutdown;

@@ -19,7 +19,7 @@ namespace Myway {
         void _geometry();
 
     protected:
-        RenderDesc mRender;
+        RenderOp mRender;
         Technique * mTech;
         Technique * mTech_Lighting;
     };

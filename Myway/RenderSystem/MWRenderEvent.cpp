@@ -21,6 +21,7 @@ namespace Myway {
 	Event RenderEvent::OnAfterRenderSolid;
 
 	Event RenderEvent::OnAfterDeffererShading;
+	Event RenderEvent::OnAfterTerrainRender;
 
 	Event RenderEvent::OnAfterRender;
 

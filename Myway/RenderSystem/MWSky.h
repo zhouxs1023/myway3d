@@ -18,7 +18,7 @@ namespace Myway {
         void _geometry();
 
     protected:
-        RenderDesc mRender;
+        RenderOp mRender;
         Technique * mTech;
         TexturePtr mTexture;
     };
@@ -90,7 +90,7 @@ namespace Myway {
 
     protected:
 		Options mOptions;
-        RenderDesc mRender;
+        RenderOp mRender;
 		Technique * mTech;
     };
 

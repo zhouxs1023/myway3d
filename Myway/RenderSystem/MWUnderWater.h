@@ -121,7 +121,7 @@ namespace Myway {
 
         RenderTargetPtr mRenderTarget;
         TexturePtr mTexture;
-        RenderDesc mRender;
+        RenderOp mRender;
         Technique * mTech_Ray;
         Technique * mTech_Blend;
 
@@ -209,7 +209,7 @@ namespace Myway {
 
         Technique * mTech;
 
-        RenderDesc mRender;
+        RenderOp mRender;
 
         List<Bubble> mBubbles; 
     };

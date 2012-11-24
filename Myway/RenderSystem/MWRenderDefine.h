@@ -519,7 +519,7 @@ enum TextureCaps
 };
 
 
-/* struct: RenderDesc
+/* struct: RenderOp
 ----------------------------------------------------------
     @Remark:
         …Ë±∏ Ù–‘.        

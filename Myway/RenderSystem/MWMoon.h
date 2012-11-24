@@ -21,7 +21,7 @@ namespace Myway {
 
     protected:
         TexturePtr mTexture;
-        RenderDesc mRender;
+        RenderOp mRender;
         Technique * mTech;
     };
 

@@ -39,19 +39,19 @@ protected:
 protected:
 	Technique * mTech;
 
-	RenderDesc * mRender_Move;
+	RenderOp * mRender_Move;
 	int mNumVertex_Move;
 	int mNumIndex_Move;
 	Vec3 * mVertex_Move;
 	short * mIndex_Move;
 
-	RenderDesc * mRender_Rotate;
+	RenderOp * mRender_Rotate;
 	int mNumVertex_Rotate;
 	int mNumIndex_Rotate;
 	Vec3 * mVertex_Rotate;
 	short * mIndex_Rotate;
 
-	RenderDesc * mRender_Scale;
+	RenderOp * mRender_Scale;
 	int mNumVertex_Scale;
 	int mNumIndex_Scale;
 	Vec3 * mVertex_Scale;
