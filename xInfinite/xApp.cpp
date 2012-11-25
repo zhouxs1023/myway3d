@@ -177,7 +177,7 @@ void xApp::_InitEngine()
 		Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
 
 		//Environment::Instance()->LoadTerrain("Terrain.terrain");
-		//Environment::Instance()->InitEv();
+		Environment::Instance()->InitEv();
 		//Environment::Instance()->SetKey(EVKT_Noon);
 
 		SceneNode * cam = World::Instance()->MainCameraNode();
