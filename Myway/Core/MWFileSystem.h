@@ -42,7 +42,7 @@ public:
     */
 
 public:
-    FileSystem(const TString128 & name, const TString128 & type);
+    FileSystem(const TString128 & name);
     virtual~FileSystem();
 
     virtual void Load();

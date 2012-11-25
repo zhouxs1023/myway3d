@@ -31,10 +31,10 @@ public:
     Ray(const Vec3 & vOrigin, const Vec3 & vDirection);
     ~Ray();
 
-    RayIntersectionInfo Intersection(const Plane & rk);
-    RayIntersectionInfo Intersection(const Sphere & rk);
-    RayIntersectionInfo Intersection(const Aabb & rk);
-    RayIntersectionInfo Intersection(const Tri3 & rk);
+    RayIntersectionInfo Intersection(const Plane & rk) const;
+    RayIntersectionInfo Intersection(const Sphere & rk) const;
+    RayIntersectionInfo Intersection(const Aabb & rk) const;
+    RayIntersectionInfo Intersection(const Tri3 & rk) const;
 
 public:
     Vec3    origin;

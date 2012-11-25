@@ -10,8 +10,8 @@
 
 using namespace Myway;
 
-FileSystem::FileSystem(const TString128 & name, const TString128 & type)
-: Archive(name, type)
+FileSystem::FileSystem(const TString128 & name)
+: Archive(name, "FileSystem")
 {
 }
 
@@ -125,7 +125,7 @@ const TString128 & FileSystemFactory::GetType() const
 
 Archive * FileSystemFactory::CreateInstance(const TString128 & name)
 {
-    return new FileSystem(name, mType);
+    return new FileSystem(name);
 }
 
 void FileSystemFactory::DestroyInstance(Archive * myclass)

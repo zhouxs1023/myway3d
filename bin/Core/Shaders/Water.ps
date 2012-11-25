@@ -64,6 +64,7 @@ float3 CalcuNormal(float3 pos, float3 normal, float3 noise)
 	float3 nrm = nrm0 + nrm1 + nrm2 + nrm3;
 	
 	normal = normalize(normal);
+
 	normal.xz += nrm.xy;
 	
 	return normalize(normal);

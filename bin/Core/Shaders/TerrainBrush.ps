@@ -19,7 +19,10 @@ PS_OUT main(PS_IN In)
 {
     PS_OUT Out;
     
-    Out.color = tex2D(gTex_Brush, In.tcoord0);
+	float r = tex2D(gTex_Brush, In.tcoord0).r;
+
+	Out.color.rgb = lerp(float3(1, 1, 1), float3(0, 0, 1), r);
+	Out.color.a = 1;
        
     return Out;
 }

@@ -100,8 +100,8 @@ namespace Myway
         CloudWeight1 = 0.3f;
         CloudUVScale0 = 1.5f;
         CloudUVScale1 = 2.5f;
-        CloudUVScroll0 = 0.02f;
-        CloudUVScroll1 = 0.02f;
+        CloudUVScroll0 = 0.005f;
+        CloudUVScroll1 = 0.015f;
         CloudAlpha = 0.25f;
         CloudAlphaStrength = 15;
         CloudLightStrength = 9.0f;

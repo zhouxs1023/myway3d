@@ -54,7 +54,7 @@ VS_OUT main(VS_IN In)
 	float4 position = CalcuPosition(In.xz, In.y);
 	
     Out.position = mul(position, matWVP);
-    Out.tcoord0 = CalcuUV(In.xz);
+    Out.tcoord0 = CalcuUV(position.xz);
 
     return Out;
 }

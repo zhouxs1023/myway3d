@@ -135,7 +135,8 @@ void String::Lowercase()
 
     for (int i = 0; i < mLength; ++i)
     {
-        str[i] = ~0x20;
+		if (str[i] >= 'A' && str[i] <= 'Z')
+			str[i] |= 0x20;
     }
 }
 
@@ -145,7 +146,8 @@ void String::Uppercase()
 
     for (int i = 0; i < mLength; ++i)
     {
-        str[i] |= 0x20;
+		if (str[i] >= 'a' && str[i] <= 'z')
+			str[i] &= ~0x20;
     }
 }
 

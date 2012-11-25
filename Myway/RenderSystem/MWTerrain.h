@@ -90,6 +90,9 @@ public:
 	int					GetVisibleSectionCount() const { return mVisibleSections.Size(); }
 	TerrainSection *	GetVisibleSection(int i) { return mVisibleSections[i]; }
 
+	float				GetHeight(float x, float y);
+	Vec3				GetPosition(const Ray & ray);
+
 protected:
     void                OnPreVisibleCull(void * data);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
@@ -115,6 +118,7 @@ protected:
 
 	float *	mHeights;
 	Vec3 *	mNormals;
+	Aabb mBound;
 
 	TexturePtr mDefaultDetailMap;
 	TexturePtr mDefaultNormalMap;

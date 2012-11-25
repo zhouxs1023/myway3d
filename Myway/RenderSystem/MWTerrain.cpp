@@ -150,6 +150,9 @@ void Terrain::Create(const Config & config)
 			mWeightMaps[index++] = texture;
 		}
 	}
+
+	mBound.minimum = Vec3(0, 0, 0);
+	mBound.maximum = Vec3(mConfig.xSize, 0, mConfig.zSize);
 }
 
 void Terrain::Load(const char * source)
@@ -309,6 +312,110 @@ void Terrain::Render()
 
 void Terrain::RenderInMirror()
 {
+}
+
+
+Vec3 Terrain::GetPosition(const Ray & ray)
+{
+	Vec3 result(0, 0, 0);
+	const int iMaxCount = 1000;
+
+	int i = 0;
+	Vec3 pos = ray.origin;
+	float y = 0;
+
+	if ((ray.origin.x < mBound.minimum.x || ray.origin.x > mBound.maximum.x) ||
+		(ray.origin.y < mBound.minimum.y || ray.origin.y > mBound.maximum.y) ||
+		(ray.origin.z < mBound.minimum.z || ray.origin.z > mBound.maximum.z))
+	{
+		RayIntersectionInfo info = ray.Intersection(mBound);
+
+		if (!info.iterscetion)
+			return result;
+
+		pos = ray.origin + (info.distance + 0.1f) * ray.direction;
+	}
+
+	if (ray.direction == Vec3::UnitY)
+	{
+		y = GetHeight(pos.x, pos.z);
+		if (pos.y <= y)
+		{
+			result = Vec3(pos.x, y, pos.z);
+		}
+	}
+	else if (ray.direction == Vec3::NegUnitY)
+	{
+		y = GetHeight(pos.x, pos.z);
+		if (pos.y >= y)
+		{
+			result = Vec3(pos.x, y, pos.z);
+		}
+	}
+	else
+	{
+		while (pos.x > mBound.minimum.x && pos.x < mBound.maximum.x &&
+			pos.z > mBound.minimum.z && pos.z < mBound.maximum.z &&
+			i++ < iMaxCount)
+		{
+			y = GetHeight(pos.x, pos.z);
+			if (pos.y <= y)
+			{
+				result = Vec3(pos.x, y, pos.z);
+				break;
+			}
+
+			pos += ray.direction;
+		}
+	}
+
+	return result;
+}
+
+float Terrain::GetHeight(float x, float z)
+{
+	float sx = 0, sz = mConfig.zSize;
+	float ex = mConfig.zSize, ez = 0;
+
+	float fx = (x - sx) / (ex - sx) * (mConfig.xVertexCount - 1);
+	float fz = (z - sz) / (ez - sz) * (mConfig.zVertexCount - 1);
+
+	int ix = (int) fx;
+	int iz = (int) fz;
+
+	d_assert(ix >= 0 && ix <= mConfig.xVertexCount - 1 &&
+			 iz >= 0 && iz <= mConfig.zVertexCount - 1);
+
+	float dx = fx - ix;
+	float dz = fz - iz;
+
+	int ix1 = ix + 1;
+	int iz1 = iz + 1;
+
+	ix1 = Math::Minimum(ix1, mConfig.xVertexCount);
+	iz1 = Math::Minimum(iz1, mConfig.zVertexCount);
+
+	float a = GetHeight(ix,  iz);
+	float b = GetHeight(ix1, iz);
+	float c = GetHeight(ix,  iz1);
+	float d = GetHeight(ix1, iz1);
+	float m = (b + c) * 0.5f;
+	float h1, h2, final;
+
+	if (dx + dz <= 1.0f)
+	{
+		d = m + (m - a);
+	}
+	else
+	{
+		a = m + (m - d);
+	}
+
+	h1 = a * (1.0f - dx) + b * dx;
+	h2 = c * (1.0f - dx) + d * dx; 
+	final = h1 * (1.0f - dz) + h2 * dz;
+
+	return final;
 }
 
 }

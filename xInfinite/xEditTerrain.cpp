@@ -24,6 +24,9 @@ xEditTerrain::xEditTerrain()
 	INIT_SLN;
 
 	mTerrain = NULL;
+
+	mBrush.size = 50.0f;
+	mBrush.density = 1.0f;
 }
 
 xEditTerrain::~xEditTerrain()
@@ -49,6 +52,35 @@ void xEditTerrain::SetBrush(const TString128 & tex)
 
 void xEditTerrain::_Init(void *)
 {
+	Terrain::Config config;
+
+	Create(config);
+
+	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
+
+	FileSystem fs("../Core/Terrain/Brushes");
+
+	fs.Load();
+
+	Archive::FileInfoVisitor v = fs.GetFileInfos();
+
+	while (!v.Endof())
+	{
+		const Archive::FileInfo & info = v.Cursor()->second;
+
+		if (info.type == Archive::FILE_ARCHIVE)
+		{
+			mBrushImages.PushBack(info.name);
+		}
+
+		++v;
+	}
+
+	d_assert(mBrushImages.Size() != 0);
+
+	TString128 defaultBrush = mBrushImages[0];
+
+	mBrush.texture = VideoBufferManager::Instance()->Load2DTexture(defaultBrush, "brushes\\" + defaultBrush);
 }
 
 void xEditTerrain::_Update(void *)
@@ -76,14 +108,25 @@ void xEditTerrain::_Shutdown(void *)
 
 void xEditTerrain::_Render(void *)
 {
-	if (!mTerrain)
+	int op = xApp::Instance()->GetOperator();
+
+	if (!mTerrain || (op != xTerrainBlendOp::eOp_Blend &&
+		op != xTerrainTuQiOp::eOp_TuQi && op != xTerrainAoXiaOp::eOp_AoXia))
 		return ;
 
-	// render brush
-	Aabb aabb, tmp;
+	Point2f pt = IMouse::Instance()->GetPositionUnit();
 
-	aabb.minimum = mBrush.position - Vec3(mBrush.size, 1, mBrush.size);
-	aabb.maximum = mBrush.position + Vec3(mBrush.size, 1, mBrush.size);
+	Ray ray = World::Instance()->MainCamera()->GetViewportRay(pt.x, pt.y);
+	mBrush.position = mTerrain->GetPosition(ray);
+
+	Ray rk = Ray(Vec3(0, 1, 0), Vec3(0, -1, 0));
+	Vec3 pos = mTerrain->GetPosition(ray);
+
+	// render brush
+	Aabb aabb;
+
+	aabb.minimum = mBrush.position - Vec3(mBrush.size * 0.5f, 1, mBrush.size * 0.5f);
+	aabb.maximum = mBrush.position + Vec3(mBrush.size * 0.5f, 1, mBrush.size * 0.5f);
 
 	ShaderParam * uTransform = mTech_Brush->GetVertexShaderParamTable()->GetParam("gTransform");
 	ShaderParam * uMinInvSize = mTech_Brush->GetVertexShaderParamTable()->GetParam("gMinInvSize");
@@ -95,20 +138,34 @@ void xEditTerrain::_Render(void *)
 
 		const Aabb & bound = section->GetWorldAabb();
 
-		if (Math::AABBIntersection(tmp, aabb, bound) == 0)
+		float x0 = Math::Maximum(aabb.minimum.x, bound.minimum.x);
+		float z0 = Math::Maximum(aabb.minimum.z, bound.minimum.z);
+
+		float x1 = Math::Minimum(aabb.maximum.x, bound.maximum.x);
+		float z1 = Math::Minimum(aabb.maximum.z, bound.maximum.z);
+
+		if (x0 <= x1 && z0 <= z1)
 		{
 			float xOff = section->GetOffX();
 			float zOff = section->GetOffZ();
 
 			uTransform->SetUnifom(xOff, 0, zOff, 0);
-			uMinInvSize->SetUnifom(aabb.minimum.x, aabb.minimum.z, 1 / aabb.GetWidth(), 1 / aabb.GetDepth());
+			uMinInvSize->SetUnifom(aabb.minimum.x, aabb.minimum.z, 1 / mBrush.size, 1 / mBrush.size);
 
 			SamplerState state;
 			state.Address = TEXA_BORDER;
-			state.BorderColor = Color::White;
+			state.BorderColor = Color::Black;
 			RenderSystem::Instance()->SetTexture(0, state, mBrush.texture.c_ptr());
 
-			RenderSystem::Instance()->Render(mTech_Brush, section->GetRender());
+			RenderOp * rop = section->GetRender();
+			RenderState oldState = rop->rState;
+
+			rop->rState.blendMode = BM_MULTIPLY;
+			rop->rState.depthWrite = false;
+
+			RenderSystem::Instance()->Render(mTech_Brush, rop);
+
+			rop->rState = oldState;
 		}
 	}
 

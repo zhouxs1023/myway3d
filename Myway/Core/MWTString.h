@@ -215,7 +215,12 @@ public:
 
     friend TString operator +(const char * lk, const TString & rk)
     {
-        return rk + lk;
+		char tmp[4094];
+
+		Strcpy(tmp, 4094, lk);
+		Strcat(tmp, 4094, rk.c_str());
+
+        return tmp;
     }
 
     //operator ==
@@ -374,7 +379,8 @@ public:
 
         for (int i = 0; i < len; ++i)
         {
-            mStr[i] &= ~0x20;
+			if (mStr[i] >= 'A' && mStr[i] <= 'Z')
+				mStr[i] |= 0x20;
         }
     }
 
@@ -384,7 +390,8 @@ public:
 
         for (int i = 0; i < len; ++i)
         {
-            mStr[i] |= 0x20;
+			if (mStr[i]>= 'a' && mStr[i] <= 'z')
+				mStr[i] &= ~0x20;
         }
     }
 

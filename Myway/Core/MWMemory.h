@@ -76,6 +76,7 @@ public:
 };
 
 void MW_ENTRY Strcat(char * dest, int destsize, const char * src1, const char * src2);
+void MW_ENTRY Strcat(char * dest, int destsize, const char * src);
 void MW_ENTRY Strcpy(char * dest, int destsize, const char * src);
 void MW_ENTRY Strcpy(char * dest, int destsize, const char * src, int srcsize);
 int MW_ENTRY Strcmp(const char * dest, const char * src);

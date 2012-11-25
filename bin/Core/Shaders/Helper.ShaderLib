@@ -20,6 +20,13 @@
 
     <Shader name = "OpToolBarCheckedPS" language = "cg" profile = "ps30" source = "OpToolBarChecked.ps" >
     </Shader>
+
+    <Shader name = "TerrainBrushVS" language = "cg" profile = "vs30" source = "TerrainBrush.vs" >
+      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    </Shader>
+
+    <Shader name = "TerrainBrushPS" language = "cg" profile = "ps30" source = "TerrainBrush.ps" >
+    </Shader>
     
 	</Shaders>
 
@@ -35,6 +42,9 @@
     </Technique>
 
     <Technique name = "OpToolBarChecked" vs = "OpToolBarVS" ps = "OpToolBarCheckedPS">
+    </Technique>
+
+    <Technique name = "TerrainBrush" vs = "TerrainBrushVS" ps = "TerrainBrushPS">
     </Technique>
     
 	</Techniques>

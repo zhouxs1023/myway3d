@@ -475,6 +475,22 @@ void Myway::Strcat(char * dest, int destsize, const char * src1, const char * sr
     dest[len1] = 0;
 }
 
+void Myway::Strcat(char * dest, int destsize, const char * src)
+{
+	int len0 = strlen(dest);
+	int len1 = strlen(src);
+
+	d_assert (len0 + len1 <= destsize);
+
+	dest += len0;
+	while (*src != 0)
+	{
+		*dest++ = *src++;
+	}
+
+	*dest = 0;
+}
+
 void Myway::Strcpy(char * dest, int destsize, const char * src)
 {
     int len = 0;
