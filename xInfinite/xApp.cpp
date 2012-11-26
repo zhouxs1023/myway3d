@@ -48,6 +48,8 @@ xApp::xApp()
 	mHelperShaderLib = NULL;
 
 	mOperator = -1;
+
+	mActivate = true;
 }
 
 xApp::~xApp()
@@ -62,7 +64,7 @@ void xApp::Run()
     {
         __enter();
 
-        if (mQuit)
+        if (mQuit || !mActivate)
             return ;
 
 		try
@@ -178,7 +180,7 @@ void xApp::_InitEngine()
 		Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
 
 		//Environment::Instance()->LoadTerrain("Terrain.terrain");
-		//Environment::Instance()->InitEv();
+		Environment::Instance()->InitEv();
 		//Environment::Instance()->SetKey(EVKT_Noon);
 
 		SceneNode * cam = World::Instance()->MainCameraNode();

@@ -51,7 +51,7 @@ namespace Myway {
         mSun = new Sun();
         mMoon = new Moon();
         mCloud = new Cloud();
-        mWater = new Water();
+        //mWater = new Water();
 
         mFog = new Fog();
         mGodRay = new GodRay();

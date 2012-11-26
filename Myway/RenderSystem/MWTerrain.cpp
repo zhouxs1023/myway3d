@@ -278,6 +278,17 @@ TexturePtr Terrain::_getSpecularMap(int layer)
 		return mDefaultSpecularMap;
 }
 
+Vec3 Terrain::_getPosition(int x, int z)
+{
+	x = Math::Maximum(0, x);
+	z = Math::Maximum(0, z);
+
+	x = Math::Minimum(x, mConfig.xVertexCount);
+	z = Math::Minimum(z, mConfig.zVertexCount);
+
+	return GetPosition(x, z);
+}
+
 void Terrain::Render()
 {
     RenderSystem * render = RenderSystem::Instance();
@@ -487,7 +498,7 @@ void Terrain::UnlockHeight()
 	}
 
 	// need re-calculate normals
-	/*Rect rcNormal = mLockedRect;
+	Rect rcNormal = mLockedRect;
 	rcNormal.x1 -= 1;
 	rcNormal.x2 += 1;
 	rcNormal.y1 -= 1;
@@ -496,64 +507,39 @@ void Terrain::UnlockHeight()
 	rcNormal.x1 = Math::Maximum(0, rcNormal.x1);
 	rcNormal.y1 = Math::Maximum(0, rcNormal.y1);
 	rcNormal.x2 = Math::Minimum(mConfig.xVertexCount - 1, rcNormal.x2);
-	rcNormal.y2 = Math::Minimum(mConfig.xVertexCount - 1, rcNormal.y2);
-
-	int w = rcNormal.x2 - rcNormal.x1 + 1;
-	int h = rcNormal.y2 - rcNormal.y1 + 1;
-
-	Vec3 * normals = new Vec3[w * h];
-
-	Memzero(normals, sizeof (Vec3) * w * h);
-
-	Vec3 a, b, c, d;
+	rcNormal.y2 = Math::Minimum(mConfig.zVertexCount - 1, rcNormal.y2);
 
 	for (int j = rcNormal.y1; j < rcNormal.y2; ++j)
 	{
 		for (int i = rcNormal.x1; i < rcNormal.x2; ++i)
 		{
-			a = GetPosition(i + 0, j + 0);
-			b = GetPosition(i + 1, j + 0);
-			c = GetPosition(i + 0, j + 1);
-			d = GetPosition(i + 1, j + 1);
+			Vec3 a = _getPosition(i - 1, j + 0);
+			Vec3 b = _getPosition(i + 0, j - 1);
+			Vec3 c = _getPosition(i + 1, j + 0);
+			Vec3 d = _getPosition(i + 0, j + 1);
+			Vec3 p = _getPosition(i + 0, j + 0);
 
-			Vec3 d0 = b - a;
-			Vec3 d1 = c - a;
-			Vec3 d2 = b - c;
-			Vec3 d3 = d - c;
+			Vec3 L = a - p, T = b - p, R = c - p, B = d - p;
 
-			Vec3 n0 = d0.CrossN(d1);
-			Vec3 n1 = d2.CrossN(d3);
-			
-			int n = j - rcNormal.y1, m = rcNormal.x1 - i;
+			Vec3 N = Vec3::Zero;
+			float len_L = L.Length(), len_T = T.Length();
+			float len_R = R.Length(), len_B = B.Length();
 
-			int na = n * w + m;
-			int nb = n * w + m + 1;
-			int nc = (n + 1) * w + m;
-			int nd = (n + 1) * w + m + 1;
+			if (len_L > 0.01f && len_T > 0.01f)
+				N += L.CrossN(T);
 
-			normals[na] += n0;
-			normals[nb] += n0;
-			normals[nc] += n0;
+			if (len_T > 0.01f && len_R > 0.01f)
+				N += T.CrossN(R);
 
-			normals[nc] += n1;
-			normals[nb] += n1;
-			normals[nd] += n1;
+			if (len_R > 0.01f && len_B > 0.01f)
+				N += R.CrossN(B);
+
+			if (len_B > 0.01f && len_L > 0.01f)
+				N += B.CrossN(L);
+
+			mNormals[j * mConfig.xVertexCount + i] = N.Normalize();
 		}
 	}
-
-	for (int i = 0; i < w * h; ++i)
-		normals[i].NormalizeL();
-
-	index = 0;
-	for (int j = rcNormal.y1; j < rcNormal.y2; ++j)
-	{
-		for (int i = rcNormal.x1; i < rcNormal.x2; ++i)
-		{
-			mNormals[j * mConfig.xVertexCount + i] = normals[index++];
-		}
-	}
-	
-	safe_delete_array(normals);*/
 
 	// update sections
 	for (int i = 0; i < mSections.Size(); ++i)

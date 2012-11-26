@@ -52,6 +52,9 @@ public:
 	void SetOperator(int op) { mOperator = op; }
 	int GetOperator() { return mOperator; }
 
+	void Activate(bool b) { mActivate = b; }
+	bool IsActivate() { return mActivate; }
+
 protected:
 	void _input();
 
@@ -60,6 +63,7 @@ protected:
 	ShaderLib * mHelperShaderLib;
 	Thread mThread;
 	bool mQuit;
+	bool mActivate;
 
 	Mutex * mMutex;
 	HWND mhWnd;

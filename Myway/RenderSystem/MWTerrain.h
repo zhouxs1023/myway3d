@@ -55,14 +55,10 @@ public:
 
 		Config()
 		{
-			/*xSize = zSize = 1024;
+			xSize = zSize = 1024;
 
 			xVertexCount = zVertexCount = 1025;
-			iVertexCount = 1025 * 1025;*/
 
-			xSize = zSize = 128;
-
-			xVertexCount = zVertexCount = 129;
 			iVertexCount = 0;
 
 			morphEnable = false;
@@ -129,6 +125,7 @@ protected:
 	TexturePtr			_getDetailMap(int layer);
 	TexturePtr			_getNormalMap(int layer);
 	TexturePtr			_getSpecularMap(int layer);
+	Vec3				_getPosition(int x, int z);
 
 protected:
     Config mConfig;

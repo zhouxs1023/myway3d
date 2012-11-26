@@ -277,7 +277,6 @@ void xEditTerrain::_UpdateGeometry()
 			Color4 c1 = mBrush.image->GetColor(iu1, iv);
 			Color4 c2 = mBrush.image->GetColor(iu,  iv1);
 			Color4 c3 = mBrush.image->GetColor(iu1, iv1);
-			Color4 c4 = mBrush.image->GetColor(64, 64);
 
 			Color4 cx0 = c0 + (c1 - c0) * du;
 			Color4 cx1 = c2 + (c3 - c2) * du;

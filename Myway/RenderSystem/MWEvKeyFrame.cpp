@@ -81,11 +81,11 @@ namespace Myway
         FogEnd = 2000;
         FogColor = Color4::White;
 
-        GodRaySunLum = 0.3f;
+        GodRaySunLum = 0.5f;
         GodRaySunPower = 1;
         GodRaySunSize = 4000;
         GodRayUVStep = 48;
-        GodRayBlendWeight = 0.6f;
+        GodRayBlendWeight = 0.5f;
 
         HdrExposure = 2;
         HdrBrightThreshold = 0.8f;

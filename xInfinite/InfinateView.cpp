@@ -121,6 +121,8 @@ void CInfinateView::OnSize(UINT nType, int cx, int cy)
 		xApp::Instance()->Resize(cx, cy);
 }
 
+
+
 // CInfinateView ’Ô∂œ
 
 #ifdef _DEBUG

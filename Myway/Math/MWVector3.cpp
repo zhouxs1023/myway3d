@@ -274,7 +274,7 @@ Vec3 Vec3::Cross(const Vec3 & rk) const
 Vec3 Vec3::CrossN(const Vec3 & rk) const
 {
     Vec3 vOut;
-    Math::VecCross(vOut, *this, rk);
+    Math::VecCrossN(vOut, *this, rk);
     return vOut;
 }
 
