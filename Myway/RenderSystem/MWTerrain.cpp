@@ -13,6 +13,9 @@ namespace Myway {
 Terrain::Terrain(const Config & config)
 : tOnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
 {
+	mLockedData = NULL;
+	mLockedWeightMapData = NULL;
+
     mLod = new TerrainLod(kMaxDetailLevel);
     mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
 
@@ -22,6 +25,9 @@ Terrain::Terrain(const Config & config)
 Terrain::Terrain(const char * source)
 : tOnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
 {
+	mLockedData = NULL;
+	mLockedWeightMapData = NULL;
+
 	mLod = new TerrainLod(kMaxDetailLevel);
 	mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
 
@@ -30,6 +36,9 @@ Terrain::Terrain(const char * source)
 
 Terrain::~Terrain()
 {
+	d_assert(mLockedData == NULL);
+	d_assert(mLockedWeightMapData == NULL);
+
     safe_delete (mLod);
 
     for (int i = 0; i < mSections.Size(); ++i)
@@ -43,6 +52,7 @@ Terrain::~Terrain()
 
 	safe_delete_array(mHeights);
 	safe_delete_array(mNormals);
+	safe_delete_array(mWeights);
 }
 
 void Terrain::Create(const Config & config)
@@ -103,9 +113,9 @@ void Terrain::Create(const Config & config)
 	mSceneNodes.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
 
 	int index = 0;
-	for (int i = 0; i < mConfig.xSectionCount; ++i)
+	for (int j = 0; j < mConfig.zSectionCount; ++j)
 	{
-		for (int j = 0; j < mConfig.zSectionCount; ++j)
+		for (int i = 0; i < mConfig.xSectionCount; ++i)
 		{
 			mSections[index] = new TerrainSection(this, i, j);
 			mSceneNodes[index] = World::Instance()->CreateSceneNode();
@@ -127,6 +137,15 @@ void Terrain::Create(const Config & config)
 	}
 
 	// create weight maps
+	mConfig.xWeightMapSize = Terrain::kWeightMapSize * mConfig.xSectionCount;
+	mConfig.zWeightMapSize = Terrain::kWeightMapSize * mConfig.zSectionCount;
+
+	mWeights = new Color[mConfig.xWeightMapSize * mConfig.zWeightMapSize];
+	for (int i = 0; i < mConfig.xWeightMapSize * mConfig.zWeightMapSize; ++i)
+	{
+		mWeights[i] = Color(0, 0, 0, 255);
+	}
+
 	mWeightMaps.Resize(mConfig.iSectionCount);
 
 	index = 0;
@@ -195,28 +214,39 @@ TerrainSection * Terrain::GetSection(int x, int z)
 {
 	d_assert (x < mConfig.xSectionCount && z < mConfig.zSectionCount);
 
-	return mSections[z * mConfig.zSectionCount + x];
+	return mSections[z * mConfig.xSectionCount + x];
 }
 
 TexturePtr Terrain::GetWeightMap(int x, int z)
 {
 	d_assert (x < mConfig.xSectionCount && z < mConfig.zSectionCount);
 
-	return mWeightMaps[z * mConfig.zSectionCount + x];
+	return mWeightMaps[z * mConfig.xSectionCount + x];
+}
+
+Vec3 Terrain::GetPosition(int x, int z)
+{
+	d_assert (x < mConfig.xVertexCount && z < mConfig.zVertexCount);
+
+	float fx = (float)x / (mConfig.xVertexCount - 1) * mConfig.xSize;
+	float fz = (1 - (float)z / (mConfig.zVertexCount - 1)) * mConfig.zSize;
+	float fy = GetHeight(x, z);
+
+	return Vec3(fx, fy, fz);
 }
 
 float Terrain::GetHeight(int x, int z)
 {
 	d_assert (x < mConfig.xVertexCount && z < mConfig.zVertexCount);
 
-	return mHeights[z * mConfig.zVertexCount + x];
+	return mHeights[z * mConfig.xVertexCount + x];
 }
 
 Vec3 Terrain::GetNormal(int x, int z)
 {
 	d_assert (x < mConfig.xVertexCount && z < mConfig.zVertexCount);
 
-	return mNormals[z * mConfig.zVertexCount + x];
+	return mNormals[z * mConfig.xVertexCount + x];
 }
 
 void Terrain::OnPreVisibleCull(void * data)
@@ -416,6 +446,158 @@ float Terrain::GetHeight(float x, float z)
 	final = h1 * (1.0f - dz) + h2 * dz;
 
 	return final;
+}
+
+float *	Terrain::LockHeight(const Rect & rc)
+{
+	d_assert (mLockedData == NULL);
+
+	int w = rc.x2 - rc.x1 + 1;
+	int h = rc.y2 - rc.y1 + 1;
+
+	d_assert (w > 0 && h > 0);
+
+	mLockedData = new float[w * h];
+
+	int index = 0;
+	for (int j = rc.y1; j <= rc.y2; ++j)
+	{
+		for (int i = rc.x1; i <= rc.x2; ++i)
+		{
+			mLockedData[index++] = GetHeight(i, j);
+		}
+	}
+
+	mLockedRect = rc;
+
+	return mLockedData;
+}
+
+void Terrain::UnlockHeight()
+{
+	d_assert (mLockedData != NULL);
+
+	int index = 0;
+	for (int j = mLockedRect.y1; j <= mLockedRect.y2; ++j)
+	{
+		for (int i = mLockedRect.x1; i <= mLockedRect.x2; ++i)
+		{
+			mHeights[j * mConfig.xVertexCount + i] = mLockedData[index++];
+		}
+	}
+
+	// need re-calculate normals
+	/*Rect rcNormal = mLockedRect;
+	rcNormal.x1 -= 1;
+	rcNormal.x2 += 1;
+	rcNormal.y1 -= 1;
+	rcNormal.y2 += 1;
+
+	rcNormal.x1 = Math::Maximum(0, rcNormal.x1);
+	rcNormal.y1 = Math::Maximum(0, rcNormal.y1);
+	rcNormal.x2 = Math::Minimum(mConfig.xVertexCount - 1, rcNormal.x2);
+	rcNormal.y2 = Math::Minimum(mConfig.xVertexCount - 1, rcNormal.y2);
+
+	int w = rcNormal.x2 - rcNormal.x1 + 1;
+	int h = rcNormal.y2 - rcNormal.y1 + 1;
+
+	Vec3 * normals = new Vec3[w * h];
+
+	Memzero(normals, sizeof (Vec3) * w * h);
+
+	Vec3 a, b, c, d;
+
+	for (int j = rcNormal.y1; j < rcNormal.y2; ++j)
+	{
+		for (int i = rcNormal.x1; i < rcNormal.x2; ++i)
+		{
+			a = GetPosition(i + 0, j + 0);
+			b = GetPosition(i + 1, j + 0);
+			c = GetPosition(i + 0, j + 1);
+			d = GetPosition(i + 1, j + 1);
+
+			Vec3 d0 = b - a;
+			Vec3 d1 = c - a;
+			Vec3 d2 = b - c;
+			Vec3 d3 = d - c;
+
+			Vec3 n0 = d0.CrossN(d1);
+			Vec3 n1 = d2.CrossN(d3);
+			
+			int n = j - rcNormal.y1, m = rcNormal.x1 - i;
+
+			int na = n * w + m;
+			int nb = n * w + m + 1;
+			int nc = (n + 1) * w + m;
+			int nd = (n + 1) * w + m + 1;
+
+			normals[na] += n0;
+			normals[nb] += n0;
+			normals[nc] += n0;
+
+			normals[nc] += n1;
+			normals[nb] += n1;
+			normals[nd] += n1;
+		}
+	}
+
+	for (int i = 0; i < w * h; ++i)
+		normals[i].NormalizeL();
+
+	index = 0;
+	for (int j = rcNormal.y1; j < rcNormal.y2; ++j)
+	{
+		for (int i = rcNormal.x1; i < rcNormal.x2; ++i)
+		{
+			mNormals[j * mConfig.xVertexCount + i] = normals[index++];
+		}
+	}
+	
+	safe_delete_array(normals);*/
+
+	// update sections
+	for (int i = 0; i < mSections.Size(); ++i)
+	{
+		mSections[i]->NotifyUnlockHeight();
+	}
+
+	safe_delete_array(mLockedData);
+}
+
+Color4 * Terrain::LockWeightMap(const Rect & rc)
+{
+	d_assert (!IsLockedWeightMap());
+
+	
+
+	int w = rc.x2 - rc.x1 + 1;
+	int h = rc.y2 - rc.y1 + 1;
+
+	d_assert (w > 0 && h > 0);
+
+	mLockedWeightMapData = new Color4[w * h];
+
+	int index = 0;
+	for (int j = rc.y1; j <= rc.y2; ++j)
+	{
+		for (int i = rc.x1; i <= rc.x2; ++i)
+		{
+			mLockedWeightMapData[index++] = GetHeight(i, j);
+		}
+	}
+
+	mLockedWeightMapRect = rc;
+
+	return mLockedWeightMapData;
+}
+
+void Terrain::UnlockWeightMap()
+{
+	d_assert (IsLockedWeightMap());
+
+
+
+	safe_delete_array(mLockedWeightMapData);
 }
 
 }

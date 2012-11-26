@@ -29,8 +29,11 @@ public:
     void UpdateLod();
     void PreRender();
 
+	void NotifyUnlockHeight();
+
 protected:
     void                    Init();
+	void					Shutdown();
 
     void                    CalcuMorphBuffer();
     void                    _CalcuMorphBuffer(int level);
@@ -52,9 +55,9 @@ protected:
     float                   mLevelDistSq[Terrain::kMaxDetailLevel];
     VertexBufferPtr         mMorphBuffer[Terrain::kMaxDetailLevel];
     TerrainLod::_Key        mkKey;
-    float                   mMorph;
+	float                   mMorph;
 
-    RenderOp              mRender;
+    RenderOp				mRender;
 };
 
 }

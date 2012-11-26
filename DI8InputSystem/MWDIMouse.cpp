@@ -54,6 +54,9 @@ DIMouse::~DIMouse()
 
 bool DIMouse::KeyUp(MouseKeyCode key)
 {
+	if (!IsActive())
+		return false;
+
 	const BYTE * cur = m_mouseState.rgbButtons;
 	const BYTE * old = m_oldMouseState.rgbButtons;
 
@@ -62,6 +65,9 @@ bool DIMouse::KeyUp(MouseKeyCode key)
 
 bool DIMouse::KeyDown(MouseKeyCode key)
 {
+	if (!IsActive())
+		return false;
+
 	const BYTE * cur = m_mouseState.rgbButtons;
 	const BYTE * old = m_oldMouseState.rgbButtons;
 
@@ -70,6 +76,9 @@ bool DIMouse::KeyDown(MouseKeyCode key)
 
 bool DIMouse::KeyPressed(MouseKeyCode key)
 {
+	if (!IsActive())
+		return false;
+
 	const BYTE * cur = m_mouseState.rgbButtons;
 	const BYTE * old = m_oldMouseState.rgbButtons;
 
@@ -78,6 +87,9 @@ bool DIMouse::KeyPressed(MouseKeyCode key)
 
 bool DIMouse::MouseMoved()
 {
+	if (!IsActive())
+		return false;
+
     RECT rt;
     ::GetWindowRect(m_hWnd, &rt);
 

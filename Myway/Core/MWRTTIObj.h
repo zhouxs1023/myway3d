@@ -80,10 +80,10 @@ public: \
     \
     virtual const RTTIObj * GetRTTI() const     { return &ms_RTTI; }
 
-#define DeclareImplementRootRTTI(classname) \
+#define ImplementRootRTTI(classname) \
     const RTTIObj classname::ms_RTTI(#classname, 0);
 
-#define DeclareImplementRTTI(classname, baseclass) \
+#define ImplementRTTI(classname, baseclass) \
     const RTTIObj classname::ms_RTTI(#classname, &baseclass::ms_RTTI);
 
 #define _IsTypeOf(classname, obj) \

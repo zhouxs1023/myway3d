@@ -55,6 +55,7 @@ class xEditTerrain
 	struct Brush
 	{
 		TexturePtr texture;
+		ImagePtr image;
 
 		float size;
 		float density;
@@ -84,6 +85,9 @@ protected:
 	void _Update(void *);
 	void _Shutdown(void *);
 	void _Render(void *);
+
+	void _UpdateGeometry();
+	void _UpdateWeightMap();
 
 protected:
 	Brush mBrush;

@@ -91,6 +91,7 @@ void xApp::Run()
 		catch (Exception & e)
 		{
 			d_assert (0);
+			const char * msg = e.What();
 		}
 		catch (...)
 		{
@@ -198,6 +199,7 @@ void xApp::_InitEngine()
 	catch (Exception & e)
 	{
 		d_assert (0);
+		const char * msg = e.What();
 	}
 	catch (...)
 	{

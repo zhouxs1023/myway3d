@@ -45,23 +45,35 @@ public:
 		bool morphEnable;
 		float morphStart;
 
+		// auto calculate
 		float xSectionSize, zSectionSize;
 		int xSectionCount, zSectionCount;
 		int iSectionCount;
 
+		int xWeightMapSize;
+		int zWeightMapSize;
+
 		Config()
 		{
-			xSize = zSize = 1024;
+			/*xSize = zSize = 1024;
 
 			xVertexCount = zVertexCount = 1025;
-			iVertexCount = 1025 * 1025;
+			iVertexCount = 1025 * 1025;*/
+
+			xSize = zSize = 128;
+
+			xVertexCount = zVertexCount = 129;
+			iVertexCount = 0;
 
 			morphEnable = false;
 			morphStart = 0;
 
-			xSectionCount = zSectionCount = 16;
+			xSectionCount = zSectionCount = 0;
 			xSectionSize = zSectionSize = 0;
-			iSectionCount = 16 * 16;
+			iSectionCount = 0;
+
+			xWeightMapSize = 0;
+			zWeightMapSize = 0;
 		}
 	};
 
@@ -77,8 +89,10 @@ public:
     TerrainLod *        GetTerrainLod() { return mLod; }
 
 	TerrainSection *	GetSection(int x, int z);
+	Vec3				GetPosition(int x, int z);
 	float				GetHeight(int x, int z);
 	Vec3				GetNormal(int x, int z);
+	Color				GetWeight(int x, int z);
 	TexturePtr			GetWeightMap(int x, int z);
 
 	const float *		GetHeights() const { return mHeights; }
@@ -92,6 +106,18 @@ public:
 
 	float				GetHeight(float x, float y);
 	Vec3				GetPosition(const Ray & ray);
+	// for editor
+	float *				LockHeight(const Rect & rc);
+	void				UnlockHeight();
+	bool				IsLockedHeight() { return mLockedData != NULL; }
+	const Rect &		GetLockedHeightRect() { return mLockedRect; }
+	const float *		GetLockedHeightData() { return mLockedData; }
+
+	Color4 *			LockWeightMap(const Rect & rc);
+	void				UnlockWeightMap();
+	bool				IsLockedWeightMap() { return mLockedWeightMapData != NULL; }
+	const Rect &		GetLockedWeightMapRect() { return mLockedWeightMapRect; }
+	const Color4 *		GetLockedWeightmapData() { return mLockedWeightMapData; }
 
 protected:
     void                OnPreVisibleCull(void * data);
@@ -118,6 +144,8 @@ protected:
 
 	float *	mHeights;
 	Vec3 *	mNormals;
+	Color * mWeights;
+
 	Aabb mBound;
 
 	TexturePtr mDefaultDetailMap;
@@ -130,6 +158,13 @@ protected:
 	TexturePtr mSpecularMaps[kMaxLayers];
 
 	tEventListener<Terrain> tOnPreVisibleCull;
+
+	// for editor
+	Rect mLockedRect;
+	float * mLockedData;
+
+	Rect mLockedWeightMapRect;
+	Color4 * mLockedWeightMapData;
 };
 
 }

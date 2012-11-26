@@ -56,14 +56,6 @@ const TerrainLod::_IndexData &  TerrainLod::GetIndexData(const _Key & k)
 {
 	d_assert(!InvalidKey(k));
 
-	if (InvalidKey(k))
-	{
-		__asm
-		{
-			int 3;
-		}
-	}
-
     Map<_Key, _IndexData>::Iterator iter = mMIndexBuffer.Find(k);
 
     if (iter == mMIndexBuffer.End())

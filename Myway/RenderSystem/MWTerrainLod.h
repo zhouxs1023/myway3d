@@ -93,8 +93,6 @@ public:
     const _IndexData &  GetIndexData(const _Key & k);
 
 protected:
-    void                AllocateSection();
-
     void                GenerateBodyIndex();
     void                _GenerateBodyIndex(int level);
     void                GenerateConecterIndex();

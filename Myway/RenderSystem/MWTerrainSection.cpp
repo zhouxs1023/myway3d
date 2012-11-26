@@ -19,10 +19,6 @@ TerrainSection::TerrainSection(Terrain * pTerrain, int x, int z)
 	mOffX = mTerrain->GetConfig().xSectionSize * x;
 	mOffZ = mTerrain->GetConfig().zSize - mTerrain->GetConfig().zSectionSize * (z + 1);
 
-    CalcuMorphBuffer();
-    CalcuErrorMetrics();
-    CalcuLevelDistance();
-
     Init();
 
 	for (int i = 0; i < Terrain::kMaxBlendLayers; ++i)
@@ -37,6 +33,10 @@ TerrainSection::~TerrainSection()
 
 void TerrainSection::Init()
 {
+	CalcuMorphBuffer();
+	CalcuErrorMetrics();
+	CalcuLevelDistance();
+
     int xSectionVertSize = Terrain::kSectionVertexSize;
     int zSectionVertSize = Terrain::kSectionVertexSize;
     int xVertSize = mTerrain->GetConfig().xVertexCount;
@@ -136,8 +136,27 @@ void TerrainSection::Init()
 
     mAabbWorld = mAabbLocal;
     mSphWorld = mSphLocal;
+
+	if (mNode)
+		mNode->_NotifyUpdate();
 }
 
+void TerrainSection::Shutdown()
+{
+	for (int i = 0; i < Terrain::kMaxDetailLevel; ++i)
+	{
+		mMorphBuffer[i] = NULL;
+	}
+
+	mRender.vxStream.Bind(_POSITION, 0, 0);
+	mRender.vxStream.Bind(_HEIGHT, 0, 0);
+	mRender.vxStream.Bind(_NORMAL, 0, 0);
+	mRender.vxStream.Bind(_MORPH, 0, 0);
+	mRender.vxStream.SetCount(0);
+
+	mRender.ixStream.Bind(NULL, 0);
+	mRender.ixStream.SetCount(0);
+}
 
 void TerrainSection::UpdateLod()
 {
@@ -496,6 +515,26 @@ void TerrainSection::CalcuLevelDistance()
     }
 }
 
+void TerrainSection::NotifyUnlockHeight()
+{
+	const Rect & rc = mTerrain->GetLockedHeightRect();
+	const Terrain::Config & config = mTerrain->GetConfig();
+	int xtile = Terrain::kSectionVertexSize - 1;
+	int ztile = Terrain::kSectionVertexSize - 1;
 
+	Rect myRect;
+
+	myRect.x1 = mSectionX * xtile;
+	myRect.y1 = mSectionZ * ztile;
+	myRect.x2 = mSectionX * xtile + xtile;
+	myRect.y2 = mSectionZ * ztile + ztile;
+
+	if (rc.x1 > myRect.x2 || rc.x2 < myRect.x1 ||
+		rc.y1 > myRect.y2 || rc.y2 < myRect.y1)
+		return ;
+
+	Shutdown();
+	Init();
+}
 
 }
