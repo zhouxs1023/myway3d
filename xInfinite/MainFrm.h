@@ -4,6 +4,7 @@
 
 #pragma once
 #include "ObjCreatorView.h"
+#include "xTerrainPane.h"
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
@@ -42,6 +43,7 @@ protected:  // 控件条嵌入成员
 
 	ObjCreatorView mObjCreatorView;
 	CPropertiesWnd m_wndProperties;
+	xTerrainPane mTerrainPane;
 
 // 生成的消息映射函数
 protected:

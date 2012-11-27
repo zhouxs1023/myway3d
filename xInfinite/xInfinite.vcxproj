@@ -100,7 +100,8 @@
     <ClCompile Include="PropertiesWnd.cpp" />
     <ClCompile Include="xApp.cpp" />
     <ClCompile Include="xBaseOperator.cpp" />
-    <ClCompile Include="xEditTerrain.cpp" />
+    <ClCompile Include="xEditTerrainLayer.cpp" />
+    <ClCompile Include="xEditTerrainHeight.cpp" />
     <ClCompile Include="xGizmo.cpp" />
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xObj.cpp" />
@@ -109,6 +110,10 @@
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
     <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="xTerrainHeightDlg.cpp" />
+    <ClCompile Include="xTerrainLayerDlg.cpp" />
+    <ClCompile Include="xTerrainOp.cpp" />
+    <ClCompile Include="xTerrainPane.cpp" />
     <ClCompile Include="xToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -122,7 +127,8 @@
     <ClInclude Include="PropertiesWnd.h" />
     <ClInclude Include="xApp.h" />
     <ClInclude Include="xBaseOperator.h" />
-    <ClInclude Include="xEditTerrain.h" />
+    <ClInclude Include="xEditTerrainLayer.h" />
+    <ClInclude Include="xEditTerrainHeight.h" />
     <ClInclude Include="xGizmo.h" />
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xObj.h" />
@@ -131,6 +137,10 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
     <ClInclude Include="xObjBound.h" />
+    <ClInclude Include="xTerrainHeightDlg.h" />
+    <ClInclude Include="xTerrainLayerDlg.h" />
+    <ClInclude Include="xTerrainOp.h" />
+    <ClInclude Include="xTerrainPane.h" />
     <ClInclude Include="xToolBar.h" />
   </ItemGroup>
   <ItemGroup>

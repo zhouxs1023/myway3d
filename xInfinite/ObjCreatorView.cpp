@@ -153,7 +153,7 @@ int ObjCreatorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	if (!mCreatorView.Create(dwViewStyle, rectDummy, this, 4))
 	{
-		TRACE0("未能创建文件视图\n");
+		TRACE0("create object view failed\n");
 		return -1;      // 未能创建
 	}
 

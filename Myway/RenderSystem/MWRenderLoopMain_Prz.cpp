@@ -99,7 +99,7 @@ namespace Myway {
             Environment::Instance()->GetCloud()->Render();
 
         // ---> render godray
-        if (Environment::Instance()->GetGodRay() && !Environment::Instance()->GetWater()->IsUnderWater())
+        if (Environment::Instance()->GetGodRay())
             Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 
        _updateColorTexture();

@@ -249,6 +249,13 @@ Vec3 Terrain::GetNormal(int x, int z)
 	return mNormals[z * mConfig.xVertexCount + x];
 }
 
+Color Terrain::GetWeight(int x, int z)
+{
+	d_assert (x < mConfig.xWeightMapSize && z < mConfig.zWeightMapSize);
+
+	return mWeights[z * mConfig.xWeightMapSize + x];
+}
+
 void Terrain::OnPreVisibleCull(void * data)
 {
 	mVisibleSections.Clear();
@@ -550,25 +557,23 @@ void Terrain::UnlockHeight()
 	safe_delete_array(mLockedData);
 }
 
-Color4 * Terrain::LockWeightMap(const Rect & rc)
+Color * Terrain::LockWeightMap(const Rect & rc)
 {
 	d_assert (!IsLockedWeightMap());
-
-	
 
 	int w = rc.x2 - rc.x1 + 1;
 	int h = rc.y2 - rc.y1 + 1;
 
 	d_assert (w > 0 && h > 0);
 
-	mLockedWeightMapData = new Color4[w * h];
+	mLockedWeightMapData = new Color[w * h];
 
 	int index = 0;
 	for (int j = rc.y1; j <= rc.y2; ++j)
 	{
 		for (int i = rc.x1; i <= rc.x2; ++i)
 		{
-			mLockedWeightMapData[index++] = GetHeight(i, j);
+			mLockedWeightMapData[index++] = GetWeight(i, j);
 		}
 	}
 
@@ -581,7 +586,51 @@ void Terrain::UnlockWeightMap()
 {
 	d_assert (IsLockedWeightMap());
 
+	int index = 0;
+	for (int j = mLockedWeightMapRect.y1; j <= mLockedWeightMapRect.y2; ++j)
+	{
+		for (int i = mLockedWeightMapRect.x1; i <= mLockedWeightMapRect.x2; ++i)
+		{
+			mWeights[j * mConfig.xVertexCount + i] = mLockedWeightMapData[index++];
+		}
+	}
 
+	for (int i = 0; i < mSections.Size(); ++i)
+	{
+		TerrainSection * section = mSections[i];
+
+		int xtile = Terrain::kSectionVertexSize - 1;
+		int ztile = Terrain::kSectionVertexSize - 1;
+		int x = section->GetSectionX();
+		int z = section->GetSectionZ();
+
+		Rect myRect;
+
+		myRect.x1 = x * xtile;
+		myRect.y1 = z * ztile;
+		myRect.x2 = x * xtile + xtile;
+		myRect.y2 = z * ztile + ztile;
+
+		if (mLockedWeightMapRect.x1 > myRect.x2 || mLockedWeightMapRect.x2 < myRect.x1 ||
+			mLockedWeightMapRect.y1 > myRect.y2 || mLockedWeightMapRect.y2 < myRect.y1)
+			continue ;
+
+		TexturePtr weightMap = GetWeightMap(x, z);
+
+		LockedBox lb;
+		weightMap->Lock(0, &lb, NULL, LOCK_DISCARD);
+
+		Color * data = mWeights + z * kWeightMapSize * mConfig.xWeightMapSize + x * kWeightMapSize;
+		Color * dest = (Color *)lb.pData;
+		for (int k = 0; k < kWeightMapSize; ++k)
+		{
+			Memcpy(dest, data, kWeightMapSize * sizeof(Color));
+			dest += kWeightMapSize;
+			data += mConfig.xWeightMapSize;
+		}
+
+		weightMap->Unlock(0);
+	}
 
 	safe_delete_array(mLockedWeightMapData);
 }

@@ -13,6 +13,15 @@
     <Filter Include="Res">
       <UniqueIdentifier>{649983c8-673e-4f25-a823-2383c709e1b4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{dcc9d698-c7ed-4718-ac81-2ae4fb3425b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{7e604fda-30b8-4221-ac5d-f56f8cab7a68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain\UI">
+      <UniqueIdentifier>{f4ad8fc6-029d-45b6-aedb-14cc27d02d6b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassView.cpp">
@@ -48,9 +57,6 @@
     <ClCompile Include="xApp.cpp">
       <Filter>Control</Filter>
     </ClCompile>
-    <ClCompile Include="xMesh.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
     <ClCompile Include="xObj.cpp">
       <Filter>Control</Filter>
     </ClCompile>
@@ -66,8 +72,26 @@
     <ClCompile Include="xBaseOperator.cpp">
       <Filter>Control</Filter>
     </ClCompile>
-    <ClCompile Include="xEditTerrain.cpp">
-      <Filter>Control</Filter>
+    <ClCompile Include="xMesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainOp.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainHeight.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainLayer.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainPane.cpp">
+      <Filter>Terrain\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainLayerDlg.cpp">
+      <Filter>Terrain\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainHeightDlg.cpp">
+      <Filter>Terrain\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -113,9 +137,6 @@
     <ClInclude Include="xObj.h">
       <Filter>Control</Filter>
     </ClInclude>
-    <ClInclude Include="xMesh.h">
-      <Filter>Control</Filter>
-    </ClInclude>
     <ClInclude Include="xGizmo.h">
       <Filter>Control</Filter>
     </ClInclude>
@@ -128,8 +149,26 @@
     <ClInclude Include="xBaseOperator.h">
       <Filter>Control</Filter>
     </ClInclude>
-    <ClInclude Include="xEditTerrain.h">
-      <Filter>Control</Filter>
+    <ClInclude Include="xMesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainOp.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainHeight.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainLayer.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainPane.h">
+      <Filter>Terrain\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainLayerDlg.h">
+      <Filter>Terrain\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainHeightDlg.h">
+      <Filter>Terrain\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -109,11 +109,11 @@ public:
 	const Rect &		GetLockedHeightRect() { return mLockedRect; }
 	const float *		GetLockedHeightData() { return mLockedData; }
 
-	Color4 *			LockWeightMap(const Rect & rc);
+	Color *				LockWeightMap(const Rect & rc);
 	void				UnlockWeightMap();
 	bool				IsLockedWeightMap() { return mLockedWeightMapData != NULL; }
 	const Rect &		GetLockedWeightMapRect() { return mLockedWeightMapRect; }
-	const Color4 *		GetLockedWeightmapData() { return mLockedWeightMapData; }
+	const Color *		GetLockedWeightmapData() { return mLockedWeightMapData; }
 
 protected:
     void                OnPreVisibleCull(void * data);
@@ -161,7 +161,7 @@ protected:
 	float * mLockedData;
 
 	Rect mLockedWeightMapRect;
-	Color4 * mLockedWeightMapData;
+	Color * mLockedWeightMapData;
 };
 
 }
