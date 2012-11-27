@@ -35,20 +35,6 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	// create height dialog
-	if (!mHeightDlg.Create(IDD_Terrain_Height))
-	{
-		TRACE0("Create \"Terrain Height Dialog\" failed!\n");
-		return -1;
-	}
-
-	// create layer dialog
-	if (!mLayerDlg.Create(IDD_Terrain_Layer))
-	{
-		TRACE0("Create \"Terrain Layer Dialog\" failed!\n");
-		return -1;
-	}
-
 	// create tab control
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
@@ -56,6 +42,22 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (!mTab.Create(CMFCTabCtrl::STYLE_3D_VS2005, rectDummy, this, IDC_Terrain_Tab))
 	{
 		TRACE0("Create \"Terrain Tab\" failed!\n");
+		return -1;
+	}
+
+	mTab.SetLocation(CMFCBaseTabCtrl::LOCATION_TOP);
+
+	// create height dialog
+	if (!mHeightDlg.Create(IDD_Terrain_Height, &mTab))
+	{
+		TRACE0("Create \"Terrain Height Dialog\" failed!\n");
+		return -1;
+	}
+
+	// create layer dialog
+	if (!mLayerDlg.Create(IDD_Terrain_Layer, &mTab))
+	{
+		TRACE0("Create \"Terrain Layer Dialog\" failed!\n");
 		return -1;
 	}
 
@@ -85,6 +87,16 @@ void xTerrainPane::AdjustLayout()
 	int cyTlb = 0;
 
 	mTab.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() -(cyCmb+cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
+
+	CRect rc;   
+	mTab.GetClientRect(rc);   
+	rc.top += 20;   
+	rc.bottom -= 5;   
+	rc.left += 5;   
+	rc.right -= 5;
+
+	mHeightDlg.MoveWindow(&rc);
+	mLayerDlg.MoveWindow(&rc);
 }
 
 void xTerrainPane::_Init(void *)
