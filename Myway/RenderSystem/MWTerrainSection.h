@@ -20,6 +20,7 @@ public:
     int GetLevel() const { return mLevel; }
     int GetSectionX() const { return mSectionX; }
     int GetSectionZ() const { return mSectionZ; }
+	void SetLayer(int index, int layer) { d_assert (index < Terrain::kMaxBlendLayers); mLayer[index] = layer; }
 	int GetLayer(int index) const { d_assert (index < Terrain::kMaxBlendLayers); return mLayer[index]; }
 	float GetOffX() const { return mOffX; }
 	float GetOffZ() const { return mOffZ; }

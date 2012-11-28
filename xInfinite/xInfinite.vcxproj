@@ -110,10 +110,13 @@
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
     <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="xTerrainCreateDlg.cpp" />
     <ClCompile Include="xTerrainHeightDlg.cpp" />
     <ClCompile Include="xTerrainLayerDlg.cpp" />
+    <ClCompile Include="xTerrainLayerInfoDlg.cpp" />
     <ClCompile Include="xTerrainOp.cpp" />
     <ClCompile Include="xTerrainPane.cpp" />
+    <ClCompile Include="xTerrain.cpp" />
     <ClCompile Include="xToolBar.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -137,10 +140,13 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
     <ClInclude Include="xObjBound.h" />
+    <ClInclude Include="xTerrainCreateDlg.h" />
     <ClInclude Include="xTerrainHeightDlg.h" />
     <ClInclude Include="xTerrainLayerDlg.h" />
+    <ClInclude Include="xTerrainLayerInfoDlg.h" />
     <ClInclude Include="xTerrainOp.h" />
     <ClInclude Include="xTerrainPane.h" />
+    <ClInclude Include="xTerrain.h" />
     <ClInclude Include="xToolBar.h" />
   </ItemGroup>
   <ItemGroup>

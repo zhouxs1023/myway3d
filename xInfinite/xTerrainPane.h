@@ -1,5 +1,6 @@
 #pragma once
 
+#include "xTerrainOp.h"
 #include "xTerrainHeightDlg.h"
 #include "xTerrainLayerDlg.h"
 #include "xEditTerrainHeight.h"
@@ -9,11 +10,16 @@ class xTerrainPane : public CDockablePane
 {
 	DECLARE_MESSAGE_MAP()
 
+	DECLARE_SINGLETON(xTerrainPane);
+
 public:
 	xTerrainPane();
 	virtual ~xTerrainPane();
 
 	void AdjustLayout();
+
+	xEditTerrainHeight * GetTerrainHeight() { return &mEditHeight; }
+	xEditTerrainLayer * GetTerrainLayer() { return &mEditLayer; }
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

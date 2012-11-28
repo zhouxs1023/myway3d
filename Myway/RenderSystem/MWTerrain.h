@@ -79,6 +79,8 @@ public:
     virtual ~Terrain();
 
 	int					AddLayer(const Layer & layer);
+	const Layer *		GetLayer(int index);
+	void				SetLayer(int index, const Layer & layer);
 	void				RemoveLayer(int layer);
 
     const Config &		GetConfig() const { return mConfig; }
@@ -109,11 +111,11 @@ public:
 	const Rect &		GetLockedHeightRect() { return mLockedRect; }
 	const float *		GetLockedHeightData() { return mLockedData; }
 
-	Color *				LockWeightMap(const Rect & rc);
-	void				UnlockWeightMap();
+	float *				LockWeightMap(const Rect & rc);
+	void				UnlockWeightMap(int layer);
 	bool				IsLockedWeightMap() { return mLockedWeightMapData != NULL; }
 	const Rect &		GetLockedWeightMapRect() { return mLockedWeightMapRect; }
-	const Color *		GetLockedWeightmapData() { return mLockedWeightMapData; }
+	const float *		GetLockedWeightmapData() { return mLockedWeightMapData; }
 
 protected:
     void                OnPreVisibleCull(void * data);
@@ -161,7 +163,7 @@ protected:
 	float * mLockedData;
 
 	Rect mLockedWeightMapRect;
-	Color * mLockedWeightMapData;
+	float * mLockedWeightMapData;
 };
 
 }

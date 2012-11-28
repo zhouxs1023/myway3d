@@ -145,11 +145,12 @@ xObj * xObjManager::Create(const char * type)
 			break;
 	}
 
-	xObj * xObj = sf->Create(uxObjName.c_str());
+	xObj * obj = sf->Create(uxObjName.c_str());
 
-	mObjs.PushBack(xObj);
+	if (!obj)
+		mObjs.PushBack(obj);
 
-	return xObj;
+	return obj;
 }
 
 void xObjManager::Distroy(xObj * xObj)

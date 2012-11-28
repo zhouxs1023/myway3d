@@ -35,16 +35,16 @@ namespace xInfi {
         Entity * mEntity;
     };
 
-    class xMeshFactory : public xObjFactory
-    {
-    public:
-        xMeshFactory() {};
-        virtual ~xMeshFactory() {};
+	class xMeshFactory : public xObjFactory
+	{
+	public:
+		xMeshFactory() {};
+		virtual ~xMeshFactory() {};
 
-        virtual xMesh * Create(const char * name) { return new xMesh(name); }
+		virtual xMesh * Create(const char * name) { return new xMesh(name); }
 		virtual const char * GetGroupName() { return "Entity"; }
 		virtual const char * GetTypeName() { return "Mesh"; }
-    };
+	};
 
     class xMeshFactoryListener : public EventListener
     {

@@ -41,6 +41,9 @@ void xEditTerrainHeight::_Update(void *)
 
 	Point2f pt = IMouse::Instance()->GetPositionUnit();
 
+	if (pt.x < 0 || pt.y < 0 || pt.x > 1 || pt.y > 1)
+		return ;
+
 	Ray ray = World::Instance()->MainCamera()->GetViewportRay(pt.x, pt.y);
 	mBrush.position = terrain->GetPosition(ray);
 
@@ -155,9 +158,10 @@ void xEditTerrainHeight::_UpdateGeometry()
 	iex = Math::Minimum(iex, xVertexCount);
 	iez = Math::Minimum(iez, zVertexCount);
 
+	int index = 0;
 	Rect rc = { isx, isz, iex, iez };
 	float * heights = terrain->LockHeight(rc);
-	int index = 0;
+
 	int w = mBrush.image->GetWidth() - 1;
 	int h = mBrush.image->GetHeight() - 1;
 

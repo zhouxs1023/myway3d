@@ -17,17 +17,21 @@ BEGIN_MESSAGE_MAP(xTerrainPane, CDockablePane)
 
 END_MESSAGE_MAP()
 
+IMP_SLN(xTerrainPane);
+
 xTerrainPane::xTerrainPane()
 	: OnInit(xApp::OnInitUI, this, &xTerrainPane::_Init)
 	, OnShutdown(xApp::OnShutdown, this, &xTerrainPane::_Shutdown)
 	, OnUpdate(xApp::OnUpdate, this, &xTerrainPane::_Update)
-	, OnRender(RenderEvent::OnAfterTerrainRender, this, &xTerrainPane::_Render)
+	, OnRender(RenderEvent::OnAfterDeffererShading, this, &xTerrainPane::_Render)
 	, OnRenderUI(RenderEvent::OnAfterRender, this, &xTerrainPane::_RenderUI)
 {
+	INIT_SLN;
 }
 
 xTerrainPane::~xTerrainPane()
 {
+	SHUT_SLN;
 }
 
 int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -116,6 +120,14 @@ void xTerrainPane::_Shutdown(void *)
 
 void xTerrainPane::_Update(void *)
 {
+	int op = xApp::Instance()->GetOperator();
+
+	if (op != xTerrainOp::eOp_Terrain)
+		return ;
+
+	int layerId = mLayerDlg.GetCurLayer();
+	mEditLayer.SetLayer(layerId);
+
 	int isel = mTab.GetActiveTab();
 
 	if (isel == xHeightPage)
@@ -130,6 +142,11 @@ void xTerrainPane::_Update(void *)
 
 void xTerrainPane::_Render(void *)
 {
+	int op = xApp::Instance()->GetOperator();
+
+	if (op != xTerrainOp::eOp_Terrain)
+		return ;
+
 	int isel = mTab.GetActiveTab();
 
 	if (isel == xHeightPage)
@@ -144,6 +161,11 @@ void xTerrainPane::_Render(void *)
 
 void xTerrainPane::_RenderUI(void *)
 {
+	int op = xApp::Instance()->GetOperator();
+
+	if (op != xTerrainOp::eOp_Terrain)
+		return ;
+
 	int isel = mTab.GetActiveTab();
 
 	if (isel == xHeightPage)

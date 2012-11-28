@@ -86,17 +86,20 @@ void ObjCreatorTree::OnLButtonUp(UINT nFlags, CPoint point)
 
 			xObj * obj = xObjManager::Instance()->Create((const char *)type);
 
-			float fx = pt.x / (float)(rc.right - rc.left);
-			float fy = pt.y / (float)(rc.bottom - rc.top);
+			if (obj)
+			{
+				float fx = pt.x / (float)(rc.right - rc.left);
+				float fy = pt.y / (float)(rc.bottom - rc.top);
 
-			Ray ray = World::Instance()->MainCamera()->GetViewportRay(fx, fy);
+				Ray ray = World::Instance()->MainCamera()->GetViewportRay(fx, fy);
 
-			Vec3 pos = ray.origin + ray.direction * 80;
+				Vec3 pos = ray.origin + ray.direction * 80;
 
-			obj->SetPosition(pos);
-			obj->SetScale(0.01f);
+				obj->SetPosition(pos);
+				obj->SetScale(0.01f);
 
-			d_assert (obj);
+				d_assert (obj);
+			}
 
 			xApp::Instance()->SetSelectedObj(obj);
 		}

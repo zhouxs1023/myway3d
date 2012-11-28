@@ -93,6 +93,15 @@
     <ClCompile Include="xTerrainHeightDlg.cpp">
       <Filter>Terrain\UI</Filter>
     </ClCompile>
+    <ClCompile Include="xTerrainCreateDlg.cpp">
+      <Filter>Terrain\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrain.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainLayerInfoDlg.cpp">
+      <Filter>Terrain\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h">
@@ -168,6 +177,15 @@
       <Filter>Terrain\UI</Filter>
     </ClInclude>
     <ClInclude Include="xTerrainHeightDlg.h">
+      <Filter>Terrain\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainCreateDlg.h">
+      <Filter>Terrain\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrain.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainLayerInfoDlg.h">
       <Filter>Terrain\UI</Filter>
     </ClInclude>
   </ItemGroup>

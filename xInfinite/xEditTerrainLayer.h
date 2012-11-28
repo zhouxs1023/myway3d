@@ -20,6 +20,8 @@ public:
 
 	void SetBrush(const TString128 & tex);
 
+	void SetLayer(int layer) { mLayer = layer; };
+
 	void SetSize(float size) { mBrush.size = size; }
 	void SetDensity(float density) { mBrush.density = density; }
 
@@ -31,9 +33,11 @@ public:
 	void _Update(void *);
 	void _Render(void *);
 
+protected:
 	void _UpdateWeightMap();
 
 protected:
 	Brush mBrush;
 	Technique * mTech_Brush;
+	int mLayer;
 };

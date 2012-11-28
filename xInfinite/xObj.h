@@ -8,7 +8,6 @@ class xObj : public IPropertyObj
 
 protected:
 	char Name[128];
-	char MeshFile[128];
 	Vec3 Position;
 	Quat Orientation;
 	Vec3 Scale;

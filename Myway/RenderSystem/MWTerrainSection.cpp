@@ -21,10 +21,10 @@ TerrainSection::TerrainSection(Terrain * pTerrain, int x, int z)
 
     Init();
 
-	for (int i = 0; i < Terrain::kMaxBlendLayers; ++i)
-	{
-		mLayer[i] = 0;
-	}
+	mLayer[0] = -1;
+	mLayer[1] = -1;	
+	mLayer[2] = -1;	
+	mLayer[3] = -1;	
 }
 
 TerrainSection::~TerrainSection()

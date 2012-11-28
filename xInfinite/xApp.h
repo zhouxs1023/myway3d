@@ -10,6 +10,9 @@ enum eTransformOperator
 	eTO_Scale,
 };
 
+#define xSliderMin 1
+#define xSliderMax 100
+
 class xApp
 {
 	DECLARE_SINGLETON(xApp);

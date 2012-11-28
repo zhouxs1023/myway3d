@@ -6,6 +6,7 @@
 #include "MWResourceManager.h"
 #include "MWEnvironment.h"
 #include "MWRenderEvent.h"
+#include "MWRenderHelper.h"
 
 namespace Myway {
 
@@ -134,6 +135,7 @@ void Terrain::Create(const Config & config)
 	{
 		mDetailMaps[i] = mDefaultDetailMap;
 		mNormalMaps[i] = mDefaultNormalMap;
+		mSpecularMaps[i] = RenderHelper::Instance()->GetWhiteTexture();
 	}
 
 	// create weight maps
@@ -154,15 +156,15 @@ void Terrain::Create(const Config & config)
 		for (int j = 0; j < mConfig.zSectionCount; ++j)
 		{
 			TString128 texName = TString128("TWeightMap_") + i + "_" + j; 
-			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 5);
+			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 5, FMT_A8R8G8B8);
 
 			LockedBox lb;
 			texture->Lock(0, &lb, NULL, LOCK_NORMAL);
-			Color * clr = (Color *)lb.pData;
+			int * clr = (int *)lb.pData;
 
 			for (int m = 0; m < kWeightMapSize; ++m)
 				for (int n = 0; n < kWeightMapSize; ++n)
-					*clr++ = Color(0, 0, 0, 255);
+					*clr++ = RGBA(0, 0, 0, 255);
 
 			texture->Unlock(0);
 
@@ -188,12 +190,38 @@ int	Terrain::AddLayer(const Layer & layer)
 
 			mDetailMaps[i] = VideoBufferManager::Instance()->Load2DTexture(layer.detail, layer.detail);
 			mNormalMaps[i] = VideoBufferManager::Instance()->Load2DTexture(layer.normal, layer.normal);
+			mSpecularMaps[i] = VideoBufferManager::Instance()->Load2DTexture(layer.specular, layer.specular);
 
 			return i;
 		}
 	}
 
 	return -1;
+}
+
+const Terrain::Layer * Terrain::GetLayer(int index)
+{
+	d_assert (index < kMaxLayers);
+
+	return &mLayer[index];
+}
+
+void Terrain::SetLayer(int index, const Layer & layer)
+{
+	d_assert (index < kMaxLayers);
+
+	Layer & oldLayer = mLayer[index];
+
+	if (oldLayer.detail != layer.detail)
+		mDetailMaps[index] = VideoBufferManager::Instance()->Load2DTexture(layer.detail, layer.detail);
+
+	if (oldLayer.normal != layer.normal)
+		mNormalMaps[index] = VideoBufferManager::Instance()->Load2DTexture(layer.normal, layer.normal);
+
+	if (oldLayer.specular != layer.specular)
+		mSpecularMaps[index] = VideoBufferManager::Instance()->Load2DTexture(layer.specular, layer.specular);
+
+	oldLayer = layer;
 }
 
 void Terrain::RemoveLayer(int layer)
@@ -208,6 +236,7 @@ void Terrain::RemoveLayer(int layer)
 
 	mDetailMaps[layer] = mDefaultDetailMap;
 	mNormalMaps[layer] = mDefaultNormalMap;
+	mSpecularMaps[layer] = RenderHelper::Instance()->GetWhiteTexture();
 }
 
 TerrainSection * Terrain::GetSection(int x, int z)
@@ -326,6 +355,11 @@ void Terrain::Render()
 		int layer3 = section->GetLayer(3);
 		float xOff = section->GetOffX();
 		float zOff = section->GetOffZ();
+
+		layer0 = Math::Maximum(0, layer0);
+		layer1 = Math::Maximum(0, layer1);
+		layer2 = Math::Maximum(0, layer2);
+		layer3 = Math::Maximum(0, layer3);
 
 		TexturePtr weightMap = GetWeightMap(x, z);
 		TexturePtr detailMap0 = _getDetailMap(layer0);
@@ -557,7 +591,7 @@ void Terrain::UnlockHeight()
 	safe_delete_array(mLockedData);
 }
 
-Color * Terrain::LockWeightMap(const Rect & rc)
+float * Terrain::LockWeightMap(const Rect & rc)
 {
 	d_assert (!IsLockedWeightMap());
 
@@ -566,14 +600,14 @@ Color * Terrain::LockWeightMap(const Rect & rc)
 
 	d_assert (w > 0 && h > 0);
 
-	mLockedWeightMapData = new Color[w * h];
+	mLockedWeightMapData = new float[w * h];
 
 	int index = 0;
 	for (int j = rc.y1; j <= rc.y2; ++j)
 	{
 		for (int i = rc.x1; i <= rc.x2; ++i)
 		{
-			mLockedWeightMapData[index++] = GetWeight(i, j);
+			mLockedWeightMapData[index++] = 0;
 		}
 	}
 
@@ -582,7 +616,7 @@ Color * Terrain::LockWeightMap(const Rect & rc)
 	return mLockedWeightMapData;
 }
 
-void Terrain::UnlockWeightMap()
+void Terrain::UnlockWeightMap(int layer)
 {
 	d_assert (IsLockedWeightMap());
 
@@ -591,16 +625,75 @@ void Terrain::UnlockWeightMap()
 	{
 		for (int i = mLockedWeightMapRect.x1; i <= mLockedWeightMapRect.x2; ++i)
 		{
-			mWeights[j * mConfig.xVertexCount + i] = mLockedWeightMapData[index++];
+			float weight = mLockedWeightMapData[index++];
+			int xSection = i / kWeightMapSize;
+			int zSection = j / kWeightMapSize;
+
+			TerrainSection * section = GetSection(xSection, zSection);
+
+			int layer0 = section->GetLayer(0);
+			int layer1 = section->GetLayer(1);
+			int layer2 = section->GetLayer(2);
+			int layer3 = section->GetLayer(3);
+
+			Color c = mWeights[j * mConfig.xWeightMapSize + i];
+			Color4 c4;
+
+			c4.a = c.a / 255.0f;
+			c4.r = c.r / 255.0f;
+			c4.g = c.g / 255.0f;
+			c4.b = c.b / 255.0f;
+
+			if (layer == layer0)
+				c4.a += weight;
+			else if (layer == layer1)
+				c4.r += weight;
+			else if (layer == layer2)
+				c4.g += weight;
+			else if (layer == layer3)
+				c4.b += weight;
+			else
+			{
+				if (layer0 == -1)
+				{
+					c4.a += weight;
+					section->SetLayer(0, layer);
+				}
+				else if (layer1 == -1)
+				{
+					c4.r += weight;
+					section->SetLayer(1, layer);
+				}
+				else if (layer2 == -1)
+				{
+					c4.g += weight;
+					section->SetLayer(2, layer);
+				}
+				else if (layer3 == -1)
+				{
+					c4.b += weight;
+					section->SetLayer(3, layer);
+				}
+			}
+
+			c4 = c4.Normalize();
+
+			c.r = unsigned char(c4.r * 255);
+			c.g = unsigned char(c4.g * 255);
+			c.b = unsigned char(c4.b * 255);
+			c.a = unsigned char(c4.a * 255);
+
+			mWeights[j * mConfig.xWeightMapSize + i] = c;
 		}
 	}
 
+	// update weight map
 	for (int i = 0; i < mSections.Size(); ++i)
 	{
 		TerrainSection * section = mSections[i];
 
-		int xtile = Terrain::kSectionVertexSize - 1;
-		int ztile = Terrain::kSectionVertexSize - 1;
+		int xtile = Terrain::kWeightMapSize;
+		int ztile = Terrain::kWeightMapSize;
 		int x = section->GetSectionX();
 		int z = section->GetSectionZ();
 
@@ -621,10 +714,12 @@ void Terrain::UnlockWeightMap()
 		weightMap->Lock(0, &lb, NULL, LOCK_DISCARD);
 
 		Color * data = mWeights + z * kWeightMapSize * mConfig.xWeightMapSize + x * kWeightMapSize;
-		Color * dest = (Color *)lb.pData;
+		int * dest = (int *)lb.pData;
 		for (int k = 0; k < kWeightMapSize; ++k)
 		{
-			Memcpy(dest, data, kWeightMapSize * sizeof(Color));
+			for (int p = 0; p < kWeightMapSize; ++p)
+				dest[p] = RGBA(data[p].r, data[p].g, data[p].b, data[p].a);
+
 			dest += kWeightMapSize;
 			data += mConfig.xWeightMapSize;
 		}

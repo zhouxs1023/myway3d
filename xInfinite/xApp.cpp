@@ -243,6 +243,8 @@ void xApp::SetSelectedObj(xObj * obj)
 	if (obj == NULL)
 	{
 		OnUnSelectObj.Call();
+
+		return ;
 	}
 
 	mSelectedObjs.PushBack(obj);

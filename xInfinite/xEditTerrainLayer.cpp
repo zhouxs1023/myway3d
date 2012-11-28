@@ -10,6 +10,7 @@ xEditTerrainLayer::xEditTerrainLayer()
 {
 	mBrush.size = 50.0f;
 	mBrush.density = 1.0f;
+	mLayer = -1;
 }
 
 xEditTerrainLayer::~xEditTerrainLayer()
@@ -33,9 +34,6 @@ void xEditTerrainLayer::_Update(void *)
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
-	if (!terrain)
-		return ;
-
 	int op = xApp::Instance()->GetOperator();
 
 	if (op != xTerrainOp::eOp_Terrain)
@@ -43,10 +41,16 @@ void xEditTerrainLayer::_Update(void *)
 
 	Point2f pt = IMouse::Instance()->GetPositionUnit();
 
+	if (pt.x < 0 || pt.y < 0 || pt.x > 1 || pt.y > 1)
+		return ;
+
 	Ray ray = World::Instance()->MainCamera()->GetViewportRay(pt.x, pt.y);
 	mBrush.position = terrain->GetPosition(ray);
 
 	if (!IMouse::Instance()->KeyPressed(MKC_BUTTON0))
+		return ;
+
+	if (!terrain || mLayer == -1)
 		return ;
 
 	_UpdateWeightMap();
@@ -140,7 +144,7 @@ void xEditTerrainLayer::_UpdateWeightMap()
 	int zWeightMapSize = config.zWeightMapSize - 1;
 
 	int isx = (int)Math::Ceil(sx / config.xSize * xWeightMapSize);
-	int iex = (int)(ex / config.xSize) * xWeightMapSize;
+	int iex = (int)((ex / config.xSize) * xWeightMapSize);
 	int isz = (int)Math::Ceil((1 - sz / config.zSize) * xWeightMapSize);
 	int iez = (int)((1 - ez / config.zSize) * zWeightMapSize);
 
@@ -153,6 +157,13 @@ void xEditTerrainLayer::_UpdateWeightMap()
 	isz = Math::Minimum(isz, zWeightMapSize);
 	iex = Math::Minimum(iex, xWeightMapSize);
 	iez = Math::Minimum(iez, zWeightMapSize);
+
+	int index = 0;
+	Rect rc = { isx, isz, iex, iez };
+	float * weights = terrain->LockWeightMap(rc);
+
+	int w = mBrush.image->GetWidth() - 1;
+	int h = mBrush.image->GetHeight() - 1;
 
 	for (int j = isz; j <= iez; ++j)
 	{
@@ -173,16 +184,13 @@ void xEditTerrainLayer::_UpdateWeightMap()
 			u = Math::Minimum(u, 1.0f);
 			v = Math::Minimum(v, 1.0f);
 
-			int w = mBrush.image->GetWidth();
-			int h = mBrush.image->GetHeight();
-
 			int iu = int(u * w);
 			int iv = int(v * h);
 			int iu1 = iu + 1;
 			int iv1 = iv + 1;
 
-			iu1 = Math::Maximum(iu1, w);
-			iv1 = Math::Maximum(iv1, h);
+			iu1 = Math::Minimum(iu1, w);
+			iv1 = Math::Minimum(iv1, h);
 
 			float du = u * w - iu;
 			float dv = v * h - iv;
@@ -198,6 +206,10 @@ void xEditTerrainLayer::_UpdateWeightMap()
 			Color4 cy = cx0 + (cx1 - cx0) * dv;
 
 			float d = cy.r * density;
+
+			weights[index++] = d;
 		}
 	}
+
+	terrain->UnlockWeightMap(mLayer);
 }

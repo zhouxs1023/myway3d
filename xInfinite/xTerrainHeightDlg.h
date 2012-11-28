@@ -12,5 +12,10 @@ public:
 	void _Init(void *);
 
 protected:
+	afx_msg void OnOpChanged();
+	afx_msg void OnTypeChanged();
+	afx_msg void OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar);
+
+protected:
 	BOOL OnInitDialog();
 };

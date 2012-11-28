@@ -29,7 +29,7 @@ uniform float4 gClipPlane;
 
 PS_OUT main(PS_IN In)
 {
-    PS_OUT Out;
+    PS_OUT Out = (PS_OUT)0;
     
     float4 weight = tex2D(tex_blend, In.tcoord0);
     
