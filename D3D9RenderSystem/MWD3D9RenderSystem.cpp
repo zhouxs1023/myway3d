@@ -68,10 +68,13 @@ bool D3D9RenderSystem::CheckMSAAFormat(FORMAT Format, MULTI_SAMPLE Msaa)
     return SUCCEEDED(hr);
 }
 
-bool D3D9RenderSystem::CheckTextureFormat(FORMAT Format, USAGE Usage)
+bool D3D9RenderSystem::CheckTextureFormat(FORMAT Format, USAGE Usage, bool autoGenMimmap)
 {
     D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(Format);
     DWORD D3DUsage = D3D9Mapping::GetD3DUsage(Usage);
+
+	if (autoGenMimmap)
+		D3DUsage |= D3DUSAGE_AUTOGENMIPMAP;
 
     const D3DPRESENT_PARAMETERS & param = mWindow->mPresentParam;
 

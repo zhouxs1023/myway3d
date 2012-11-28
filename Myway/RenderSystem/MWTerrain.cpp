@@ -156,7 +156,7 @@ void Terrain::Create(const Config & config)
 		for (int j = 0; j < mConfig.zSectionCount; ++j)
 		{
 			TString128 texName = TString128("TWeightMap_") + i + "_" + j; 
-			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 5, FMT_A8R8G8B8);
+			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 0, FMT_A8R8G8B8);
 
 			LockedBox lb;
 			texture->Lock(0, &lb, NULL, LOCK_NORMAL);

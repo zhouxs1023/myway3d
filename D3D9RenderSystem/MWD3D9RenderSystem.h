@@ -20,7 +20,7 @@ public:
     virtual void                        OnResize();
 
     virtual bool                        CheckMSAAFormat(FORMAT format, MULTI_SAMPLE msaa);
-    virtual bool                        CheckTextureFormat(FORMAT format, USAGE usage);
+    virtual bool                        CheckTextureFormat(FORMAT format, USAGE usage, bool autoGenMimmap);
     virtual bool                        CheckRenderTargetFormat(FORMAT Format);
 
     virtual void                        ClearBuffer(const Rect * range, 

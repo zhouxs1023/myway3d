@@ -147,7 +147,7 @@ xObj * xObjManager::Create(const char * type)
 
 	xObj * obj = sf->Create(uxObjName.c_str());
 
-	if (!obj)
+	if (obj)
 		mObjs.PushBack(obj);
 
 	return obj;

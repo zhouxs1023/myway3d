@@ -107,6 +107,16 @@ TexturePtr D3D9VideoBufferManager::CreateTexture(const TString128 & sName,
     D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(Format);
     IDirect3DTexture9 * pD3D9Texture = NULL;
 
+	if (iMipLevels == 0)
+	{
+		if (!RenderSystem::Instance()->CheckTextureFormat(Format, Usage, true))
+		{
+			EXCEPTION("Your driver can't support texture format '" + D3D9Mapping::GetFormatString(Format) + 
+				"' for usage '" + D3D9Mapping::GetUsageString(Usage) + "' for auto generater mipmap");
+		}
+
+		D3DUsage |= D3DUSAGE_AUTOGENMIPMAP;
+	}
    
     hr = mD3D9Device->CreateTexture(iWidth, 
                                     iHeight,

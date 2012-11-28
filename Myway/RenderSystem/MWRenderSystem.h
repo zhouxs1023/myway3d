@@ -30,7 +30,7 @@ public:
     virtual void            Init() = 0;
     virtual void            OnResize() = 0;
 
-    virtual bool            CheckTextureFormat(FORMAT format, USAGE usage) = 0;
+    virtual bool            CheckTextureFormat(FORMAT format, USAGE usage, bool autoGenMimmap = false) = 0;
     virtual bool            CheckRenderTargetFormat(FORMAT format) = 0;
     virtual bool            CheckMSAAFormat(FORMAT format, MULTI_SAMPLE msaa) = 0;
 

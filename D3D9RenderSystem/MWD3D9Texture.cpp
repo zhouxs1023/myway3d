@@ -73,6 +73,55 @@ void D3D9Texture::Unlock(int iLevel)
     IDirect3DTexture9 * pD3DTexture = static_cast<IDirect3DTexture9*>(mD3D9Texture);
     pD3DTexture->UnlockRect(iLevel);
 }
+//
+//void D3D9Texture::UpdateMipmap()
+//{
+//	d_assert (Math::IsPowerOfTwo(mWidth) && Math::IsPowerOfTwo(mHeight));
+//	d_assert(mWidth == mHeight)
+//	d_assert (mUsage == USAGE_STATIC);
+//
+//	int level0 = 0;
+//	int leveln = 1;
+//	int size0 = mWidth;
+//	int sizen = mWidth / 2;
+//
+//	int count = mD3D9Texture->GetLevelCount();
+//
+//	while (leveln < count)
+//	{
+//		IDirect3DSurface9 * surf0, * surfn;
+//		
+//		mD3D9Texture->GetSurfaceLevel(level0, &surf0);
+//		mD3D9Texture->GetSurfaceLevel(leveln, &surfn);
+//
+//		D3DLOCKED_RECT rc0, rcn;
+//		surf0->LockRect(&rc0, NULL, D3DLOCK_READONLY);
+//		surfn->LockRect(&rcn, NULL, 0);
+//
+//		
+//
+//		for (int j = 0; j < sizen; ++j)
+//		{
+//			for (int i = 0; i < sizen; ++i)
+//			{
+//
+//			}
+//		}
+//
+//		surfn->UnlockRect();
+//		surf0->UnlockRect();
+//
+//		surf0->Release();
+//		surfn->Release();
+//
+//
+//		level0 += 1;
+//		leveln += 1;
+//
+//		size0 = size0 / 2;
+//		sizen = sizen / 2;
+//	}
+//}
 
 void D3D9Texture::LostDevice()
 {
