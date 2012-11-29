@@ -173,5 +173,6 @@ void xTerrainPane::_RenderUI(void *)
 	}
 	else if (isel == xLayerPage)
 	{
+		mEditLayer._RenderSectionLayer();
 	}
 }

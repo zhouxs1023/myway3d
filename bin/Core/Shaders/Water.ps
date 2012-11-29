@@ -19,7 +19,6 @@ uniform sampler2D gTex_Fresnel : register (s4);
 uniform sampler2D gTex_Normal0 : register (s5);
 uniform sampler2D gTex_Normal1 : register (s6);
 
-uniform float4 gTintColor;
 uniform float3 gCameraPos;
 
 uniform float4 gCornerLeftTop;
@@ -76,25 +75,12 @@ float CalcuFresnel(float3 normal, float3 eyeDir)
 	return tex2D(gTex_Fresnel, float2(dp, 0)).r;
 }
 
-float2 CaluNoiseUV(float2 projUV, float3 noise, float3 vpos)
-{
-		float2 noiseUV = projUV + noise.xz;
-		float d0 = tex2D(gTex_Depth, noiseUV).r;
-		float4 p0 = gCornerLeftTop + gCornerRightDir * noiseUV.x + gCornerDownDir * noiseUV.y;
-		float3 pos0 = p0.xyz * d0;
-		float diff0 = pos0.z - vpos.z;
-		
-		diff0 = saturate(diff0 / 10);
-		
-		return projUV + diff0 * noise.xz;
-}
-
-float CalcuDeepWeight(float2 projUV, float3 vpos)
+float CalcuDeepWeight(float2 projUV, float3 wpos)
 {
 	float d = tex2D(gTex_Depth, projUV).r;
 	float4 p = gCornerLeftTop + gCornerRightDir * projUV.x + gCornerDownDir * projUV.y;
-	float3 pos = p.xyz * d;
-	float diff = pos.z - vpos.z;
+	float3 pos = gCameraPos + p.xyz * d;
+	float diff = wpos.y - pos.y;
 	
 	return saturate(diff / gRefractionDist);
 }
@@ -118,13 +104,12 @@ float4 main(PS_IN In) : COLOR
 	
 	float3 normal = CalcuNormal(In.worldPos, In.normal, noise);
 	float fresnel = CalcuFresnel(normal, eyeDir);
-	noise.xy = noise * 0.00001f + normal.xz * 0.03;
 	
-	projUV = CaluNoiseUV(projUV, noise, In.viewPos.xyz);
+	float wgt = CalcuDeepWeight(projUV, In.worldPos);
 	
-	float wgt = CalcuDeepWeight(projUV, In.viewPos.xyz);
+	projUV += normal.xz * 0.05f;
 
-	float4 refrColor = tex2D(gTex_Refr, projUV) + gTintColor;
+	float4 refrColor = tex2D(gTex_Refr, projUV);
 	float4 reflColor = tex2D(gTex_Refl, projUV);
 	
 	refrColor = lerp(refrColor, gDeepColor, wgt);

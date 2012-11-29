@@ -27,6 +27,12 @@
 
     <Shader name = "TerrainBrushPS" language = "cg" profile = "ps30" source = "TerrainBrush.ps" >
     </Shader>
+
+    <Shader name = "TerrainLayerVS" language = "cg" profile = "vs30" source = "TerrainLayer.vs" >
+    </Shader>
+
+    <Shader name = "TerrainLayerPS" language = "cg" profile = "ps30" source = "TerrainLayer.ps" >
+    </Shader>
     
 	</Shaders>
 
@@ -45,6 +51,9 @@
     </Technique>
 
     <Technique name = "TerrainBrush" vs = "TerrainBrushVS" ps = "TerrainBrushPS">
+    </Technique>
+
+    <Technique name = "TerrainLayer" vs = "TerrainLayerVS" ps = "TerrainLayerPS">
     </Technique>
     
 	</Techniques>

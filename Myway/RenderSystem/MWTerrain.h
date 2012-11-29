@@ -117,16 +117,17 @@ public:
 	const Rect &		GetLockedWeightMapRect() { return mLockedWeightMapRect; }
 	const float *		GetLockedWeightmapData() { return mLockedWeightMapData; }
 
+	TexturePtr			_getDetailMap(int layer);
+	TexturePtr			_getNormalMap(int layer);
+	TexturePtr			_getSpecularMap(int layer);
+
 protected:
     void                OnPreVisibleCull(void * data);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
 
 	void				Create(const Config & config);
 	void				Load(const char * source);
-
-	TexturePtr			_getDetailMap(int layer);
-	TexturePtr			_getNormalMap(int layer);
-	TexturePtr			_getSpecularMap(int layer);
+	
 	Vec3				_getPosition(int x, int z);
 
 protected:

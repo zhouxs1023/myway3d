@@ -17,10 +17,12 @@ protected:
 	afx_msg void OnAddLayer();
 	afx_msg void OnRemoveLayer();
 	afx_msg void OnEditLayer();
+	afx_msg void OnBrushSize();
+	afx_msg void OnBrushDensity();
 
-protected:
 	BOOL OnInitDialog();
 
+protected:
 	Array<int> mLayerIds;
 };
 

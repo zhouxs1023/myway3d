@@ -28,11 +28,11 @@ public:
 
 	void SetBrush(const TString128 & tex);
 
-	void SetSize(float size) { mBrush.size = size; }
-	void SetDensity(float density) { mBrush.density = density; }
+	void SetBrushSize(float size) { mBrush.size = size; }
+	void SetBrushDensity(float density) { mBrush.density = density; }
 
-	float GetSize() { return mBrush.size; }
-	float GetDensity() { return mBrush.density; }
+	float GetBrushSize() { return mBrush.size; }
+	float GetBrushDensity() { return mBrush.density; }
 
 	void SetOperator(Op op) { mOp = op; }
 	Op GetOperator() { return mOp; }

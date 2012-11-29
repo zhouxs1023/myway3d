@@ -498,9 +498,6 @@
     <ClInclude Include="RenderSystem\MWSun.h">
       <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWProjectionGrid.h">
-      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWUnderWater.h">
       <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
     </ClInclude>
@@ -581,6 +578,15 @@
     </ClInclude>
     <ClInclude Include="Physics\MWKDTree.h">
       <Filter>Myway\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWOcean.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWWaterManager.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWProjectionGrid.h">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1072,9 +1078,6 @@
     <ClCompile Include="RenderSystem\MWSun.cpp">
       <Filter>Myway\RenderSystem\Envorment\geometry\Sky</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWProjectionGrid.cpp">
-      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
-    </ClCompile>
     <ClCompile Include="RenderSystem\MWUnderWater.cpp">
       <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
     </ClCompile>
@@ -1142,5 +1145,14 @@
       <Filter>Myway\App</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="RenderSystem\MWOcean.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWWaterManager.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWProjectionGrid.cpp">
+      <Filter>Myway\RenderSystem\Envorment\geometry\Water</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

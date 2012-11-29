@@ -105,29 +105,28 @@ namespace Myway {
        _updateColorTexture();
 
        // ---> render caustics
-       if (Environment::Instance()->GetWater())
-           Environment::Instance()->GetWater()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+       if (WaterManager::Instance()->IsUnderWater())
+           WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
        _updateColorTexture();
 
-       if (Environment::Instance()->GetWater())
-           Environment::Instance()->GetWater()->RenderUnderFog(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+       if (WaterManager::Instance()->IsUnderWater())
+           WaterManager::Instance()->RenderUnderFog(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-       if (Environment::Instance()->GetWater())
-           Environment::Instance()->GetWater()->RenderUnderBubble();
+       if (WaterManager::Instance()->IsUnderWater())
+           WaterManager::Instance()->RenderUnderBubble();
 
         // ---> render water
-        if (Environment::Instance()->GetWater())
-            Environment::Instance()->GetWater()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+        WaterManager::Instance()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
         _updateColorTexture();
 
         //
-        if (Environment::Instance()->GetWater())
-            Environment::Instance()->GetWater()->RenderUnderNoise(mTex_Color.c_ptr());
+        if (WaterManager::Instance()->IsUnderWater())
+            WaterManager::Instance()->RenderUnderNoise(mTex_Color.c_ptr());
 
-        if (Environment::Instance()->GetWater())
-            Environment::Instance()->GetWater()->RenderUnderGodRay();
+        if (WaterManager::Instance()->IsUnderWater())
+            WaterManager::Instance()->RenderUnderGodRay();
 
         _updateColorTexture();
 

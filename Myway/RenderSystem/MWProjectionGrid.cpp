@@ -1,6 +1,7 @@
 #include "MWProjectionGrid.h"
 #include "MWEnvironment.h"
 #include "MWKeyboard.h"
+#include "MWWaterManager.h"
 
 namespace Myway {
 
@@ -332,7 +333,7 @@ namespace Myway {
 
                 noise = mNoise->getValue(x * 5, z * 5);
 
-                Vertices[i].y = -mPlane.d + noise*mOptions.Strength;
+                Vertices[i].y = -mPlane.d + noise*mOptions.Strength * 1.2f;
 
                 i++;
                 u += du;
@@ -342,15 +343,17 @@ namespace Myway {
             _1_v = 1.0f-v;
         }
 
-        if (mOptions.ChoppyWaves)
-        {
-            for(int i = 0; i < mOptions.Complexity*mOptions.Complexity; i++)
-            {
-                mVerticesChoppyBuffer[i] = Vertices[i];
-            }
-        }
+		/*if (mOptions.ChoppyWaves)
+		{
+			for(int i = 0; i < mOptions.Complexity*mOptions.Complexity; i++)
+			{
+				mVerticesChoppyBuffer[i] = Vertices[i];
+			}
+		}*/
 
-        _calculeNormals();
+		_calculeNormals();
+
+		//_performChoppyWaves();
     }
 
     void ProjectedGrid::_calculeNormals()
@@ -395,7 +398,7 @@ namespace Myway {
         int v, u,
 		    Underwater = 1;
 
-        if (Environment::Instance()->GetWater()->IsUnderWater())
+        if (WaterManager::Instance()->IsUnderWater())
 		{
 			Underwater = -1;
 		}

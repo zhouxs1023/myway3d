@@ -2,7 +2,6 @@
 #include "MWEnvironment.h"
 #include "MWRenderHelper.h"
 #include "Engine.h"
-#include "MWWater.h"
 
 namespace Myway {
 
@@ -111,9 +110,9 @@ namespace Myway {
         delete mPerlin;
     }
 
-    void UnderWaterGodRay::Render(Water * water)
+    void UnderWaterGodRay::Render(const Vec3 & vWaterPosition)
     {
-        mWater = water;
+        mWaterPosition = vWaterPosition;
 
         _updateProjector();
 
@@ -259,7 +258,7 @@ namespace Myway {
 
     void UnderWaterGodRay::_updateProjector()
     {
-        Plane p(Vec3(0, 1, 0), mWater->GetPosition());
+        Plane p(Vec3(0, 1, 0), mWaterPosition);
         Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
         Vec3 sunPos = Environment::Instance()->GetEvParam()->SunPos;
         Ray r(sunPos, sunDir);

@@ -133,6 +133,8 @@
     <ClInclude Include="Core\MWThread.h" />
     <ClInclude Include="Core\MWTimer.h" />
     <ClInclude Include="Physics\MWKDTree.h" />
+    <ClInclude Include="RenderSystem\MWOcean.h" />
+    <ClInclude Include="RenderSystem\MWProjectionGrid.h" />
     <ClInclude Include="RenderSystem\MWTrigger.h" />
     <ClInclude Include="Core\MWAllocator.h" />
     <ClInclude Include="Core\MWArray.h" />
@@ -193,6 +195,7 @@
     <ClInclude Include="RenderSystem\MWNode.h" />
     <ClInclude Include="RenderSystem\MWScene.h" />
     <ClInclude Include="RenderSystem\MWSceneNode.h" />
+    <ClInclude Include="RenderSystem\MWWaterManager.h" />
     <ClInclude Include="RenderSystem\MWWorld.h" />
     <ClInclude Include="RenderSystem\MWSceneOctree.h" />
     <ClInclude Include="RenderSystem\MWDepthStencil.h" />
@@ -231,7 +234,6 @@
     <ClInclude Include="RenderSystem\MWSky.h" />
     <ClInclude Include="RenderSystem\MWStarfield.h" />
     <ClInclude Include="RenderSystem\MWSun.h" />
-    <ClInclude Include="RenderSystem\MWProjectionGrid.h" />
     <ClInclude Include="RenderSystem\MWUnderWater.h" />
     <ClInclude Include="RenderSystem\MWWater.h" />
     <ClInclude Include="RenderSystem\MWAstronomy.h" />
@@ -348,6 +350,8 @@
     <ClCompile Include="Core\MWTaskManager.cpp" />
     <ClCompile Include="Core\MWThread.cpp" />
     <ClCompile Include="Core\MWTimer.cpp" />
+    <ClCompile Include="RenderSystem\MWOcean.cpp" />
+    <ClCompile Include="RenderSystem\MWProjectionGrid.cpp" />
     <ClCompile Include="RenderSystem\MWTrigger.cpp" />
     <ClCompile Include="Core\MWXml.cpp" />
     <ClCompile Include="Math\MWAabb.cpp" />
@@ -389,6 +393,7 @@
     <ClCompile Include="RenderSystem\MWLight.cpp" />
     <ClCompile Include="RenderSystem\MWCamera.cpp" />
     <ClCompile Include="RenderSystem\MWSceneNode.cpp" />
+    <ClCompile Include="RenderSystem\MWWaterManager.cpp" />
     <ClCompile Include="RenderSystem\MWWorld.cpp" />
     <ClCompile Include="RenderSystem\MWSceneOctree.cpp" />
     <ClCompile Include="RenderSystem\MWDepthStencil.cpp" />
@@ -424,7 +429,6 @@
     <ClCompile Include="RenderSystem\MWSky.cpp" />
     <ClCompile Include="RenderSystem\MWStarfield.cpp" />
     <ClCompile Include="RenderSystem\MWSun.cpp" />
-    <ClCompile Include="RenderSystem\MWProjectionGrid.cpp" />
     <ClCompile Include="RenderSystem\MWUnderWater.cpp" />
     <ClCompile Include="RenderSystem\MWWater.cpp" />
     <ClCompile Include="RenderSystem\MWAstronomy.cpp" />

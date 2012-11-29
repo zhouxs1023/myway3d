@@ -22,6 +22,9 @@
     <Filter Include="Terrain\UI">
       <UniqueIdentifier>{f4ad8fc6-029d-45b6-aedb-14cc27d02d6b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Ocean">
+      <UniqueIdentifier>{09d61293-de8e-43d6-8ef8-5ea1e926563f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ClassView.cpp">
@@ -101,6 +104,9 @@
     </ClCompile>
     <ClCompile Include="xTerrainLayerInfoDlg.cpp">
       <Filter>Terrain\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xOcean.cpp">
+      <Filter>Ocean</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -187,6 +193,9 @@
     </ClInclude>
     <ClInclude Include="xTerrainLayerInfoDlg.h">
       <Filter>Terrain\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xOcean.h">
+      <Filter>Ocean</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

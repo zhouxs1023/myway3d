@@ -110,6 +110,7 @@
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
     <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="xOcean.cpp" />
     <ClCompile Include="xTerrainCreateDlg.cpp" />
     <ClCompile Include="xTerrainHeightDlg.cpp" />
     <ClCompile Include="xTerrainLayerDlg.cpp" />
@@ -140,6 +141,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
     <ClInclude Include="xObjBound.h" />
+    <ClInclude Include="xOcean.h" />
     <ClInclude Include="xTerrainCreateDlg.h" />
     <ClInclude Include="xTerrainHeightDlg.h" />
     <ClInclude Include="xTerrainLayerDlg.h" />

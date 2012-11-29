@@ -15,6 +15,9 @@ BEGIN_MESSAGE_MAP(xTerrainHeightDlg, CDialog)
 	ON_CBN_SELCHANGE(IDC_Combo_TH_BrushType, OnTypeChanged)
 	ON_WM_HSCROLL()
 
+	ON_EN_CHANGE(IDC_Edit_TH_BrushSize, OnBrushSize)
+	ON_EN_CHANGE(IDC_Edit_TH_BrushDensity, OnBrushDensity)
+
 END_MESSAGE_MAP()
 
 xTerrainHeightDlg::xTerrainHeightDlg()
@@ -70,14 +73,8 @@ void xTerrainHeightDlg::_Init(void *)
 	OnOpChanged();
 	OnTypeChanged();
 
-	CSliderCtrl * sdSize = (CSliderCtrl *)GetDlgItem(IDC_Slider_TH_BrushSize);
-	CSliderCtrl * sdDensity = (CSliderCtrl *)GetDlgItem(IDC_Slider_TH_BrushDensity);
-
-	sdSize->SetRange(xSliderMin, xSliderMax);
-	sdDensity->SetRange(xSliderMin, xSliderMax);
-
-	sdSize->SetPos(50);
-	sdDensity->SetPos(50);
+	SetDlgItemText(IDC_Edit_TH_BrushSize, "50");
+	SetDlgItemText(IDC_Edit_TH_BrushDensity, "1");
 }
 
 void xTerrainHeightDlg::OnOpChanged()
@@ -117,6 +114,30 @@ void xTerrainHeightDlg::OnTypeChanged()
 
 void xTerrainHeightDlg::OnHScroll(UINT nSBCode, UINT nPos, CScrollBar* pScrollBar)
 {
-
 	CDialog::OnHScroll(nSBCode, nPos, pScrollBar);
+}
+
+
+void xTerrainHeightDlg::OnBrushSize()
+{
+	CString strSize;
+
+	GetDlgItemText(IDC_Edit_TH_BrushSize, strSize);
+
+	float size = (float)atof((LPCTSTR)strSize);
+
+	if (size > 0 && size < 1000)
+		xTerrainPane::Instance()->GetTerrainHeight()->SetBrushSize(size);
+}
+
+void xTerrainHeightDlg::OnBrushDensity()
+{
+	CString strDensity;
+
+	GetDlgItemText(IDC_Edit_TH_BrushDensity, strDensity);
+
+	float density = (float)atof((LPCTSTR)strDensity);
+
+	if (density > 0 && density < 100)
+		xTerrainPane::Instance()->GetTerrainHeight()->SetBrushDensity(density);
 }

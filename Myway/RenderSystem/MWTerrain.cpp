@@ -588,6 +588,18 @@ void Terrain::UnlockHeight()
 		mSections[i]->NotifyUnlockHeight();
 	}
 
+	// update bound
+	index = 0;
+	for (int j = mLockedRect.y1; j <= mLockedRect.y2; ++j)
+	{
+		for (int i = mLockedRect.x1; i <= mLockedRect.x2; ++i)
+		{
+			float h =mLockedData[index++];
+			mBound.minimum.y = Math::Minimum(mBound.minimum.y, h);
+			mBound.maximum.y = Math::Maximum(mBound.maximum.y, h);
+		}
+	}
+
 	safe_delete_array(mLockedData);
 }
 

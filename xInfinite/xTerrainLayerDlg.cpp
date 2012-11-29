@@ -20,6 +20,9 @@ BEGIN_MESSAGE_MAP(xTerrainLayerDlg, CDialog)
 
 	ON_CBN_SELCHANGE(IDC_Combo_TL_BrushType, OnTypeChanged)
 
+	ON_EN_CHANGE(IDC_Edit_TL_BrushSize, OnBrushSize)
+	ON_EN_CHANGE(IDC_Edit_TL_BrushDensity, OnBrushDensity)
+
 END_MESSAGE_MAP()
 
 xTerrainLayerDlg::xTerrainLayerDlg()
@@ -80,19 +83,13 @@ void xTerrainLayerDlg::_Init(void *)
 
 	OnTypeChanged();
 
-	CSliderCtrl * sdSize = (CSliderCtrl *)GetDlgItem(IDC_Slider_TL_BrushSize);
-	CSliderCtrl * sdDensity = (CSliderCtrl *)GetDlgItem(IDC_Slider_TL_BrushDensity);
-
-	sdSize->SetRange(xSliderMin, xSliderMax);
-	sdDensity->SetRange(xSliderMin, xSliderMax);
-
-	sdSize->SetPos(50);
-	sdDensity->SetPos(50);
+	SetDlgItemText(IDC_Edit_TL_BrushSize, "50");
+	SetDlgItemText(IDC_Edit_TL_BrushDensity, "0.5");
 
 	// init layer list
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 	CListBox * list = (CListBox *)GetDlgItem(IDC_List_TL_Layers);
-
+	
 	if (terrain)
 	{
 		int index = 0;
@@ -190,4 +187,28 @@ void xTerrainLayerDlg::OnEditLayer()
 			tn->SetLayer(layerId, layer);
 		}
 	}
+}
+
+void xTerrainLayerDlg::OnBrushSize()
+{
+	CString strSize;
+
+	GetDlgItemText(IDC_Edit_TL_BrushSize, strSize);
+
+	float size = (float)atof((LPCTSTR)strSize);
+
+	if (size > 0 && size < 1000)
+		xTerrainPane::Instance()->GetTerrainLayer()->SetBrushSize(size);
+}
+
+void xTerrainLayerDlg::OnBrushDensity()
+{
+	CString strDensity;
+
+	GetDlgItemText(IDC_Edit_TL_BrushDensity, strDensity);
+
+	float density = (float)atof((LPCTSTR)strDensity);
+
+	if (density > 0 && density < 1)
+		xTerrainPane::Instance()->GetTerrainLayer()->SetBrushDensity(density);
 }

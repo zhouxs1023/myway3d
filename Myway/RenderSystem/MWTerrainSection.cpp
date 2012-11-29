@@ -21,10 +21,10 @@ TerrainSection::TerrainSection(Terrain * pTerrain, int x, int z)
 
     Init();
 
-	mLayer[0] = -1;
-	mLayer[1] = -1;	
-	mLayer[2] = -1;	
-	mLayer[3] = -1;	
+	mLayer[0] = +0;
+	mLayer[1] = -1;
+	mLayer[2] = -1;
+	mLayer[3] = -1;
 }
 
 TerrainSection::~TerrainSection()
@@ -117,15 +117,15 @@ void TerrainSection::Init()
 	mAabbLocal.minimum.x = 0 + mOffX;
 	mAabbLocal.minimum.z = 0 + mOffZ;
 
-	mAabbLocal.maximum.x = mTerrain->GetConfig().xSectionSize + mOffX;;
+	mAabbLocal.maximum.x = mTerrain->GetConfig().xSectionSize + mOffX;
 	mAabbLocal.maximum.z = mTerrain->GetConfig().zSectionSize + mOffZ;
 
     for (int j = 0; j < zSectionVertSize; ++j)
     {
         for (int i = 0; i < xSectionVertSize; ++i)
         {
-            mAabbLocal.minimum.y = Math::Minimum(mAabbLocal.minimum.y, pHeights[j]);
-            mAabbLocal.maximum.y = Math::Maximum(mAabbLocal.maximum.y, pHeights[j]);
+            mAabbLocal.minimum.y = Math::Minimum(mAabbLocal.minimum.y, pHeights[i]);
+            mAabbLocal.maximum.y = Math::Maximum(mAabbLocal.maximum.y, pHeights[i]);
         }
 
         pHeights += xVertSize;

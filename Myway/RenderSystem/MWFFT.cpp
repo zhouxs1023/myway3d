@@ -17,6 +17,7 @@ namespace Myway {
         , time(10)
         , mInited(false)
     {
+		create();
     }
 
     FFT::FFT(const Options &Options)
@@ -31,6 +32,7 @@ namespace Myway {
         , time(10)
         , mInited(false)
     {
+		create();
     }
 
     FFT::~FFT()

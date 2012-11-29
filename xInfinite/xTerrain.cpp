@@ -32,7 +32,6 @@ xObj * xTerrainFactory::Create(const char * name)
 		return NULL;
 	}
 
-
 	xTerrainCreateDlg dlg;
 
 	if (dlg.DoModal() == IDOK)

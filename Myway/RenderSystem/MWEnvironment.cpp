@@ -19,7 +19,7 @@ namespace Myway {
         mSun = NULL;
         mMoon = NULL;
         mCloud = NULL;
-        mWater = NULL;
+        mWaterManager = NULL;
 
         mFog = NULL;
         mGodRay = NULL;
@@ -51,7 +51,7 @@ namespace Myway {
         mSun = new Sun();
         mMoon = new Moon();
         mCloud = new Cloud();
-        //mWater = new Water();
+        mWaterManager = new WaterManager();
 
         mFog = new Fog();
         mGodRay = new GodRay();
@@ -65,7 +65,7 @@ namespace Myway {
         safe_delete (mSun);
         safe_delete (mMoon);
         safe_delete (mCloud);
-        safe_delete (mWater);
+        safe_delete (mWaterManager);
 
         safe_delete (mFog);
         safe_delete (mGodRay);

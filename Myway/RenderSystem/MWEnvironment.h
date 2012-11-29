@@ -6,7 +6,7 @@
 #include "MWSun.h"
 #include "MWMoon.h"
 #include "MWCloud.h"
-#include "MWWater.h"
+#include "MWWaterManager.h"
 #include "MWTerrain.h"
 
 #include "MWFog.h"
@@ -43,7 +43,6 @@ namespace Myway {
         Sun * GetSun() { return mSun; }
         Moon * GetMoon() { return mMoon; }
         Cloud * GetCloud() { return mCloud; }
-        Water * GetWater() { return mWater; }
 
         Fog * GetFog() { return mFog; }
         GodRay * GetGodRay() { return mGodRay; }
@@ -86,10 +85,10 @@ namespace Myway {
         Sun * mSun;
         Moon * mMoon;
         Cloud * mCloud;
-        Water * mWater;
 
         Terrain * mTerrain;
 
+		WaterManager * mWaterManager;
         Fog * mFog;
         GodRay * mGodRay;
         HDRLighting * mHDR;

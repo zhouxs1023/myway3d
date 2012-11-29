@@ -9,7 +9,7 @@
 xEditTerrainLayer::xEditTerrainLayer()
 {
 	mBrush.size = 50.0f;
-	mBrush.density = 1.0f;
+	mBrush.density = 0.5f;
 	mLayer = -1;
 }
 
@@ -28,6 +28,9 @@ void xEditTerrainLayer::SetBrush(const TString128 & tex)
 void xEditTerrainLayer::_Init(void *)
 {
 	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
+	mTech_Layer = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainLayer");
+
+	d_assert (mTech_Brush != NULL && mTech_Layer != NULL);
 }
 
 void xEditTerrainLayer::_Update(void *)
@@ -145,7 +148,7 @@ void xEditTerrainLayer::_UpdateWeightMap()
 
 	int isx = (int)Math::Ceil(sx / config.xSize * xWeightMapSize);
 	int iex = (int)((ex / config.xSize) * xWeightMapSize);
-	int isz = (int)Math::Ceil((1 - sz / config.zSize) * xWeightMapSize);
+	int isz = (int)Math::Ceil((1 - sz / config.zSize) * zWeightMapSize);
 	int iez = (int)((1 - ez / config.zSize) * zWeightMapSize);
 
 	isx = Math::Maximum(0, isx);
@@ -170,14 +173,14 @@ void xEditTerrainLayer::_UpdateWeightMap()
 		for (int i = isx; i <= iex; ++i)
 		{
 			float x = float(i) / xWeightMapSize * config.xSize;
-			float z = float(j) / zWeightMapSize * config.zSize;
+			float z = (1 - float(j) / zWeightMapSize) * config.zSize;
 
 			if (x < 0 || x > config.xSize ||
 				z < 0 || z > config.zSize)
 				continue ;
 
-			float u = (x - sx) / (sz - sx);
-			float v = 1 - (z - sz) / (ez - sz);
+			float u = (x - sx) / (ex - sx);
+			float v = (z - sz) / (ez - sz);
 
 			u = Math::Maximum(u, 0.0f);
 			v = Math::Maximum(v, 0.0f);
@@ -212,4 +215,87 @@ void xEditTerrainLayer::_UpdateWeightMap()
 	}
 
 	terrain->UnlockWeightMap(mLayer);
+}
+
+
+
+void xEditTerrainLayer::_RenderSectionLayer()
+{
+	Terrain * terrain = Environment::Instance()->GetTerrain();
+
+	if (!terrain || mLayer == -1)
+		return ;
+
+	int wndWidth = Engine::Instance()->GetDeviceProperty()->Width;
+	int wndHeight = Engine::Instance()->GetDeviceProperty()->Height;
+	const int LayerSize = 64;
+	const Terrain::Config & config = terrain->GetConfig();
+
+	int xSection = int(mBrush.position.x / config.xSectionSize);
+	int zSection = int((config.zSize - mBrush.position.z) / config.zSectionSize);
+
+	xSection = Math::Maximum(xSection, 0);
+	zSection = Math::Maximum(zSection, 0);
+	xSection = Math::Minimum(xSection, config.xSectionCount - 1);
+	zSection = Math::Minimum(zSection, config.zSectionCount - 1);
+
+	TerrainSection * section = terrain->GetSection(xSection, zSection);
+
+	TexturePtr detailMap[4] = { NULL };
+	TexturePtr brushMap = NULL;
+	int layer[4] = { -1 };
+
+	for (int i = 0; i < 4; ++i)
+	{
+		layer[i] = section->GetLayer(i);
+
+		if (layer[i] != -1)
+			detailMap[i] = terrain->_getDetailMap(layer[i]);
+	}
+
+	brushMap = terrain->_getDetailMap(mLayer);
+	
+	ShaderParam * uTransform = mTech_Layer->GetVertexShaderParamTable()->GetParam("gTransform");
+	float scaleX = LayerSize / (float)wndWidth;
+	float scaleY = LayerSize / (float)wndHeight;
+
+	{
+		uTransform->SetUnifom(scaleX, scaleY, 1 - scaleX * 2, 1 - scaleY * 2);
+
+		SamplerState state;
+		RenderSystem::Instance()->SetTexture(0, state, detailMap[0].c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Layer);
+	}
+
+	{
+		uTransform->SetUnifom(scaleX, scaleY, 1 - scaleX * 1, 1 - scaleY * 2);
+
+		SamplerState state;
+		RenderSystem::Instance()->SetTexture(0, state, detailMap[1].c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Layer);
+	}
+
+	{
+		uTransform->SetUnifom(scaleX, scaleY, 1 - scaleX * 2, 1 - scaleY * 1);
+
+		SamplerState state;
+		RenderSystem::Instance()->SetTexture(0, state, detailMap[2].c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Layer);
+	}
+
+	{
+		uTransform->SetUnifom(scaleX, scaleY, 1 - scaleX, 1 - scaleY);
+
+		SamplerState state;
+		RenderSystem::Instance()->SetTexture(0, state, detailMap[3].c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Layer);
+	}
+
+	{
+		uTransform->SetUnifom(scaleX, scaleY, 0, 1 - scaleY);
+
+		SamplerState state;
+		RenderSystem::Instance()->SetTexture(0, state, brushMap.c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Layer);
+	}
 }

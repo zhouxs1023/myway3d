@@ -44,7 +44,7 @@ namespace Myway {
         UnderWaterGodRay();
         ~UnderWaterGodRay();
 
-        void Render(Water * water);
+        void Render(const Vec3 & vWaterPosition);
 
 		inline void SetSimulationSpeed(const float & Speed)
 		{
@@ -98,7 +98,7 @@ namespace Myway {
 
     protected:
 		Perlin * mPerlin;
-        Water * mWater;
+        Vec3 mWaterPosition;
 
 		/// Normal derivation value
 		float mNoiseDerivation;
