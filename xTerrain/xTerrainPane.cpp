@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xTerrainPane.h"
 #include "xApp.h"
+#include "xAfxResourceSetup.h"
 #include "resource.h"
 
 
@@ -42,6 +43,8 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
+	afx_resource_setup();
+
 	// create tab control
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
@@ -53,9 +56,6 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	mTab.SetLocation(CMFCBaseTabCtrl::LOCATION_TOP);
-
-	HINSTANCE save_hInstance = AfxGetResourceHandle();
-	AfxSetResourceHandle((HINSTANCE)ghModule);
 
 	// create height dialog
 	if (!mHeightDlg.Create(IDD_Terrain_Height, &mTab))
@@ -75,8 +75,6 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mTab.AddTab(&mLayerDlg, "Layer");
 
 	AdjustLayout();
-
-	AfxSetResourceHandle(save_hInstance);
 
 	return 0;
 }

@@ -71,7 +71,7 @@
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="xEditTerrain.cpp" />
+    <ClCompile Include="xAfxResourceSetup.cpp" />
     <ClCompile Include="xEditTerrainHeight.cpp" />
     <ClCompile Include="xEditTerrainLayer.cpp" />
     <ClCompile Include="xMesh.cpp" />
@@ -87,7 +87,7 @@
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="xEditTerrain.h" />
+    <ClInclude Include="xAfxResourceSetup.h" />
     <ClInclude Include="xEditTerrainHeight.h" />
     <ClInclude Include="xEditTerrainLayer.h" />
     <ClInclude Include="xMesh.h" />

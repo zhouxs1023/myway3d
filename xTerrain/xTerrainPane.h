@@ -6,7 +6,6 @@
 #include "xEditTerrainHeight.h"
 #include "xEditTerrainLayer.h"
 
-extern HANDLE ghModule;
 
 class xTerrainPane : public CDockablePane
 {

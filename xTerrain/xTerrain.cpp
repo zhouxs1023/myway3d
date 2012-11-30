@@ -2,6 +2,8 @@
 
 #include "xTerrain.h"
 #include "xTerrainCreateDlg.h"
+#include "xAfxResourceSetup.h"
+
 
 xTerrain::xTerrain(const Terrain::Config & config)
 	: xObj("Terrain")
@@ -31,6 +33,8 @@ xObj * xTerrainFactory::Create(const char * name)
 
 		return NULL;
 	}
+
+	afx_resource_setup();
 
 	xTerrainCreateDlg dlg;
 

@@ -14,9 +14,6 @@
       <Filter>UI</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp" />
-    <ClCompile Include="xEditTerrain.cpp">
-      <Filter>Src</Filter>
-    </ClCompile>
     <ClCompile Include="xEditTerrainHeight.cpp">
       <Filter>Src</Filter>
     </ClCompile>
@@ -39,6 +36,9 @@
     <ClCompile Include="xTerrainLayerDlg.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="xAfxResourceSetup.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -57,9 +57,6 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="xEditTerrain.h">
-      <Filter>Src</Filter>
-    </ClInclude>
     <ClInclude Include="xEditTerrainHeight.h">
       <Filter>Src</Filter>
     </ClInclude>
@@ -79,6 +76,9 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="xAfxResourceSetup.h">
+      <Filter>Src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="UI">
