@@ -12,7 +12,7 @@ namespace Myway {
 
 
 Terrain::Terrain(const Config & config)
-: tOnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
+: tOnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
 {
 	mLockedData = NULL;
 	mLockedWeightMapData = NULL;
@@ -24,7 +24,7 @@ Terrain::Terrain(const Config & config)
 }
 
 Terrain::Terrain(const char * source)
-: tOnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
+: tOnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
 {
 	mLockedData = NULL;
 	mLockedWeightMapData = NULL;

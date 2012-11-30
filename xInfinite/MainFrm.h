@@ -4,7 +4,6 @@
 
 #pragma once
 #include "ObjCreatorView.h"
-#include "xTerrainPane.h"
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
@@ -13,18 +12,11 @@ class CMainFrame : public CFrameWndEx
 {
 	static Event OnProcessMsg;
 	
-protected: // 仅从序列化创建
+protected:
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 	virtual ~CMainFrame();
 
-// 特性
-public:
-
-// 操作
-public:
-
-// 重写
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
@@ -37,13 +29,14 @@ public:
 #endif
 
 protected:  // 控件条嵌入成员
+	xApp mApp;
+
 	CMFCMenuBar m_wndMenuBar;
 	CMFCStatusBar m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
 
 	ObjCreatorView mObjCreatorView;
 	CPropertiesWnd m_wndProperties;
-	xTerrainPane mTerrainPane;
 
 // 生成的消息映射函数
 protected:

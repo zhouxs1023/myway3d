@@ -1,6 +1,10 @@
 #include "MWFile.h"
 #include "MWDebug.h"
 
+#ifdef MW_PLATFORM_WIN32
+#include "Windows.h"
+#endif
+
 #pragma warning(push)
 #pragma warning(disable : 4999)
 #pragma warning(disable : 4996)
@@ -262,6 +266,53 @@ TString128 File::RemoveExternName(const TString128 & file)
     txt[p - 1] = 0;
 
     return txt;
+}
+
+TString128 File::GetAbsoluteFileName(const TString128 & file)
+{
+	char moduleFileName[128] = { 0 };
+
+#ifdef MW_PLATFORM_WIN32
+	GetModuleFileName(NULL, moduleFileName, 128);
+#endif
+
+	int len = strlen(moduleFileName);
+	while (len > 0 && moduleFileName[len] != '\\' && moduleFileName[len] != '/')
+	{
+		moduleFileName[len--] = 0;
+	}
+
+	moduleFileName[len] = 0;
+
+	TString128 absFile = file;
+
+	absFile.Replace('/', '\\');
+
+	if (strstr(absFile.c_str(), "..\\") != NULL)
+	{
+		char * pfile = moduleFileName;
+		const char * cfile = absFile.c_str();
+
+		do 
+		{
+			len = strlen(pfile);
+
+			while (len > 0 && pfile[len] != '\\' && pfile[len] != '/')
+				pfile[len--] = 0;
+
+			pfile[len] = 0;
+			cfile += 2;
+
+		} while (strstr(cfile, "..\\") != NULL);
+
+		Strcat(pfile, 128, cfile);
+
+		return pfile;
+	}
+	else
+	{
+		return absFile;
+	}
 }
 
 #pragma warning(pop)

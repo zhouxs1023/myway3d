@@ -12,16 +12,19 @@
 #include "InfinateView.h"
 
 #include "xApp.h"
+#include "xScene.h"
+#include "xSceneNewDlg.h"
 
 // CInfinateApp
 
 BEGIN_MESSAGE_MAP(CInfinateApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CInfinateApp::OnAppAbout)
-	// 基于文件的标准文档命令
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
-	// 标准打印设置命令
-	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
+
+	ON_COMMAND(ID_Scene_New, &CInfinateApp::OnNewScene)
+	ON_COMMAND(ID_Scene_Open, &CInfinateApp::OnOpenScene)
+	ON_COMMAND(ID_Scene_Save, &CInfinateApp::OnSaveScene)
+	ON_COMMAND(ID_Scene_Export, &CInfinateApp::OnExportScene)
+
 END_MESSAGE_MAP()
 
 
@@ -240,7 +243,52 @@ void CInfinateApp::OnIdle()
 	xApp::Instance()->Run();
 }
 
-// CInfinateApp 消息处理程序
+void CInfinateApp::OnNewScene()
+{
+	if (xScene::Instance()->IsDirtSave())
+	{
+		if (MessageBox(NULL, "Scene has changed, do you wish save it.", "Warning", MB_OKCANCEL) == IDOK)
+		{
+			OnSaveScene();
+		}
+	}
 
+	/*TCHAR szPath[MAX_PATH]={0};
+	LPITEMIDLIST pitem;
+	BROWSEINFO info;
+	::ZeroMemory(&info,sizeof(info));
+	info.hwndOwner = NULL;  
+	info.lpszTitle=_T( "Choose   the   Folder: ");
+	info.pszDisplayName = szPath;
+
+	if(pitem = ::SHBrowseForFolder(&info))
+	{
+		::SHGetPathFromIDList(pitem, szPath);
+
+		if (Strcmp(szPath, "") != 0)
+		{
+		}
+	}*/
+
+	xSceneNewDlg dlg;
+
+	dlg.DoModal();
+}
+
+void CInfinateApp::OnOpenScene()
+{
+}
+
+void CInfinateApp::OnSaveScene()
+{
+	if (xScene::Instance()->IsDirtSave())
+	{
+		xScene::Instance()->Save();
+	}
+}
+
+void CInfinateApp::OnExportScene()
+{
+}
 
 

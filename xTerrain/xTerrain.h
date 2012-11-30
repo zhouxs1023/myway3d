@@ -36,17 +36,17 @@ class xTerrainFactoryListener : public EventListener
 public:
 	xTerrainFactoryListener()
 	{
-		xApp::OnInit += this;
+		xEvent::OnInit += this;
 	}
 
 	virtual ~xTerrainFactoryListener()
 	{
-		xApp::OnInit -= this;
+		xEvent::OnInit -= this;
 	}
 
 	virtual void OnCall(Event * sender, void * data)
 	{
-		if (sender == &xApp::OnInit)
+		if (sender == &xEvent::OnInit)
 		{
 			xObjManager::Instance()->AddFactory(new xTerrainFactory());
 		}

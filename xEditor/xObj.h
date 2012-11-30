@@ -1,8 +1,10 @@
 #pragma once
 
+#include "xEditor.h"
+
 #define xPropertyChanged(prop) OnPropertyChanged(GetProperty(#prop))
 
-class xObj : public IPropertyObj
+class X_ENTRY xObj : public IPropertyObj
 {
 	DECLARE_PROPERTY(IPropertyObj);
 
@@ -29,7 +31,8 @@ public:
 	virtual Aabb GetBound() { return Aabb::Identiy; }
 };
 
-class xObjFactory
+
+class X_ENTRY xObjFactory
 {
 public:
 	xObjFactory() {}
@@ -40,7 +43,7 @@ public:
 	virtual const char * GetTypeName() { return "Unknown"; }
 };
 
-class xObjManager : public EventListener
+class X_ENTRY xObjManager : public EventListener
 {
 	DECLARE_SINGLETON(xObjManager);
 

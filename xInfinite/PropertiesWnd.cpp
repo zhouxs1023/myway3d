@@ -21,14 +21,14 @@ CPropertiesWnd::CPropertiesWnd()
 {
 	INIT_SLN;
 
-	xApp::OnSelectObj += this;
-	xApp::OnUnSelectObj += this;
+	xEvent::OnSelectObj += this;
+	xEvent::OnUnSelectObj += this;
 }
 
 CPropertiesWnd::~CPropertiesWnd()
 {
-	xApp::OnSelectObj -= this;
-	xApp::OnUnSelectObj -= this;
+	xEvent::OnSelectObj -= this;
+	xEvent::OnUnSelectObj -= this;
 
 	SHUT_SLN;
 }
@@ -235,7 +235,7 @@ void CPropertiesWnd::InitPropList()
 
 void CPropertiesWnd::OnCall(Event * sender, void * data)
 {
-	if (sender == &xApp::OnSelectObj)
+	if (sender == &xEvent::OnSelectObj)
 	{
 		xObj * obj = xApp::Instance()->GetSelectedObj(0);
 
@@ -244,7 +244,7 @@ void CPropertiesWnd::OnCall(Event * sender, void * data)
 
 		Show(obj);
 	}
-	else if (sender == &xApp::OnUnSelectObj)
+	else if (sender == &xEvent::OnUnSelectObj)
 	{
 		Show(NULL);
 	}
@@ -323,6 +323,12 @@ void CPropertiesWnd::_ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Pr
 		gp1->AddSubItem(new CMFCPropertyGridProperty("z", (_variant_t)(data.z), ""));
 		gp1->AddSubItem(new CMFCPropertyGridProperty("w", (_variant_t)(data.w), ""));
 	}
+	else if (p->type == PT_Float)
+	{
+		float data = p->AsFloat(obj->GetPropertyData(p));
+
+		gp->AddSubItem(new CMFCPropertyGridProperty(p->name.c_str(), (_variant_t)(data), ""));
+	}
 }
 
 LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
@@ -344,6 +350,11 @@ LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 
 		if (p->type == PT_String)
 			obj->SetPropertyData(p, cdata);
+		else if (p->type == PT_Float)
+		{
+			float value = (float)atof(cdata);
+			obj->SetPropertyData(p, &value);
+		}
 	}
 
 	return S_OK;

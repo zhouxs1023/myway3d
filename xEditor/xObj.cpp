@@ -68,18 +68,18 @@ IMP_SLN(xObjManager);
 xObjManager::xObjManager()
 {
 	INIT_SLN;
-	xApp::OnShutdown += this;
+	xEvent::OnShutdown += this;
 }
 
 xObjManager::~xObjManager()
 {
-	xApp::OnShutdown -= this;
+	xEvent::OnShutdown -= this;
 	SHUT_SLN;
 }
 
 void xObjManager::OnCall(Event * sender, void * data)
 {
-	if (sender == &xApp::OnShutdown)
+	if (sender == &xEvent::OnShutdown)
 	{
 		for (int i = 0; i < mFactorys.Size(); ++i)
 		{

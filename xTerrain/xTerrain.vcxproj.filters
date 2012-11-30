@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="xTerrainCreateDlg.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainHeightDlg.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainLayerInfoDlg.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainPane.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="xEditTerrain.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainHeight.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainLayer.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xMesh.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xOcean.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrain.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainOp.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="xTerrainLayerDlg.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="xTerrainCreateDlg.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainHeightDlg.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainLayerDlg.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainLayerInfoDlg.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainPane.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="xEditTerrain.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainHeight.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainLayer.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xMesh.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xOcean.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrain.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainOp.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="UI">
+      <UniqueIdentifier>{dc22dde3-4c0f-4d6e-8c7f-585ed607eeac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{53c9cefa-f7f9-4fe8-9cec-606f8dd03c86}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="xTerrain.rc" />
+  </ItemGroup>
+</Project>

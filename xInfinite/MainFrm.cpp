@@ -140,16 +140,7 @@ BOOL CMainFrame::CreateDockingWindows()
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties);
 
-	// terrain
-	if (!mTerrainPane.Create("Terrain", this, CRect(0, 0, 200, 200), TRUE, IDD_Terrain,
-		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
-	{
-		TRACE0("can't create \"terrain pane\"\n");
-		return FALSE;
-	}
-
-	mTerrainPane.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&mTerrainPane);
+	xEvent::OnCreatePane(this);
 
 	return TRUE;
 }

@@ -104,34 +104,38 @@ namespace Myway {
 
        _updateColorTexture();
 
-       // ---> render caustics
-       if (WaterManager::Instance()->IsUnderWater())
-           WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+	   if (Environment::Instance()->GetWaterManager())
+	   {
+		   // ---> render caustics
+		   if (WaterManager::Instance()->IsUnderWater())
+			   WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-       _updateColorTexture();
+		   _updateColorTexture();
 
-       if (WaterManager::Instance()->IsUnderWater())
-           WaterManager::Instance()->RenderUnderFog(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+		   if (WaterManager::Instance()->IsUnderWater())
+			   WaterManager::Instance()->RenderUnderFog(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-       if (WaterManager::Instance()->IsUnderWater())
-           WaterManager::Instance()->RenderUnderBubble();
+		   if (WaterManager::Instance()->IsUnderWater())
+			   WaterManager::Instance()->RenderUnderBubble();
 
-        // ---> render water
-        WaterManager::Instance()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+		   // ---> render water
+		   WaterManager::Instance()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-        _updateColorTexture();
+		   _updateColorTexture();
 
-        //
-        if (WaterManager::Instance()->IsUnderWater())
-            WaterManager::Instance()->RenderUnderNoise(mTex_Color.c_ptr());
+		   //
+		   if (WaterManager::Instance()->IsUnderWater())
+			   WaterManager::Instance()->RenderUnderNoise(mTex_Color.c_ptr());
 
-        if (WaterManager::Instance()->IsUnderWater())
-            WaterManager::Instance()->RenderUnderGodRay();
+		   if (WaterManager::Instance()->IsUnderWater())
+			   WaterManager::Instance()->RenderUnderGodRay();
 
-        _updateColorTexture();
+		   _updateColorTexture();
+	   }
+       
 
-        if (Environment::Instance()->GetHDR())
-            Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
+		if (Environment::Instance()->GetHDR())
+			Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
 
 		RenderEvent::OnAfterDeffererShading(NULL);
 

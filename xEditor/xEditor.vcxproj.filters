@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClInclude Include="xEditor.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="xApp.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xBaseOperator.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xEnvironment.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xEvent.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xGizmo.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xObj.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xObjBound.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xPlugin.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xScene.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xSerializer.h">
+      <Filter>source</Filter>
+    </ClInclude>
+    <ClInclude Include="xToolBar.h">
+      <Filter>source</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="xApp.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xBaseOperator.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xEnvironment.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xEvent.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xGizmo.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xObj.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xObjBound.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xPugin.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xScene.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xSerializer.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xToolBar.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="source">
+      <UniqueIdentifier>{932a3044-34e6-43be-bf46-901d08223134}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

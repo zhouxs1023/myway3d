@@ -7,24 +7,27 @@ namespace Myway {
 
     #define _def_MaxFarClipDistance 99999
 
-    ProjectedGrid::ProjectedGrid(const Plane &BasePlane)
+    ProjectedGrid::ProjectedGrid()
         : mVertices(0)
 		, mVerticesChoppyBuffer(0)
-		, mPlane(BasePlane)
+		, mNormal(0, 1, 0)
+		, mPos(0, 0, 0)
 	{
         _init();
         _initGeo();
-        mNormal = BasePlane.n;
-        mPos = Vec3(0, -BasePlane.d, 0); 
+
+		SetHeight(0);
 	}
 
-	ProjectedGrid::ProjectedGrid(const Plane &BasePlane, const Options &Options)
+	ProjectedGrid::ProjectedGrid(const Options &Options)
         : mVertices(0)
 		, mVerticesChoppyBuffer(0)
-		, mPlane(BasePlane)
+		, mNormal(0, 1, 0)
+		, mPos(0, 0, 0)
 	{
         _init();
-        mPos = Vec3(0, -BasePlane.d, 0); 
+
+		SetHeight(0);
 	}
 
 	ProjectedGrid::~ProjectedGrid()
@@ -119,6 +122,13 @@ namespace Myway {
 
         delete mNoise;
     }
+
+	void ProjectedGrid::SetHeight(float height)
+	{
+		mPos.y = height;
+
+		mPlane = Plane(mNormal,  mPos);
+	}
 
     void ProjectedGrid::Update(float elapsedTime)
     {

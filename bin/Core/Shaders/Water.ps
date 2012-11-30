@@ -107,7 +107,7 @@ float4 main(PS_IN In) : COLOR
 	
 	float wgt = CalcuDeepWeight(projUV, In.worldPos);
 	
-	projUV += normal.xz * 0.05f;
+	projUV += normal.xz * 0.04f;
 
 	float4 refrColor = tex2D(gTex_Refr, projUV);
 	float4 reflColor = tex2D(gTex_Refl, projUV);

@@ -44,26 +44,26 @@ class tEventListener : public EventListener
 {
 	typedef void (T::*F)(void *);
 public:
-	tEventListener(Event & e, T * p, F f) : listener(p), evt(e), func(f)
+	tEventListener(Event * e, T * p, F f) : listener(p), evt(e), func(f)
 	{ 
-		evt += this;
+		(*evt) += this;
 	}
 
 	~tEventListener()
 	{
-		evt -= this;
+		(*evt) -= this;
 	}
 
 	virtual void OnCall(Event * sender, void * data)
 	{
-		if (sender == &evt)
+		if (sender == evt)
 			(listener->*func)(data);
 	}
 
 protected:
+	Event * evt;
 	T * listener;
 	F func;
-	Event & evt;
 };
 
 }

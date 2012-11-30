@@ -2,17 +2,16 @@
 
 #include "xBaseOperator.h"
 #include "xToolBar.h"
-
-xOpToolBar gOpToolBar;
+#include "xEvent.h"
+#include "xApp.h"
 
 int xBaseOp::OP_Command = 2000;
 int xBaseOp::OP_Id = 2012;
-Event xBaseOp::OnChecked;
 
 xBaseOp::xBaseOp()
-	: mOnCommand(xBaseOp::OnChecked, this, &xBaseOp::OnCommand)
+	: mOnCommand(&xEvent::OnOperatorBarChecked, this, &xBaseOp::OnCommand)
 	, mOperatorId(OP_Command++)
-	, mOnInit(xApp::OnInit, this, &xBaseOp::Init)
+	, mOnInit(&xEvent::OnInit, this, &xBaseOp::Init)
 {
 }
 
@@ -34,12 +33,35 @@ void xBaseOp::OnCommand(void * data)
 }
 
 xImplementOp(xSelectOp, eOp_Select);
+
+void xSelectOp::Process()
+{
+	xApp::Instance()->SetOperator(eOp_Select);
+}
+
+
 xImplementOp(xMoveOp, eOp_Move);
+
+void xMoveOp::Process()
+{
+	xApp::Instance()->SetOperator(eOp_Move);
+}
+
+
+
 xImplementOp(xRotateOp, eOp_Rotate);
+
+void xRotateOp::Process()
+{
+	xApp::Instance()->SetOperator(eOp_Rotate);
+}
+
+
+
+
 xImplementOp(xScaleOp, eOp_Scale);
 
-xSelectOp gSelectOp;
-xMoveOp gMoveOp;
-xRotateOp gRotateOp;
-xScaleOp gScaleOp;
-
+void xScaleOp::Process()
+{
+	xApp::Instance()->SetOperator(eOp_Scale);
+}

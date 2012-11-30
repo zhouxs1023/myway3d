@@ -47,10 +47,11 @@ namespace Myway {
         };
 
     public:
-		ProjectedGrid(const Plane &BasePlane);
-		ProjectedGrid(const Plane &BasePlane, const Options &Options);
+		ProjectedGrid();
+		ProjectedGrid(const Options &Options);
         ~ProjectedGrid();
 
+		void SetHeight(float height);
         void Update(float elapsedTime);
 
         RenderOp * GetRender() { return &mRender; }

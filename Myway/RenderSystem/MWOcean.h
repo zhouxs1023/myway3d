@@ -27,6 +27,7 @@ namespace Myway {
 
 		void Render(Texture * depthTex, Texture * colorTex);
 
+		void SetHeight(float h) { mPosition.y = h; }
 		const Vec3 & GetPosition() { return mPosition; }
 
 	protected:
@@ -50,7 +51,6 @@ namespace Myway {
 		Technique * mTech;
 		Technique * mTech_UnderWater;
 
-		Plane mPlane;
 		Vec3 mPosition;
 		Camera * mCamera;
 		SceneNode * mCameraNode;

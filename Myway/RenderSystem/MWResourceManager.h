@@ -72,6 +72,8 @@ public:
     void SetResourceLoader(ResourceLoader * loader);
     ResourceLoader * GetResourceLoader();
 
+	ResourceGroup * GetResourceGroup() { return &mResourceGroup; }
+
 protected:
     FactoryMap                      mFactorys;
     ResourceLoader *                mResourceLoader;

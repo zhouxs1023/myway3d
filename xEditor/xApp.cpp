@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "xApp.h"
+#include "xPlugin.h"
 
 DWORD WINAPI MainLoop(LPVOID p)
 {
@@ -12,15 +13,6 @@ DWORD WINAPI MainLoop(LPVOID p)
 }
 
 IMP_SLN(xApp);
-
-xApp gxApp;
-
-Event xApp::OnInit;
-Event xApp::OnInitUI;
-Event xApp::OnShutdown;
-Event xApp::OnSelectObj;
-Event xApp::OnUnSelectObj;
-Event xApp::OnUpdate;
 
 _Locker::_Locker()
 { 
@@ -50,6 +42,8 @@ xApp::xApp()
 	mOperator = -1;
 
 	mActivate = true;
+
+	_loadPlugins();
 }
 
 xApp::~xApp()
@@ -85,7 +79,7 @@ void xApp::Run()
 				mNeedResize = false;
 			}
 
-			OnUpdate.Call(NULL);
+			xEvent::OnUpdate(NULL);
 
 			_input();
 			mEngine->Run();
@@ -180,7 +174,7 @@ void xApp::_InitEngine()
 		Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
 
 		//Environment::Instance()->LoadTerrain("Terrain.terrain");
-		Environment::Instance()->InitEv();
+		//Environment::Instance()->InitEv();
 		//Environment::Instance()->SetKey(EVKT_Noon);
 
 		SceneNode * cam = World::Instance()->MainCameraNode();
@@ -195,8 +189,10 @@ void xApp::_InitEngine()
 
 		mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib");
 
-		OnInit.Call();
-		OnInitUI.Call();
+		xPluginManager::Instance()->Init();
+
+		xEvent::OnInit(NULL);
+		xEvent::OnInitUI(NULL);
 	}
 	catch (Exception & e)
 	{
@@ -220,7 +216,9 @@ void xApp::Shutdown()
 
     mThread.Shudown(true);
 
-    OnShutdown.Call();
+    xEvent::OnShutdown(NULL);
+
+	xPluginManager::Instance()->Shutdown();
 
     mEngine->Shutdown();
     delete mEngine;
@@ -242,14 +240,14 @@ void xApp::SetSelectedObj(xObj * obj)
 
 	if (obj == NULL)
 	{
-		OnUnSelectObj.Call();
+		xEvent::OnUnSelectObj(NULL);;
 
 		return ;
 	}
 
 	mSelectedObjs.PushBack(obj);
 
-	OnSelectObj.Call();
+	xEvent::OnSelectObj(NULL);;
 }
 
 void xApp::SetSelectedObjs(xObj ** objs, int size)
@@ -261,7 +259,7 @@ void xApp::SetSelectedObjs(xObj ** objs, int size)
 		mSelectedObjs.PushBack(objs[i]);
 	}
 
-	OnSelectObj.Call();
+	xEvent::OnSelectObj(NULL);
 }
 
 int xApp::GetSelectedObjSize()
@@ -269,7 +267,31 @@ int xApp::GetSelectedObjSize()
 	return mSelectedObjs.Size();
 }
 
-xObj * xApp:: GetSelectedObj(int index)
+xObj * xApp::GetSelectedObj(int index)
 {
 	return GetSelectedObjSize() ? mSelectedObjs[index] : NULL;
+}
+
+void xApp::_loadPlugins()
+{
+	FileSystem fs("xPlugin");
+
+	fs.Load();
+
+	Archive::FileInfoVisitor v = fs.GetFileInfos();
+
+	while (!v.Endof())
+	{
+		TString128 plugin = v.Cursor()->second.name;
+
+		if (File::GetExternName(plugin) == "dll")
+		{
+			Dll dll("xPlugin\\" + plugin);
+
+			dll.Load();
+			//DllManager::Instance()->Load();
+		}
+
+		++v;
+	}
 }

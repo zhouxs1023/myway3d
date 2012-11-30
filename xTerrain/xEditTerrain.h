@@ -1,6 +1,6 @@
 #pragma once
 
-#include "xBaseOperator.h"
+#include "xApp.h"
 
 class xTerrainTuQiOp : public xBaseOp
 {

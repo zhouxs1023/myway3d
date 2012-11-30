@@ -5,9 +5,9 @@
 
 xObjBound gBound;
 xObjBound::xObjBound()
-	: OnInit(xApp::OnInit, this, &xObjBound::Init)
-	, OnShutdown(xApp::OnShutdown, this, &xObjBound::Shutdown)
-	, OnRender(RenderEvent::OnAfterDeffererShading, this, &xObjBound::Render)
+	: OnInit(&xEvent::OnInit, this, &xObjBound::Init)
+	, OnShutdown(&xEvent::OnShutdown, this, &xObjBound::Shutdown)
+	, OnRender(&RenderEvent::OnAfterDeffererShading, this, &xObjBound::Render)
 {
 }
 

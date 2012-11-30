@@ -3,13 +3,11 @@
 #include "xApp.h"
 #include "xBaseOperator.h"
 
-xGizmo gGizmo;
-
 xGizmo::xGizmo()
-	: OnInit(xApp::OnInit, this, &xGizmo::Init)
-	, OnShutdown(xApp::OnShutdown, this, &xGizmo::Shutdown)
-	, OnRender(RenderEvent::OnAfterRender, this, &xGizmo::Render)
-	, OnUpdate(xApp::OnUpdate, this, &xGizmo::Update)
+	: OnInit(&xEvent::OnInit, this, &xGizmo::Init)
+	, OnShutdown(&xEvent::OnShutdown, this, &xGizmo::Shutdown)
+	, OnRender(&RenderEvent::OnAfterRender, this, &xGizmo::Render)
+	, OnUpdate(&xEvent::OnUpdate, this, &xGizmo::Update)
 	, mPicked(false)
 	, mPickedAxis(-1)
 {

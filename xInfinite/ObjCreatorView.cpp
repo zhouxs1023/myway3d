@@ -7,6 +7,7 @@
 #include "InfinateView.h"
 #include "xObj.h"
 #include "xApp.h"
+#include "xScene.h"
 
 
 BEGIN_MESSAGE_MAP(ObjCreatorTree, CViewTree)
@@ -80,7 +81,8 @@ void ObjCreatorTree::OnLButtonUp(UINT nFlags, CPoint point)
 		CInfinateView::Instance()->GetClientRect(&rc);
 
 		if (pt.x > rc.left && pt.x < rc.right &&
-			pt.y > rc.top && pt.y < rc.bottom)
+			pt.y > rc.top && pt.y < rc.bottom &&
+			xScene::Instance()->IsInited())
 		{
 			CString type = GetItemText(mDragItem);
 
@@ -124,12 +126,12 @@ void ObjCreatorTree::OnTimer(UINT_PTR nIDEvent)
 
 ObjCreatorView::ObjCreatorView()
 {
-	xApp::OnInitUI += this;
+	xEvent::OnInitUI += this;
 }
 
 ObjCreatorView::~ObjCreatorView()
 {
-	xApp::OnInitUI -= this;
+	xEvent::OnInitUI -= this;
 }
 
 BEGIN_MESSAGE_MAP(ObjCreatorView, CDockablePane)
@@ -192,7 +194,7 @@ void ObjCreatorView::OnSize(UINT nType, int cx, int cy)
 
 void ObjCreatorView::OnCall(Event * sender, void * data)
 {
-	if (sender == &xApp::OnInitUI)
+	if (sender == &xEvent::OnInitUI)
 	{
 		Init();
 	}

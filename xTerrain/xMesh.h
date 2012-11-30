@@ -51,17 +51,17 @@ namespace xInfi {
     public:
         xMeshFactoryListener()
         {
-            xApp::OnInit += this;
+            xEvent::OnInit += this;
         }
 
         virtual ~xMeshFactoryListener()
         {
-            xApp::OnInit -= this;
+            xEvent::OnInit -= this;
         }
 
         virtual void OnCall(Event * sender, void * data)
         {
-            if (sender == &xApp::OnInit)
+            if (sender == &xEvent::OnInit)
             {
                 xObjManager::Instance()->AddFactory(new xMeshFactory());
             }

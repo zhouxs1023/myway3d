@@ -7,15 +7,13 @@
 namespace Myway {
 
     Ocean::Ocean()
-		: OnResize(RenderEvent::OnResize, this, &Ocean::_Resize)
-		, OnPreRender(RenderEvent::OnPreRenderEvent, this, &Ocean::_PreRender)
+		: OnResize(&RenderEvent::OnResize, this, &Ocean::_Resize)
+		, OnPreRender(&RenderEvent::OnPreRenderEvent, this, &Ocean::_PreRender)
     {
         _init();
 
         mPosition = Vec3(0, 10, 0);
-        mPlane = Plane(Vec3(0, 1, 0), mPosition);
-
-        mProjGrid = new ProjectedGrid(mPlane);
+        mProjGrid = new ProjectedGrid();
     }
 
     Ocean::~Ocean()
@@ -65,6 +63,7 @@ namespace Myway {
     {
         float elapsedTime = Engine::Instance()->GetFrameTime();
 
+		mProjGrid->SetHeight(mPosition.y);
         mProjGrid->Update(elapsedTime);
 
         RenderSystem * render = RenderSystem::Instance();

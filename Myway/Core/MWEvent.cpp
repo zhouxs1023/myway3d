@@ -18,8 +18,8 @@ namespace Myway {
 
 
     Event::Event()
+		: head(NULL)
     {
-        head = NULL;
     }
 
     Event::~Event()

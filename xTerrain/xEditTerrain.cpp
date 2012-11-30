@@ -16,10 +16,10 @@ xEditTerrain gEditTerrain;
 IMP_SLN(xEditTerrain);
 
 xEditTerrain::xEditTerrain()
-	: OnInit(xApp::OnInit, this, &xEditTerrain::_Init)
-	, OnShutdown(xApp::OnShutdown, this, &xEditTerrain::_Shutdown)
-	, OnUpdate(xApp::OnUpdate, this, &xEditTerrain::_Update)
-	, OnRender(RenderEvent::OnAfterDeffererShading, this, &xEditTerrain::_Render)
+	: OnInit(&xEvent::OnInit, this, &xEditTerrain::_Init)
+	, OnShutdown(&xEvent::OnShutdown, this, &xEditTerrain::_Shutdown)
+	, OnUpdate(&xEvent::OnUpdate, this, &xEditTerrain::_Update)
+	, OnRender(&RenderEvent::OnAfterDeffererShading, this, &xEditTerrain::_Render)
 {
 	INIT_SLN;
 

@@ -1,6 +1,11 @@
 #pragma once
 
+#include "xEditor.h"
 #include "xObj.h"
+#include "xEvent.h"
+#include "xBaseOperator.h"
+#include "xToolBar.h"
+#include "xEnvironment.h"
 
 enum eTransformOperator
 {
@@ -13,17 +18,9 @@ enum eTransformOperator
 #define xSliderMin 1
 #define xSliderMax 100
 
-class xApp
+class X_ENTRY xApp
 {
 	DECLARE_SINGLETON(xApp);
-
-public:
-	static Event OnInit;
-	static Event OnInitUI;
-	static Event OnShutdown;
-	static Event OnSelectObj;
-	static Event OnUnSelectObj;
-	static Event OnUpdate;
 
 public:
 	xApp();
@@ -60,6 +57,7 @@ public:
 
 protected:
 	void _input();
+	void _loadPlugins();
 
 protected:
 	Engine * mEngine;
@@ -77,6 +75,14 @@ protected:
 	Array<xObj *> mSelectedObjs;
 
 	int mOperator;
+
+	xSelectOp mSelectOp;
+	xMoveOp mMoveOp;
+	xRotateOp mRotateOp;
+	xScaleOp mScaleOp;
+
+	xOpToolBar mOpToolBar;
+	xEnvironment mEnvironment;
 };
 
 

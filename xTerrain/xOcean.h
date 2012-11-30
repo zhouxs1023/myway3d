@@ -5,6 +5,11 @@
 
 class xOcean : public xObj
 {
+	DECLARE_PROPERTY(xObj);
+
+protected:
+	float Height;
+
 public:
 	xOcean();
 	virtual ~xOcean();
@@ -13,6 +18,9 @@ public:
 	virtual const char * GetTypeName() { return "Ocean"; }
 
 	virtual bool OnPropertyChanged(const Property * p);
+
+protected:
+	void _setHeight(float h);
 
 protected:
 	Ocean * mOcean;
@@ -35,17 +43,17 @@ class xOceanFactoryListener : public EventListener
 public:
 	xOceanFactoryListener()
 	{
-		xApp::OnInit += this;
+		xEvent::OnInit += this;
 	}
 
 	virtual ~xOceanFactoryListener()
 	{
-		xApp::OnInit -= this;
+		xEvent::OnInit -= this;
 	}
 
 	virtual void OnCall(Event * sender, void * data)
 	{
-		if (sender == &xApp::OnInit)
+		if (sender == &xEvent::OnInit)
 		{
 			xObjManager::Instance()->AddFactory(new xOceanFactory());
 		}

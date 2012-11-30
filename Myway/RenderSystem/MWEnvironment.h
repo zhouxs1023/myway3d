@@ -43,6 +43,7 @@ namespace Myway {
         Sun * GetSun() { return mSun; }
         Moon * GetMoon() { return mMoon; }
         Cloud * GetCloud() { return mCloud; }
+		WaterManager * GetWaterManager() { return mWaterManager; }
 
         Fog * GetFog() { return mFog; }
         GodRay * GetGodRay() { return mGodRay; }

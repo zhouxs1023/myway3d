@@ -4,26 +4,11 @@
     <Filter Include="Ui">
       <UniqueIdentifier>{63c2b11b-5fe3-4dd7-8f5f-6ddc1d4f2e50}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Control">
-      <UniqueIdentifier>{f019888c-cd6c-4578-98ff-667e9fe47136}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Ui\MFC App">
       <UniqueIdentifier>{26436a16-b908-4036-a12d-068c8bd94231}</UniqueIdentifier>
     </Filter>
     <Filter Include="Res">
       <UniqueIdentifier>{649983c8-673e-4f25-a823-2383c709e1b4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Terrain">
-      <UniqueIdentifier>{dcc9d698-c7ed-4718-ac81-2ae4fb3425b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Mesh">
-      <UniqueIdentifier>{7e604fda-30b8-4221-ac5d-f56f8cab7a68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Terrain\UI">
-      <UniqueIdentifier>{f4ad8fc6-029d-45b6-aedb-14cc27d02d6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ocean">
-      <UniqueIdentifier>{09d61293-de8e-43d6-8ef8-5ea1e926563f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -57,56 +42,8 @@
     <ClCompile Include="ObjCreatorView.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
-    <ClCompile Include="xApp.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="xObj.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="xGizmo.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="xObjBound.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="xToolBar.cpp">
+    <ClCompile Include="xSceneNewDlg.cpp">
       <Filter>Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="xBaseOperator.cpp">
-      <Filter>Control</Filter>
-    </ClCompile>
-    <ClCompile Include="xMesh.cpp">
-      <Filter>Mesh</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrainOp.cpp">
-      <Filter>Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="xEditTerrainHeight.cpp">
-      <Filter>Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="xEditTerrainLayer.cpp">
-      <Filter>Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrainPane.cpp">
-      <Filter>Terrain\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrainLayerDlg.cpp">
-      <Filter>Terrain\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrainHeightDlg.cpp">
-      <Filter>Terrain\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrainCreateDlg.cpp">
-      <Filter>Terrain\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrain.cpp">
-      <Filter>Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="xTerrainLayerInfoDlg.cpp">
-      <Filter>Terrain\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="xOcean.cpp">
-      <Filter>Ocean</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -146,56 +83,8 @@
     <ClInclude Include="ObjCreatorView.h">
       <Filter>Ui</Filter>
     </ClInclude>
-    <ClInclude Include="xApp.h">
-      <Filter>Control</Filter>
-    </ClInclude>
-    <ClInclude Include="xObj.h">
-      <Filter>Control</Filter>
-    </ClInclude>
-    <ClInclude Include="xGizmo.h">
-      <Filter>Control</Filter>
-    </ClInclude>
-    <ClInclude Include="xObjBound.h">
-      <Filter>Control</Filter>
-    </ClInclude>
-    <ClInclude Include="xToolBar.h">
+    <ClInclude Include="xSceneNewDlg.h">
       <Filter>Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="xBaseOperator.h">
-      <Filter>Control</Filter>
-    </ClInclude>
-    <ClInclude Include="xMesh.h">
-      <Filter>Mesh</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrainOp.h">
-      <Filter>Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="xEditTerrainHeight.h">
-      <Filter>Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="xEditTerrainLayer.h">
-      <Filter>Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrainPane.h">
-      <Filter>Terrain\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrainLayerDlg.h">
-      <Filter>Terrain\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrainHeightDlg.h">
-      <Filter>Terrain\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrainCreateDlg.h">
-      <Filter>Terrain\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrain.h">
-      <Filter>Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="xTerrainLayerInfoDlg.h">
-      <Filter>Terrain\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="xOcean.h">
-      <Filter>Ocean</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

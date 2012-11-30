@@ -38,6 +38,12 @@ public:
 
 	int Run();
 	void OnIdle();
+
+protected:
+	afx_msg void OnNewScene();
+	afx_msg void OnOpenScene();
+	afx_msg void OnSaveScene();
+	afx_msg void OnExportScene();
 };
 
 extern CInfinateApp theApp;

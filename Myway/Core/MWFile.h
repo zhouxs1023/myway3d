@@ -65,6 +65,7 @@ public:
     static TString128 GetExternName(const TString128 & file);
     static TString128 GetFileDir(const TString128 & file);
     static TString128 RemoveExternName(const TString128 & file);
+	static TString128 GetAbsoluteFileName(const TString128 & file);
 
 private:
 	File(const File & file);

@@ -51,7 +51,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../xEditor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -61,9 +61,9 @@
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>myway_d.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myway_d.lib;xEditor_d.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../bin/Debug/xInfinite.exe</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/Qt/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>../bin/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <TargetMachine>MachineX86</TargetMachine>
@@ -98,27 +98,11 @@
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
     <ClCompile Include="PropertiesWnd.cpp" />
-    <ClCompile Include="xApp.cpp" />
-    <ClCompile Include="xBaseOperator.cpp" />
-    <ClCompile Include="xEditTerrainLayer.cpp" />
-    <ClCompile Include="xEditTerrainHeight.cpp" />
-    <ClCompile Include="xGizmo.cpp" />
-    <ClCompile Include="xMesh.cpp" />
-    <ClCompile Include="xObj.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
-    <ClCompile Include="xObjBound.cpp" />
-    <ClCompile Include="xOcean.cpp" />
-    <ClCompile Include="xTerrainCreateDlg.cpp" />
-    <ClCompile Include="xTerrainHeightDlg.cpp" />
-    <ClCompile Include="xTerrainLayerDlg.cpp" />
-    <ClCompile Include="xTerrainLayerInfoDlg.cpp" />
-    <ClCompile Include="xTerrainOp.cpp" />
-    <ClCompile Include="xTerrainPane.cpp" />
-    <ClCompile Include="xTerrain.cpp" />
-    <ClCompile Include="xToolBar.cpp" />
+    <ClCompile Include="xSceneNewDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h" />
@@ -129,27 +113,11 @@
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
     <ClInclude Include="PropertiesWnd.h" />
-    <ClInclude Include="xApp.h" />
-    <ClInclude Include="xBaseOperator.h" />
-    <ClInclude Include="xEditTerrainLayer.h" />
-    <ClInclude Include="xEditTerrainHeight.h" />
-    <ClInclude Include="xGizmo.h" />
-    <ClInclude Include="xMesh.h" />
-    <ClInclude Include="xObj.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
-    <ClInclude Include="xObjBound.h" />
-    <ClInclude Include="xOcean.h" />
-    <ClInclude Include="xTerrainCreateDlg.h" />
-    <ClInclude Include="xTerrainHeightDlg.h" />
-    <ClInclude Include="xTerrainLayerDlg.h" />
-    <ClInclude Include="xTerrainLayerInfoDlg.h" />
-    <ClInclude Include="xTerrainOp.h" />
-    <ClInclude Include="xTerrainPane.h" />
-    <ClInclude Include="xTerrain.h" />
-    <ClInclude Include="xToolBar.h" />
+    <ClInclude Include="xSceneNewDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\classview.bmp" />

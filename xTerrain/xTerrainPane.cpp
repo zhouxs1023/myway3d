@@ -11,6 +11,8 @@
 //
 // Terrain Pane
 //
+xTerrainPane gTerrainPane;
+
 BEGIN_MESSAGE_MAP(xTerrainPane, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
@@ -20,11 +22,12 @@ END_MESSAGE_MAP()
 IMP_SLN(xTerrainPane);
 
 xTerrainPane::xTerrainPane()
-	: OnInit(xApp::OnInitUI, this, &xTerrainPane::_Init)
-	, OnShutdown(xApp::OnShutdown, this, &xTerrainPane::_Shutdown)
-	, OnUpdate(xApp::OnUpdate, this, &xTerrainPane::_Update)
-	, OnRender(RenderEvent::OnAfterDeffererShading, this, &xTerrainPane::_Render)
-	, OnRenderUI(RenderEvent::OnAfterRender, this, &xTerrainPane::_RenderUI)
+	: OnCreatePane(&xEvent::OnCreatePane, this, &xTerrainPane::_Create)
+	, OnInit(&xEvent::OnInitUI, this, &xTerrainPane::_Init)
+	, OnShutdown(&xEvent::OnShutdown, this, &xTerrainPane::_Shutdown)
+	, OnUpdate(&xEvent::OnUpdate, this, &xTerrainPane::_Update)
+	, OnRender(&RenderEvent::OnAfterDeffererShading, this, &xTerrainPane::_Render)
+	, OnRenderUI(&RenderEvent::OnAfterRender, this, &xTerrainPane::_RenderUI)
 {
 	INIT_SLN;
 }
@@ -51,6 +54,9 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	mTab.SetLocation(CMFCBaseTabCtrl::LOCATION_TOP);
 
+	HINSTANCE save_hInstance = AfxGetResourceHandle();
+	AfxSetResourceHandle((HINSTANCE)ghModule);
+
 	// create height dialog
 	if (!mHeightDlg.Create(IDD_Terrain_Height, &mTab))
 	{
@@ -69,6 +75,8 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mTab.AddTab(&mLayerDlg, "Layer");
 
 	AdjustLayout();
+
+	AfxSetResourceHandle(save_hInstance);
 
 	return 0;
 }
@@ -101,6 +109,21 @@ void xTerrainPane::AdjustLayout()
 
 	mHeightDlg.MoveWindow(&rc);
 	mLayerDlg.MoveWindow(&rc);
+}
+
+void xTerrainPane::_Create(void * param)
+{
+	CFrameWndEx * frame = (CFrameWndEx *)param;
+
+	if (!Create("Terrain", frame, CRect(0, 0, 200, 200), TRUE, IDD_Terrain, 
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("can't create \"property pane\"\n");
+		return ;
+	}
+
+	EnableDocking(CBRS_ALIGN_ANY);
+	frame->DockPane(this);
 }
 
 void xTerrainPane::_Init(void *)

@@ -2,7 +2,7 @@
 #include "xEditTerrainHeight.h"
 #include "xTerrainOp.h"
 #include "MWTerrainSection.h"
-
+#include "xApp.h"
 
 xEditTerrainHeight::xEditTerrainHeight()
 {
