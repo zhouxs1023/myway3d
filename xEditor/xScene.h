@@ -11,7 +11,7 @@ public:
 	~xScene();
 
 	bool New(const char * filename, const char * floder);
-	void Load(const char * filename);
+	void Load(const char * filename, const char * floder);
 	void Save();
 
 	void Export();
@@ -21,8 +21,14 @@ public:
 	void DirtSave() { mDirt = true; }
 	bool IsDirtSave() { return IsInited() &&& mDirt; }
 
+	const TString128 & GetFloder() { return mFloder; }
+	const TString128 & GetFileName() { return mFilename; }
+
+	bool IsLoading() { return mIsLoading; }
+
 protected:
 	TString128 mFloder;
 	TString128 mFilename;
 	bool mDirt;
+	bool mIsLoading;
 };

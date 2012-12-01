@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xEditor.h"
+#include "xSerializer.h"
 
 #define xPropertyChanged(prop) OnPropertyChanged(GetProperty(#prop))
 
@@ -9,24 +10,24 @@ class X_ENTRY xObj : public IPropertyObj
 	DECLARE_PROPERTY(IPropertyObj);
 
 protected:
-	char Name[128];
-	Vec3 Position;
-	Quat Orientation;
-	Vec3 Scale;
+	TString128 Name;
 
 public:
-	xObj(const char * name);
+	xObj(const TString128 & name);
 	virtual ~xObj();
 
-	virtual const char * GetName();
+	virtual const TString128 & GetName();
+	virtual TString128 GetTypeName() = 0;
 
-	virtual void SetPosition(const Vec3 & p);
-	virtual void SetOrientation(const Quat & q);
-	virtual void SetScale(const Vec3 & s);
+	virtual void SetPosition(const Vec3 & p) {}
+	virtual void SetOrientation(const Quat & q) {}
+	virtual void SetScale(const Vec3 & s) {}
 
-	virtual Vec3 GetPosition();
-	virtual Quat GetOrientation();
-	virtual Vec3 GetScale();
+	virtual Vec3 GetPosition() { return Vec3::Zero; }
+	virtual Quat GetOrientation() { return Quat::Identity; }
+	virtual Vec3 GetScale() { return Vec3::Unit; }
+
+	virtual void Serialize(xSerializer & Serializer);
 
 	virtual Aabb GetBound() { return Aabb::Identiy; }
 };
@@ -39,19 +40,17 @@ public:
 	virtual ~xObjFactory() {}
 
 	virtual xObj * Create(const char * name) = 0;
-	virtual const char * GetGroupName() { return "Unknown"; }
-	virtual const char * GetTypeName() { return "Unknown"; }
+	virtual const char * GetGroupName() = 0;
+	virtual const char * GetTypeName() = 0;
 };
 
-class X_ENTRY xObjManager : public EventListener
+class X_ENTRY xObjManager
 {
 	DECLARE_SINGLETON(xObjManager);
 
 public:
 	xObjManager();
 	~xObjManager();
-
-	virtual void OnCall(Event * sender, void * data);
 
 	void AddFactory(xObjFactory * sf);
 	xObjFactory * GetFactory(const char * type);
@@ -64,7 +63,21 @@ public:
 	xObj * Get(const char * name);
 
 protected:
+	xObj * _Create(const TString128 & name, const TString128 & type);
+
+	void _Shutdown(void * param0, void * param1);
+	void _Serialize(void * param0, void * param1);
+	void _UnloadScene(void * param0, void * param1);
+
+	void _Load(xSerializer & Serializer);
+	void _Save(xSerializer & Serializer);
+
+protected:
 	Array<xObjFactory *> mFactorys;
 	Array<xObj *> mObjs;
+
+	tEventListener<xObjManager> OnUnloadScene;
+	tEventListener<xObjManager> OnShutdown;
+	tEventListener<xObjManager> OnSerialize;
 };
     

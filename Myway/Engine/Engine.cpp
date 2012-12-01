@@ -100,7 +100,7 @@ void Engine::Resize(int w, int h)
 
     World::Instance()->MainCamera()->SetAspect((float)w / h);
 
-    RenderEvent::OnResize.Call();
+    RenderEvent::OnResize(NULL, NULL);
 }
 
 void Engine::SetRenderSystem(RenderSystem * pRenderSystem)

@@ -6,11 +6,15 @@
 class xTerrain : public xObj
 {
 public:
-	xTerrain(const Terrain::Config & config);
+	xTerrain();
 	virtual ~xTerrain();
 
-	virtual const char * GetName() { return "Terrain"; }
-	virtual const char * GetTypeName() { return "Terrain"; }
+	void _create(const Terrain::Config & config);
+	void _load(const char * source);
+
+	virtual void Serialize(xSerializer & Serializer);
+
+	virtual TString128 GetTypeName() { return "Terrain"; }
 
 	virtual bool OnPropertyChanged(const Property * p);
 
@@ -31,25 +35,23 @@ public:
 	virtual const char * GetTypeName() { return "Terrain"; }
 };
 
-class xTerrainFactoryListener : public EventListener
+
+class xTerrainFactoryListener
 {
 public:
 	xTerrainFactoryListener()
+		: OnInit(&xEvent::OnInit, this, &xTerrainFactoryListener::_Init)
 	{
-		xEvent::OnInit += this;
 	}
 
 	virtual ~xTerrainFactoryListener()
 	{
-		xEvent::OnInit -= this;
 	}
 
-	virtual void OnCall(Event * sender, void * data)
+	void _Init(void * param0, void * param1)
 	{
-		if (sender == &xEvent::OnInit)
-		{
-			xObjManager::Instance()->AddFactory(new xTerrainFactory());
-		}
+		xObjManager::Instance()->AddFactory(new xTerrainFactory());
 	}
 
+	tEventListener<xTerrainFactoryListener> OnInit;
 };

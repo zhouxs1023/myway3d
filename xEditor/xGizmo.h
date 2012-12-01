@@ -8,10 +8,10 @@ public:
 	xGizmo();
 	~xGizmo();
 
-	void Init(void * data);
-	void Shutdown(void * data);
-	void Render(void * data);
-	void Update(void * data);
+	void Init(void * param0, void * param1);
+	void Shutdown(void * param0, void * param1);
+	void Render(void * param0, void * param1);
+	void Update(void * param0, void * param1);
 
 protected:
 	void _initGeo_Move();

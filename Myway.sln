@@ -22,8 +22,16 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xMeshViewer", "xMeshViewer\xMeshViewer.vcxproj", "{1A5D21E0-E041-4087-BD6E-4135DFDB57D0}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xEditor", "xEditor\xEditor.vcxproj", "{C9687200-A0BA-4D8B-A545-BDE72563AB48}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1470171E-7B11-4D7D-B470-8D9EDD9BAFA6} = {1470171E-7B11-4D7D-B470-8D9EDD9BAFA6}
+		{B9D5225D-A6D3-40EB-BAA2-866622B5B91B} = {B9D5225D-A6D3-40EB-BAA2-866622B5B91B}
+		{746D8DC2-6AE7-4092-8D11-1DB42C30CE54} = {746D8DC2-6AE7-4092-8D11-1DB42C30CE54}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xTerrain", "xTerrain\xTerrain.vcxproj", "{EEA876C1-B90F-442D-A26E-12180149EDF4}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C9687200-A0BA-4D8B-A545-BDE72563AB48} = {C9687200-A0BA-4D8B-A545-BDE72563AB48}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

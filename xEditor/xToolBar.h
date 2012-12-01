@@ -22,11 +22,11 @@ public:
 	void Add(const char * image, int id);
 
 protected:
-	void Init(void *);
-	void Shutdown(void *);
+	void Init(void * param0, void * param1);
+	void Shutdown(void * param0, void * param1);
 
-	void Update(void *);
-	void Render(void *);
+	void Update(void * param0, void * param1);
+	void Render(void * param0, void * param1);
 
 protected:
 	int mNumButtons;

@@ -19,7 +19,7 @@ namespace Myway {
 
     class Terrain;
     
-    class MW_ENTRY Environment : public EventListener
+    class MW_ENTRY Environment
     {
         DECLARE_ALLOC();
         DECLARE_SINGLETON(Environment);
@@ -32,7 +32,7 @@ namespace Myway {
         void DeInitEv();
 		
 		void CreateTerrain(const Terrain::Config & config);
-        //void LoadTerrain(const char * source);
+        void LoadTerrain(const char * source);
         void UnloadTerrain();
 
         ShaderLib * GetShaderLib() { return mShaderLib; }
@@ -71,7 +71,7 @@ namespace Myway {
         float _getSunRoll(float time);
         float _getMoonRoll(float time);
 
-        void _update();
+        void _update(void * param0, void * param1);
         void _updateTime();
         void _updateKey(int k0, int k1, float d);
 
@@ -102,5 +102,7 @@ namespace Myway {
         float mCurTime;
 
         EvParam mParam;
+
+		tEventListener<Environment> OnUpdate;
     };
 }

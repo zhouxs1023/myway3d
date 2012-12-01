@@ -6,7 +6,7 @@
 namespace Myway
 {
 
-class MW_ENTRY RenderHelper : public EventListener
+class MW_ENTRY RenderHelper
 {
     DECLARE_SINGLETON(RenderHelper);
 
@@ -28,6 +28,7 @@ public:
     void DrawScreenQuad(BLEND_MODE mode, Technique * tech);
 
 protected:
+	void _resize(void * param0, void * param1);
     void _initTexture();
     void _initScreenQuad();
     void _updateScreenQuad();
@@ -40,6 +41,8 @@ protected:
     TEXTURE_FILTER_TYPE mDefaultTextureFilter;
 
     RenderOp mScreenQuad;
+
+	tEventListener<RenderHelper> OnReisze;
 };
 
    

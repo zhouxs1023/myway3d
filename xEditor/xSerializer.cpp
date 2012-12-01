@@ -14,6 +14,11 @@ xSerializer::~xSerializer()
 {
 }
 
+bool xSerializer::eof()
+{
+	return mFile.eof();
+}
+
 void xSerializer::Read(void * data, int size)
 {
 	d_assert(!IsSave());

@@ -6,6 +6,7 @@
 #include "xBaseOperator.h"
 #include "xToolBar.h"
 #include "xEnvironment.h"
+#include "xGizmo.h"
 
 enum eTransformOperator
 {
@@ -82,7 +83,12 @@ protected:
 	xScaleOp mScaleOp;
 
 	xOpToolBar mOpToolBar;
+
+	xGizmo mGizmo;
+
 	xEnvironment mEnvironment;
+
+	xObjManager mObjMgr;
 };
 
 

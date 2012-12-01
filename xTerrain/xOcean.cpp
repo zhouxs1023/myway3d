@@ -17,22 +17,46 @@ xOcean::~xOcean()
 {
 }
 
+void xOcean::SetHeight(float h)
+{
+	Height = h;
+	mOcean->SetHeight(h);
+}
+
+void xOcean::Serialize(xSerializer & Serializer)
+{
+	xObj::Serialize(Serializer);
+
+	int version = 0;
+
+	if (Serializer.IsSave())
+	{
+		Serializer << version;
+		Serializer << Height;
+	}
+	else
+	{
+		Serializer >> version;
+
+		if (version == 0)
+		{
+			Serializer >> Height;
+		}
+
+		SetHeight(Height);
+	}
+}
+
 bool xOcean::OnPropertyChanged(const Property * p)
 {
 	if (p->name == "Height")
 	{
-		_setHeight(Height);
+		SetHeight(Height);
 		return true;
 	}
 
 	return false;
 }
-
-void xOcean::_setHeight(float h)
-{
-	mOcean->SetHeight(h);
-}
-
 
 xObj * xOceanFactory::Create(const char * name)
 {

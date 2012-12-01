@@ -6,9 +6,9 @@ public:
 	xObjBound();
 	virtual ~xObjBound();
 
-	void Init(void * data);
-	void Shutdown(void * data);
-	void Render(void * data);
+	void Init(void * param0, void * param1);
+	void Shutdown(void * param0, void * param1);
+	void Render(void * param0, void * param1);
 
 protected:
 	Technique * mTech;

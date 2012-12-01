@@ -109,9 +109,9 @@ void xTerrainPane::AdjustLayout()
 	mLayerDlg.MoveWindow(&rc);
 }
 
-void xTerrainPane::_Create(void * param)
+void xTerrainPane::_Create(void * param0, void * param1)
 {
-	CFrameWndEx * frame = (CFrameWndEx *)param;
+	CFrameWndEx * frame = (CFrameWndEx *)param0;
 
 	if (!Create("Terrain", frame, CRect(0, 0, 200, 200), TRUE, IDD_Terrain, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
@@ -124,22 +124,22 @@ void xTerrainPane::_Create(void * param)
 	frame->DockPane(this);
 }
 
-void xTerrainPane::_Init(void *)
+void xTerrainPane::_Init(void * param0, void * param1)
 {
-	mEditHeight._Init(NULL);
-	mEditLayer._Init(NULL);
+	mEditHeight._Init(NULL, NULL);
+	mEditLayer._Init(NULL, NULL);
 
-	mHeightDlg._Init(NULL);
-	mLayerDlg._Init(NULL);
+	mHeightDlg._Init(NULL, NULL);
+	mLayerDlg._Init(NULL, NULL);
 }
 
-void xTerrainPane::_Shutdown(void *)
+void xTerrainPane::_Shutdown(void * param0, void * param1)
 {
-	mEditHeight._Shutdown(NULL);
-	mEditLayer._Shutdown(NULL);
+	mEditHeight._Shutdown(NULL, NULL);
+	mEditLayer._Shutdown(NULL, NULL);
 }
 
-void xTerrainPane::_Update(void *)
+void xTerrainPane::_Update(void * param0, void * param1)
 {
 	int op = xApp::Instance()->GetOperator();
 
@@ -153,15 +153,15 @@ void xTerrainPane::_Update(void *)
 
 	if (isel == xHeightPage)
 	{
-		mEditHeight._Update(NULL);
+		mEditHeight._Update(NULL, NULL);
 	}
 	else if (isel == xLayerPage)
 	{
-		mEditLayer._Update(NULL);
+		mEditLayer._Update(NULL, NULL);
 	}
 }
 
-void xTerrainPane::_Render(void *)
+void xTerrainPane::_Render(void * param0, void * param1)
 {
 	int op = xApp::Instance()->GetOperator();
 
@@ -172,15 +172,15 @@ void xTerrainPane::_Render(void *)
 
 	if (isel == xHeightPage)
 	{
-		mEditHeight._Render(NULL);
+		mEditHeight._Render(NULL, NULL);
 	}
 	else if (isel == xLayerPage)
 	{
-		mEditLayer._Render(NULL);
+		mEditLayer._Render(NULL, NULL);
 	}
 }
 
-void xTerrainPane::_RenderUI(void *)
+void xTerrainPane::_RenderUI(void * param0, void * param1)
 {
 	int op = xApp::Instance()->GetOperator();
 

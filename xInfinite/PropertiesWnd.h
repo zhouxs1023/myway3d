@@ -15,7 +15,7 @@ public:
 
 
 
-class CPropertiesWnd : public CDockablePane, EventListener
+class CPropertiesWnd : public CDockablePane
 {
 	DECLARE_SINGLETON(CPropertiesWnd);
 	DECLARE_MESSAGE_MAP()
@@ -44,7 +44,8 @@ public:
 	void AdjustLayout();
 
 protected:
-	virtual void OnCall(Event * sender, void * data);
+	void _OnSelect(void * param0, void * param1);
+	void _OnUnSelect(void * param0, void * param1);
 	void Show(xObj * obj);
 	void _ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Property * p);
 
@@ -63,5 +64,8 @@ protected:
 
 	void InitPropList();
 	void SetPropListFont();
+
+	tEventListener<CPropertiesWnd> OnSelectObj;
+	tEventListener<CPropertiesWnd> OnUnSelectObj;
 };
 

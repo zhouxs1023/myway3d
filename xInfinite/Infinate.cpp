@@ -14,6 +14,7 @@
 #include "xApp.h"
 #include "xScene.h"
 #include "xSceneNewDlg.h"
+#include "xSceneOpenDlg.h"
 
 // CInfinateApp
 
@@ -277,6 +278,17 @@ void CInfinateApp::OnNewScene()
 
 void CInfinateApp::OnOpenScene()
 {
+	if (xScene::Instance()->IsDirtSave())
+	{
+		if (MessageBox(NULL, "Scene has changed, do you wish save it.", "Warning", MB_OKCANCEL) == IDOK)
+		{
+			OnSaveScene();
+		}
+	}
+
+	xSceneOpenDlg dlg;
+
+	dlg.DoModal();
 }
 
 void CInfinateApp::OnSaveScene()

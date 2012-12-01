@@ -15,7 +15,7 @@ class MW_ENTRY Terrain
 public:
 	enum Consts
 	{
-		kMaxLayers = 128,
+		kMaxLayers = 32,
 		kMaxBlendLayers = 4,
 		kSectionVertexSize = 65,
 		kSectionVertexSize_2 =  kSectionVertexSize * kSectionVertexSize,
@@ -31,7 +31,7 @@ public:
 		TString128 normal;
 		TString128 specular;
 		float scale;
-		char material;
+		int material;
 
 		Layer() : scale(100), material(-1) {}
 	};
@@ -52,6 +52,7 @@ public:
 
 		int xWeightMapSize;
 		int zWeightMapSize;
+		int iWeightMapSize;
 
 		Config()
 		{
@@ -74,9 +75,11 @@ public:
 	};
 
 public:
-    Terrain(const Config & config);
-	Terrain(const char * source);
+	Terrain(const Config & config);
+    Terrain(const char * filename);
     virtual ~Terrain();
+
+	void				Save(const char * filename);
 
 	int					AddLayer(const Layer & layer);
 	const Layer *		GetLayer(int index);
@@ -122,16 +125,21 @@ public:
 	TexturePtr			_getSpecularMap(int layer);
 
 protected:
-    void                OnPreVisibleCull(void * data);
+    void                OnPreVisibleCull(void * param0, void * param1);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
 
-	void				Create(const Config & config);
-	void				Load(const char * source);
-	
 	Vec3				_getPosition(int x, int z);
 
+	void				_Create(const Config & config);
+	void				_Load(const char * filename);
+	void				_init();
+	void				_calcuNormals();
+
 protected:
+	tEventListener<Terrain> tOnPreVisibleCull;
+
     Config mConfig;
+	bool mInited;
 
     Array<SceneNode*> mSceneNodes;
     Array<TerrainSection*> mSections;
@@ -156,8 +164,6 @@ protected:
 	TexturePtr mDetailMaps[kMaxLayers];
 	TexturePtr mNormalMaps[kMaxLayers];
 	TexturePtr mSpecularMaps[kMaxLayers];
-
-	tEventListener<Terrain> tOnPreVisibleCull;
 
 	// for editor
 	Rect mLockedRect;

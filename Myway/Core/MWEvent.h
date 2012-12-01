@@ -16,7 +16,7 @@ public:
     EventListener();
     virtual ~EventListener();
 
-    virtual void OnCall(Event * sender, void * data) {}
+    virtual void OnCall(Event * sender, void * param0, void * param1) = 0;
 
 protected:
     EventListener * prev;
@@ -29,11 +29,11 @@ public:
     Event();
     ~Event();
 
-    void Call(void * data = NULL);
+    void Call(void * param0, void * param1);
 
     void operator += (EventListener * p);
     void operator -= (EventListener * p);
-	void operator ()(void * data) { Call(data); }
+	void operator ()(void * param0, void * param1) { Call(param0, param1); }
 
 protected:
     EventListener * head;
@@ -42,7 +42,7 @@ protected:
 template <class T>
 class tEventListener : public EventListener
 {
-	typedef void (T::*F)(void *);
+	typedef void (T::*F)(void * param0, void * param1);
 public:
 	tEventListener(Event * e, T * p, F f) : listener(p), evt(e), func(f)
 	{ 
@@ -54,10 +54,10 @@ public:
 		(*evt) -= this;
 	}
 
-	virtual void OnCall(Event * sender, void * data)
+	virtual void OnCall(Event * sender, void * param0, void * param1)
 	{
 		if (sender == evt)
-			(listener->*func)(data);
+			(listener->*func)(param0, param1);
 	}
 
 protected:

@@ -10,6 +10,7 @@ public:
 
 	bool IsSave() { return mIsSave; }
 
+	bool eof();
 	void Read(void * data, int size);
 	void Write(const void * data, int size);
 

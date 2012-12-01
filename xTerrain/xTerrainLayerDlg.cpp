@@ -5,6 +5,7 @@
 #include "xTerrainPane.h"
 #include "xApp.h"
 #include "resource.h"
+#include "xAfxResourceSetup.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -53,7 +54,7 @@ int xTerrainLayerDlg::GetCurLayer()
 	return -1;
 }
 
-void xTerrainLayerDlg::_Init(void *)
+void xTerrainLayerDlg::_Init(void * param0, void * param1)
 {
 	CComboBox * cbBrushType = (CComboBox *)GetDlgItem(IDC_Combo_TL_BrushType);
 
@@ -126,6 +127,8 @@ void xTerrainLayerDlg::OnAddLayer()
 	if (tn == NULL)
 		return ;
 
+	afx_resource_setup();
+
 	xTerrainLayerInfoDlg dlg(NULL);
 
 	if (dlg.DoModal() == IDOK)
@@ -162,6 +165,8 @@ void xTerrainLayerDlg::OnEditLayer()
 
 	if (tn == NULL)
 		return ;
+
+	afx_resource_setup();
 
 	CListBox * list = (CListBox *)GetDlgItem(IDC_List_TL_Layers);
 

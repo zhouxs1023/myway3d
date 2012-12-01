@@ -140,7 +140,7 @@ BOOL CMainFrame::CreateDockingWindows()
 	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndProperties);
 
-	xEvent::OnCreatePane(this);
+	xEvent::OnCreatePane(this, NULL);
 
 	return TRUE;
 }

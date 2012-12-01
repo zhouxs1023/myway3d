@@ -4,7 +4,7 @@
 
 namespace Myway {
 
-    class MW_ENTRY GodRay : public EventListener
+    class MW_ENTRY GodRay
     {
         DECLARE_ALLOC();
 
@@ -13,9 +13,10 @@ namespace Myway {
         virtual ~GodRay();
 
         void Render(Texture * depthTex);
-        void OnCall(Event * sender, void * data);
 
     protected:
+		void _resize(void * param0, void * param1);
+
         void _initGeometry();
         void _initTechnique();
         void _initRenderTarget();
@@ -36,5 +37,7 @@ namespace Myway {
 
         RenderTargetPtr mRenderTarget;
         TexturePtr mTexture;
+
+		tEventListener<GodRay> OnResize;
     };
 }

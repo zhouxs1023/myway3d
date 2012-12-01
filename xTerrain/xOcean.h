@@ -14,13 +14,12 @@ public:
 	xOcean();
 	virtual ~xOcean();
 
-	virtual const char * GetName() { return "Ocean"; }
-	virtual const char * GetTypeName() { return "Ocean"; }
+	void SetHeight(float h);
+
+	virtual TString128 GetTypeName() { return "Ocean"; }
+	virtual void Serialize(xSerializer & Serializer);
 
 	virtual bool OnPropertyChanged(const Property * p);
-
-protected:
-	void _setHeight(float h);
 
 protected:
 	Ocean * mOcean;
@@ -38,25 +37,22 @@ public:
 	virtual const char * GetTypeName() { return "Ocean"; }
 };
 
-class xOceanFactoryListener : public EventListener
+class xOceanFactoryListener
 {
 public:
 	xOceanFactoryListener()
+		: OnInit(&xEvent::OnInit, this, &xOceanFactoryListener::_Init)
 	{
-		xEvent::OnInit += this;
 	}
 
 	virtual ~xOceanFactoryListener()
 	{
-		xEvent::OnInit -= this;
 	}
 
-	virtual void OnCall(Event * sender, void * data)
+	void _Init(void * param0, void * param1)
 	{
-		if (sender == &xEvent::OnInit)
-		{
-			xObjManager::Instance()->AddFactory(new xOceanFactory());
-		}
+		xObjManager::Instance()->AddFactory(new xOceanFactory());
 	}
 
+	tEventListener<xOceanFactoryListener> OnInit;
 };

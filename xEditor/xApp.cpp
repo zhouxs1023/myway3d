@@ -25,6 +25,9 @@ _Locker::~_Locker()
 }
 
 xApp::xApp()
+	: mObjMgr()
+	, mOpToolBar()
+	, mEnvironment()
 {
     INIT_SLN;
 
@@ -79,7 +82,7 @@ void xApp::Run()
 				mNeedResize = false;
 			}
 
-			xEvent::OnUpdate(NULL);
+			xEvent::OnUpdate(NULL, NULL);
 
 			_input();
 			mEngine->Run();
@@ -191,8 +194,8 @@ void xApp::_InitEngine()
 
 		xPluginManager::Instance()->Init();
 
-		xEvent::OnInit(NULL);
-		xEvent::OnInitUI(NULL);
+		xEvent::OnInit(NULL, NULL);
+		xEvent::OnInitUI(NULL, NULL);
 	}
 	catch (Exception & e)
 	{
@@ -216,7 +219,7 @@ void xApp::Shutdown()
 
     mThread.Shudown(true);
 
-    xEvent::OnShutdown(NULL);
+    xEvent::OnShutdown(NULL, NULL);
 
 	xPluginManager::Instance()->Shutdown();
 
@@ -240,14 +243,14 @@ void xApp::SetSelectedObj(xObj * obj)
 
 	if (obj == NULL)
 	{
-		xEvent::OnUnSelectObj(NULL);;
+		xEvent::OnUnSelectObj(NULL, NULL);
 
 		return ;
 	}
 
 	mSelectedObjs.PushBack(obj);
 
-	xEvent::OnSelectObj(NULL);;
+	xEvent::OnSelectObj(NULL, NULL);
 }
 
 void xApp::SetSelectedObjs(xObj ** objs, int size)
@@ -259,7 +262,7 @@ void xApp::SetSelectedObjs(xObj ** objs, int size)
 		mSelectedObjs.PushBack(objs[i]);
 	}
 
-	xEvent::OnSelectObj(NULL);
+	xEvent::OnSelectObj(NULL, NULL);
 }
 
 int xApp::GetSelectedObjSize()

@@ -4,16 +4,17 @@
 
 namespace Myway {
 
-    class MW_ENTRY HDRLighting : public EventListener
+    class MW_ENTRY HDRLighting
     {
     public:
         HDRLighting();
         ~HDRLighting();
 
         void Render(Texture * sceneTex);
-        void OnCall(Event * sender, void * data);
 
     protected:
+		void _resize(void * param0, void * param1);
+
         void _initRT();
         void _initTech();
         void _deinitRT();
@@ -60,6 +61,7 @@ namespace Myway {
         Technique * mTech_BlurV;
         Technique * mTech_ToneMap;
 
+		tEventListener<HDRLighting> OnResize;
     };
 
 }

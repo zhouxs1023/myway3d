@@ -19,7 +19,7 @@ namespace Myway
 
     void RS_Scheme::DoRender()
     {
-        RenderEvent::OnPreRenderEvent.Call();
+        RenderEvent::OnPreRenderEvent(NULL, NULL);
 
         // render color
         Camera * cam = World::Instance()->MainCamera();
@@ -32,6 +32,6 @@ namespace Myway
 
         mRenderLoopMain->DoRender();
 
-        RenderEvent::OnPostRenderEvent.Call();
+        RenderEvent::OnPostRenderEvent(NULL, NULL);
     }
 }

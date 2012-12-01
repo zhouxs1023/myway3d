@@ -27,12 +27,12 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 
 
-	void _Create(void * param);
-	void _Init(void *);
-	void _Shutdown(void *);
-	void _Update(void *);
-	void _Render(void *);
-	void _RenderUI(void *);
+	void _Create(void * param0, void * param1);
+	void _Init(void * param0, void * param1);
+	void _Shutdown(void * param0, void * param1);
+	void _Update(void * param0, void * param1);
+	void _Render(void * param0, void * param1);
+	void _RenderUI(void * param0, void * param1);
 
 protected:
 	tEventListener<xTerrainPane> OnCreatePane;

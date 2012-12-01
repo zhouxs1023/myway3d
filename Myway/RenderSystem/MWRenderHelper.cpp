@@ -7,29 +7,23 @@ namespace Myway
 {
     IMP_SLN(RenderHelper);
     RenderHelper::RenderHelper()
+		: OnReisze(&RenderEvent::OnResize, this, &RenderHelper::_resize)
     {  
         INIT_SLN;
 
         _initTexture();
         _initScreenQuad();
-
-        RenderEvent::OnResize += this;
     }
 
     RenderHelper::~RenderHelper()
     {
-        RenderEvent::OnResize -= this;
-
         SHUT_SLN;
     }
 
-    void RenderHelper::OnCall(Event * sender, void * data)
-    {
-        if (sender == &RenderEvent::OnResize)
-        {
-            _updateScreenQuad();
-        }
-    }
+	void RenderHelper::_resize(void * param0, void * param1)
+	{
+		_updateScreenQuad();
+	}
 
     void RenderHelper::_initTexture()
     {

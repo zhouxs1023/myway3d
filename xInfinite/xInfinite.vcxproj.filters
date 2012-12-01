@@ -45,6 +45,9 @@
     <ClCompile Include="xSceneNewDlg.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
+    <ClCompile Include="xSceneOpenDlg.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ClassView.h">
@@ -84,6 +87,9 @@
       <Filter>Ui</Filter>
     </ClInclude>
     <ClInclude Include="xSceneNewDlg.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xSceneOpenDlg.h">
       <Filter>Ui</Filter>
     </ClInclude>
   </ItemGroup>

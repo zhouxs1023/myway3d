@@ -17,7 +17,7 @@ xGizmo::~xGizmo()
 {
 }
 
-void xGizmo::Init(void * data)
+void xGizmo::Init(void * param0, void * param1)
 {
 	_initGeo_Move();
 	_initGeo_Move_Render();
@@ -34,7 +34,7 @@ void xGizmo::Init(void * data)
 	d_assert (mTech);
 }
 
-void xGizmo::Shutdown(void * data)
+void xGizmo::Shutdown(void * param0, void * param1)
 {
 	delete[] mVertex_Move;
 	delete[] mIndex_Move;
@@ -49,10 +49,8 @@ void xGizmo::Shutdown(void * data)
 	delete mRender_Scale;
 }
 
-void xGizmo::Render(void * data)
+void xGizmo::Render(void * param0, void * param1)
 {
-	Update(data);
-
 	int op = xApp::Instance()->GetOperator();
 
 	if (op == xMoveOp::eOp_Move)
@@ -63,7 +61,7 @@ void xGizmo::Render(void * data)
 		_renderScale();
 }
 
-void xGizmo::Update(void * data)
+void xGizmo::Update(void * param0, void * param1)
 {
 	Camera * cam = World::Instance()->MainCamera();
 
@@ -893,7 +891,7 @@ void xGizmo::_mouseMoved_Move()
 
 		dt = d.x * pt.x + d.y * pt.y;
 
-		obj->SetPosition(obj->GetPosition() + p1 * dt * w);
+		obj->SetPosition(obj->GetPosition() + p1 * dt * w * 5);
 	}
 }
 
@@ -1231,6 +1229,15 @@ float xGizmo::_getObjSize(xObj * obj)
 	w = Math::Maximum(w, size.y);
 	w = Math::Maximum(w, size.z);
 	w *= 0.5f;
+	
+	Camera * cam = World::Instance()->MainCamera();
+	Vec3 pos = obj->GetPosition();
 
-	return w;
+	pos *= cam->GetViewProjMatrix();
+
+	pos = Vec3(0.3f, 0, pos.z);
+
+	pos *= cam->GetProjMatrix().Inverse();
+
+	return Math::Maximum(pos.x, w);
 }

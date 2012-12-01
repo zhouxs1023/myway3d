@@ -125,13 +125,12 @@ void ObjCreatorTree::OnTimer(UINT_PTR nIDEvent)
 
 
 ObjCreatorView::ObjCreatorView()
+	: OnInit(&xEvent::OnInitUI, this, &ObjCreatorView::_Init)
 {
-	xEvent::OnInitUI += this;
 }
 
 ObjCreatorView::~ObjCreatorView()
 {
-	xEvent::OnInitUI -= this;
 }
 
 BEGIN_MESSAGE_MAP(ObjCreatorView, CDockablePane)
@@ -192,15 +191,7 @@ void ObjCreatorView::OnSize(UINT nType, int cx, int cy)
 	AdjustLayout();
 }
 
-void ObjCreatorView::OnCall(Event * sender, void * data)
-{
-	if (sender == &xEvent::OnInitUI)
-	{
-		Init();
-	}
-}
-
-void ObjCreatorView::Init()
+void ObjCreatorView::_Init(void * param0, void * param1)
 {
 	MultiMap<TString128, xObjFactory *> mmap;
 

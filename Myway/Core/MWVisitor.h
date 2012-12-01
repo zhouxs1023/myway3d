@@ -77,15 +77,25 @@ public:
         return mIter;
     }
 
-    inline bool Beginof() const
-    {
-        return mIter == mBegin;
-    }
+	inline bool Beginof() const
+	{
+		return mIter == mBegin;
+	}
 
-    inline bool Endof() const
-    {
-        return mIter == mEnd;
-    }
+	inline bool bof() const
+	{
+		return mIter == mBegin;
+	}
+
+	inline bool Endof() const
+	{
+		return mIter == mEnd;
+	}
+
+	inline bool eof() const
+	{
+		return mIter == mEnd;
+	}
 
 protected:
     T           mIter;

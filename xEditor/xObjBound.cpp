@@ -15,7 +15,7 @@ xObjBound::~xObjBound()
 {
 }
 
-void xObjBound::Init(void * data)
+void xObjBound::Init(void * param0, void * param1)
 {
 	mRender = new RenderOp();
 
@@ -122,12 +122,12 @@ void xObjBound::Init(void * data)
 	d_assert (mTech);
 }
 
-void xObjBound::Shutdown(void * data)
+void xObjBound::Shutdown(void * param0, void * param1)
 {
 	delete mRender;
 }
 
-void xObjBound::Render(void * data)
+void xObjBound::Render(void * param0, void * param1)
 {
 	if (xApp::Instance()->GetSelectedObjSize() == 0)
 		return ;

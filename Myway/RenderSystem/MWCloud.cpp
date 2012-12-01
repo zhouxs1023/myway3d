@@ -6,18 +6,16 @@
 namespace Myway {
 
     Cloud::Cloud()
+		: OnResize(&RenderEvent::OnResize, this, &Cloud::_resize)
     {
         _initGeometry();
         _initTechnique();
         _initRenderTarget();
         _initLayer();
-
-        RenderEvent::OnResize += this;
     }
 
     Cloud::~Cloud()
     {
-        RenderEvent::OnResize -= this;
     }
 
     void Cloud::Render(bool lighting)
@@ -37,13 +35,11 @@ namespace Myway {
         _shading(lighting);
     }
 
-    void Cloud::OnCall(Event * sender, void * data)
-    {
-        if (sender == &RenderEvent::OnResize)
-        {
-            _initRenderTarget();
-        }
-    }
+	void Cloud::_resize(void * param0, void * param1)
+	{
+		_initRenderTarget();
+	}
+
 
     void Cloud::_initGeometry()
     {

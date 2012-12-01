@@ -3,69 +3,73 @@
 #include "xObj.h"
 #include "xApp.h"
 
-namespace xInfi {
 
-    class xMesh : public xObj
-    {
-        DECLARE_PROPERTY(xObj);
+class xMesh : public xObj
+{
+    DECLARE_PROPERTY(xObj);
 
-	public:
-		char MeshFile[128];
+public:
+	TString128 MeshFile;
+	Vec3 Position;
+	Quat Orientation;
+	Vec3 Scale;
 
-    public:
-        xMesh(const char * name);
-        virtual ~xMesh();
+public:
+    xMesh(const TString128 & name);
+    virtual ~xMesh();
 
-		virtual Aabb GetBound();
+	virtual TString128 GetTypeName() { return "Mesh"; }
 
-        virtual const char * GetName() { return Name; }
-        virtual const char * GetTypeName() { return "Mesh"; }
+	virtual void SetName(const TString128 & name);
+	virtual void SetMeshFile(const TString128 & meshFile);
 
-        virtual bool OnPropertyChanged(const Property * p);
+	virtual void SetPosition(const Vec3 & p);
+	virtual void SetOrientation(const Quat & q);
+	virtual void SetScale(const Vec3 & s);
 
-    protected:
-        void _setName(const TString128 & name);
-        void _setMeshFile(const TString128 & meshFile);
-        void _setPosition(const Vec3 & position);
-        void _setOrientation(const Quat & ort);
-        void _setScale(const Vec3 & scale);
+	virtual Vec3 GetPosition() { return Position; }
+	virtual Quat GetOrientation() { return Orientation; }
+	virtual Vec3 GetScale() { return Scale; }
 
-    protected:
-        SceneNode * mNode;
-        Entity * mEntity;
-    };
+	virtual void Serialize(xSerializer & serializer);
 
-	class xMeshFactory : public xObjFactory
+	virtual Aabb GetBound();
+
+    virtual bool OnPropertyChanged(const Property * p);
+
+protected:
+    SceneNode * mNode;
+    Entity * mEntity;
+};
+
+class xMeshFactory : public xObjFactory
+{
+public:
+	xMeshFactory() {};
+	virtual ~xMeshFactory() {};
+
+	virtual xMesh * Create(const char * name) { return new xMesh(name); }
+
+	virtual const char * GetGroupName() { return "Entity"; }
+	virtual const char * GetTypeName() { return "Mesh"; }
+};
+
+class xMeshFactoryListener
+{
+public:
+	xMeshFactoryListener()
+		: OnInit(&xEvent::OnInit, this, &xMeshFactoryListener::_Init)
 	{
-	public:
-		xMeshFactory() {};
-		virtual ~xMeshFactory() {};
+	}
 
-		virtual xMesh * Create(const char * name) { return new xMesh(name); }
-		virtual const char * GetGroupName() { return "Entity"; }
-		virtual const char * GetTypeName() { return "Mesh"; }
-	};
+	virtual ~xMeshFactoryListener()
+	{
+	}
 
-    class xMeshFactoryListener : public EventListener
-    {
-    public:
-        xMeshFactoryListener()
-        {
-            xEvent::OnInit += this;
-        }
+	void _Init(void * param0, void * param1)
+	{
+		xObjManager::Instance()->AddFactory(new xMeshFactory());
+	}
 
-        virtual ~xMeshFactoryListener()
-        {
-            xEvent::OnInit -= this;
-        }
-
-        virtual void OnCall(Event * sender, void * data)
-        {
-            if (sender == &xEvent::OnInit)
-            {
-                xObjManager::Instance()->AddFactory(new xMeshFactory());
-            }
-        }
-
-    };
-}
+	tEventListener<xMeshFactoryListener> OnInit;
+};

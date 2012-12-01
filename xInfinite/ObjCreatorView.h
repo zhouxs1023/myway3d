@@ -33,7 +33,7 @@ protected:
 	int mDragTimer;
 };
 
-class ObjCreatorView : public CDockablePane, public EventListener
+class ObjCreatorView : public CDockablePane
 {
 	DECLARE_MESSAGE_MAP()
 
@@ -43,9 +43,9 @@ public:
 
 	void AdjustLayout();
 	void OnChangeVisualStyle();
-	void Init();
 
-	virtual void OnCall(Event * sender, void * data);
+protected:
+	void _Init(void * param0, void * param1);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -58,5 +58,7 @@ protected:
 	ObjCreatorTree mCreatorView;
 	CImageList m_FileViewImages;
 	CFileViewToolBar m_wndToolBar;
+
+	tEventListener<ObjCreatorView> OnInit;
 };
 

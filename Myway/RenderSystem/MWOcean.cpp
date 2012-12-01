@@ -19,13 +19,16 @@ namespace Myway {
     Ocean::~Ocean()
     {
 		delete mProjGrid;
+
+		World::Instance()->DestroyCamera(mCamera);
+		World::Instance()->DestroySceneNode(mCameraNode);
     }
 
-	void Ocean::_Resize(void *)
+	void Ocean::_Resize(void * param0, void * param1)
 	{
 	}
 
-    void Ocean::_PreRender(void *)
+    void Ocean::_PreRender(void * param0, void * param1)
     {
 		if (!WaterManager::Instance()->IsUnderWater())
 			_renderRelfection();

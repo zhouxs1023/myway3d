@@ -3,97 +3,134 @@
 #include "xApp.h"
 
 DF_PROPERTY_BEGIN(xObj)
-	DF_PROPERTY(xObj, Name, "General", "Name", PT_String, 128)
-	DF_PROPERTY(xObj, Position, "Transform", "Position", PT_Vec3, 12)
-	DF_PROPERTY(xObj, Orientation, "Transform", "Orientation", PT_Vec4, 16)
-	DF_PROPERTY(xObj, Scale, "Transform", "Scale", PT_Vec3, 12)
+	DF_PROPERTY(xObj, Name, "General", "Name", PT_TString, 128)
 DF_PROPERTY_END()
 
-xObj::xObj(const char * name)
+xObj::xObj(const TString128 & name)
 {
-	Strcpy(Name, 128, name);
-
-	Position = Vec3::Zero; 
-	Orientation = Quat::Identity;
-	Scale = Vec3::Unit;
+	Name = name;
 }
 
 xObj::~xObj()
 {
 }
 
-const char * xObj::GetName()
+const TString128 & xObj::GetName()
 {
 	return Name;
 }
 
-void xObj::SetPosition(const Vec3 & p)
+void xObj::Serialize(xSerializer & Serializer)
 {
-	Position = p;
-	xPropertyChanged(Position);
-}
-
-void xObj::SetOrientation(const Quat & q)
-{
-	Orientation = q;
-	xPropertyChanged(Orientation);
-}
-
-void xObj::SetScale(const Vec3 & s)
-{
-	Scale = s;
-	xPropertyChanged(Scale);
-}
-
-Vec3 xObj::GetPosition()
-{
-	return Position;
-}
-
-Quat xObj::GetOrientation()
-{
-	return Orientation;
-}
-
-Vec3 xObj::GetScale()
-{
-	return Scale;
+	if (Serializer.IsSave())
+	{
+		// do something
+	}
+	else
+	{
+		// do something
+	}
 }
 
 
-xObjManager gxObjMgr;
 
 IMP_SLN(xObjManager);
 
 xObjManager::xObjManager()
+	: OnShutdown(&xEvent::OnShutdown, this, &xObjManager::_Shutdown)
+	, OnSerialize(&xEvent::OnSerialize, this, &xObjManager::_Serialize)
+	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xObjManager::_UnloadScene)
 {
 	INIT_SLN;
-	xEvent::OnShutdown += this;
 }
 
 xObjManager::~xObjManager()
 {
-	xEvent::OnShutdown -= this;
 	SHUT_SLN;
 }
 
-void xObjManager::OnCall(Event * sender, void * data)
+void xObjManager::_UnloadScene(void * param0, void * param1)
 {
-	if (sender == &xEvent::OnShutdown)
+	for (int i = 0; i < mObjs.Size(); ++i)
 	{
-		for (int i = 0; i < mFactorys.Size(); ++i)
-		{
-			delete mFactorys[i];
-		}
-
-		for (int i = 0; i < mObjs.Size(); ++i)
-		{
-			delete mObjs[i];
-		}
-
-		mFactorys.Clear();
-		mObjs.Clear();
+		delete mObjs[i];
 	}
+
+	mObjs.Clear();
+}
+
+void xObjManager::_Serialize(void * param0, void * param1)
+{
+	const int CHUNK_ID = 'OBJS';
+
+	int chunkId = *(int*)param0;
+	xSerializer & Serializer = *(xSerializer*)param1;
+
+	if (Serializer.IsSave())
+	{
+		Serializer << CHUNK_ID;
+		_Save(Serializer);
+	}
+	else if (CHUNK_ID == chunkId)
+	{
+		_Load(Serializer);
+	}
+}
+
+void xObjManager::_Load(xSerializer & Serializer)
+{
+	int numOfObjs;
+
+	Serializer >> numOfObjs;
+
+	for (int i = 0; i < numOfObjs; ++i)
+	{
+		TString128 Name;
+		TString128 Type;
+
+		Serializer >> Name;
+		Serializer >> Type;
+
+		xObj * obj = _Create(Name, Type);
+
+		obj->Serialize(Serializer);
+	}
+}
+
+void xObjManager::_Save(xSerializer & Serializer)
+{
+	int numOfObjs = mObjs.Size();
+
+	Serializer << numOfObjs;
+
+	for (int i = 0; i < numOfObjs; ++i)
+	{
+		xObj * obj = mObjs[i];
+
+		TString128 Name = obj->GetName();
+		TString128 Type = obj->GetTypeName();
+
+		Serializer << Name;
+		Serializer << Type;
+
+		obj->Serialize(Serializer);
+	}
+}
+
+void xObjManager::_Shutdown(void * param0, void * param1)
+{
+	for (int i = 0; i < mFactorys.Size(); ++i)
+	{
+		delete mFactorys[i];
+	}
+
+	for (int i = 0; i < mObjs.Size(); ++i)
+	{
+		delete mObjs[i];
+	}
+
+	mFactorys.Clear();
+	mObjs.Clear();
 }
 
 void xObjManager::AddFactory(xObjFactory * sf)
@@ -153,6 +190,20 @@ xObj * xObjManager::Create(const char * type)
 	return obj;
 }
 
+xObj * xObjManager::_Create(const TString128 & name, const TString128 & type)
+{
+	xObjFactory * sf = GetFactory(type.c_str());
+
+	xObj * obj = sf->Create(name.c_str());
+
+	d_assert (obj);
+
+	mObjs.PushBack(obj);
+
+	return obj;
+}
+
+
 void xObjManager::Distroy(xObj * xObj)
 {
 	for (int i = 0; i < mObjs.Size(); ++i)
@@ -171,7 +222,7 @@ xObj * xObjManager::Get(const char * name)
 {
 	for (int i = 0; i < mObjs.Size(); ++i)
 	{
-		if (Strcmp(name, mObjs[i]->GetName()) == 0)
+		if (mObjs[i]->GetName() == name)
 			return mObjs[i];
 	}
 

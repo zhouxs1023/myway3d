@@ -5,17 +5,15 @@
 namespace Myway {
 
     GodRay::GodRay()
+		: OnResize(&RenderEvent::OnResize, this, &GodRay::_resize)
     {
         _initGeometry();
         _initTechnique();
         _initRenderTarget();
-
-        RenderEvent::OnResize += this;
     }
 
     GodRay::~GodRay()
     {
-        RenderEvent::OnResize -= this;
     }
 
     void GodRay::Render(Texture * depthTex)
@@ -35,12 +33,9 @@ namespace Myway {
         _blend();
     }
 
-    void GodRay::OnCall(Event * sender, void * data)
+    void GodRay::_resize(void * param0, void * param1)
     {
-        /*if (sender == &RenderEvent::OnResize)
-        {
-            _initRenderTarget();
-        }*/
+		_initRenderTarget();
     }
 
     void GodRay::_initGeometry()

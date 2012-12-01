@@ -10,54 +10,200 @@
 
 namespace Myway {
 
+const int K_Terrain_Version = 0;
+const int K_Terrain_Magic = 'TRN0';
 
 Terrain::Terrain(const Config & config)
-: tOnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
+	: tOnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
 {
-	mLockedData = NULL;
-	mLockedWeightMapData = NULL;
-
-    mLod = new TerrainLod(kMaxDetailLevel);
-    mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
-
-	Create(config);
-}
-
-Terrain::Terrain(const char * source)
-: tOnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
-{
+	mInited = false;
 	mLockedData = NULL;
 	mLockedWeightMapData = NULL;
 
 	mLod = new TerrainLod(kMaxDetailLevel);
 	mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
 
-	Load(source);
+	_Create(config);
 }
+
+Terrain::Terrain(const char * source)
+	: tOnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
+{
+	mInited = false;
+	mLockedData = NULL;
+	mLockedWeightMapData = NULL;
+
+	mLod = new TerrainLod(kMaxDetailLevel);
+	mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
+
+	_Load(source);
+}
+
 
 Terrain::~Terrain()
 {
 	d_assert(mLockedData == NULL);
 	d_assert(mLockedWeightMapData == NULL);
 
-    safe_delete (mLod);
+	safe_delete (mLod);
 
-    for (int i = 0; i < mSections.Size(); ++i)
-    {
-        delete mSections[i];
-        World::Instance()->DestroySceneNode(mSceneNodes[i]);
-    }
+	for (int i = 0; i < mSections.Size(); ++i)
+	{
+		delete mSections[i];
+		World::Instance()->DestroySceneNode(mSceneNodes[i]);
+	}
 
-    mSceneNodes.Clear();
-    mSections.Clear();
+	mSceneNodes.Clear();
+	mSections.Clear();
 
 	safe_delete_array(mHeights);
 	safe_delete_array(mNormals);
 	safe_delete_array(mWeights);
 }
 
-void Terrain::Create(const Config & config)
+void Terrain::_init()
 {
+	// create shared x & y stream
+	mXYStream = VideoBufferManager::Instance()->CreateVertexBuffer(8 * kSectionVertexSize * kSectionVertexSize);
+
+	float * vert = (float *)mXYStream->Lock(0, 0, LOCK_NORMAL);
+	{
+		float w = mConfig.xSize / mConfig.xSectionCount;
+		float h = mConfig.zSize / mConfig.zSectionCount;
+
+		for (int j = 0; j < kSectionVertexSize; ++j)
+		{
+			for (int i = 0; i < kSectionVertexSize; ++i)
+			{
+				*vert++ = i / (float)(kSectionVertexSize - 1) * w;
+				*vert++ = (1 - j / (float)(kSectionVertexSize - 1)) * h;
+			}
+		}
+	}
+	mXYStream->Unlock();
+
+	_calcuNormals();
+
+	// create sections
+	mSections.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
+	mSceneNodes.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
+
+	int index = 0;
+	for (int j = 0; j < mConfig.zSectionCount; ++j)
+	{
+		for (int i = 0; i < mConfig.xSectionCount; ++i)
+		{
+			mSections[index] = new TerrainSection(this, i, j);
+			mSceneNodes[index] = World::Instance()->CreateSceneNode();
+
+			mSceneNodes[index]->Attach(mSections[index]);
+
+			++index;
+		}
+	}
+
+	// create weight map.
+	mWeightMaps.Resize(mConfig.iSectionCount);
+
+	index = 0;
+	
+	for (int j = 0; j < mConfig.zSectionCount; ++j)
+	{
+		for (int i = 0; i < mConfig.xSectionCount; ++i)
+		{
+
+			TString128 texName = TString128("TWeightMap_") + i + "_" + j; 
+			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 0, FMT_A8R8G8B8);
+
+			LockedBox lb;
+			texture->Lock(0, &lb, NULL, LOCK_NORMAL);
+
+			int * clr = (int *)lb.pData;
+			Color * weights = mWeights + j * kWeightMapSize * mConfig.xWeightMapSize + i * kWeightMapSize;
+
+			for (int m = 0; m < kWeightMapSize; ++m)
+			{
+				for (int n = 0; n < kWeightMapSize; ++n)
+				{
+					*clr++ = RGBA(weights[n].r, weights[n].g, weights[n].b, weights[n].a);
+				}
+
+				weights += kWeightMapSize;
+			}
+
+			texture->Unlock(0);
+
+			mWeightMaps[index++] = texture;
+		}
+	}
+
+	// load default detail map
+	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault.png", "TerrainDefault.png");
+	mDefaultNormalMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault_n.dds", "TerrainDefault_n.dds");
+
+	for (int i = 0; i < kMaxLayers; ++i)
+	{
+		mDetailMaps[i] = mDefaultDetailMap;
+		mNormalMaps[i] = mDefaultNormalMap;
+		mSpecularMaps[i] = RenderHelper::Instance()->GetWhiteTexture();
+	}
+
+	for (int i = 0; i < kMaxLayers; ++i)
+	{
+		if (mLayer[i].detail != "")
+			mDetailMaps[i] = VideoBufferManager::Instance()->Load2DTexture(mLayer[i].detail, mLayer[i].detail);
+
+		if (mLayer[i].normal != "")
+			mNormalMaps[i] = VideoBufferManager::Instance()->Load2DTexture(mLayer[i].normal, mLayer[i].normal);
+
+		if (mLayer[i].specular != "")
+			mSpecularMaps[i] = VideoBufferManager::Instance()->Load2DTexture(mLayer[i].specular, mLayer[i].specular);
+	}
+}
+
+void Terrain::_calcuNormals()
+{
+	d_assert (mNormals == NULL);
+
+	mNormals = new Vec3[mConfig.iVertexCount];
+
+	for (int j = 0; j < mConfig.zVertexCount; ++j)
+	{
+		for (int i = 0; i < mConfig.xVertexCount; ++i)
+		{
+			Vec3 a = _getPosition(i - 1, j + 0);
+			Vec3 b = _getPosition(i + 0, j - 1);
+			Vec3 c = _getPosition(i + 1, j + 0);
+			Vec3 d = _getPosition(i + 0, j + 1);
+			Vec3 p = _getPosition(i + 0, j + 0);
+
+			Vec3 L = a - p, T = b - p, R = c - p, B = d - p;
+
+			Vec3 N = Vec3::Zero;
+			float len_L = L.Length(), len_T = T.Length();
+			float len_R = R.Length(), len_B = B.Length();
+
+			if (len_L > 0.01f && len_T > 0.01f)
+				N += L.CrossN(T);
+
+			if (len_T > 0.01f && len_R > 0.01f)
+				N += T.CrossN(R);
+
+			if (len_R > 0.01f && len_B > 0.01f)
+				N += R.CrossN(B);
+
+			if (len_B > 0.01f && len_L > 0.01f)
+				N += B.CrossN(L);
+
+			mNormals[j * mConfig.xVertexCount + i] = N.Normalize();
+		}
+	}
+}
+
+void Terrain::_Create(const Config & config)
+{
+	d_assert (!mInited);
+
 	mConfig = config;
 
 	int x = config.xVertexCount - 1;
@@ -80,67 +226,16 @@ void Terrain::Create(const Config & config)
 	mConfig.xSectionSize = mConfig.xSize / mConfig.xSectionCount;
 	mConfig.zSectionSize = mConfig.zSize / mConfig.zSectionCount;
 
-	// create shared x & y stream
-	mXYStream = VideoBufferManager::Instance()->CreateVertexBuffer(8 * kSectionVertexSize * kSectionVertexSize);
-	
-	float * vert = (float *)mXYStream->Lock(0, 0, LOCK_NORMAL);
-	{
-		float w = mConfig.xSize / mConfig.xSectionCount;
-		float h = mConfig.zSize / mConfig.zSectionCount;
-
-		for (int j = 0; j < kSectionVertexSize; ++j)
-		{
-			for (int i = 0; i < kSectionVertexSize; ++i)
-			{
-				*vert++ = i / (float)(kSectionVertexSize - 1) * w;
-				*vert++ = (1 - j / (float)(kSectionVertexSize - 1)) * h;
-			}
-		}
-	}
-	mXYStream->Unlock();
-
-	// init default heights and normals
+	// init default heights
 	mHeights = new float[mConfig.iVertexCount];
-	mNormals = new Vec3[mConfig.iVertexCount];
 
 	for (int i = 0; i < mConfig.iVertexCount; ++i)
 		mHeights[i] = 0;
 
-	for (int i = 0; i < mConfig.iVertexCount; ++i)
-		mNormals[i] = Vec3(0, 1, 0);
-
-	// create sections
-	mSections.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
-	mSceneNodes.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
-
-	int index = 0;
-	for (int j = 0; j < mConfig.zSectionCount; ++j)
-	{
-		for (int i = 0; i < mConfig.xSectionCount; ++i)
-		{
-			mSections[index] = new TerrainSection(this, i, j);
-			mSceneNodes[index] = World::Instance()->CreateSceneNode();
-
-			mSceneNodes[index]->Attach(mSections[index]);
-
-			++index;
-		}
-	}
-
-	// load default detail map
-	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault.png", "TerrainDefault.png");
-	mDefaultNormalMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault_n.dds", "TerrainDefault_n.dds");
-
-	for (int i = 0; i < kMaxLayers; ++i)
-	{
-		mDetailMaps[i] = mDefaultDetailMap;
-		mNormalMaps[i] = mDefaultNormalMap;
-		mSpecularMaps[i] = RenderHelper::Instance()->GetWhiteTexture();
-	}
-
 	// create weight maps
 	mConfig.xWeightMapSize = Terrain::kWeightMapSize * mConfig.xSectionCount;
 	mConfig.zWeightMapSize = Terrain::kWeightMapSize * mConfig.zSectionCount;
+	mConfig.iWeightMapSize = mConfig.xWeightMapSize * mConfig.zWeightMapSize;
 
 	mWeights = new Color[mConfig.xWeightMapSize * mConfig.zWeightMapSize];
 	for (int i = 0; i < mConfig.xWeightMapSize * mConfig.zWeightMapSize; ++i)
@@ -148,36 +243,76 @@ void Terrain::Create(const Config & config)
 		mWeights[i] = Color(0, 0, 0, 255);
 	}
 
-	mWeightMaps.Resize(mConfig.iSectionCount);
-
-	index = 0;
-	for (int i = 0; i < mConfig.zSectionCount; ++i)
-	{
-		for (int j = 0; j < mConfig.zSectionCount; ++j)
-		{
-			TString128 texName = TString128("TWeightMap_") + i + "_" + j; 
-			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 0, FMT_A8R8G8B8);
-
-			LockedBox lb;
-			texture->Lock(0, &lb, NULL, LOCK_NORMAL);
-			int * clr = (int *)lb.pData;
-
-			for (int m = 0; m < kWeightMapSize; ++m)
-				for (int n = 0; n < kWeightMapSize; ++n)
-					*clr++ = RGBA(0, 0, 0, 255);
-
-			texture->Unlock(0);
-
-			mWeightMaps[index++] = texture;
-		}
-	}
-
 	mBound.minimum = Vec3(0, 0, 0);
 	mBound.maximum = Vec3(mConfig.xSize, 0, mConfig.zSize);
+
+	_init();
+
+	mInited = true;
 }
 
-void Terrain::Load(const char * source)
+void Terrain::_Load(const char * filename)
 {
+	d_assert (!mInited);
+
+	DataStreamPtr stream = ResourceManager::Instance()->OpenResource(filename);
+
+	d_assert (stream != NULL);
+
+	int magic, version;
+
+	stream->Read(&magic, sizeof(int));
+
+	d_assert (magic == K_Terrain_Magic);
+
+	stream->Read(&version, sizeof(int));
+
+	if (version == 0)
+	{
+		stream->Read(&mConfig, sizeof(Config));
+		stream->Read(mLayer, sizeof(Layer) * kMaxLayers);
+
+		mHeights = new float[mConfig.iVertexCount];
+
+		stream->Read(mHeights, sizeof(float) * mConfig.iVertexCount);
+
+		mWeights = new Color[mConfig.iWeightMapSize];
+
+		stream->Read(mWeights, sizeof(Color) * mConfig.iWeightMapSize);
+
+		stream->Read(&mBound, sizeof(Aabb));
+	}
+
+	_init();
+
+	mInited = true;
+}
+
+void Terrain::Save(const char * filename)
+{
+	File file;
+
+	file.Open(filename);
+
+	file.Write(&K_Terrain_Magic, sizeof(int));
+	file.Write(&K_Terrain_Version, sizeof(int));
+
+	// write config
+	file.Write(&mConfig, sizeof(Config));
+
+	// write layers
+	file.Write(mLayer, sizeof(Layer) * kMaxLayers);
+
+	// write heights
+	file.Write(mHeights, sizeof(float) * mConfig.iVertexCount);
+	
+	// write weights
+	file.Write(mWeights, sizeof(Color) * mConfig.iWeightMapSize);
+
+	// write bound
+	file.Write(&mBound, sizeof(Aabb));
+
+	file.Close();
 }
 
 int	Terrain::AddLayer(const Layer & layer)
@@ -285,7 +420,7 @@ Color Terrain::GetWeight(int x, int z)
 	return mWeights[z * mConfig.xWeightMapSize + x];
 }
 
-void Terrain::OnPreVisibleCull(void * data)
+void Terrain::OnPreVisibleCull(void * param0, void * param1)
 {
 	mVisibleSections.Clear();
 }
@@ -319,13 +454,13 @@ Vec3 Terrain::_getPosition(int x, int z)
 	x = Math::Maximum(0, x);
 	z = Math::Maximum(0, z);
 
-	x = Math::Minimum(x, mConfig.xVertexCount);
-	z = Math::Minimum(z, mConfig.zVertexCount);
+	x = Math::Minimum(x, mConfig.xVertexCount - 1);
+	z = Math::Minimum(z, mConfig.zVertexCount - 1);
 
 	return GetPosition(x, z);
 }
 
-void Terrain::Render()
+void Terrain::Render()l
 {
     RenderSystem * render = RenderSystem::Instance();
 

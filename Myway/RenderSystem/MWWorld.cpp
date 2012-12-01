@@ -593,11 +593,11 @@ void World::UpdateFrame()
 {
     profile_code();
 
-    RenderEvent::OnPreUpdateScene.Call();
+    RenderEvent::OnPreUpdateScene(NULL, NULL);
 
     UpdateScene();
 
-    RenderEvent::OnPostUpdateScene.Call();
+    RenderEvent::OnPostUpdateScene(NULL, NULL);
 
     RenderSystem * render = RenderSystem::Instance();
 
@@ -692,7 +692,7 @@ void World::ImpVisibleCull(VisibleCullResult & result, Camera * cam, bool update
 {
     profile_code();
 
-    RenderEvent::OnPreVisibleCull.Call(cam);
+    RenderEvent::OnPreVisibleCull(cam, NULL);
 
     CullNodes(result, cam);
     CullLights(result, cam);
@@ -700,5 +700,5 @@ void World::ImpVisibleCull(VisibleCullResult & result, Camera * cam, bool update
     if (updateGeo)
         UpdateGeo(result, cam);
 
-    RenderEvent::OnPostVisibleCull.Call(cam);
+    RenderEvent::OnPostVisibleCull(cam, NULL);
 }

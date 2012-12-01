@@ -14,7 +14,8 @@ namespace Myway {
         PT_Vec4,
         PT_Color,
         PT_Filename,
-        PT_String,
+		PT_String,
+		PT_TString,
 
         PT_UNKNOWN,
     };
@@ -92,6 +93,14 @@ namespace Myway {
             d_assert (type == PT_String);
             return (const char *)data;
         }
+
+		template <int size>
+		TString<size> AsTString(const void * data) const
+		{
+			d_assert (type == PT_TString);
+			return *(TString<size>*)data;
+		}
+
     };
 
 #define DF_PROPERTY_BEGIN(classname) const Property classname::msPropertys[] = {

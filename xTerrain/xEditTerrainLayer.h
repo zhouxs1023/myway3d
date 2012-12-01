@@ -28,10 +28,10 @@ public:
 	float GetBrushSize() { return mBrush.size; }
 	float GetBrushDensity() { return mBrush.density; }
 
-	void _Init(void *);
-	void _Shutdown(void *);
-	void _Update(void *);
-	void _Render(void *);
+	void _Init(void * param0, void * param1);
+	void _Shutdown(void * param0, void * param1);
+	void _Update(void * param0, void * param1);
+	void _Render(void * param0, void * param1);
 
 	void _RenderSectionLayer();
 

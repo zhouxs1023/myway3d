@@ -4,29 +4,17 @@
 namespace Myway {
 
     HDRLighting::HDRLighting()
+		: OnResize(&RenderEvent::OnResize, this, &HDRLighting::_resize)
     {
         _initRT();
         _initTech();
-
-        RenderEvent::OnResize += this;
     }
 
     HDRLighting::~HDRLighting()
     {
         _deinitRT();
         _deinitTech();
-
-        RenderEvent::OnResize -= this;
     }
-
-    void HDRLighting::OnCall(Event * sender, void * data)
-    {
-        if (sender == &RenderEvent::OnResize)
-        {
-            _initRT();
-        }
-    }
-
 
     void HDRLighting::Render(Texture * sceneTex)
     {
@@ -46,6 +34,11 @@ namespace Myway {
 
         _toneMap(sceneTex);
     }
+
+	void HDRLighting::_resize(void * param0, void * param1)
+	{
+		_initRT();
+	}
 
     void HDRLighting::_initRT()
     {

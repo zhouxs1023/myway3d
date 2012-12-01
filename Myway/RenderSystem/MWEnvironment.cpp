@@ -6,6 +6,7 @@ namespace Myway {
     IMP_SLN(Environment);
 
     Environment::Environment()
+		: OnUpdate(&RenderEvent::OnPostUpdateScene, this, &Environment::_update)
     {
         INIT_SLN;
 
@@ -28,14 +29,10 @@ namespace Myway {
         mMode = EVPM_KeyFrame;
         mCurKey = EVKT_Morning;
         mCurTime = 8;
-
-        RenderEvent::OnPostUpdateScene += this;
     }
 
     Environment::~Environment()
     {
-        RenderEvent::OnPostUpdateScene -= this;
-
         DeInitEv();
         UnloadTerrain();
 
@@ -72,14 +69,6 @@ namespace Myway {
         safe_delete (mHDR);
     }
 
-    void Environment::OnCall(Event * sender, void * data)
-    {
-        if (sender == &RenderEvent::OnPostUpdateScene)
-        {
-            _update();
-        }
-    }
-
     /*void Environment::LoadTerrain(const char * source)
     {
         UnloadTerrain();
@@ -92,6 +81,13 @@ namespace Myway {
 		UnloadTerrain();
 
 		mTerrain = new Terrain(config);
+	}
+
+	void Environment::LoadTerrain(const char * source)
+	{
+		UnloadTerrain();
+
+		mTerrain = new Terrain(source);
 	}
 
     void Environment::UnloadTerrain()
@@ -162,7 +158,7 @@ namespace Myway {
         return degree;
     }
 
-    void Environment::_update()
+    void Environment::_update(void * param0, void * param1)
     {
         _updateTime();
 

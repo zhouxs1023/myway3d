@@ -4,7 +4,7 @@
 
 namespace Myway {
 
-    class MW_ENTRY Cloud : public EventListener
+    class MW_ENTRY Cloud
     {
     public:
         Cloud();
@@ -13,7 +13,7 @@ namespace Myway {
         void Render(bool lighting = true);
 
     protected:
-        void OnCall(Event * sender, void * data);
+		void _resize(void * param0, void * param1);
 
         void _initGeometry();
         void _initTechnique();
@@ -36,5 +36,7 @@ namespace Myway {
         TexturePtr mTexture;
         TexturePtr mTex_Layer0;
         TexturePtr mTex_Layer1;
+
+		tEventListener<Cloud> OnResize;
     };
 }

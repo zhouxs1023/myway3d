@@ -52,6 +52,7 @@
       <AdditionalDependencies>myway_d.lib;winmm.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../bin/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>../bin/lib/xEditor_d.lib</ImportLibrary>
+      <ProgramDatabaseFile>../bin/Debug/xEditor_d.pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

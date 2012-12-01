@@ -18,18 +18,14 @@ static char THIS_FILE[]=__FILE__;
 IMP_SLN (CPropertiesWnd);
 
 CPropertiesWnd::CPropertiesWnd()
+	: OnSelectObj(&xEvent::OnSelectObj, this, &CPropertiesWnd::_OnSelect)
+	, OnUnSelectObj(&xEvent::OnUnSelectObj, this, &CPropertiesWnd::_OnUnSelect)
 {
 	INIT_SLN;
-
-	xEvent::OnSelectObj += this;
-	xEvent::OnUnSelectObj += this;
 }
 
 CPropertiesWnd::~CPropertiesWnd()
 {
-	xEvent::OnSelectObj -= this;
-	xEvent::OnUnSelectObj -= this;
-
 	SHUT_SLN;
 }
 
@@ -233,23 +229,20 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.AddProperty(pGroup4);
 }
 
-void CPropertiesWnd::OnCall(Event * sender, void * data)
+void CPropertiesWnd::_OnSelect(void * param0, void * param1)
 {
-	if (sender == &xEvent::OnSelectObj)
-	{
-		xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
 
-		if (xApp::Instance()->GetSelectedObjSize() > 1)
-			obj = NULL;
+	if (xApp::Instance()->GetSelectedObjSize() > 1)
+		obj = NULL;
 
-		Show(obj);
-	}
-	else if (sender == &xEvent::OnUnSelectObj)
-	{
-		Show(NULL);
-	}
+	Show(obj);
 }
 
+void CPropertiesWnd::_OnUnSelect(void * param0, void * param1)
+{
+	Show(NULL);
+}
 
 void CPropertiesWnd::Show(xObj * obj)
 {
@@ -295,9 +288,9 @@ void CPropertiesWnd::Show(xObj * obj)
 
 void CPropertiesWnd::_ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Property * p)
 {
-	if (p->type == PT_String)
+	if (p->type == PT_TString)
 	{
-		const char * data = p->AsString(obj->GetPropertyData(p));
+		const char * data = p->AsTString<128>(obj->GetPropertyData(p)).c_str();
 		gp->AddSubItem(new CMFCPropertyGridProperty(p->name.c_str(), (_variant_t)(data), ""));
 	}
 	else if (p->type == PT_Vec3)
@@ -348,7 +341,7 @@ LRESULT CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 
 		Strcpy(cdata, 128, (const char *)val);
 
-		if (p->type == PT_String)
+		if (p->type == PT_TString && p->size == 128)
 			obj->SetPropertyData(p, cdata);
 		else if (p->type == PT_Float)
 		{

@@ -9,7 +9,7 @@ public:
 	xTerrainLayerDlg();
 	~xTerrainLayerDlg();
 
-	void _Init(void *);
+	void _Init(void * param0, void * param1);
 	int GetCurLayer();
 
 protected:

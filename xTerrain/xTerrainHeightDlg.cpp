@@ -36,7 +36,7 @@ BOOL xTerrainHeightDlg::OnInitDialog()
 	return TRUE;
 }
 
-void xTerrainHeightDlg::_Init(void *)
+void xTerrainHeightDlg::_Init(void * param0, void * param1)
 {
 	CComboBox * cbBrushType = (CComboBox *)GetDlgItem(IDC_Combo_TH_BrushType);
 	CComboBox * cbBrushOp = (CComboBox *)GetDlgItem(IDC_Combo_TH_BrushOp);

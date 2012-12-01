@@ -55,7 +55,7 @@ namespace Myway {
 
         _clear();
 
-		RenderEvent::OnBeginRender(NULL);
+		RenderEvent::OnBeginRender(NULL, NULL);
        
         // --->render terrain
         if (Environment::Instance()->GetTerrain())
@@ -64,7 +64,7 @@ namespace Myway {
         // --->render object
         _renderSolidObjects();
 
-		RenderEvent::OnAfterRenderSolid(NULL);
+		RenderEvent::OnAfterRenderSolid(NULL, NULL);
 
         _updateTexture();
 
@@ -137,11 +137,11 @@ namespace Myway {
 		if (Environment::Instance()->GetHDR())
 			Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
 
-		RenderEvent::OnAfterDeffererShading(NULL);
+		RenderEvent::OnAfterDeffererShading(NULL, NULL);
 
 		// render forward objects
 
-		RenderEvent::OnAfterRender(NULL);
+		RenderEvent::OnAfterRender(NULL, NULL);
 
         _updateColorTexture();
 

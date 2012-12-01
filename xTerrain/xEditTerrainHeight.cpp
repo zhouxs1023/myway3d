@@ -22,12 +22,12 @@ void xEditTerrainHeight::SetBrush(const TString128 & tex)
 	d_assert (mBrush.texture != NULL && mBrush.image != NULL);
 }
 
-void xEditTerrainHeight::_Init(void *)
+void xEditTerrainHeight::_Init(void * param0, void * param1)
 {
 	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
 }
 
-void xEditTerrainHeight::_Update(void *)
+void xEditTerrainHeight::_Update(void * param0, void * param1)
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
@@ -53,13 +53,13 @@ void xEditTerrainHeight::_Update(void *)
 	_UpdateGeometry();
 }
 
-void xEditTerrainHeight::_Shutdown(void *)
+void xEditTerrainHeight::_Shutdown(void * param0, void * param1)
 {
 	mBrush.texture = NULL;
 	mBrush.image = NULL;
 }
 
-void xEditTerrainHeight::_Render(void *)
+void xEditTerrainHeight::_Render(void * param0, void * param1)
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 

@@ -27,13 +27,13 @@ namespace Myway {
         d_assert (head == NULL);
     }
 
-    void Event::Call(void * data)
+    void Event::Call(void * param0, void * param1)
     {
         EventListener * el = head;
 
         while (el)
         {
-            el->OnCall(this, data);
+            el->OnCall(this, param0, param1);
 
             el = el->next;
         }
