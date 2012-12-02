@@ -82,8 +82,6 @@ void Terrain::_init()
 	}
 	mXYStream->Unlock();
 
-	_calcuNormals();
-
 	// create sections
 	mSections.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
 	mSceneNodes.Resize(mConfig.xSectionCount * mConfig.zSectionCount);
@@ -184,16 +182,16 @@ void Terrain::_calcuNormals()
 			float len_R = R.Length(), len_B = B.Length();
 
 			if (len_L > 0.01f && len_T > 0.01f)
-				N += L.CrossN(T);
+			N += L.CrossN(T);
 
 			if (len_T > 0.01f && len_R > 0.01f)
-				N += T.CrossN(R);
+			N += T.CrossN(R);
 
 			if (len_R > 0.01f && len_B > 0.01f)
-				N += R.CrossN(B);
+			N += R.CrossN(B);
 
 			if (len_B > 0.01f && len_L > 0.01f)
-				N += B.CrossN(L);
+			N += B.CrossN(L);
 
 			mNormals[j * mConfig.xVertexCount + i] = N.Normalize();
 		}
@@ -226,11 +224,14 @@ void Terrain::_Create(const Config & config)
 	mConfig.xSectionSize = mConfig.xSize / mConfig.xSectionCount;
 	mConfig.zSectionSize = mConfig.zSize / mConfig.zSectionCount;
 
-	// init default heights
+	// init default heights and normals
 	mHeights = new float[mConfig.iVertexCount];
-
 	for (int i = 0; i < mConfig.iVertexCount; ++i)
 		mHeights[i] = 0;
+
+	mNormals = new Vec3[mConfig.iVertexCount];
+	for (int i = 0; i < mConfig.iVertexCount; ++i)
+		mNormals[i] = Vec3(0, 1, 0);
 
 	// create weight maps
 	mConfig.xWeightMapSize = Terrain::kWeightMapSize * mConfig.xSectionCount;
@@ -269,18 +270,21 @@ void Terrain::_Load(const char * filename)
 
 	if (version == 0)
 	{
-		stream->Read(&mConfig, sizeof(Config));
-		stream->Read(mLayer, sizeof(Layer) * kMaxLayers);
+		int count = 0;
+
+		count = stream->Read(&mConfig, sizeof(Config));
+		count = stream->Read(mLayer, sizeof(Layer), kMaxLayers);
+
+		count = stream->Read(&mBound, sizeof(Aabb));
 
 		mHeights = new float[mConfig.iVertexCount];
+		count = stream->Read(&mHeights[0], sizeof(float), mConfig.iVertexCount);
 
-		stream->Read(mHeights, sizeof(float) * mConfig.iVertexCount);
+		mNormals = new Vec3[mConfig.iVertexCount];
+		count = stream->Read(&mNormals[0], sizeof(Vec3), mConfig.iVertexCount);
 
 		mWeights = new Color[mConfig.iWeightMapSize];
-
-		stream->Read(mWeights, sizeof(Color) * mConfig.iWeightMapSize);
-
-		stream->Read(&mBound, sizeof(Aabb));
+		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
 	}
 
 	_init();
@@ -292,25 +296,30 @@ void Terrain::Save(const char * filename)
 {
 	File file;
 
-	file.Open(filename);
+	int count = 0;
+
+	file.Open(filename, OM_WRITE_BINARY);
 
 	file.Write(&K_Terrain_Magic, sizeof(int));
 	file.Write(&K_Terrain_Version, sizeof(int));
 
 	// write config
-	file.Write(&mConfig, sizeof(Config));
+	count = file.Write(&mConfig, sizeof(Config));
 
 	// write layers
-	file.Write(mLayer, sizeof(Layer) * kMaxLayers);
-
-	// write heights
-	file.Write(mHeights, sizeof(float) * mConfig.iVertexCount);
-	
-	// write weights
-	file.Write(mWeights, sizeof(Color) * mConfig.iWeightMapSize);
+	count = file.Write(mLayer, sizeof(Layer), kMaxLayers);
 
 	// write bound
-	file.Write(&mBound, sizeof(Aabb));
+	count = file.Write(&mBound, sizeof(Aabb));
+
+	// write heights
+	count = file.Write(mHeights, sizeof(float), mConfig.iVertexCount);
+
+	// write normals
+	count = file.Write(mNormals, sizeof(Vec3), mConfig.iVertexCount);
+	
+	// write weights
+	count = file.Write(mWeights, sizeof(Color), mConfig.iWeightMapSize);
 
 	file.Close();
 }
@@ -460,7 +469,7 @@ Vec3 Terrain::_getPosition(int x, int z)
 	return GetPosition(x, z);
 }
 
-void Terrain::Render()l
+void Terrain::Render()
 {
     RenderSystem * render = RenderSystem::Instance();
 
@@ -609,8 +618,8 @@ float Terrain::GetHeight(float x, float z)
 	int ix1 = ix + 1;
 	int iz1 = iz + 1;
 
-	ix1 = Math::Minimum(ix1, mConfig.xVertexCount);
-	iz1 = Math::Minimum(iz1, mConfig.zVertexCount);
+	ix1 = Math::Minimum(ix1, mConfig.xVertexCount - 1);
+	iz1 = Math::Minimum(iz1, mConfig.zVertexCount - 1);
 
 	float a = GetHeight(ix,  iz);
 	float b = GetHeight(ix1, iz);
@@ -663,6 +672,11 @@ float *	Terrain::LockHeight(const Rect & rc)
 void Terrain::UnlockHeight()
 {
 	d_assert (mLockedData != NULL);
+
+	mLockedRect.x1 = Math::Maximum(0, mLockedRect.x1);
+	mLockedRect.x2 = Math::Maximum(0, mLockedRect.x2);
+	mLockedRect.x2 = Math::Minimum(mConfig.xVertexCount - 1, mLockedRect.x2);
+	mLockedRect.y2 = Math::Minimum(mConfig.zVertexCount - 1, mLockedRect.y2);
 
 	int index = 0;
 	for (int j = mLockedRect.y1; j <= mLockedRect.y2; ++j)
@@ -729,7 +743,7 @@ void Terrain::UnlockHeight()
 	{
 		for (int i = mLockedRect.x1; i <= mLockedRect.x2; ++i)
 		{
-			float h =mLockedData[index++];
+			float h = mLockedData[index++];
 			mBound.minimum.y = Math::Minimum(mBound.minimum.y, h);
 			mBound.maximum.y = Math::Maximum(mBound.maximum.y, h);
 		}

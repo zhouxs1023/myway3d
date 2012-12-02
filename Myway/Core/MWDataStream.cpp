@@ -53,8 +53,10 @@ bool MemoryStream::Eof() const
     return mEndof;
 }
 
-int MemoryStream::Read(void * data, int size)
+int MemoryStream::Read(void * data, int esize, int count)
 {
+	int size = esize * count;
+
     if (!mEndof)
     {
         int count = mSize - mCursor;
@@ -68,7 +70,7 @@ int MemoryStream::Read(void * data, int size)
 
         mEndof = (mCursor >= mSize);
 
-        return size;
+        return count;
     }
 
     return 0;
@@ -110,7 +112,7 @@ int MemoryStream::ReadString(String & data)
 
         while (!mEndof)
         {
-            size = Read(str, sizeof(char) * (1024 - 1));
+            size = Read(str, sizeof(char), (1024 - 1));
             str[size] = '\0';
 
             pos = 0;
@@ -217,9 +219,9 @@ bool FileStream::Eof() const
     return mFile.eof();
 }
 
-int FileStream::Read(void * data, int size)
+int FileStream::Read(void * data, int esize, int count)
 {
-    return mFile.Read(data, 1, size);
+    return mFile.Read(data, esize, count);
 }
 
 int FileStream::ReadLine(void * data, int maxsize)

@@ -26,7 +26,7 @@ public:
 
     virtual bool Eof() const = 0;
 
-    virtual int Read(void * data, int size) = 0;
+    virtual int Read(void * data, int esize, int count = 1) = 0;
     virtual int ReadLine(void * data, int maxsize) = 0;
     virtual int ReadString(String & data) = 0;
 
@@ -56,7 +56,7 @@ public:
 
     virtual bool Eof() const;
 
-    virtual int Read(void * data, int size);
+    virtual int Read(void * data, int esize, int count);
     virtual int ReadLine(void * data, int maxsize);
     virtual int ReadString(String & data);
 
@@ -90,7 +90,7 @@ public:
 
     virtual bool Eof() const;
 
-    virtual int Read(void * data, int size);
+    virtual int Read(void * data, int esize, int count);
     virtual int ReadLine(void * data, int maxsize);
     virtual int ReadString(String & data);
 

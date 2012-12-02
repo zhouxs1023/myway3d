@@ -1,45 +1,24 @@
-
-// InfinateView.cpp : CInfinateView 类的实现
-//
-
 #include "stdafx.h"
-// SHARED_HANDLERS 可以在实现预览、缩略图和搜索筛选器句柄的
-// ATL 项目中进行定义，并允许与该项目共享文档代码。
-#ifndef SHARED_HANDLERS
-#include "Infinate.h"
-#endif
-
 #include "InfinateDoc.h"
 #include "InfinateView.h"
 #include "xApp.h"
+#include "xScene.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
-// CInfinateView
 
 IMPLEMENT_DYNCREATE(CInfinateView, CView)
 
 BEGIN_MESSAGE_MAP(CInfinateView, CView)
-	// 标准打印命令
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CInfinateView::OnFilePrintPreview)
-	ON_WM_CONTEXTMENU()
-	ON_WM_RBUTTONUP()
+	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_WM_DROPFILES()
 
 END_MESSAGE_MAP()
 
 
 IMP_SLN(CInfinateView);
-// CInfinateView 构造/析构
 
 CInfinateView::CInfinateView()
 {
-	// TODO: 在此处添加构造代码
 	INIT_SLN;
 }
 
@@ -50,13 +29,18 @@ CInfinateView::~CInfinateView()
 
 BOOL CInfinateView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: 在此处通过修改
-	//  CREATESTRUCT cs 来修改窗口类或样式
-
 	return CView::PreCreateWindow(cs);
 }
 
-// CInfinateView 绘制
+INT CInfinateView::OnCreate(LPCREATESTRUCT lpcs)
+{
+	if (CView::OnCreate(lpcs) == -1)
+		return -1;
+
+	DragAcceptFiles();
+
+	return 0;
+}
 
 void CInfinateView::OnDraw(CDC* /*pDC*/)
 {
@@ -65,7 +49,6 @@ void CInfinateView::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
-	// TODO: 在此处为本机数据添加绘制代码
 	static bool bInited = false;
 	if (!bInited)
 	{
@@ -74,44 +57,32 @@ void CInfinateView::OnDraw(CDC* /*pDC*/)
 	}
 }
 
-
-// CInfinateView 打印
-
-
-void CInfinateView::OnFilePrintPreview()
+void CInfinateView::OnDropFiles(HDROP hDropInfo)
 {
-#ifndef SHARED_HANDLERS
-	AFXPrintPreview(this);
-#endif
-}
+	POINT pt;
+	RECT rc;
 
-BOOL CInfinateView::OnPreparePrinting(CPrintInfo* pInfo)
-{
-	// 默认准备
-	return DoPreparePrinting(pInfo);
-}
+	GetCursorPos(&pt);
 
-void CInfinateView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: 添加额外的打印前进行的初始化过程
-}
+	CInfinateView::Instance()->ScreenToClient(&pt);
+	CInfinateView::Instance()->GetClientRect(&rc);
 
-void CInfinateView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
-{
-	// TODO: 添加打印后进行的清理过程
-}
+	if (pt.x <= rc.left || pt.x >= rc.right ||
+		pt.y <= rc.top || pt.y >= rc.bottom ||
+		!xScene::Instance()->IsInited())
+		return ;
 
-void CInfinateView::OnRButtonUp(UINT /* nFlags */, CPoint point)
-{
-	/*ClientToScreen(&point);
-	OnContextMenu(this, point);*/
-}
+	float fx = pt.x / (float)(rc.right - rc.left);
+	float fy = pt.y / (float)(rc.bottom - rc.top);
 
-void CInfinateView::OnContextMenu(CWnd* /* pWnd */, CPoint point)
-{
-#ifndef SHARED_HANDLERS
-	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
-#endif
+	int DropCount=DragQueryFile(hDropInfo, -1, NULL, 0);
+
+	char filename[128] = { 0 };
+	Point2f point = Point2f(fx, fy);
+	
+	DragQueryFile(hDropInfo, 0, filename, 128);
+
+	xEvent::OnDragFile(&point, filename);
 }
 
 
@@ -121,27 +92,8 @@ void CInfinateView::OnSize(UINT nType, int cx, int cy)
 		xApp::Instance()->Resize(cx, cy);
 }
 
-
-
-// CInfinateView 诊断
-
-#ifdef _DEBUG
-void CInfinateView::AssertValid() const
-{
-	CView::AssertValid();
-}
-
-void CInfinateView::Dump(CDumpContext& dc) const
-{
-	CView::Dump(dc);
-}
-
-CInfinateDoc* CInfinateView::GetDocument() const // 非调试版本是内联的
+CInfinateDoc* CInfinateView::GetDocument() const
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CInfinateDoc)));
 	return (CInfinateDoc*)m_pDocument;
 }
-#endif //_DEBUG
-
-
-// CInfinateView 消息处理程序

@@ -1,0 +1,7 @@
+<Materials>
+
+	<Material>
+		<diffuse_map filename = "jpg_农村石头.dds" />
+	</Material>
+
+</Materials>

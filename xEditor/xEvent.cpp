@@ -9,6 +9,7 @@ Event xEvent::OnShutdown;
 Event xEvent::OnSelectObj;
 Event xEvent::OnUnSelectObj;
 Event xEvent::OnUpdate;
+Event xEvent::OnDragFile;
 
 Event xEvent::OnNewScene;
 Event xEvent::OnSaveScene;

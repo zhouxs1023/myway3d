@@ -56,9 +56,12 @@ public:
 	void Activate(bool b) { mActivate = b; }
 	bool IsActivate() { return mActivate; }
 
+	Vec3 GetHitPosition(float fx, float fy);
+
 protected:
 	void _input();
 	void _loadPlugins();
+	void _unloadScene(void * param0, void * param1);
 
 protected:
 	Engine * mEngine;
@@ -89,6 +92,8 @@ protected:
 	xEnvironment mEnvironment;
 
 	xObjManager mObjMgr;
+
+	tEventListener<xApp> OnUnloadScene;
 };
 
 

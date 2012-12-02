@@ -13,6 +13,7 @@ public:
 	static Event OnSelectObj;
 	static Event OnUnSelectObj;
 	static Event OnUpdate;
+	static Event OnDragFile;
 
 	static Event OnNewScene;
 	static Event OnSaveScene;

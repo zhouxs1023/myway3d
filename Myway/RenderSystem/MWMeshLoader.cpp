@@ -12,8 +12,7 @@ using namespace Myway;
 
 bool MeshLoader::ReadChunk(chunk & ck, DataStreamPtr & stream)
 {
-    return stream->Read(&ck.id, sizeof(short)) == sizeof(short) &&
-           stream->Read(&ck.length, sizeof(int)) == sizeof(int);
+    return stream->Read(&ck.id, sizeof(short)) && stream->Read(&ck.length, sizeof(int));
 }
 
 void MeshLoader::Load(MeshPtr mesh, DataStreamPtr stream)
@@ -59,21 +58,11 @@ void MeshLoader::ReadHeader(DataStreamPtr & stream)
     int version;
 
     stream->ReadString(magic);
-    debug_assert(MODEL_FILE_MAGIC == magic, "this isn't Myway model file.");
+    d_assert(MODEL_FILE_MAGIC == magic && "this isn't Myway model file.");
 
     stream->Read(&version, sizeof(int));
 
-#if 0
-
-    char * v = (char*)&version;
-    char c0 = v[0];
-    char c1 = v[1];
-    char c2 = v[2];
-    char c3 = v[3];
-
-#endif
-
-    debug_assert(MODEL_FILE_VERSION == version, "this model file isn't version 0.");
+    d_assert(MODEL_FILE_VERSION == version && "this model file isn't version 0.");
 }
 
 void MeshLoader::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)

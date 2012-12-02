@@ -130,3 +130,33 @@ void xMesh::SetScale(const Vec3 & scale)
 }
 
 xMeshFactoryListener gListener;
+
+
+void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
+{
+	Point2f pt = *(Point2f*)param0;
+	TString128 meshFile = (const char *)param1;
+	TString128 base, path;
+
+	meshFile.Lower();
+	meshFile.SplitFileNameR(base, path); 
+
+	TString128 externName;
+
+	externName = File::GetExternName(base);
+
+	if (externName != "mesh")
+		return ;
+
+	xMesh * obj = (xMesh *)xObjManager::Instance()->Create("Mesh");
+
+	d_assert (obj);
+
+	Vec3 pos = xApp::Instance()->GetHitPosition(pt.x, pt.y);
+
+	obj->SetPosition(pos);
+	obj->SetScale(0.01f);
+	obj->SetMeshFile(base);
+
+	xApp::Instance()->SetSelectedObj(obj);
+}

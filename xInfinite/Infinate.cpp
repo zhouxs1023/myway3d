@@ -293,7 +293,7 @@ void CInfinateApp::OnOpenScene()
 
 void CInfinateApp::OnSaveScene()
 {
-	if (xScene::Instance()->IsDirtSave())
+	//if (xScene::Instance()->IsDirtSave())
 	{
 		xScene::Instance()->Save();
 	}

@@ -59,6 +59,7 @@ class xMeshFactoryListener
 public:
 	xMeshFactoryListener()
 		: OnInit(&xEvent::OnInit, this, &xMeshFactoryListener::_Init)
+		, OnDragFile(&xEvent::OnDragFile, this, &xMeshFactoryListener::_OnDragFile)
 	{
 	}
 
@@ -71,5 +72,8 @@ public:
 		xObjManager::Instance()->AddFactory(new xMeshFactory());
 	}
 
+	void _OnDragFile(void * param0, void * param1);
+
 	tEventListener<xMeshFactoryListener> OnInit;
+	tEventListener<xMeshFactoryListener> OnDragFile;
 };

@@ -18,8 +18,8 @@ public:
 
 	bool IsInited() { return mFilename != ""; }
 
-	void DirtSave() { mDirt = true; }
-	bool IsDirtSave() { return IsInited() &&& mDirt; }
+	void DirtSave();
+	bool IsDirtSave();
 
 	const TString128 & GetFloder() { return mFloder; }
 	const TString128 & GetFileName() { return mFilename; }

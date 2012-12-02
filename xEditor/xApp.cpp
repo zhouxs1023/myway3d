@@ -28,6 +28,7 @@ xApp::xApp()
 	: mObjMgr()
 	, mOpToolBar()
 	, mEnvironment()
+	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xApp::_unloadScene)
 {
     INIT_SLN;
 
@@ -297,4 +298,18 @@ void xApp::_loadPlugins()
 
 		++v;
 	}
+}
+
+void xApp::_unloadScene(void * param0, void * param1)
+{
+	SetSelectedObj(NULL);
+}
+
+Vec3 xApp::GetHitPosition(float x, float y)
+{
+	Ray ray = World::Instance()->MainCamera()->GetViewportRay(x, y);
+
+	Vec3 pos = ray.origin + ray.direction * 80;
+
+	return pos;
 }

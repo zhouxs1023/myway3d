@@ -6,176 +6,176 @@ using namespace Myway;
 
 const char * GetCommand(const char * cmd)
 {
-    static char tmp[256];
+	static char tmp[256];
 
-    while (cmd[0] != '\"' && cmd[0] != 0)
-        ++cmd;
+	while (cmd[0] != '\"' && cmd[0] != 0)
+		++cmd;
 
-    if (cmd[0] != '\"')
-        ++cmd;
+	if (cmd[0] != '\"')
+		++cmd;
 
-    int length = strlen(cmd);
+	int length = strlen(cmd);
 
-    Strcpy (tmp, 256, cmd);
+	Strcpy (tmp, 256, cmd);
 
-    while (length > 0 && tmp[length - 1] != '\"')
-        --length;
+	while (length > 0 && tmp[length - 1] != '\"')
+		--length;
 
-    tmp[length - 1] = 0;
+	tmp[length - 1] = 0;
 
-    return tmp;
+	return tmp;
 }
 
 class MyApp : public App_Win32
 {
-    char cmpLine[2048];
+	char cmpLine[2048];
 
 public:
-    MyApp()
+	MyApp()
 	{
 		mEntity = NULL;
 		mSceneNode = NULL;
 	}
 
-    ~MyApp() {}
+	~MyApp() {}
 
-     virtual bool Init()
-     {
-         App_Win32::Init();
+	virtual bool Init()
+	{
+		App_Win32::Init();
 
-		 DragAcceptFiles(mhWnd, TRUE);
+		DragAcceptFiles(mhWnd, TRUE);
 
-         const char * cmdLine = GetCommandLine();
+		const char * cmdLine = GetCommandLine();
 
-		 if (Strcmp(cmdLine, "") == 0)
-			 return true;
+		if (Strcmp(cmdLine, "") == 0)
+			return true;
 
-		 cmdLine = GetCommand(cmdLine);
+		cmdLine = GetCommand(cmdLine);
 
-		 LookMesh(cmdLine);
-		
-         return true;
-     }
+		LookMesh(cmdLine);
 
-	 void LookMesh(const char * filename)
-	 {
-		 TString128 meshFile = filename;
-		 TString128 base, path;
+		return true;
+	}
 
-		 meshFile.SplitFileNameR(base, path); 
+	void LookMesh(const char * filename)
+	{
+		TString128 meshFile = filename;
+		TString128 base, path;
 
-		 TString128 externName;
+		meshFile.SplitFileNameR(base, path); 
 
-		 externName = File::GetExternName(base);
+		TString128 externName;
 
-		 if (externName != "mesh")
-			 return true;
+		externName = File::GetExternName(base);
 
-		 if (mEntity)
-		 {
-			 World::Instance()->DestroyEntity(mEntity);
-			 mEntity = NULL;
-		 }
+		if (externName != "mesh")
+			return ;
 
-		 if (mSceneNode)
-		 {
-			 World::Instance()->DestroySceneNode(mSceneNode);
-		 }
+		if (mEntity)
+		{
+			World::Instance()->DestroyEntity(mEntity);
+			mEntity = NULL;
+		}
 
-		 mEntity = World::Instance()->CreateEntity("xxx", base, "core");
+		if (mSceneNode)
+		{
+			World::Instance()->DestroySceneNode(mSceneNode);
+		}
 
-		 mSceneNode = World::Instance()->CreateSceneNode();
+		mEntity = World::Instance()->CreateEntity("xxx", base);
 
-		 mSceneNode->Attach(pEntity);
+		mSceneNode = World::Instance()->CreateSceneNode();
 
-		 Aabb bound = pEntity->GetWorldAabb();
+		mSceneNode->Attach(mEntity);
 
-		 float size = 0;
+		Aabb bound = mEntity->GetWorldAabb();
 
-		 size = Math::Maximum(size, bound.GetWidth());
-		 size = Math::Maximum(size, bound.GetHeight());
-		 size = Math::Maximum(size, bound.GetDepth());
+		float size = 0;
 
-		 Camera * pCamera = World::Instance()->MainCamera();
-		 pCamera->SetPosition(bound.GetCenter() + Vec3(0, 0, -1.5f) * size);
-		 pCamera->LookAt(bound.GetCenter());
+		size = Math::Maximum(size, bound.GetWidth());
+		size = Math::Maximum(size, bound.GetHeight());
+		size = Math::Maximum(size, bound.GetDepth());
 
-	 }
+		Camera * pCamera = World::Instance()->MainCamera();
+		pCamera->SetPosition(bound.GetCenter() + Vec3(0, 0, -1.5f) * size);
+		pCamera->LookAt(bound.GetCenter());
 
-	 virtual void OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
-	 {
-		 switch (iMsg)
-		 {
-		 case WM_DROPFILES:
-			 {
-				 TCHAR meshFile[MAX_PATH] = { 0 };
-				 HDROP hDrop = (HDROP)wParam;
-				 int len = DragQueryFile(hDrop, 0, meshFile, MAX_PATH);
+	}
 
-				 if (len > 0)
-					 LookMesh(meshFile);
-			 }
-			 break;
-		 }
-	 }
+	virtual void OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
+	{
+		switch (iMsg)
+		{
+		case WM_DROPFILES:
+			{
+				TCHAR meshFile[MAX_PATH] = { 0 };
+				HDROP hDrop = (HDROP)wParam;
+				int len = DragQueryFile(hDrop, 0, meshFile, MAX_PATH);
 
-     virtual void Update()
-     {
-         App_Win32::Update();
+				if (len > 0)
+					LookMesh(meshFile);
+			}
+			break;
+		}
+	}
 
-         InputSystem::Instance()->Update();
+	virtual void Update()
+	{
+		App_Win32::Update();
 
-         SceneNode * cam = World::Instance()->MainCameraNode();
+		InputSystem::Instance()->Update();
 
-         if (IKeyboard::Instance()->KeyPressed(KC_W))
-         {
-             cam->Move(5.0f);
-         }
-         else if (IKeyboard::Instance()->KeyPressed(KC_S))
-         {
-             cam->Move(-5.0f);
-         }
-         else if (IKeyboard::Instance()->KeyPressed(KC_A))
-         {
-             cam->Right(-5.0f);
-         }
-         else if (IKeyboard::Instance()->KeyPressed(KC_D))
-         {
-             cam->Right(5.0f);
-         }
+		SceneNode * cam = World::Instance()->MainCameraNode();
 
-         if (IMouse::Instance()->MouseMoved() && IMouse::Instance()->KeyPressed(MKC_BUTTON1))
-         {
-             Point2i pt = IMouse::Instance()->GetPositionDiff();
+		if (IKeyboard::Instance()->KeyPressed(KC_W))
+		{
+			cam->Move(5.0f);
+		}
+		else if (IKeyboard::Instance()->KeyPressed(KC_S))
+		{
+			cam->Move(-5.0f);
+		}
+		else if (IKeyboard::Instance()->KeyPressed(KC_A))
+		{
+			cam->Right(-5.0f);
+		}
+		else if (IKeyboard::Instance()->KeyPressed(KC_D))
+		{
+			cam->Right(5.0f);
+		}
 
-             if (abs(pt.y) >abs(pt.x))
-             {
-                 cam->Pitch(pt.y * 0.005f, TS_LOCAL);
-             }
-             else
-             {
-                 cam->Yaw(pt.x * 0.005f, TS_PARENT);
-             }
-         }
-     }
+		if (IMouse::Instance()->MouseMoved() && IMouse::Instance()->KeyPressed(MKC_BUTTON1))
+		{
+			Point2i pt = IMouse::Instance()->GetPositionDiff();
 
- protected:
-	 Entity * mEntity;
-	 SceneNode * mSceneNode;
+			if (abs(pt.y) >abs(pt.x))
+			{
+				cam->Pitch(pt.y * 0.005f, TS_LOCAL);
+			}
+			else
+			{
+				cam->Yaw(pt.x * 0.005f, TS_PARENT);
+			}
+		}
+	}
+
+protected:
+	Entity * mEntity;
+	SceneNode * mSceneNode;
 };
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-    char sFileName[1024];
-    GetModuleFileName(GetModuleHandle(NULL), sFileName, 1024);
+	char sFileName[1024];
+	GetModuleFileName(GetModuleHandle(NULL), sFileName, 1024);
 
-    TString128 fileDir = File::GetFileDir(sFileName);
+	TString128 fileDir = File::GetFileDir(sFileName);
 
-    SetCurrentDirectory(fileDir.c_str());
+	SetCurrentDirectory(fileDir.c_str());
 
-    MyApp app;
+	MyApp app;
 
-    app.Run(hInstance);
+	app.Run(hInstance);
 
-    return 0;
+	return 0;
 }

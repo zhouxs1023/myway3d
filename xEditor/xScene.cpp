@@ -78,6 +78,9 @@ void xScene::Load(const char * filename, const char * floder)
 
 void xScene::Save()
 {
+	if (!IsInited())
+		return ;
+
 	TString128 filename = mFloder + "\\" + mFilename;
 
 	xSerializer Serializer(filename.c_str(), true);
@@ -104,4 +107,14 @@ void xScene::Save()
 
 void xScene::Export()
 {
+}
+
+void xScene::DirtSave()
+{ 
+	mDirt = true;
+}
+
+bool xScene::IsDirtSave()
+{ 
+	return IsInited() && mDirt;
 }
