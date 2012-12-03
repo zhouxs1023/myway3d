@@ -72,6 +72,8 @@ void xScene::Load(const char * filename, const char * floder)
 		xEvent::OnSerialize(&chunkId, &Serializer);
 	}
 
+	xEvent::OnAfterLoadScene(NULL, NULL);
+
 	mDirt = false;
 	mIsLoading = false;
 }

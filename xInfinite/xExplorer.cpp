@@ -35,6 +35,8 @@ xExplorer::xExplorer()
 : OnInit(&xEvent::OnInit, this, &xExplorer::_Init)
 , OnUnloadScene(&xEvent::OnInit, this, &xExplorer::_UnloadScene)
 , OnSerialize(&xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
+, OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)
+, OnObjCreated(&xEvent::OnObjCreated, this, &xExplorer::_ObjCreated)
 {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
 }
@@ -198,6 +200,7 @@ void xExplorer::_Init(void * param0, void * param1)
 
 void xExplorer::_UnloadScene(void * param0, void * param1)
 {
+	mItems.Destroy();
 	mViewTree.DeleteAllItems();
 }
 
@@ -239,7 +242,11 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 	int chunkId = *(int *)param0;
 	xSerializer & Serializer = *(xSerializer *)param1;
 
+	const int K_ChunkId = 'xExp';
 	const int K_Version = 0;
+
+	if (K_ChunkId != chunkId)
+		return ;
 
 	if (Serializer.IsSave())
 	{
@@ -273,6 +280,95 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 			}
 		}
 	}
+}
+
+void xExplorer::_AfterLoadScene(void * param0, void * param1)
+{
+	mViewTree.DeleteAllItems();
+
+	for (int i = 0; i < mItems.Size(); ++i)
+	{
+		Item & item = mItems[i];
+
+		if (item.floder)
+		{
+			HTREEITEM hItem = mViewTree.InsertItem(item.name.c_str(), 0, 0);
+
+			for (int j = 0; j < item.children.Size(); ++j)
+				_InsertItem(hItem, item.children[j]);
+		}
+		else
+		{
+			xObj * obj = xObjManager::Instance()->Get(item.name.c_str());
+			d_assert (obj);
+
+			TString128 type = obj->GetTypeName();
+
+			Map<TString128, int>::Iterator whr = mTypeIconMap.Find(type);
+			Map<TString128, int>::Iterator end = mTypeIconMap.End();
+
+			int index = 0;
+
+			if (whr != end)
+				index = whr->second;
+
+			mViewTree.InsertItem(item.name.c_str(), index, index);
+		}
+
+	}
+}
+
+void xExplorer::_ObjCreated(void * param0, void * param1)
+{
+	xObj * obj = (xObj *)param0;
+
+	TString128 type = obj->GetTypeName();
+
+	Map<TString128, int>::Iterator whr = mTypeIconMap.Find(type);
+	Map<TString128, int>::Iterator end = mTypeIconMap.End();
+
+	int index = 0;
+
+	if (whr != end)
+		index = whr->second;
+
+	Item item;
+	item.name = obj->GetName();
+	item.floder = false;
+
+	mItems.PushBack(item);
+
+	mViewTree.InsertItem(item.name.c_str(), index, index);
+}
+
+void xExplorer::_InsertItem(HTREEITEM hItem, Item & item)
+{
+	if (item.floder)
+	{
+		HTREEITEM hItem1 = mViewTree.InsertItem(item.name.c_str(), 0, 0, hItem);
+
+		for (int j = 0; j < item.children.Size(); ++j)
+			_InsertItem(hItem1, item.children[j]);
+	}
+	else
+	{
+		xObj * obj = xObjManager::Instance()->Get(item.name.c_str());
+		d_assert (obj);
+
+		TString128 type = obj->GetTypeName();
+
+		Map<TString128, int>::Iterator whr = mTypeIconMap.Find(type);
+		Map<TString128, int>::Iterator end = mTypeIconMap.End();
+
+		int index = 0;
+
+		if (whr != end)
+			index = whr->second;
+
+		mViewTree.InsertItem(item.name.c_str(), index, index, hItem);
+	}
+
+	mViewTree.Expand(hItem, TVE_EXPAND);
 }
 
 void xExplorer::OnSort(UINT id)

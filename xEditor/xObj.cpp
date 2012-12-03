@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xObj.h"
 #include "xApp.h"
+#include "xScene.h"
 
 DF_PROPERTY_BEGIN(xObj)
 	DF_PROPERTY(xObj, Name, "General", "Name", PT_TString, 128)
@@ -185,7 +186,14 @@ xObj * xObjManager::Create(const char * type)
 	xObj * obj = sf->Create(uxObjName.c_str());
 
 	if (obj)
+	{
 		mObjs.PushBack(obj);
+	}
+
+	if (!xScene::Instance()->IsLoading())
+	{
+		xEvent::OnObjCreated(obj, NULL);
+	}
 
 	return obj;
 }

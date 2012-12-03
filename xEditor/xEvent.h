@@ -14,10 +14,12 @@ public:
 	static Event OnUnSelectObj;
 	static Event OnUpdate;
 	static Event OnDragFile;
+	static Event OnObjCreated;
 
 	static Event OnNewScene;
 	static Event OnSaveScene;
 	static Event OnLoadScene;
+	static Event OnAfterLoadScene;
 	static Event OnUnloadScene;
 	static Event OnSerialize;
 

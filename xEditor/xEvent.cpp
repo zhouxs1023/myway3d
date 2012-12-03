@@ -10,10 +10,12 @@ Event xEvent::OnSelectObj;
 Event xEvent::OnUnSelectObj;
 Event xEvent::OnUpdate;
 Event xEvent::OnDragFile;
+Event xEvent::OnObjCreated;
 
 Event xEvent::OnNewScene;
 Event xEvent::OnSaveScene;
 Event xEvent::OnLoadScene;
+Event xEvent::OnAfterLoadScene;
 Event xEvent::OnUnloadScene;
 Event xEvent::OnSerialize;
 

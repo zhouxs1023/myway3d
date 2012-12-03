@@ -46,9 +46,15 @@ public:
 	void _Init(void * param0, void * param1);
 	void _UnloadScene(void * param0, void * param1);
 	void _OnSerialize(void * param0, void * param1);
+	void _AfterLoadScene(void * param0, void * param1);
+	void _ObjCreated(void * param0, void * param1);
 
 	void _SaveItem(Item & item, xSerializer & Serializer);
 	void _LoadItem(Item & item, xSerializer & Serializer);
+
+protected:
+	void _InsertItem(HTREEITEM hItem, Item & item);
+	void _InitTreeView();
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -64,7 +70,9 @@ protected:
 protected:
 	tEventListener<xExplorer> OnInit;
 	tEventListener<xExplorer> OnUnloadScene;
+	tEventListener<xExplorer> OnAfterLoadScene;
 	tEventListener<xExplorer> OnSerialize;
+	tEventListener<xExplorer> OnObjCreated;
 
 	Map<TString128, int> mTypeIconMap;
 
