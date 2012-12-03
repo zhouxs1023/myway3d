@@ -119,26 +119,36 @@ BOOL CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 BOOL CMainFrame::CreateDockingWindows()
 {
 	// object creator
-	if (!mObjCreatorView.Create("Object Creator", this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW,
+	if (!mObjectView.Create("Object", this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_FILEVIEW,
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
 	{
 		TRACE0("can't create \"object creator pane\"\n");
 		return FALSE;
 	}
 
-	mObjCreatorView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&mObjCreatorView);
+	mObjectView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&mObjectView);
 
 	// property
-	if (!m_wndProperties.Create("Property", this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, 
+	if (!mProperty.Create("Property", this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("can't create \"property pane\"\n");
 		return FALSE;
 	}
 
-	m_wndProperties.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndProperties);
+	mProperty.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&mProperty);
+
+	if (!mExplorer.Create("Explorer", this, CRect(0, 0, 200, 200), TRUE, ID_EXPLORER, 
+		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
+	{
+		TRACE0("can't create \"explorer pane\"\n");
+		return FALSE;
+	}
+
+	mExplorer.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&mExplorer);
 
 	xEvent::OnCreatePane(this, NULL);
 

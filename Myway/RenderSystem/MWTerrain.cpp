@@ -10,7 +10,7 @@
 
 namespace Myway {
 
-const int K_Terrain_Version = 0;
+const int K_Terrain_Version = 1;
 const int K_Terrain_Magic = 'TRN0';
 
 Terrain::Terrain(const Config & config)
@@ -163,7 +163,7 @@ void Terrain::_calcuNormals()
 {
 	d_assert (mNormals == NULL);
 
-	mNormals = new Vec3[mConfig.iVertexCount];
+	mNormals = new Color[mConfig.iVertexCount];
 
 	for (int j = 0; j < mConfig.zVertexCount; ++j)
 	{
@@ -193,7 +193,15 @@ void Terrain::_calcuNormals()
 			if (len_B > 0.01f && len_L > 0.01f)
 			N += B.CrossN(L);
 
-			mNormals[j * mConfig.xVertexCount + i] = N.Normalize();
+			N.NormalizeL();
+			N = (N + Vec3::Unit) / 2 * 255.0f;
+			
+			unsigned char cr = (unsigned char)N.x;
+			unsigned char cg = (unsigned char)N.y;
+			unsigned char cb = (unsigned char)N.z;
+			unsigned char ca = 255;
+
+			mNormals[j * mConfig.xVertexCount + i] = Color(cr, cg, cb, ca);
 		}
 	}
 }
@@ -229,9 +237,9 @@ void Terrain::_Create(const Config & config)
 	for (int i = 0; i < mConfig.iVertexCount; ++i)
 		mHeights[i] = 0;
 
-	mNormals = new Vec3[mConfig.iVertexCount];
+	mNormals = new Color[mConfig.iVertexCount];
 	for (int i = 0; i < mConfig.iVertexCount; ++i)
-		mNormals[i] = Vec3(0, 1, 0);
+		mNormals[i] = Color(127, 255, 127);
 
 	// create weight maps
 	mConfig.xWeightMapSize = Terrain::kWeightMapSize * mConfig.xSectionCount;
@@ -280,11 +288,45 @@ void Terrain::_Load(const char * filename)
 		mHeights = new float[mConfig.iVertexCount];
 		count = stream->Read(&mHeights[0], sizeof(float), mConfig.iVertexCount);
 
-		mNormals = new Vec3[mConfig.iVertexCount];
-		count = stream->Read(&mNormals[0], sizeof(Vec3), mConfig.iVertexCount);
+		Vec3 * normals = new Vec3[mConfig.iVertexCount];
+		count = stream->Read(&normals[0], sizeof(Vec3), mConfig.iVertexCount);
 
 		mWeights = new Color[mConfig.iWeightMapSize];
 		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
+
+		mNormals = new Color[mConfig.iVertexCount];
+		for (int i = 0; i < mConfig.iVertexCount; ++i)
+		{
+			unsigned char r = unsigned char ((normals[i].x + 1) / 2 * 255);
+			unsigned char g = unsigned char ((normals[i].y + 1) / 2 * 255);
+			unsigned char b = unsigned char ((normals[i].z + 1) / 2 * 255);
+			unsigned char a = 255;
+			mNormals[i] = Color(r, g, b, a);
+		}
+
+		delete[] normals;
+	}
+	else if (version == 1)
+	{
+		int count = 0;
+
+		count = stream->Read(&mConfig, sizeof(Config));
+		count = stream->Read(mLayer, sizeof(Layer), kMaxLayers);
+
+		count = stream->Read(&mBound, sizeof(Aabb));
+
+		mHeights = new float[mConfig.iVertexCount];
+		count = stream->Read(&mHeights[0], sizeof(float), mConfig.iVertexCount);
+
+		mNormals = new Color[mConfig.iVertexCount];
+		count = stream->Read(&mNormals[0], sizeof(Color), mConfig.iVertexCount);
+
+		mWeights = new Color[mConfig.iWeightMapSize];
+		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
+	}
+	else
+	{
+		d_assert (0);
 	}
 
 	_init();
@@ -316,7 +358,7 @@ void Terrain::Save(const char * filename)
 	count = file.Write(mHeights, sizeof(float), mConfig.iVertexCount);
 
 	// write normals
-	count = file.Write(mNormals, sizeof(Vec3), mConfig.iVertexCount);
+	count = file.Write(mNormals, sizeof(Color), mConfig.iVertexCount);
 	
 	// write weights
 	count = file.Write(mWeights, sizeof(Color), mConfig.iWeightMapSize);
@@ -415,7 +457,7 @@ float Terrain::GetHeight(int x, int z)
 	return mHeights[z * mConfig.xVertexCount + x];
 }
 
-Vec3 Terrain::GetNormal(int x, int z)
+Color Terrain::GetNormal(int x, int z)
 {
 	d_assert (x < mConfig.xVertexCount && z < mConfig.zVertexCount);
 
@@ -467,6 +509,28 @@ Vec3 Terrain::_getPosition(int x, int z)
 	z = Math::Minimum(z, mConfig.zVertexCount - 1);
 
 	return GetPosition(x, z);
+}
+
+float Terrain::_getHeight(int x, int z)
+{
+	x = Math::Maximum(0, x);
+	z = Math::Maximum(0, z);
+
+	x = Math::Minimum(x, mConfig.xVertexCount - 1);
+	z = Math::Minimum(z, mConfig.zVertexCount - 1);
+
+	return GetHeight(x, z);
+}
+
+Color Terrain::_getNormal(int x, int z)
+{
+	x = Math::Maximum(0, x);
+	z = Math::Maximum(0, z);
+
+	x = Math::Minimum(x, mConfig.xVertexCount - 1);
+	z = Math::Minimum(z, mConfig.zVertexCount - 1);
+
+	return GetNormal(x, z);
 }
 
 void Terrain::Render()
@@ -689,10 +753,10 @@ void Terrain::UnlockHeight()
 
 	// need re-calculate normals
 	Rect rcNormal = mLockedRect;
-	rcNormal.x1 -= 1;
-	rcNormal.x2 += 1;
-	rcNormal.y1 -= 1;
-	rcNormal.y2 += 1;
+	rcNormal.x1 -= 2;
+	rcNormal.x2 += 2;
+	rcNormal.y1 -= 2;
+	rcNormal.y2 += 2;
 
 	rcNormal.x1 = Math::Maximum(0, rcNormal.x1);
 	rcNormal.y1 = Math::Maximum(0, rcNormal.y1);
@@ -727,7 +791,15 @@ void Terrain::UnlockHeight()
 			if (len_B > 0.01f && len_L > 0.01f)
 				N += B.CrossN(L);
 
-			mNormals[j * mConfig.xVertexCount + i] = N.Normalize();
+			N.NormalizeL();
+			N = (N + Vec3::Unit) / 2 * 255.0f;
+
+			unsigned char cr = (unsigned char)N.x;
+			unsigned char cg = (unsigned char)N.y;
+			unsigned char cb = (unsigned char)N.z;
+			unsigned char ca = 255;
+
+			mNormals[j * mConfig.xVertexCount + i] = Color(cr, cg, cb, ca);
 		}
 	}
 

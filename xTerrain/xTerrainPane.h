@@ -25,7 +25,7 @@ public:
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-
+	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point) {}
 
 	void _Create(void * param0, void * param1);
 	void _Init(void * param0, void * param1);

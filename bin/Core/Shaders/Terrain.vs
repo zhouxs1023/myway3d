@@ -7,7 +7,7 @@
 struct VS_IN
 {
 	float2 xz			: POSITION;
-	float3 normal		: NORMAL;
+	float4 normal		: NORMAL;
 	float  y			: TEXCOORD0;
 	float delta			: BLENDWEIGHT;
 };
@@ -76,7 +76,7 @@ VS_OUT main(VS_IN In)
     Out.tcoord34.xy = detailUV * gUVScale.z;
     Out.tcoord34.zw = detailUV * gUVScale.w;
     
-    Out.normalDepth.xyz = In.normal;
+    Out.normalDepth.xyz = In.normal.xyz * 2 - 1;
     Out.normalDepth.w = Out.position.w;
     
     return Out;

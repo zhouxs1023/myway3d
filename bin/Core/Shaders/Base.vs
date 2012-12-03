@@ -31,7 +31,7 @@ VS_OUT main(VS_IN In)
     //copy tcoord
     Out.tcoord = In.tcoord;
     
-    Out.normalDepth.xyz = mul(In.normal, float3x3(matWorld));
+    Out.normalDepth.xyz = normalize(mul(In.normal, float3x3(matWorld)));
     Out.normalDepth.w = Out.position.w;
     
     return Out;

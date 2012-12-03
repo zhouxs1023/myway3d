@@ -12,9 +12,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ClassView.cpp">
-      <Filter>Ui\MFC App</Filter>
-    </ClCompile>
     <ClCompile Include="Infinate.cpp">
       <Filter>Ui\MFC App</Filter>
     </ClCompile>
@@ -36,23 +33,23 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Ui\MFC App</Filter>
     </ClCompile>
-    <ClCompile Include="PropertiesWnd.cpp">
-      <Filter>Ui</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjCreatorView.cpp">
-      <Filter>Ui</Filter>
-    </ClCompile>
     <ClCompile Include="xSceneNewDlg.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
     <ClCompile Include="xSceneOpenDlg.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
+    <ClCompile Include="xExplorer.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="xObjectView.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
+    <ClCompile Include="xPropertyGrid.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ClassView.h">
-      <Filter>Ui\MFC App</Filter>
-    </ClInclude>
     <ClInclude Include="Infinate.h">
       <Filter>Ui\MFC App</Filter>
     </ClInclude>
@@ -80,16 +77,19 @@
     <ClInclude Include="resource.h">
       <Filter>Res</Filter>
     </ClInclude>
-    <ClInclude Include="PropertiesWnd.h">
-      <Filter>Ui</Filter>
-    </ClInclude>
-    <ClInclude Include="ObjCreatorView.h">
-      <Filter>Ui</Filter>
-    </ClInclude>
     <ClInclude Include="xSceneNewDlg.h">
       <Filter>Ui</Filter>
     </ClInclude>
     <ClInclude Include="xSceneOpenDlg.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xExplorer.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xObjectView.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xPropertyGrid.h">
       <Filter>Ui</Filter>
     </ClInclude>
   </ItemGroup>

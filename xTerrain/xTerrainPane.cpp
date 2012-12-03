@@ -17,6 +17,7 @@ xTerrainPane gTerrainPane;
 BEGIN_MESSAGE_MAP(xTerrainPane, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_WM_CONTEXTMENU()
 
 END_MESSAGE_MAP()
 

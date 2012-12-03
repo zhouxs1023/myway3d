@@ -1,12 +1,8 @@
-
-// MainFrm.h : CMainFrame 类的接口
-//
-
 #pragma once
-#include "ObjCreatorView.h"
-#include "ClassView.h"
+#include "xObjectView.h"
 #include "OutputWnd.h"
-#include "PropertiesWnd.h"
+#include "xPropertyGrid.h"
+#include "xExplorer.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -35,8 +31,9 @@ protected:  // 控件条嵌入成员
 	CMFCStatusBar m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
 
-	ObjCreatorView mObjCreatorView;
-	CPropertiesWnd m_wndProperties;
+	xObjectView mObjectView;
+	xPropertyGrid mProperty;
+	xExplorer mExplorer;
 
 // 生成的消息映射函数
 protected:

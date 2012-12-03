@@ -211,6 +211,17 @@ void xEditTerrainHeight::_UpdateGeometry()
 				heights[index++] += d;
 			else if (mOp == eDown)
 				heights[index++] -= d;
+			else if (mOp == eSmooth)
+			{
+				float ha = terrain->_getHeight(i - 1, j + 0);
+				float hb = terrain->_getHeight(i + 0, j - 1);
+				float hc = terrain->_getHeight(i + 1, j + 0);
+				float hd = terrain->_getHeight(i + 0, j + 1);
+				float hm = heights[index];
+				float hAvg = (hm + ha + hb + hc + hd) / 5;
+				
+				heights[index++] = Math::Lerp(hm, hAvg, d);
+			}
 		}
 	}
 

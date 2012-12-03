@@ -92,12 +92,12 @@ public:
 	TerrainSection *	GetSection(int x, int z);
 	Vec3				GetPosition(int x, int z);
 	float				GetHeight(int x, int z);
-	Vec3				GetNormal(int x, int z);
+	Color				GetNormal(int x, int z);
 	Color				GetWeight(int x, int z);
 	TexturePtr			GetWeightMap(int x, int z);
 
 	const float *		GetHeights() const { return mHeights; }
-	const Vec3 *		GetNormals() const { return mNormals; }
+	const Color *		GetNormals() const { return mNormals; }
 
 	void				Render();
 	void				RenderInMirror();
@@ -124,11 +124,14 @@ public:
 	TexturePtr			_getNormalMap(int layer);
 	TexturePtr			_getSpecularMap(int layer);
 
+	// x, z. clamp in (0, vertCount - 1).
+	Vec3				_getPosition(int x, int z);
+	float				_getHeight(int x, int z);
+	Color				_getNormal(int x, int z);
+
 protected:
     void                OnPreVisibleCull(void * param0, void * param1);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
-
-	Vec3				_getPosition(int x, int z);
 
 	void				_Create(const Config & config);
 	void				_Load(const char * filename);
@@ -150,8 +153,8 @@ protected:
     Technique * mTech;
 	VertexBufferPtr mXYStream;
 
-	float *	mHeights;
-	Vec3 *	mNormals;
+	float * mHeights;
+	Color * mNormals;
 	Color * mWeights;
 
 	Aabb mBound;

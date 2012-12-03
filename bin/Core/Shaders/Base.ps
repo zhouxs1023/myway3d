@@ -24,7 +24,7 @@ uniform float4 gClipPlane;
 PS_OUT main(PS_IN In)
 {
     PS_OUT Out;
-        
+
     Out.color = tex2D(tex_diffuse, In.tcoord);
     Out.normal = float4(In.normalDepth.xy, 0, 0);
     Out.material = float4(1, 1, 1, 1);

@@ -42,6 +42,7 @@ public:
 	virtual xObj * Create(const char * name) = 0;
 	virtual const char * GetGroupName() = 0;
 	virtual const char * GetTypeName() = 0;
+	virtual const char * GetIcon() { return "..\\ui\\default.ico"; }
 };
 
 class X_ENTRY xObjManager

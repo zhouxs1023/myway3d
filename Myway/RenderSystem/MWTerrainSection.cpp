@@ -44,13 +44,13 @@ void TerrainSection::Init()
     int ztile = zSectionVertSize - 1;
 
 	const float * pHeights = mTerrain->GetHeights();
-    const Vec3 * pNormals = mTerrain->GetNormals();
+    const Color * pNormals = mTerrain->GetNormals();
 
    //create vertex declaration
     VertexDeclarationPtr pVertexDecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
 	pVertexDecl->AddElement(_POSITION, 0,  DT_FLOAT2, DU_POSITION, 0);
     pVertexDecl->AddElement(_HEIGHT, 0,  DT_FLOAT1, DU_TEXCOORD, 0);
-    pVertexDecl->AddElement(_NORMAL, 0,  DT_FLOAT3, DU_NORMAL, 0);
+    pVertexDecl->AddElement(_NORMAL, 0,  DT_COLOR, DU_NORMAL, 0);
     pVertexDecl->AddElement(_MORPH, 0, DT_FLOAT1, DU_BLENDWEIGHT, 0);
     pVertexDecl->Init();
 
@@ -65,21 +65,24 @@ void TerrainSection::Init()
     int iStride1 = sizeof(float);
     VertexBufferPtr pVertexBuffer1 = mgr.CreateVertexBuffer(iVertexCount * iStride1);
 
-    int iStride2 = sizeof(Vec3);
+    int iStride2 = sizeof(Color);
     VertexBufferPtr pVertexBuffer2 = mgr.CreateVertexBuffer(iVertexCount * iStride2);
 
     int iSrcOffset = mSectionZ * ztile * xVertSize + mSectionX * xtile;
 
     float * heights = (float *)pVertexBuffer1->Lock(0, 0, LOCK_DISCARD);
-    Vec3 * normals = (Vec3 *)pVertexBuffer2->Lock(0, 0, LOCK_DISCARD);
+    int * normals = (int *)pVertexBuffer2->Lock(0, 0, LOCK_DISCARD);
     {
         pHeights += iSrcOffset;
         pNormals += iSrcOffset;
 
         for (int i = 0; i < zSectionVertSize; ++i)
         {
-            Memcpy(heights, pHeights, xSectionVertSize * sizeof(float));
-            Memcpy(normals, pNormals, xSectionVertSize * sizeof(Vec3));
+			for (int j = 0; j < xSectionVertSize; ++j)
+			{
+				heights[j] = pHeights[j];
+				normals[j] = RGBA(pNormals[j].r, pNormals[j].g, pNormals[j].b, 255);
+			}
 
             heights += xSectionVertSize;
             normals += xSectionVertSize;
