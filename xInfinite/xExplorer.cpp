@@ -2,6 +2,91 @@
 #include "xExplorer.h"
 #include "Resource.h"
 #include "Infinate.h"
+#include "xScene.h"
+
+BEGIN_MESSAGE_MAP(xExplorerTree, CViewTree)
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
+	ON_WM_TIMER()
+	ON_NOTIFY_REFLECT(TVN_BEGINDRAG, OnBegindrag)
+END_MESSAGE_MAP()
+
+xExplorerTree::xExplorerTree(xExplorer * explorer)
+{
+	mExplorer = explorer;
+}
+
+xExplorerTree::~xExplorerTree()
+{
+}
+
+void xExplorerTree::OnBegindrag(NMHDR* pNMHDR, LRESULT* pResult)
+{
+	NM_TREEVIEW* pNMTreeView = (NM_TREEVIEW*)pNMHDR;
+	*pResult = 0;
+
+	mDragItem = pNMTreeView->itemNew.hItem;
+
+	HIMAGELIST himl;    // handle to image list 
+	RECT rcItem;        // bounding rectangle of item 
+
+	// Tell the tree-view control to create an image to use 
+	// for dragging. 
+	himl = TreeView_CreateDragImage(m_hWnd, pNMTreeView->itemNew.hItem); 
+
+	// Get the bounding rectangle of the item being dragged. 
+	TreeView_GetItemRect(m_hWnd, pNMTreeView->itemNew.hItem, &rcItem, TRUE); 
+
+	// Start the drag operation. 
+	ImageList_BeginDrag(himl, 0, 0, 0);
+	//ImageList_DragEnter(m_hWnd, pNMTreeView->ptDrag.x, pNMTreeView->ptDrag.x); 
+
+	SetCapture();
+	ImageList_DragShowNolock(TRUE);
+
+	mDragging = TRUE;
+}
+
+void xExplorerTree::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (mDragging) 
+	{
+		POINT pt;
+		GetCursorPos(&pt);
+		// Drag the item to the current position of the mouse pointer. 
+		// First convert the dialog coordinates to control coordinates. 
+		ImageList_DragMove(pt.x, pt.y);
+	} 
+}
+
+void xExplorerTree::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	if (mDragging) 
+	{ 
+		ImageList_EndDrag(); 
+
+		ReleaseCapture();
+
+		CRect winRC;
+		GetWindowRect(&winRC);
+		HTREEITEM hItem;
+		if((hItem = HitTest(point, &nFlags)) != NULL)
+		{
+			if (mDragItem != hItem && hItem != GetParentItem(mDragItem))
+			{
+				mExplorer->_CopyItem(hItem, mDragItem);
+			}
+
+			mDragging = false; 
+		}
+	}
+}
+
+
+
+
+
+
 
 
 class xExplorerMenuButton : public CMFCToolBarMenuButton
@@ -37,6 +122,7 @@ xExplorer::xExplorer()
 , OnSerialize(&xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
 , OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)
 , OnObjCreated(&xEvent::OnObjCreated, this, &xExplorer::_ObjCreated)
+, mViewTree(this)
 {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
 }
@@ -110,42 +196,43 @@ void xExplorer::OnSize(UINT nType, int cx, int cy)
 	AdjustLayout();
 }
 
-void xExplorer::FillClassView()
+
+void xExplorer::_CopyItem(HTREEITEM hDesItem, HTREEITEM hSrcItem)
 {
-	HTREEITEM hRoot = mViewTree.InsertItem(_T("FakeApp 类"), 0, 0);
-	mViewTree.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+	if (hDesItem == NULL || hSrcItem == NULL)
+		return;
 
-	HTREEITEM hClass = mViewTree.InsertItem(_T("CFakeAboutDlg"), 1, 1, hRoot);
-	mViewTree.InsertItem(_T("CFakeAboutDlg()"), 3, 3, hClass);
+	Item * desItem = _getItem(hDesItem);
+	Item * srcItem = _getItem(hSrcItem);
 
-	mViewTree.Expand(hRoot, TVE_EXPAND);
+	d_assert (desItem && srcItem);
 
-	hClass = mViewTree.InsertItem(_T("CFakeApp"), 1, 1, hRoot);
-	mViewTree.InsertItem(_T("CFakeApp()"), 3, 3, hClass);
-	mViewTree.InsertItem(_T("InitInstance()"), 3, 3, hClass);
-	mViewTree.InsertItem(_T("OnAppAbout()"), 3, 3, hClass);
+	if (!desItem->floder)
+		return ;
 
-	hClass = mViewTree.InsertItem(_T("CFakeAppDoc"), 1, 1, hRoot);
-	mViewTree.InsertItem(_T("CFakeAppDoc()"), 4, 4, hClass);
-	mViewTree.InsertItem(_T("~CFakeAppDoc()"), 3, 3, hClass);
-	mViewTree.InsertItem(_T("OnNewDocument()"), 3, 3, hClass);
 
-	hClass = mViewTree.InsertItem(_T("CFakeAppView"), 1, 1, hRoot);
-	mViewTree.InsertItem(_T("CFakeAppView()"), 4, 4, hClass);
-	mViewTree.InsertItem(_T("~CFakeAppView()"), 3, 3, hClass);
-	mViewTree.InsertItem(_T("GetDocument()"), 3, 3, hClass);
-	mViewTree.Expand(hClass, TVE_EXPAND);
+	int image = 0, image1 = 0;
+	mViewTree.GetItemImage(hSrcItem, image, image1);
+	
+	_InsertItem(desItem->hItem, *srcItem);
 
-	hClass = mViewTree.InsertItem(_T("CFakeAppFrame"), 1, 1, hRoot);
-	mViewTree.InsertItem(_T("CFakeAppFrame()"), 3, 3, hClass);
-	mViewTree.InsertItem(_T("~CFakeAppFrame()"), 3, 3, hClass);
-	mViewTree.InsertItem(_T("m_wndMenuBar"), 6, 6, hClass);
-	mViewTree.InsertItem(_T("m_wndToolBar"), 6, 6, hClass);
-	mViewTree.InsertItem(_T("m_wndStatusBar"), 6, 6, hClass);
+	desItem->children.PushBack(srcItem);
 
-	hClass = mViewTree.InsertItem(_T("Globals"), 2, 2, hRoot);
-	mViewTree.InsertItem(_T("theFakeApp"), 5, 5, hClass);
-	mViewTree.Expand(hClass, TVE_EXPAND);
+	if (srcItem->parent)
+	{
+		for (int i = 0; i < srcItem->parent->children.Size(); ++i)
+		{
+			if (srcItem->parent->children[i] == srcItem)
+			{
+				srcItem->parent->children.Erase(i);
+				break;
+			}
+		}
+	}
+	
+	mViewTree.DeleteItem(hSrcItem);
+
+	Invalidate();
 }
 
 void xExplorer::OnContextMenu(CWnd* pWnd, CPoint point)
@@ -214,7 +301,7 @@ void xExplorer::_SaveItem(Item & item, xSerializer & Serializer)
 
 	for (int i = 0; i < size; ++i)
 	{
-		_SaveItem(item.children[i], Serializer);
+		_SaveItem(*item.children[i], Serializer);
 	}
 }
 
@@ -229,9 +316,9 @@ void xExplorer::_LoadItem(Item & item, xSerializer & Serializer)
 
 	for (int i = 0; i < size; ++i)
 	{
-		Item child;
-
-		_LoadItem(child, Serializer);
+		Item * child = new Item();
+		child->parent = &item;
+		_LoadItem(*child, Serializer);
 
 		item.children.PushBack(child);
 	}
@@ -257,7 +344,7 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 		Serializer << size;
 
 		for (int i = 0; i < size; ++i)
-			_SaveItem(mItems[i], Serializer);
+			_SaveItem(*mItems[i], Serializer);
 	}
 	else
 	{
@@ -272,9 +359,9 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 
 			for (int i = 0; i < size; ++i)
 			{
-				Item item;
-
-				_LoadItem(item, Serializer);
+				Item * item = new Item();
+				item->parent = NULL;
+				_LoadItem(*item, Serializer);
 
 				mItems.PushBack(item);
 			}
@@ -288,14 +375,14 @@ void xExplorer::_AfterLoadScene(void * param0, void * param1)
 
 	for (int i = 0; i < mItems.Size(); ++i)
 	{
-		Item & item = mItems[i];
+		Item & item = *mItems[i];
 
 		if (item.floder)
 		{
-			HTREEITEM hItem = mViewTree.InsertItem(item.name.c_str(), 0, 0);
+			item.hItem = mViewTree.InsertItem(item.name.c_str(), 0, 0);
 
 			for (int j = 0; j < item.children.Size(); ++j)
-				_InsertItem(hItem, item.children[j]);
+				_InsertItem(item.hItem, *item.children[j]);
 		}
 		else
 		{
@@ -312,9 +399,8 @@ void xExplorer::_AfterLoadScene(void * param0, void * param1)
 			if (whr != end)
 				index = whr->second;
 
-			mViewTree.InsertItem(item.name.c_str(), index, index);
+			item.hItem = mViewTree.InsertItem(item.name.c_str(), index, index);
 		}
-
 	}
 }
 
@@ -332,23 +418,24 @@ void xExplorer::_ObjCreated(void * param0, void * param1)
 	if (whr != end)
 		index = whr->second;
 
-	Item item;
-	item.name = obj->GetName();
-	item.floder = false;
+	Item * item = new Item();
+	item->parent = NULL;
+	item->name = obj->GetName();
+	item->floder = false;
+
+	item->hItem = mViewTree.InsertItem(item->name.c_str(), index, index);
 
 	mItems.PushBack(item);
-
-	mViewTree.InsertItem(item.name.c_str(), index, index);
 }
 
 void xExplorer::_InsertItem(HTREEITEM hItem, Item & item)
 {
 	if (item.floder)
 	{
-		HTREEITEM hItem1 = mViewTree.InsertItem(item.name.c_str(), 0, 0, hItem);
+		item.hItem = mViewTree.InsertItem(item.name.c_str(), 0, 0, hItem);
 
 		for (int j = 0; j < item.children.Size(); ++j)
-			_InsertItem(hItem1, item.children[j]);
+			_InsertItem(item.hItem, *item.children[j]);
 	}
 	else
 	{
@@ -365,7 +452,7 @@ void xExplorer::_InsertItem(HTREEITEM hItem, Item & item)
 		if (whr != end)
 			index = whr->second;
 
-		mViewTree.InsertItem(item.name.c_str(), index, index, hItem);
+		item.hItem = mViewTree.InsertItem(item.name.c_str(), index, index, hItem);
 	}
 
 	mViewTree.Expand(hItem, TVE_EXPAND);
@@ -395,9 +482,92 @@ void xExplorer::OnUpdateSort(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(pCmdUI->m_nID == m_nCurrSort);
 }
 
+xExplorer::Item * xExplorer::_getItem(HTREEITEM hItem, Item & cItem)
+{
+	if (cItem.hItem == hItem)
+		return &cItem;
+	
+	for (int i = 0; i < cItem.children.Size(); ++i)
+	{
+		Item * ritem = _getItem(hItem, *cItem.children[i]);
+
+		if (ritem != NULL)
+			return ritem;
+	}
+
+	return NULL;
+}
+
+xExplorer::Item * xExplorer::_getItem(HTREEITEM hItem)
+{
+	for (int i = 0; i < mItems.Size(); ++i)
+	{
+		Item & item = *mItems[i];
+		if (item.hItem == hItem)
+			return &item;
+
+		for (int j = 0; j < item.children.Size(); ++j)
+		{
+			Item * ritem = _getItem(hItem, *item.children[j]);
+
+			if (ritem != NULL)
+				return ritem;
+		}
+	}
+
+	return NULL;
+}
+
 void xExplorer::OnNewFolder()
 {
-	AfxMessageBox(_T("新建文件夹..."));
+	if (!xScene::Instance()->IsInited())
+		return ;
+
+	HTREEITEM hItem = mViewTree.GetSelectedItem();
+
+	bool bRoot = false;
+	Item * rItem = NULL;
+
+	if (hItem == NULL)
+		bRoot = true;
+	else
+	{
+		rItem = _getItem(hItem);
+
+		d_assert (rItem);
+
+		if (rItem->floder)
+		{
+			bRoot = false;
+		}
+		else
+		{
+			bRoot = true;
+		}
+	}
+
+	if (bRoot)
+	{
+		Item * item = new Item();
+		item->parent = NULL;
+		item->name = "Floder";
+		item->floder = true;
+		item->hItem = mViewTree.InsertItem(item->name.c_str(), 0, 0);
+
+		mItems.PushBack(item);
+	}
+	else
+	{
+		Item * item = new Item();
+		item->parent = rItem;
+		item->name = "Floder";
+		item->floder = true;
+		item->hItem = mViewTree.InsertItem(item->name.c_str(), 0, 0, rItem->hItem);
+
+		rItem->children.PushBack(item);
+	}
+
+	mViewTree.Invalidate();
 }
 
 void xExplorer::OnPaint()

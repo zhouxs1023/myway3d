@@ -13,16 +13,41 @@ class CClassToolBar : public CMFCToolBar
 	virtual BOOL AllowShowOnList() const { return FALSE; }
 };
 
+class xExplorer;
+
+class xExplorerTree : public CViewTree
+{
+	DECLARE_MESSAGE_MAP()
+
+public:
+	xExplorerTree(xExplorer * explorer);
+	~xExplorerTree();
+
+protected:
+	afx_msg void OnBegindrag(NMHDR* pNMHDR, LRESULT* pResult);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+
+protected:
+	HTREEITEM mDragItem;
+	CImageList * mDragImage;
+	bool mDragging;
+	int mDragTimer;
+	xExplorer * mExplorer;
+};
+
 class xExplorer : public CDockablePane
 {
 	DECLARE_MESSAGE_MAP()
 
 	struct Item
 	{
+		Item * parent;
+		HTREEITEM hItem;
 		TString128 name;
 		bool floder;
 
-		Array<Item> children;
+		Array<Item*> children;
 	};
 
 public:
@@ -34,11 +59,9 @@ public:
 
 protected:
 	CClassToolBar m_wndToolBar;
-	CViewTree mViewTree;
+	xExplorerTree mViewTree;
 	CImageList mImages;
 	UINT m_nCurrSort;
-
-	void FillClassView();
 
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
@@ -52,9 +75,13 @@ public:
 	void _SaveItem(Item & item, xSerializer & Serializer);
 	void _LoadItem(Item & item, xSerializer & Serializer);
 
+	void _CopyItem(HTREEITEM hDesItem, HTREEITEM hSrcItem);
+
 protected:
 	void _InsertItem(HTREEITEM hItem, Item & item);
 	void _InitTreeView();
+	Item * _getItem(HTREEITEM hItem);
+	Item * _getItem(HTREEITEM hItem, Item & cItem);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
@@ -76,6 +103,6 @@ protected:
 
 	Map<TString128, int> mTypeIconMap;
 
-	Array<Item> mItems;
+	Array<Item*> mItems;
 };
 

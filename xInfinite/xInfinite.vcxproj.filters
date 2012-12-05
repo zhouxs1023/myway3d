@@ -48,6 +48,9 @@
     <ClCompile Include="xPropertyGrid.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
+    <ClCompile Include="xResourceView.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Infinate.h">
@@ -90,6 +93,9 @@
       <Filter>Ui</Filter>
     </ClInclude>
     <ClInclude Include="xPropertyGrid.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xResourceView.h">
       <Filter>Ui</Filter>
     </ClInclude>
   </ItemGroup>
