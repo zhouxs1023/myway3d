@@ -30,9 +30,7 @@ protected:
 
 protected:
 	HTREEITEM mDragItem;
-	CImageList * mDragImage;
 	bool mDragging;
-	int mDragTimer;
 	xExplorer * mExplorer;
 };
 
@@ -48,6 +46,17 @@ class xExplorer : public CDockablePane
 		bool floder;
 
 		Array<Item*> children;
+
+		Item() {}
+		~Item()
+		{
+			for (int i = 0; i < children.Size(); ++i)
+			{
+				delete children[i];
+			}
+
+			children.Destroy();
+		}
 	};
 
 public:
@@ -82,6 +91,7 @@ protected:
 	void _InitTreeView();
 	Item * _getItem(HTREEITEM hItem);
 	Item * _getItem(HTREEITEM hItem, Item & cItem);
+	void _deleteAllItem();
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

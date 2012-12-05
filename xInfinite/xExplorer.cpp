@@ -14,6 +14,8 @@ END_MESSAGE_MAP()
 xExplorerTree::xExplorerTree(xExplorer * explorer)
 {
 	mExplorer = explorer;
+	mDragging = false;
+	mDragItem = NULL;
 }
 
 xExplorerTree::~xExplorerTree()
@@ -118,7 +120,7 @@ IMPLEMENT_SERIAL(xExplorerMenuButton, CMFCToolBarMenuButton, 1)
 
 xExplorer::xExplorer()
 : OnInit(&xEvent::OnInit, this, &xExplorer::_Init)
-, OnUnloadScene(&xEvent::OnInit, this, &xExplorer::_UnloadScene)
+, OnUnloadScene(&xEvent::OnUnloadScene, this, &xExplorer::_UnloadScene)
 , OnSerialize(&xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
 , OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)
 , OnObjCreated(&xEvent::OnObjCreated, this, &xExplorer::_ObjCreated)
@@ -129,6 +131,7 @@ xExplorer::xExplorer()
 
 xExplorer::~xExplorer()
 {
+	_deleteAllItem();
 }
 
 BEGIN_MESSAGE_MAP(xExplorer, CDockablePane)
@@ -287,6 +290,7 @@ void xExplorer::_Init(void * param0, void * param1)
 
 void xExplorer::_UnloadScene(void * param0, void * param1)
 {
+	_deleteAllItem();
 	mItems.Destroy();
 	mViewTree.DeleteAllItems();
 }
@@ -332,11 +336,9 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 	const int K_ChunkId = 'xExp';
 	const int K_Version = 0;
 
-	if (K_ChunkId != chunkId)
-		return ;
-
 	if (Serializer.IsSave())
 	{
+		Serializer << K_ChunkId;
 		Serializer << K_Version;
 
 		int size = mItems.Size();
@@ -348,6 +350,9 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 	}
 	else
 	{
+		if (K_ChunkId != chunkId)
+			return ;
+
 		int version = 0;
 
 		Serializer >> version;
@@ -516,6 +521,16 @@ xExplorer::Item * xExplorer::_getItem(HTREEITEM hItem)
 	}
 
 	return NULL;
+}
+
+void xExplorer::_deleteAllItem()
+{
+	for (int i = 0; i < mItems.Size(); ++i)
+	{
+		delete mItems[i];
+	}
+
+	mItems.Clear();
 }
 
 void xExplorer::OnNewFolder()
