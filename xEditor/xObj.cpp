@@ -188,11 +188,11 @@ xObj * xObjManager::Create(const char * type)
 	if (obj)
 	{
 		mObjs.PushBack(obj);
-	}
 
-	if (!xScene::Instance()->IsLoading())
-	{
-		xEvent::OnObjCreated(obj, NULL);
+		if (!xScene::Instance()->IsLoading())
+		{
+			xEvent::OnObjCreated(obj, NULL);
+		}
 	}
 
 	return obj;
@@ -220,6 +220,7 @@ void xObjManager::Distroy(xObj * obj)
 		{
 			xEvent::OnObjDistroy(obj, NULL);
 			delete mObjs[i];
+			mObjs.Erase(i);
 			return ;
 		}
 	}

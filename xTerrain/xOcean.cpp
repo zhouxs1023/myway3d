@@ -62,7 +62,7 @@ xObj * xOceanFactory::Create(const char * name)
 {
 	if (WaterManager::Instance()->GetOcean())
 	{
-		MessageBox(NULL, "Terrain has created!", "Error", MB_OK);
+		MessageBox(NULL, "Ocean has created!", "Error", MB_OK);
 
 		return NULL;
 	}
