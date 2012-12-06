@@ -80,6 +80,7 @@ public:
 	void _OnSerialize(void * param0, void * param1);
 	void _AfterLoadScene(void * param0, void * param1);
 	void _ObjCreated(void * param0, void * param1);
+	void _ObjDistroy(void * param0, void * param1);
 
 	void _SaveItem(Item & item, xSerializer & Serializer);
 	void _LoadItem(Item & item, xSerializer & Serializer);
@@ -91,6 +92,8 @@ protected:
 	void _InitTreeView();
 	Item * _getItem(HTREEITEM hItem);
 	Item * _getItem(HTREEITEM hItem, Item & cItem);
+	Item * _getItem(xObj * obj, Item & cItem);
+	Item * _getItem(xObj * obj);
 	void _deleteAllItem();
 
 protected:
@@ -110,6 +113,7 @@ protected:
 	tEventListener<xExplorer> OnAfterLoadScene;
 	tEventListener<xExplorer> OnSerialize;
 	tEventListener<xExplorer> OnObjCreated;
+	tEventListener<xExplorer> OnObjDistroy;
 
 	Map<TString128, int> mTypeIconMap;
 

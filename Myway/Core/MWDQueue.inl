@@ -121,7 +121,7 @@ void DQueue<T>::PushBack(const T & Val)
 }
 
 template <class T>
-inline inline void DQueue<T>::PopFront()
+inline void DQueue<T>::PopFront()
 {
     debug_assert(mSize != 0, "DQueue is empty.");
     mSize--;

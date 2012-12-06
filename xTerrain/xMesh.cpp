@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "xMesh.h"
 
-
 DF_PROPERTY_BEGIN(xMesh)
     DF_PROPERTY(xMesh, MeshFile, "General", "File", PT_TString, 128)
 	DF_PROPERTY(xMesh, Position, "Transform", "Position", PT_Vec3, 12)
@@ -21,6 +20,7 @@ xMesh::xMesh(const TString128 & name)
     mEntity = World::Instance()->CreateEntity(name, MeshFile);
 	mNode->Attach(mEntity);
 	
+	mNode->GetFlag().SetFlags(PICK_Flag);
 }
 
 xMesh::~xMesh()
@@ -109,6 +109,23 @@ void xMesh::SetMeshFile(const TString128 & meshFile)
         return ;
 
     mEntity->SetMesh(meshFile);
+}
+
+xObj * xMesh::Clone()
+{
+	xMesh * mesh = (xMesh *)xObjManager::Instance()->Create(GetTypeName().c_str());
+
+	mesh->SetPosition(Position);
+	mesh->SetOrientation(Orientation);
+	mesh->SetScale(Scale);
+	mesh->SetMeshFile(MeshFile);
+
+	return mesh;
+}
+
+bool xMesh::IsSceneNode(SceneNode * node)
+{
+	return node == mNode;
 }
 
 void xMesh::SetPosition(const Vec3 & position)

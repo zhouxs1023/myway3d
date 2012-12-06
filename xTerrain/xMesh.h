@@ -23,6 +23,9 @@ public:
 	virtual void SetName(const TString128 & name);
 	virtual void SetMeshFile(const TString128 & meshFile);
 
+	virtual xObj * Clone();
+	virtual bool IsSceneNode(SceneNode * node);
+
 	virtual void SetPosition(const Vec3 & p);
 	virtual void SetOrientation(const Quat & q);
 	virtual void SetScale(const Vec3 & s);
@@ -50,8 +53,9 @@ public:
 
 	virtual xMesh * Create(const char * name) { return new xMesh(name); }
 
-	virtual const char * GetGroupName() { return "Entity"; }
-	virtual const char * GetTypeName() { return "Mesh"; }
+	virtual const char * GetGroupName()		{ return "Entity"; }
+	virtual const char * GetTypeName()		{ return "Mesh"; }
+	virtual const char * GetExternName()	{ return "mesh"; }
 };
 
 class xMeshFactoryListener

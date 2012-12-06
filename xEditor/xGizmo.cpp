@@ -11,6 +11,8 @@ xGizmo::xGizmo()
 	, mPicked(false)
 	, mPickedAxis(-1)
 {
+	mPicked = false;
+	mPickedAxis = -1;
 }
 
 xGizmo::~xGizmo()
@@ -67,6 +69,44 @@ void xGizmo::Update(void * param0, void * param1)
 
 	if (IMouse::Instance()->KeyUp(MKC_BUTTON0))
 	{
+		if (mPicked && mPickedAxis != -1)
+		{
+			xObj * obj = xApp::Instance()->GetSelectedObj(0);
+
+			d_assert (obj);
+
+			Vec3 pos = obj->GetPosition();
+			Quat ort = obj->GetOrientation();
+			Vec3 scl = obj->GetScale();
+
+			int op = xApp::Instance()->GetOperator();
+
+			if (op == xMoveOp::eOp_Move)
+			{
+				if (pos != mOldPosition)
+				{
+					xUndoRedo_Move * op = new xUndoRedo_Move(obj->GetName(), mOldPosition, pos);
+					xUndoRedoManager::Instance()->Push(op);
+				}
+			}
+			else if (op == xRotateOp::eOp_Rotate)
+			{
+				if (ort != mOldOrientation)
+				{
+					xUndoRedo_Rotate * op = new xUndoRedo_Rotate(obj->GetName(), mOldOrientation, ort);
+					xUndoRedoManager::Instance()->Push(op);
+				}
+			}
+			else if (op == xScaleOp::eOp_Scale)
+			{
+				if (scl != mOldScale)
+				{
+					xUndoRedo_Scale * op = new xUndoRedo_Scale(obj->GetName(), mOldScale, scl);
+					xUndoRedoManager::Instance()->Push(op);
+				}
+			}
+		}
+
 		mPicked = false;
 	}
 
@@ -844,6 +884,7 @@ void xGizmo::_update_Move()
 	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
 	{
 		mPicked = true;
+		mOldPosition = obj->GetPosition();
 	}
 }
 
@@ -992,6 +1033,7 @@ void xGizmo::_update_Rotate()
 	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
 	{
 		mPicked = true;
+		mOldOrientation = obj->GetOrientation();
 	}
 }
 
@@ -1169,6 +1211,7 @@ void xGizmo::_update_Scale()
 	if (mPickedAxis != -1 && IMouse::Instance()->KeyDown(MKC_BUTTON0))
 	{
 		mPicked = true;
+		mOldScale = obj->GetScale();
 	}
 }
 

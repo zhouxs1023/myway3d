@@ -82,6 +82,7 @@
     <ClInclude Include="xScene.h" />
     <ClInclude Include="xSerializer.h" />
     <ClInclude Include="xToolBar.h" />
+    <ClInclude Include="xUndoRedo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -99,6 +100,7 @@
     <ClCompile Include="xScene.cpp" />
     <ClCompile Include="xSerializer.cpp" />
     <ClCompile Include="xToolBar.cpp" />
+    <ClCompile Include="xUndoRedo.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

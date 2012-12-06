@@ -37,4 +37,6 @@ protected:
     T *       mMember;
 };
 
+#include "MWDQueue.inl"
+
 }

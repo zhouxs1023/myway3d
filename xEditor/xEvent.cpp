@@ -11,6 +11,7 @@ Event xEvent::OnUnSelectObj;
 Event xEvent::OnUpdate;
 Event xEvent::OnDragFile;
 Event xEvent::OnObjCreated;
+Event xEvent::OnObjDistroy;
 
 Event xEvent::OnNewScene;
 Event xEvent::OnSaveScene;

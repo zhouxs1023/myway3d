@@ -18,6 +18,8 @@ public:
 
 	virtual const TString128 & GetName();
 	virtual TString128 GetTypeName() = 0;
+	virtual xObj * Clone() { return NULL; }
+	virtual bool IsSceneNode(SceneNode * node) { return false; } 
 
 	virtual void SetPosition(const Vec3 & p) {}
 	virtual void SetOrientation(const Quat & q) {}
@@ -42,6 +44,7 @@ public:
 	virtual xObj * Create(const char * name) = 0;
 	virtual const char * GetGroupName() = 0;
 	virtual const char * GetTypeName() = 0;
+	virtual const char * GetExternName() { return "unknown"; }
 	virtual const char * GetIcon() { return "..\\ui\\default.ico"; }
 };
 
@@ -62,6 +65,7 @@ public:
 	void Distroy(xObj * shape);
 
 	xObj * Get(const char * name);
+	xObj * Get(SceneNode * node);
 
 protected:
 	xObj * _Create(const TString128 & name, const TString128 & type);

@@ -83,6 +83,8 @@ void CInfinateView::OnDropFiles(HDROP hDropInfo)
 	DragQueryFile(hDropInfo, 0, filename, 128);
 
 	xEvent::OnDragFile(&point, filename);
+
+	SetForegroundWindow();
 }
 
 

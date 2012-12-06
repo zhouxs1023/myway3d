@@ -102,6 +102,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="ViewTree.cpp" />
+    <ClCompile Include="xResourceView.cpp" />
     <ClCompile Include="xSceneOpenDlg.cpp" />
     <ClCompile Include="xSceneNewDlg.cpp" />
   </ItemGroup>
@@ -118,6 +119,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="ViewTree.h" />
+    <ClInclude Include="xResourceView.h" />
     <ClInclude Include="xSceneOpenDlg.h" />
     <ClInclude Include="xSceneNewDlg.h" />
   </ItemGroup>

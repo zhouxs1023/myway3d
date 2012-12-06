@@ -212,12 +212,13 @@ xObj * xObjManager::_Create(const TString128 & name, const TString128 & type)
 }
 
 
-void xObjManager::Distroy(xObj * xObj)
+void xObjManager::Distroy(xObj * obj)
 {
 	for (int i = 0; i < mObjs.Size(); ++i)
 	{
-		if (xObj == mObjs[i])
+		if (obj == mObjs[i])
 		{
+			xEvent::OnObjDistroy(obj, NULL);
 			delete mObjs[i];
 			return ;
 		}
@@ -237,3 +238,13 @@ xObj * xObjManager::Get(const char * name)
 	return NULL;
 }
 
+xObj * xObjManager::Get(SceneNode * node)
+{
+	for (int i = 0; i < mObjs.Size(); ++i)
+	{
+		if (mObjs[i]->IsSceneNode(node))
+			return mObjs[i];
+	}
+
+	return NULL;
+}

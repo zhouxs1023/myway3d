@@ -124,6 +124,7 @@ xExplorer::xExplorer()
 , OnSerialize(&xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
 , OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)
 , OnObjCreated(&xEvent::OnObjCreated, this, &xExplorer::_ObjCreated)
+, OnObjDistroy(&xEvent::OnObjDistroy, this, &xExplorer::_ObjDistroy)
 , mViewTree(this)
 {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
@@ -433,6 +434,32 @@ void xExplorer::_ObjCreated(void * param0, void * param1)
 	mItems.PushBack(item);
 }
 
+void xExplorer::_ObjDistroy(void * param0, void * param1)
+{
+	xObj * obj = (xObj *)param0;
+
+	Item * item = _getItem(obj);
+
+	if (item)
+	{
+		mViewTree.DeleteItem(item->hItem);
+
+		if (item->parent)
+		{
+			for (int i = 0; i < item->parent->children.Size(); ++i)
+			{
+				if (item->parent->children[i] == item)
+				{
+					item->parent->children.Erase(i);
+					break;
+				}
+			}
+		}
+
+		delete item;
+	}
+}
+
 void xExplorer::_InsertItem(HTREEITEM hItem, Item & item)
 {
 	if (item.floder)
@@ -514,6 +541,42 @@ xExplorer::Item * xExplorer::_getItem(HTREEITEM hItem)
 		for (int j = 0; j < item.children.Size(); ++j)
 		{
 			Item * ritem = _getItem(hItem, *item.children[j]);
+
+			if (ritem != NULL)
+				return ritem;
+		}
+	}
+
+	return NULL;
+}
+
+xExplorer::Item * xExplorer::_getItem(xObj * obj, Item & item)
+{
+	if (item.name == obj->GetName() && !item.floder)
+		return &item;
+
+	for (int j = 0; j < item.children.Size(); ++j)
+	{
+		Item * ritem = _getItem(obj, *item.children[j]);
+
+		if (ritem != NULL)
+			return ritem;
+	}
+
+	return NULL;
+}
+
+xExplorer::Item * xExplorer::_getItem(xObj * obj)
+{
+	for (int i = 0; i < mItems.Size(); ++i)
+	{
+		Item & item = *mItems[i];
+		if (item.name == obj->GetName() && !item.floder)
+			return &item;
+
+		for (int j = 0; j < item.children.Size(); ++j)
+		{
+			Item * ritem = _getItem(obj, *item.children[j]);
 
 			if (ritem != NULL)
 				return ritem;

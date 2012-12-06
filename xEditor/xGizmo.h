@@ -13,6 +13,8 @@ public:
 	void Render(void * param0, void * param1);
 	void Update(void * param0, void * param1);
 
+	bool IsPicked() { return mPicked; }
+
 protected:
 	void _initGeo_Move();
 	void _initGeo_Move_Render();
@@ -59,6 +61,10 @@ protected:
 
 	int mPickedAxis;
 	bool mPicked;
+
+	Vec3 mOldPosition;
+	Quat mOldOrientation;
+	Vec3 mOldScale;
 
 	tEventListener<xGizmo> OnInit;
 	tEventListener<xGizmo> OnShutdown;

@@ -15,6 +15,7 @@ public:
 	static Event OnUpdate;
 	static Event OnDragFile;
 	static Event OnObjCreated;
+	static Event OnObjDistroy;
 
 	static Event OnNewScene;
 	static Event OnSaveScene;

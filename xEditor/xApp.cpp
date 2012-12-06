@@ -124,6 +124,97 @@ void xApp::_input()
     {
         cam->Right(5.0f);
     }
+	else if (IKeyboard::Instance()->KeyUp(KC_DELETE))
+	{
+		for (int i = 0; i < mSelectedObjs.Size(); ++i)
+		{
+			mObjMgr.Distroy(mSelectedObjs[i]);
+		}
+
+		if (mSelectedObjs.Size() > 0)
+			SetSelectedObj(NULL);
+
+		mSelectedObjs.Clear();
+	}
+
+	// parse 
+	else if (IKeyboard::Instance()->KeyPressed(KC_LCONTROL) &&
+		IKeyboard::Instance()->KeyUp(KC_V))
+	{
+		int count = 0;
+		xObj * objs[1024];
+
+		for (int i = 0; i < mSelectedObjs.Size(); ++i)
+		{
+			xObj * newObj = mSelectedObjs[i]->Clone();
+
+			if (newObj)
+				objs[count++] = newObj;
+		}
+
+		if (count)
+			SetSelectedObjs(objs, count);
+	}
+	
+	// undo
+	else if (IKeyboard::Instance()->KeyPressed(KC_LCONTROL) &&
+		IKeyboard::Instance()->KeyUp(KC_Z))
+	{
+		mUndoRedoManager.Undo();
+	}
+
+	// redo
+	else if (IKeyboard::Instance()->KeyPressed(KC_LCONTROL) &&
+		IKeyboard::Instance()->KeyUp(KC_Y))
+	{
+		mUndoRedoManager.Redo();
+	}
+	
+	// pick
+	if (IMouse::Instance()->KeyUp(MKC_BUTTON0) && !mGizmo.IsPicked())
+	{
+		 Point2f pt = IMouse::Instance()->GetPositionUnit();
+
+		 if (pt.x > 0 && pt.x < 1 && pt.y > 0 && pt.y < 1)
+		 {
+			 Ray ray = World::Instance()->MainCamera()->GetViewportRay(pt.x, pt.y);
+
+			 List<SceneNode*> list;
+
+			 World::Instance()->RayTracing(ray, list, PICK_Flag);
+
+			 List<SceneNode *>::Iterator whr = list.Begin();
+			 List<SceneNode *>::Iterator end = list.End();
+
+			 float dist = MAX_FLOAT;
+			 SceneNode * node = NULL;
+			 Vec3 camPos = World::Instance()->MainCamera()->GetPosition();
+
+			 while (whr != end)
+			 {
+				 SceneNode * node1 = (*whr);
+
+				 float dist1 = camPos.Distance(node1->GetPosition());
+
+				 if (dist1 < dist)
+				 {
+					 dist = dist1;
+					 node = node1;
+				 }
+
+				 ++whr;
+			 }
+
+			 if (node)
+			 {
+				 xObj * obj = mObjMgr.Get(node);
+				 if (obj)
+				 {
+					 SetSelectedObj(obj);
+				 }
+			 }
+		 }
+	}
 
     if (IMouse::Instance()->MouseMoved() && IMouse::Instance()->KeyPressed(MKC_BUTTON1))
     {

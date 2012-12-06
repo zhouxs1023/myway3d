@@ -7,6 +7,7 @@
 #include "xToolBar.h"
 #include "xEnvironment.h"
 #include "xGizmo.h"
+#include "xUndoRedo.h"
 
 enum eTransformOperator
 {
@@ -14,6 +15,11 @@ enum eTransformOperator
 	eTO_Move,
 	eTO_Rotate,
 	eTO_Scale,
+};
+
+enum ePick
+{
+	PICK_Flag = 0x01,
 };
 
 #define xSliderMin 1
@@ -92,6 +98,8 @@ protected:
 	xEnvironment mEnvironment;
 
 	xObjManager mObjMgr;
+
+	xUndoRedoManager mUndoRedoManager;
 
 	tEventListener<xApp> OnUnloadScene;
 };
