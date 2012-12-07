@@ -23,7 +23,7 @@ float4 main(PS_IN In) : COLOR
 	float atten = pow(1 - (k - 0.25) / 0.25, gSunParam.x); 
 	
 	float4 clr = gSunColor;
-	clr.a = sph * atten * gSunParam.y;
+	clr.a = min(1, sph * atten * gSunParam.y);
 	
 	return clr;
 }
