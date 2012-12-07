@@ -13,6 +13,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{EEA876C1-B90F-442D-A26E-12180149EDF4}</ProjectGuid>
     <RootNamespace>xTerrain</RootNamespace>
+    <ProjectName>xPlugin</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -47,7 +48,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>../bin/Debug/xPlugin/xTerrain_d.dll</OutputFile>
+      <OutputFile>../bin/Debug/xPlugin/xPulgin_d.dll</OutputFile>
       <AdditionalLibraryDirectories>../bin/lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>myway_d.lib;xEditor_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>../bin/lib/xTerrain_d.lib</ImportLibrary>
@@ -72,8 +73,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="xAfxResourceSetup.cpp" />
+    <ClCompile Include="xPropertyGridColorPick.cpp" />
     <ClCompile Include="xEditTerrainHeight.cpp" />
     <ClCompile Include="xEditTerrainLayer.cpp" />
+    <ClCompile Include="xEnvironment.cpp" />
+    <ClCompile Include="xEnvironmentPane.cpp" />
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xOcean.cpp" />
     <ClCompile Include="xTerrain.cpp" />
@@ -88,8 +92,11 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="xAfxResourceSetup.h" />
+    <ClInclude Include="xPropertyGridColorPick.h" />
     <ClInclude Include="xEditTerrainHeight.h" />
     <ClInclude Include="xEditTerrainLayer.h" />
+    <ClInclude Include="xEnvironment.h" />
+    <ClInclude Include="xEnvironmentPane.h" />
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xOcean.h" />
     <ClInclude Include="xTerrain.h" />

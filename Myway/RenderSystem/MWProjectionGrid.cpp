@@ -132,10 +132,10 @@ namespace Myway {
 
     void ProjectedGrid::Update(float elapsedTime)
     {
-        //if (IKeyboard::Instance()->KeyPressed(KC_1))
-        //    mRender.rState.fillMode = FILL_FRAME;
-        //else if (IKeyboard::Instance()->KeyPressed(KC_2))
-        //    mRender.rState.fillMode = FILL_SOLID;
+        if (IKeyboard::Instance()->KeyPressed(KC_1))
+            mRender.rState.fillMode = FILL_FRAME;
+        else if (IKeyboard::Instance()->KeyPressed(KC_2))
+            mRender.rState.fillMode = FILL_SOLID;
 
         mNoise->update(elapsedTime);
 

@@ -39,6 +39,15 @@
     <ClCompile Include="xAfxResourceSetup.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="xEnvironmentPane.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="xEnvironment.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xPropertyGridColorPick.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -78,6 +87,15 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="xAfxResourceSetup.h">
       <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xEnvironmentPane.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xEnvironment.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xPropertyGridColorPick.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

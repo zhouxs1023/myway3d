@@ -83,6 +83,7 @@ namespace Myway {
         ~Sky2();
 
 		void Render();
+		void RenderReflection(const Plane & plane);
 
     protected:
         void _init();

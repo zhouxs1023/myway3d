@@ -47,7 +47,7 @@ static UINT indicators[] =
 CMainFrame::CMainFrame()
 {
 	// TODO: 在此添加成员初始化代码
-	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2008);
+	theApp.m_nAppLook = ID_VIEW_APPLOOK_OFF_2007_BLACK;
 }
 
 CMainFrame::~CMainFrame()

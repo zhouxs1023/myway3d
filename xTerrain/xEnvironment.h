@@ -14,10 +14,12 @@ protected:
 	void _OnNewScene(void * param0, void * param1);
 	void _OnLoadScene(void * param0, void * param1);
 	void _OnUnloadScene(void * param0, void * param1);
+	void _OnSerialize(void * param0, void * param1);
 
 protected:
 	tEventListener<xEnvironment> OnNewScene;
 	tEventListener<xEnvironment> OnUnloadScene;
 	tEventListener<xEnvironment> OnLoadScene;
+	tEventListener<xEnvironment> OnSerialize;
 };
 

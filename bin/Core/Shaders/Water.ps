@@ -21,9 +21,13 @@ uniform sampler2D gTex_Normal1 : register (s6);
 
 uniform float3 gCameraPos;
 
-uniform float4 gCornerLeftTop;
-uniform float4 gCornerRightDir;
-uniform float4 gCornerDownDir;
+uniform float4 gWorldCornerLeftTop;
+uniform float4 gWorldCornerRightDir;
+uniform float4 gWorldCornerDownDir;
+
+uniform float4 gViewCornerLeftTop;
+uniform float4 gViewCornerRightDir;
+uniform float4 gViewCornerDownDir;
 
 uniform float4 gDeepColor;
 uniform float gRefractionDist;
@@ -37,7 +41,6 @@ uniform float4 gNoiseUVParam;
 
 uniform float4 gNormalUVParam[4];
 uniform float4 gNormalWeight;
-
 
 float3 CalcuNoise(float3 pos)
 {
@@ -75,14 +78,29 @@ float CalcuFresnel(float3 normal, float3 eyeDir)
 	return tex2D(gTex_Fresnel, float2(dp, 0)).r;
 }
 
-float CalcuDeepWeight(float2 projUV, float3 wpos)
+float CalcuDeepWeight(float2 projUV, float3 wpos, float3 vpos)
 {
+	float diff0, diff1;
 	float d = tex2D(gTex_Depth, projUV).r;
-	float4 p = gCornerLeftTop + gCornerRightDir * projUV.x + gCornerDownDir * projUV.y;
-	float3 pos = gCameraPos + p.xyz * d;
-	float diff = wpos.y - pos.y;
+
+	{
+		float4 p = gWorldCornerLeftTop + gWorldCornerRightDir * projUV.x + gWorldCornerDownDir * projUV.y;
+		float3 pos = gCameraPos + p.xyz * d;
+		diff0 = wpos.y - pos.y;
+	}
 	
-	return saturate(diff / gRefractionDist);
+	{
+		float4 p = gViewCornerLeftTop + gViewCornerRightDir * projUV.x + gViewCornerDownDir * projUV.y;
+		float3 pos = p.xyz * d;
+		diff1 = pos.z - vpos.z;
+	}
+	
+	float k0 = max(0, diff0 / gRefractionDist);
+	float k1 = max(0, diff1 / gRefractionDist);
+
+	float k = k0 * 0.5 + k1 * 0.5f;
+	
+	return min(1, k);
 }
 
 float3 CalcuSunColor(float3 normal, float3 eyeDir)
@@ -105,7 +123,7 @@ float4 main(PS_IN In) : COLOR
 	float3 normal = CalcuNormal(In.worldPos, In.normal, noise);
 	float fresnel = CalcuFresnel(normal, eyeDir);
 	
-	float wgt = CalcuDeepWeight(projUV, In.worldPos);
+	float wgt = CalcuDeepWeight(projUV, In.worldPos, In.viewPos);
 	
 	projUV += normal.xz * 0.04f;
 
@@ -117,6 +135,8 @@ float4 main(PS_IN In) : COLOR
 	float4 col = lerp(refrColor, reflColor, fresnel);
 	
 	col.rgb += CalcuSunColor(normal, eyeDir);
+
+	//col.rgb = col.rgb * 0.00000000001 + float3(0, 0, 1);
 	
 	col.a = 1;
 	

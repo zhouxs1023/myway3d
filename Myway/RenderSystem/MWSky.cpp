@@ -151,6 +151,12 @@ namespace Myway {
 	{
 		_update();
 
+		ShaderParamTable * vTable = mTech->GetVertexShaderParamTable();
+
+		ShaderParam * uMatWVP = vTable->GetParam("uWorldViewProj");
+
+		Mat4 wvp = World::Instance()->MainCamera()->GetViewProjMatrix();
+
 		RenderSystem * render = RenderSystem::Instance();
 		Camera * cam = World::Instance()->MainCamera();
 
@@ -158,6 +164,37 @@ namespace Myway {
 		Vec3 pos = cam->GetPosition();
 
 		mRender.xform.MakeTransform(pos, Quat::Identity, farclip);
+
+		wvp = mRender.xform * wvp;
+
+		uMatWVP->SetMatrix(wvp);
+
+		render->Render(mTech, &mRender);
+	}
+
+	void Sky2::RenderReflection(const Plane & plane)
+	{
+		_update();
+
+		ShaderParamTable * vTable = mTech->GetVertexShaderParamTable();
+
+		ShaderParam * uMatWVP = vTable->GetParam("uWorldViewProj");
+
+		Mat4 matMirror;
+		matMirror.MakeReflect(plane);
+		Mat4 wvp = matMirror * World::Instance()->MainCamera()->GetViewProjMatrix();
+
+		RenderSystem * render = RenderSystem::Instance();
+		Camera * cam = World::Instance()->MainCamera();
+
+		float farclip = cam->GetFarClip() * 0.9f;
+		Vec3 pos = cam->GetPosition();
+
+		mRender.xform.MakeTransform(pos, Quat::Identity, farclip);
+
+		wvp = mRender.xform * wvp;
+
+		uMatWVP->SetMatrix(wvp);
 
 		render->Render(mTech, &mRender);
 	}

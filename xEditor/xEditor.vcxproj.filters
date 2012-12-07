@@ -9,9 +9,6 @@
     <ClInclude Include="xBaseOperator.h">
       <Filter>source</Filter>
     </ClInclude>
-    <ClInclude Include="xEnvironment.h">
-      <Filter>source</Filter>
-    </ClInclude>
     <ClInclude Include="xEvent.h">
       <Filter>source</Filter>
     </ClInclude>
@@ -47,9 +44,6 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="xBaseOperator.cpp">
-      <Filter>source</Filter>
-    </ClCompile>
-    <ClCompile Include="xEnvironment.cpp">
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="xEvent.cpp">

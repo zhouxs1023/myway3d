@@ -44,7 +44,6 @@
 		</Shader>
 
     <Shader name = "Sky2VS" language = "cg" profile = "vs30" source = "Sky2.vs" >
-        <param name = "uWorldViewProj" type = "float4x4" btype = "matWVP" />
     </Shader>
 
     <Shader name = "Sky2PS" language = "cg" profile = "ps30" source = "Sky2.ps" >

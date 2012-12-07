@@ -73,7 +73,6 @@
     <ClInclude Include="xApp.h" />
     <ClInclude Include="xBaseOperator.h" />
     <ClInclude Include="xEditor.h" />
-    <ClInclude Include="xEnvironment.h" />
     <ClInclude Include="xEvent.h" />
     <ClInclude Include="xGizmo.h" />
     <ClInclude Include="xObj.h" />
@@ -91,7 +90,6 @@
     <ClCompile Include="xApp.cpp" />
     <ClCompile Include="xBaseOperator.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="xEnvironment.cpp" />
     <ClCompile Include="xEvent.cpp" />
     <ClCompile Include="xGizmo.cpp" />
     <ClCompile Include="xObj.cpp" />

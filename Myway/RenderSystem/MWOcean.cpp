@@ -73,21 +73,30 @@ namespace Myway {
         Camera * cam = World::Instance()->MainCamera();
         float time = Engine::Instance()->GetTime();
 
-		const Vec3 * corner = cam->GetWorldCorner();
+		const Vec3 * worldCorner = cam->GetWorldCorner();
 		const Vec3 & camPos = cam->GetPosition();
 
-		Vec3 cornerLeftTop = corner[4] - camPos;
-		Vec3 cornerRightDir = corner[5] - corner[4];
-		Vec3 cornerDownDir = corner[6] - corner[4];
+		Vec3 worldCornerLeftTop = worldCorner[4] - camPos;
+		Vec3 worldCornerRightDir = worldCorner[5] - worldCorner[4];
+		Vec3 worldCornerDownDir = worldCorner[6] - worldCorner[4];
+
+		const Vec3 * viewCorner = cam->GetCorner();
+
+		Vec3 viewCornerLeftTop = viewCorner[4];
+		Vec3 viewCornerRightDir = viewCorner[5] - viewCorner[4];
+		Vec3 viewCornerDownDir = viewCorner[6] - viewCorner[4];
 
         ShaderParam * uPosition = mTech->GetVertexShaderParamTable()->GetParam("gPosition");
         ShaderParam * uScale = mTech->GetVertexShaderParamTable()->GetParam("gScale");
 
         ShaderParam * uFresnelParam = mTech->GetPixelShaderParamTable()->GetParam("gFresnelParam");
         ShaderParam * uCamPos = mTech->GetPixelShaderParamTable()->GetParam("gCameraPos");
-        ShaderParam * uCornerLeftTop = mTech->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
-        ShaderParam * uCornerRightDir = mTech->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
-        ShaderParam * uCornerDownDir = mTech->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
+		ShaderParam * uWorldCornerLeftTop = mTech->GetPixelShaderParamTable()->GetParam("gWorldCornerLeftTop");
+		ShaderParam * uWorldCornerRightDir = mTech->GetPixelShaderParamTable()->GetParam("gWorldCornerRightDir");
+		ShaderParam * uWorldCornerDownDir = mTech->GetPixelShaderParamTable()->GetParam("gWorldCornerDownDir");
+		ShaderParam * uViewCornerLeftTop = mTech->GetPixelShaderParamTable()->GetParam("gViewCornerLeftTop");
+		ShaderParam * uViewCornerRightDir = mTech->GetPixelShaderParamTable()->GetParam("gViewCornerRightDir");
+		ShaderParam * uViewCornerDownDir = mTech->GetPixelShaderParamTable()->GetParam("gViewCornerDownDir");
         ShaderParam * uDeepColor = mTech->GetPixelShaderParamTable()->GetParam("gDeepColor");
         ShaderParam * uRefractionDist = mTech->GetPixelShaderParamTable()->GetParam("gRefractionDist");
 
@@ -113,9 +122,13 @@ namespace Myway {
         
         uCamPos->SetUnifom(camPos.x, camPos.y, camPos.z, 0);
 
-        uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
-        uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
-        uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
+		uWorldCornerLeftTop->SetUnifom(worldCornerLeftTop.x, worldCornerLeftTop.y, worldCornerLeftTop.z, 0);
+		uWorldCornerRightDir->SetUnifom(worldCornerRightDir.x, worldCornerRightDir.y, worldCornerRightDir.z, 0);
+		uWorldCornerDownDir->SetUnifom(worldCornerDownDir.x, worldCornerDownDir.y, worldCornerDownDir.z, 0);
+
+		uViewCornerLeftTop->SetUnifom(viewCornerLeftTop.x, viewCornerLeftTop.y, viewCornerLeftTop.z, 0);
+		uViewCornerRightDir->SetUnifom(viewCornerRightDir.x, viewCornerRightDir.y, viewCornerRightDir.z, 0);
+		uViewCornerDownDir->SetUnifom(viewCornerDownDir.x, viewCornerDownDir.y, viewCornerDownDir.z, 0);
 
         uDeepColor->SetUnifom(deepColor.r, deepColor.g, deepColor.b, 1);
         uRefractionDist->SetUnifom(40, 0, 0, 0);
@@ -259,7 +272,7 @@ namespace Myway {
 
         // ---> render sky
         if (Environment::Instance()->GetSky2())
-            Environment::Instance()->GetSky2()->Render();
+            Environment::Instance()->GetSky2()->RenderReflection(mirrorPlane);
 
         // ---> render sun
         if (Environment::Instance()->GetSun())

@@ -27,7 +27,6 @@ _Locker::~_Locker()
 xApp::xApp()
 	: mObjMgr()
 	, mOpToolBar()
-	, mEnvironment()
 	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xApp::_unloadScene)
 {
     INIT_SLN;
@@ -62,7 +61,7 @@ void xApp::Run()
     {
         __enter();
 
-        if (mQuit || !mActivate)
+        if (mQuit)
             return ;
 
 		try
@@ -85,7 +84,9 @@ void xApp::Run()
 
 			xEvent::OnUpdate(NULL, NULL);
 
-			_input();
+			if (mActivate)
+				_input();
+
 			mEngine->Run();
 		}
 		catch (Exception & e)

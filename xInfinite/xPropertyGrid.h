@@ -34,11 +34,8 @@ class xPropertyGrid : public CDockablePane
 	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point) {}
 
-
 	afx_msg LRESULT OnPropertyChanged(WPARAM wParam, LPARAM lParam);
 
-
-// ππ‘Ï
 public:
 	xPropertyGrid();
 	virtual ~xPropertyGrid();

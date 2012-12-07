@@ -5,7 +5,6 @@
 #include "xEvent.h"
 #include "xBaseOperator.h"
 #include "xToolBar.h"
-#include "xEnvironment.h"
 #include "xGizmo.h"
 #include "xUndoRedo.h"
 
@@ -94,8 +93,6 @@ protected:
 	xOpToolBar mOpToolBar;
 
 	xGizmo mGizmo;
-
-	xEnvironment mEnvironment;
 
 	xObjManager mObjMgr;
 
