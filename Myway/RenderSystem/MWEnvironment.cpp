@@ -239,7 +239,8 @@ namespace Myway {
         p.FogEnd = Math::Lerp(kf0.FogEnd, kf1.FogEnd, d);
         p.FogColor = Math::Lerp(kf0.FogColor, kf1.FogColor, d);
 
-        p.GodRaySunLum = Math::Lerp(kf0.GodRaySunLum, kf1.GodRaySunLum, d);
+		p.GodRaySunLum = Math::Lerp(kf0.GodRaySunLum, kf1.GodRaySunLum, d);
+        p.GodRaySunInner = Math::Lerp(kf0.GodRaySunInner, kf1.GodRaySunInner, d);
         p.GodRaySunPower = Math::Lerp(kf0.GodRaySunPower, kf1.GodRaySunPower, d);
         p.GodRaySunSize = Math::Lerp(kf0.GodRaySunSize, kf1.GodRaySunSize, d);
         p.GodRayUVStep = Math::Lerp(kf0.GodRayUVStep, kf1.GodRayUVStep, d);

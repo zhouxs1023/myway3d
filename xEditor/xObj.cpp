@@ -168,6 +168,9 @@ xObj * xObjManager::Create(const char * type)
 {
 	xObjFactory * sf = GetFactory(type);
 
+	if (!sf)
+		return NULL;
+
 	d_assert (sf);
 
 	int uId = 0;

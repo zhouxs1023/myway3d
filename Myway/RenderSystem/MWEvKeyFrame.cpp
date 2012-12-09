@@ -22,7 +22,8 @@ namespace Myway
         DF_PROPERTY(EvKeyFrame, FogStart, "Fog", "FogStart",     PT_Float,   4)
         DF_PROPERTY(EvKeyFrame, FogEnd, "Fog", "FogEnd",       PT_Float,   4)
 
-        DF_PROPERTY(EvKeyFrame, GodRaySunLum, "GodRay", "SunLum", PT_Float, 4)
+		DF_PROPERTY(EvKeyFrame, GodRaySunLum, "GodRay", "SunLum", PT_Float, 4)
+        DF_PROPERTY(EvKeyFrame, GodRaySunInner, "GodRay", "SunInner", PT_Float, 4)
         DF_PROPERTY(EvKeyFrame, GodRaySunPower, "GodRay", "SunPower", PT_Float, 4)
         DF_PROPERTY(EvKeyFrame, GodRaySunSize, "GodRay", "SunSize", PT_Float, 4)
         DF_PROPERTY(EvKeyFrame, GodRayUVStep, "GodRay", "UVStep", PT_Float, 4)
@@ -82,6 +83,7 @@ namespace Myway
         FogColor = Color4::White;
 
         GodRaySunLum = 0.35f;
+		GodRaySunInner = 0;
         GodRaySunPower = 1;
         GodRaySunSize = 4000;
         GodRayUVStep = 48;
@@ -203,6 +205,7 @@ namespace Myway
         FogColor = Color4::White;
 
         GodRaySunLum = 0.5f;
+		GodRaySunInner = 0;
         GodRaySunPower = 1;
         GodRaySunSize = 4000;
         GodRayUVStep = 48;

@@ -8,10 +8,15 @@ struct PS_IN
 	float2 uv0 : TEXCOORD0;
 };
 
+uniform float4 gSunColor;
 uniform float4 gBlendWeight;
 uniform sampler2D gTex_Blured;
 
 float4 main(PS_IN In) : COLOR
 {
-	return tex2D(gTex_Blured, In.uv0) * gBlendWeight.x;
+	float4 clr = tex2D(gTex_Blured, In.uv0);
+	clr.a *= gBlendWeight.x;
+	clr.rbg *= 2;
+
+	return float4(gSunColor.rgb, clr.a);
 }

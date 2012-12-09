@@ -63,6 +63,9 @@
 			  <param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
 		</Shader>
 
+    <Shader name = "GodRaySunPS" language = "cg" profile = "ps30" source = "GodRaySun.ps" >
+    </Shader>
+
 		<Shader name = "GodRayPS" language = "cg" profile = "ps30" source = "GodRay.ps" >
 		</Shader>
 
@@ -175,6 +178,9 @@
 
 		<Technique name = "BlurV" vs = "QuadVS" ps = "BlurVPS">
 		</Technique>
+
+    <Technique name = "GodRaySun" vs = "SunVS" ps = "GodRaySunPS">
+    </Technique>
 
 		<Technique name = "GodRay" vs = "QuadVS" ps = "GodRayPS">
 		</Technique>

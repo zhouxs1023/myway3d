@@ -1,0 +1,30 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+
+uniform float4 gSunParam; // x - power, y - lum, z - inner
+
+float4 main(PS_IN In) : COLOR
+{
+	float2 dir = 0.5 - In.uv0;
+	
+	float k = length(dir);
+
+	if (k < gSunParam.x)
+		return 1;
+	else
+	{
+		k = (k - gSunParam.x) * gSunParam.y;
+		k = saturate(k);
+		k = 1 - k;
+
+		return k;
+	}
+}

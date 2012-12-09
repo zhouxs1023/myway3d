@@ -87,7 +87,7 @@ namespace Myway {
 
     void GodRay::_initTechnique()
     {
-        mTech_Sun = Environment::Instance()->GetShaderLib()->GetTechnique("Sun");
+        mTech_Sun = Environment::Instance()->GetShaderLib()->GetTechnique("GodRaySun");
         mTech_GodRay = Environment::Instance()->GetShaderLib()->GetTechnique("GodRay");
         mTech_BlurH = Environment::Instance()->GetShaderLib()->GetTechnique("BlurH");
         mTech_BlurV = Environment::Instance()->GetShaderLib()->GetTechnique("BlurV");
@@ -108,20 +108,21 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
-        mRenderTarget = video->CreateRenderTarget("Core_GodRay_RT", width, height, FMT_X8R8G8B8, MSAA_NONE);
-        mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height);
+        mRenderTarget = video->CreateRenderTarget("Core_GodRay_RT", width, height, FMT_A8R8G8B8, MSAA_NONE);
+        mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height, FMT_A8R8G8B8);
     }
 
     void GodRay::_renderSun()
     {
         RenderSystem * render = RenderSystem::Instance();
 
-        render->ClearBuffer(NULL, true, false, false);
+        render->ClearBuffer(NULL, true, false, false, Color(0, 0, 0, 0));
 
         Camera * cam = World::Instance()->MainCamera();
 
         Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor;
-        float sunLum = Environment::Instance()->GetEvParam()->GodRaySunLum;
+		float sunLum = Environment::Instance()->GetEvParam()->GodRaySunLum;
+        float sunInner = Environment::Instance()->GetEvParam()->GodRaySunInner;
         float sunPower = Environment::Instance()->GetEvParam()->GodRaySunPower;
         Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
         float sunSize = Environment::Instance()->GetEvParam()->GodRaySunSize;
@@ -130,13 +131,14 @@ namespace Myway {
         Vec3 pos = cam->GetPosition() - farclip * sunDir;
 
         ShaderParam * uTransform = mTech_Sun->GetVertexShaderParamTable()->GetParam("gTransform");
-        ShaderParam * uSunColor = mTech_Sun->GetPixelShaderParamTable()->GetParam("gSunColor");
+        //ShaderParam * uSunColor = mTech_Sun->GetPixelShaderParamTable()->GetParam("gSunColor");
         ShaderParam * uSunParam = mTech_Sun->GetPixelShaderParamTable()->GetParam("gSunParam");
 
         uTransform->SetUnifom(pos.x, pos.y, pos.z, sunSize);
 
-        uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, sunColor.a);
-        uSunParam->SetUnifom(sunPower, sunLum, 0, 0);
+        //uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, sunColor.a);
+		//uSunParam->SetUnifom(sunPower, sunLum, 0, 0);
+        uSunParam->SetUnifom(sunInner, 1 / (0.5f - sunInner), 0, 1);
 
         render->Render(mTech_Sun, &mRender_Sun);
     }
@@ -191,10 +193,14 @@ namespace Myway {
 
     void GodRay::_blend()
     {
+		float sunLum = Environment::Instance()->GetEvParam()->GodRaySunLum;
+		Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor * sunLum;
         float blendWeight = Environment::Instance()->GetEvParam()->GodRayBlendWeight;
 
         ShaderParam * uBlendWeight = mTech_Blend->GetPixelShaderParamTable()->GetParam("gBlendWeight");
+		ShaderParam * uSunColor = mTech_Blend->GetPixelShaderParamTable()->GetParam("gSunColor");
 
+		uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, sunColor.a);
         uBlendWeight->SetUnifom(blendWeight, 0, 0, 0);
 
         SamplerState state;
@@ -202,6 +208,6 @@ namespace Myway {
 
         RenderSystem::Instance()->SetTexture(0, state, mTexture.c_ptr());
 
-        RenderHelper::Instance()->DrawScreenQuad(BM_ADD, mTech_Blend);
+        RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_BLEND, mTech_Blend);
     }
 }

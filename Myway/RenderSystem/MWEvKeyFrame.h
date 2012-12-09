@@ -25,6 +25,7 @@ namespace Myway
         Color4 FogColor;
 
         float GodRaySunLum;
+		float GodRaySunInner;
         float GodRaySunPower;
         float GodRaySunSize;
         float GodRayUVStep;
@@ -155,7 +156,8 @@ namespace Myway
         float FogEnd;
         Color4 FogColor;
 
-        float GodRaySunLum;
+		float GodRaySunLum;
+        float GodRaySunInner;
         float GodRaySunPower;
         float GodRaySunSize;
         float GodRayUVStep;
