@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="xExporter.cpp" />
+    <ClCompile Include="xMeshExporter.cpp" />
+    <ClCompile Include="xExportConfig.cpp" />
+    <ClCompile Include="xMaterial.cpp">
+      <Filter>Export</Filter>
+    </ClCompile>
+    <ClCompile Include="xMesh.cpp">
+      <Filter>Export</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="xExporter.h" />
+    <ClInclude Include="xMeshExporter.h" />
+    <ClInclude Include="xExporterConfig.h" />
+    <ClInclude Include="xMaterial.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="xMesh.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Export">
+      <UniqueIdentifier>{b0db125e-e3b9-4424-b3a4-289d74a838fd}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

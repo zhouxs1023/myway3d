@@ -284,6 +284,8 @@ int xEnvironmentPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	mTab.AddTab(&mEvening, "Evening");
 	mTab.AddTab(&mGlobal, "Global");
 
+	mTab.SetActiveTab(1);
+
 	AdjustLayout();
 
 	return 0;

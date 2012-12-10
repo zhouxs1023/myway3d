@@ -69,6 +69,7 @@ namespace Myway
 
 #define MODEL_FILE_MAGIC                    "Myway Model"
 #define MODEL_FILE_VERSION                  (('M' << 24) | ('D' << 16) | ('L' << 8) | 0)
+#define MODEL_FILE_VERSION_1                (MODEL_FILE_VERSION + 1)
 
 #define MC_CHUNK_SIZE                       6
 
@@ -110,6 +111,14 @@ protected:
     static int ComputeTexcStreamSize(SubMesh * sm);
     static int ComputeAnimStreamSize(SubMesh * sm);
     static int ComputeIndexStreamSize(SubMesh * sm);
+};
+
+
+class MeshLoader_v1
+{
+public:
+
+protected:
 };
 
 }
