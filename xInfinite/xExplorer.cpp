@@ -455,6 +455,17 @@ void xExplorer::_ObjDistroy(void * param0, void * param1)
 				}
 			}
 		}
+		else
+		{
+			for (int i = 0; i < mItems.Size(); ++i)
+			{
+				if (mItems[i] == item)
+				{
+					mItems.Erase(i);
+					break;
+				}
+			}
+		}
 
 		delete item;
 	}

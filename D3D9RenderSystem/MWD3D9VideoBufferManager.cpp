@@ -567,6 +567,44 @@ ImagePtr D3D9VideoBufferManager::LoadImage_(const TString128 & source, IMAGE_FIL
     return ImagePtr(image);
 }
 
+ImagePtr D3D9VideoBufferManager::LoadImageFromFile(const TString128 & filename, int w, int h, IMAGE_FILTER filter)
+{
+	D3DXIMAGE_INFO ImgInfo;
+
+	IDirect3DTexture9 * texture;
+	HRESULT hr = D3DXCreateTextureFromFileEx(mD3D9Device,
+		filename.c_str(),
+		w,
+		h,
+		1,
+		0,
+		D3DFMT_UNKNOWN,
+		D3DPOOL_SCRATCH,
+		D3D9Mapping::GetD3DXFilter(filter),
+		D3DX_DEFAULT,
+		0,
+		&ImgInfo,
+		NULL,
+		&texture);
+
+	D3DErrorExceptionFunction(D3DXCreateTextureFromFileEx, hr);
+
+	D3DSURFACE_DESC desc;
+	texture->GetLevelDesc(0, &desc);
+
+	D3D9Image * image = new D3D9Image();
+
+	image->mWidth = desc.Width;
+	image->mHeight = desc.Height;
+	image->mSrcWidth = ImgInfo.Width;
+	image->mSrcHeight = ImgInfo.Height;
+	image->mFormat = D3D9Mapping::GetFormat(desc.Format);
+	image->mMipmapLevel = texture->GetLevelCount();
+	image->mD3D9Texture = texture;
+
+	return ImagePtr(image);
+}
+
 void D3D9VideoBufferManager::SaveImage(ImagePtr image, const TString128 & sImageFile, IMAGE_FILE_FORMAT Format)
 {
     D3D9Image * img = (D3D9Image*)image.c_ptr();

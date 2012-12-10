@@ -71,6 +71,7 @@ public:
 
    virtual ImagePtr CreateImage(int iWidth, int iHeight, FORMAT Format);
    virtual ImagePtr LoadImage_(const TString128 & source, IMAGE_FILTER filter);
+   virtual ImagePtr LoadImageFromFile(const TString128 & filename, int w, int h, IMAGE_FILTER filter);
    virtual void SaveImage(ImagePtr image, const TString128 & sImageFile, IMAGE_FILE_FORMAT Format);
 
    virtual void BitBlt(ImagePtr imageDest, TexturePtr texSrc, const Rect * pDest, const Rect * pSrc);

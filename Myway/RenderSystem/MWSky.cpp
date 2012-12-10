@@ -46,7 +46,7 @@ namespace Myway {
 
     void Sky::_geometry()
     {
-        int iRings = 10, iSegments = 10;
+        int iRings = 30, iSegments = 30;
         int iVertexCount = (iRings + 1) * (iSegments + 1);
         int iIndexCount = iRings * iSegments * 6;
         int iPrimCount = iIndexCount / 3;
@@ -201,7 +201,7 @@ namespace Myway {
 
     void Sky2::_init()
     {
-		int iRings = 30, iSegments = 30;
+		int iRings = 50, iSegments = 50;
 		int iVertexCount = (iRings + 1) * (iSegments + 1);
 		int iIndexCount = iRings * iSegments * 6;
 		int iPrimCount = iIndexCount / 3;

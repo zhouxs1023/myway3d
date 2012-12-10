@@ -48,11 +48,8 @@ VS_OUT main(VS_IN In)
 {
 	VS_OUT Out;
 
-	int   uNumberOfSamples = 6;
-	float uSamples = 6;
-	
     // Clip space position
-	Out.oPosition   = mul(In.iPosition, uWorldViewProj);
+	Out.oPosition = mul(In.iPosition, uWorldViewProj);
 
 	float3 NPos = In.iPosition.xyz;
 
@@ -70,19 +67,74 @@ VS_OUT main(VS_IN In)
 	float3 v3Start = uCameraPos;
 	float fHeight = uCameraPos.y;
 	float fStartAngle = dot(v3Ray, v3Start) / fHeight;
+
 	// NOTE: fDepth is not pased as parameter(like a constant) to avoid the little precission issue (Apreciable)
 	float fDepth = exp(uScaleOverScaleDepth * (uInnerRadius - uCameraPos.y));
 	float fStartOffset = fDepth * scale(fStartAngle, uScaleDepth);
 
     // Init loop variables
-	float fSampleLength = fFar / uSamples;
+	float fSampleLength = fFar / 4;
 	float fScaledLength = fSampleLength * uScale;
 	float3 v3SampleRay = v3Ray * fSampleLength;
 	float3 v3SamplePoint = v3Start + v3SampleRay * 0.5f;
 	
 	// Loop the ray
 	float3 color;
-	for (int i = 0; i < uNumberOfSamples; i++)
+
+	{
+		float fHeight = length(v3SamplePoint);
+		float fDepth = exp(uScaleOverScaleDepth * (uInnerRadius-fHeight));
+		
+		float fLightAngle = dot(uLightDir, v3SamplePoint) / fHeight;
+		float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
+		
+		float fScatter = (fStartOffset + fDepth*(scale(fLightAngle, uScaleDepth) - scale(fCameraAngle, uScaleDepth)));
+		float3 v3Attenuate = exp(-fScatter * (uInvWaveLength * uKr4PI + uKm4PI)); // <<< TODO
+		
+		// Accumulate color
+		v3Attenuate *= (fDepth * fScaledLength);
+		color += v3Attenuate;
+		
+		// Next sample point
+		v3SamplePoint += v3SampleRay;
+	}
+
+	{
+		float fHeight = length(v3SamplePoint);
+		float fDepth = exp(uScaleOverScaleDepth * (uInnerRadius-fHeight));
+		
+		float fLightAngle = dot(uLightDir, v3SamplePoint) / fHeight;
+		float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
+		
+		float fScatter = (fStartOffset + fDepth*(scale(fLightAngle, uScaleDepth) - scale(fCameraAngle, uScaleDepth)));
+		float3 v3Attenuate = exp(-fScatter * (uInvWaveLength * uKr4PI + uKm4PI)); // <<< TODO
+		
+		// Accumulate color
+		v3Attenuate *= (fDepth * fScaledLength);
+		color += v3Attenuate;
+		
+		// Next sample point
+		v3SamplePoint += v3SampleRay;
+	}
+
+	{
+		float fHeight = length(v3SamplePoint);
+		float fDepth = exp(uScaleOverScaleDepth * (uInnerRadius-fHeight));
+		
+		float fLightAngle = dot(uLightDir, v3SamplePoint) / fHeight;
+		float fCameraAngle = dot(v3Ray, v3SamplePoint) / fHeight;
+		
+		float fScatter = (fStartOffset + fDepth*(scale(fLightAngle, uScaleDepth) - scale(fCameraAngle, uScaleDepth)));
+		float3 v3Attenuate = exp(-fScatter * (uInvWaveLength * uKr4PI + uKm4PI)); // <<< TODO
+		
+		// Accumulate color
+		v3Attenuate *= (fDepth * fScaledLength);
+		color += v3Attenuate;
+		
+		// Next sample point
+		v3SamplePoint += v3SampleRay;
+	}
+
 	{
 		float fHeight = length(v3SamplePoint);
 		float fDepth = exp(uScaleOverScaleDepth * (uInnerRadius-fHeight));
