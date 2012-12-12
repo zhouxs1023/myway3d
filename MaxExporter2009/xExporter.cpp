@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "xExporter.h"
+#include "resource.h"
 
 //------------------------------------------------------
 static xExportClassDesc gExportDesc;
@@ -84,7 +85,11 @@ __declspec( dllexport ) ULONG CanAutoDefer()
 
 
 
+#include "xExportConfig.h"
+#include "xMeshExporter.h"
+#include "xExportSettingDlg.h"
 
+using namespace MaxPlugin;
 
 xMaxExport::xMaxExport()
 {
@@ -94,9 +99,23 @@ xMaxExport::~xMaxExport()
 {
 }
 
-int	xMaxExport::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL suppressPrompts=FALSE, DWORD options=0)
+int	xMaxExport::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL suppressPrompts, DWORD options)
 {
-	return IMPEXP_SUCCESS;
+	AFX_MANAGE_STATE(AfxGetStaticModuleState( ));
+
+	xExportConfig::Instance()->SetExportFilename(name);
+
+	xExportSettingDlg dlg;
+
+	if (dlg.DoModal() == IDOK)
+	{
+		xMeshExporter meshExp(ei, i);
+		meshExp.Build();
+
+		return IMPEXP_SUCCESS;
+	}
+	
+	return IMPEXP_FAIL;
 }
 
 int xMaxExport::ExtCount()

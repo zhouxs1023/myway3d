@@ -8,6 +8,9 @@ namespace MaxPlugin {
 		xMaterial();
 		~xMaterial();
 
+		void SetDoubleSide(BOOL b) { mDoubleSide = b; }
+		BOOL GetDoubleSide() const { return mDoubleSide; }
+
 		void SetBlendMode(BLEND_MODE mode) { mBlendMode = mode; }
 		BLEND_MODE GetBlendMode() const { return mBlendMode; }
 
@@ -40,6 +43,7 @@ namespace MaxPlugin {
 		const TString128 & GetSpecularMap() const { return mSpecularMap; }
 
 	protected:
+		BOOL mDoubleSide;
 		BLEND_MODE mBlendMode;
 
 		Color4 mEmissive;

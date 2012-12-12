@@ -68,6 +68,7 @@ namespace Myway
 #define MC_STREAM_DECLARATION               0x0202
 
 #define MODEL_FILE_MAGIC                    "Myway Model"
+#define MODEL_FILE_MAGIC_LEN				(12)
 #define MODEL_FILE_VERSION                  (('M' << 24) | ('D' << 16) | ('L' << 8) | 0)
 #define MODEL_FILE_VERSION_1                (MODEL_FILE_VERSION + 1)
 
@@ -79,46 +80,80 @@ namespace Myway
 */
 class MW_ENTRY MeshLoader
 {
-    struct chunk
-    {
-        short id;
-        int length;
-    };
-
 public:
     static void Load(MeshPtr pMesh, DataStreamPtr stream);
-
-protected:
-    static bool ReadChunk(chunk & ck, DataStreamPtr & stream);
-    static void ReadHeader(DataStreamPtr & stream);
-    static void ReadSubMesh(SubMesh * sm, DataStreamPtr & stream);
-    static void ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream);
-    static void ReadBounds(MeshPtr mesh, DataStreamPtr & stream);
-    static void ReadTransStream(SubMesh * sm, DataStreamPtr & stream);
-    static void ReadLightStream(SubMesh * sm, DataStreamPtr & stream);
-    static void ReadTexcStream(SubMesh * sm, DataStreamPtr & stream);
-    static void ReadAnimStream(SubMesh * sm, DataStreamPtr & stream);
-    static void ReadIndexStream(SubMesh * sm, DataStreamPtr & stream);
-    static void ReadDeclaration(short id, VertexDeclarationPtr & decl, DataStreamPtr & stream);
-    static void ReadVertexStream(VertexBufferPtr & vb, int & stride, int count, DataStreamPtr & stream);
-
-protected:
-    static int ComputeSubMeshSize(SubMesh * sm);
-    static int ComputeBoundsSize(SubMesh * sm);
-
-    static int ComputeTransStreamSize(SubMesh * sm);
-    static int ComputeLightStreamSize(SubMesh * sm);
-    static int ComputeTexcStreamSize(SubMesh * sm);
-    static int ComputeAnimStreamSize(SubMesh * sm);
-    static int ComputeIndexStreamSize(SubMesh * sm);
 };
+
+
+
+
+class MeshLoader_v0
+{
+	struct chunk
+	{
+		short id;
+		int length;
+	};
+
+	static bool ReadChunk(chunk & ck, DataStreamPtr & stream)
+	{
+		return stream->Read(&ck.id, sizeof(short)) && stream->Read(&ck.length, sizeof(int));
+	}
+
+
+public:
+	static void Load(MeshPtr pMesh, DataStreamPtr stream);
+
+protected:
+	static void ReadSubMesh(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream);
+	static void ReadBounds(MeshPtr mesh, DataStreamPtr & stream);
+	static void ReadTransStream(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadLightStream(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadTexcStream(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadAnimStream(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadIndexStream(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadDeclaration(short id, VertexDeclarationPtr & decl, DataStreamPtr & stream);
+	static void ReadVertexStream(VertexBufferPtr & vb, int & stride, int count, DataStreamPtr & stream);
+};
+
+
 
 
 class MeshLoader_v1
 {
+	struct chunk
+	{
+		int id;
+	};
+
+	static bool ReadChunk(chunk & ck, DataStreamPtr & stream)
+	{
+		return stream->Read(&ck.id, sizeof(int)) == 1;
+	}
+
 public:
+	enum eVertexElement {
+		VE_POSITION = 1 << 0,
+		VE_NORMAL = 1 << 1,
+		VE_COLOR = 1 << 2,
+		VE_TANGENT = 1 << 3,
+		VE_TEXCOORD = 1 << 4,
+		VE_LIGHTMAPUV = 1 << 5,
+		VE_BLENDWEIGHTS = 1 << 6,
+		VE_BLENDINDICES = 1 << 7
+	};
+
+public:
+	static void Load(MeshPtr pMesh, DataStreamPtr stream);
 
 protected:
+	static void ReadSubMesh(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadMaterial(SubMesh * sm, DataStreamPtr & stream);
+	static void ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream);
+	static void ReadBounds(MeshPtr mesh, DataStreamPtr & stream);
+
+	static int GenVertexDecl(VertexDeclarationPtr decl, int vertexElems);
 };
 
 }

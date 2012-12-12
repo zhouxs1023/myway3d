@@ -36,6 +36,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Export", "Export", "{86FA252E-7BC6-4AE1-8AD7-99E5309D2140}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MaxExporter2009", "MaxExporter2009\MaxExporter2009.vcxproj", "{3CC25637-060F-4651-9FD2-56A20DEDF989}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1470171E-7B11-4D7D-B470-8D9EDD9BAFA6} = {1470171E-7B11-4D7D-B470-8D9EDD9BAFA6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

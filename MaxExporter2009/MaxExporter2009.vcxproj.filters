@@ -5,29 +5,49 @@
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="xExporter.cpp" />
     <ClCompile Include="xMeshExporter.cpp" />
-    <ClCompile Include="xExportConfig.cpp" />
     <ClCompile Include="xMaterial.cpp">
       <Filter>Export</Filter>
     </ClCompile>
     <ClCompile Include="xMesh.cpp">
       <Filter>Export</Filter>
     </ClCompile>
+    <ClCompile Include="xExportConfig.cpp">
+      <Filter>Export</Filter>
+    </ClCompile>
+    <ClCompile Include="xExportSettingDlg.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="xExporter.h" />
     <ClInclude Include="xMeshExporter.h" />
-    <ClInclude Include="xExporterConfig.h" />
     <ClInclude Include="xMaterial.h">
       <Filter>Export</Filter>
     </ClInclude>
     <ClInclude Include="xMesh.h">
       <Filter>Export</Filter>
     </ClInclude>
+    <ClInclude Include="xExportConfig.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="xExportSettingDlg.h">
+      <Filter>UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Export">
       <UniqueIdentifier>{b0db125e-e3b9-4424-b3a4-289d74a838fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{3c6bdc89-8bfb-4629-bfc9-bb5f4e32d12b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MaxExporter2009.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="MaxExporter.def" />
   </ItemGroup>
 </Project>

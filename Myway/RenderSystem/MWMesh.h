@@ -28,11 +28,14 @@ public:
     int                     GetPrimitiveCount();
     PRIMITIVE_TYPE          GetPrimitiveType();
 
+	Material *				GetMaterial();
+
 protected:
     VertexStream            mVertexStream;
     IndexStream             mIndexStream;
     int                     mPrimCount;
     PRIMITIVE_TYPE          mPrimType;
+	Material				mMaterial;
 };
 
 
@@ -63,7 +66,6 @@ public:
 
     SubMesh *                   CreateSubMesh();
 
-    MaterialResource *          GetMaterialSource();
     SubMesh *                   GetSubMesh(int index);
     int                         GetSubMeshCount();
     void                        RemoveSubMesh(int index);
@@ -85,7 +87,6 @@ protected:
     Aabb                    mBound;
     Sphere                  mSphere;
     Array<SubMesh*>         mMeshes;
-    MaterialResource *      mMaterialResource;
     TString128              mSkeleton;
 
 };

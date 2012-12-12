@@ -148,42 +148,18 @@ protected:
     TexturePtr mNormalMap;
 };
 
-class MaterialResource : public Resource
-{
-    friend class MaterialLoader;
 
-public:
-    MaterialResource();
-    ~MaterialResource();
-
-    void Alloc(int num);
-    Material * GetMaterial(int index);
-    int GetNumMaterials();
-
-    virtual void Load();
-    virtual void Reload();
-    virtual void Unload();
-
-    virtual void LoadImp(DataStreamPtr stream);
-
-protected:
-    Material * mMaterials;
-    int mNumMaterials;
-};
-
-
-
+class Mesh;
 class MaterialLoader
 {
 public:
-    void Load(MaterialResource * mat, DataStreamPtr stream);
+	void Load(Mesh * mesh, DataStreamPtr stream);
 
 protected:
-    int _getNumMaterials();
-    void _loadMaterial(Material * mat, xml_node * node);;
+	void _loadMaterial(Material * mat, xml_node * node);;
 
 protected:
-    xml_doc doc;
+	xml_doc doc;
 };
 
 

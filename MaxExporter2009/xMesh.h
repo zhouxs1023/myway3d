@@ -30,11 +30,11 @@ namespace MaxPlugin {
 
 		bool operator ==(const xVertex & rk) const
 		{
-			return mPosition == rk.mPosition ||
-				   mNormal == rk.mNormal ||
-				   mTangent == rk.mTangent ||
-				   mColor == rk.mColor ||
-				   mTexcoord == rk.mTexcoord ||
+			return mPosition == rk.mPosition &&
+				   mNormal == rk.mNormal &&
+				   mTangent == rk.mTangent &&
+				   mColor == rk.mColor &&
+				   mTexcoord == rk.mTexcoord &&
 				   mLightmapUV == rk.mLightmapUV;
 		}
 
@@ -77,6 +77,7 @@ namespace MaxPlugin {
 
 		void Build(IGameObject * obj, IGameMaterial * mtl);
 
+		int GetVertexElems() const { return mVertexElems; }
 		const xVertexList & GetVertexList() const { return mVertexList; }
 		const Array<xFace> & GetFaces() const { return mFaces; }
 
@@ -86,6 +87,7 @@ namespace MaxPlugin {
 		void _buildMat(IGameMaterial * mtl);
 
 	protected:
+		int mVertexElems;
 		xMaterial mMaterial;
 		xVertexList mVertexList;
 		Array<xFace> mFaces;

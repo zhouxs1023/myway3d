@@ -1,4 +1,5 @@
 #include "MWMeshLoader.h"
+#include "MWMaterial.h"
 #include "MWMeshManager.h"
 #include "MWResourceManager.h"
 
@@ -10,62 +11,106 @@
 using namespace Myway;
 
 
-bool MeshLoader::ReadChunk(chunk & ck, DataStreamPtr & stream)
-{
-    return stream->Read(&ck.id, sizeof(short)) && stream->Read(&ck.length, sizeof(int));
-}
 
 void MeshLoader::Load(MeshPtr mesh, DataStreamPtr stream)
 {
     profile_code();
 
-    ReadHeader(stream);
+	char magic[MODEL_FILE_MAGIC_LEN];
+	int version;
 
-    bool hasBound = false;
+	stream->Read(magic, MODEL_FILE_MAGIC_LEN);
 
-    chunk ck;
-    while (ReadChunk(ck, stream) &&
-           (ck.id == MC_SUBMESH ||
-            ck.id == MC_BOUNDS ||
-            ck.id == MC_SKELETON))
-    {
-        switch (ck.id)
-        {
-        case MC_SUBMESH:
-            ReadSubMesh(mesh->CreateSubMesh(), stream);
-            break;
+	d_assert (strcmp(magic, MODEL_FILE_MAGIC) == 0);
 
-        case MC_BOUNDS:
-            ReadBounds(mesh, stream);
-            hasBound = TRUE;
-            break;
+	stream->Read(&version, sizeof(int));
 
-        case MC_SKELETON:
-            ReadSkeleton(mesh, stream);
-            break;
-        }
-    }
+	switch (version)
+	{
+	case MODEL_FILE_VERSION:
+		MeshLoader_v0::Load(mesh, stream);
+		break;
 
-    stream->Close();
+	case MODEL_FILE_VERSION_1:
+		MeshLoader_v1::Load(mesh, stream);
+		break;
 
-    if (!hasBound)
-        mesh->CalcuBounds();
+	default:
+		d_assert(0);
+		break;
+	};
+    
+	stream->Close();
 }
 
-void MeshLoader::ReadHeader(DataStreamPtr & stream)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MeshLoader_v0::Load(MeshPtr mesh, DataStreamPtr stream)
 {
-    String magic;
-    int version;
+	bool hasBound = false;
 
-    stream->ReadString(magic);
-    d_assert(MODEL_FILE_MAGIC == magic && "this isn't Myway model file.");
+	chunk ck;
+	while (ReadChunk(ck, stream) &&
+		(ck.id == MC_SUBMESH ||
+		ck.id == MC_BOUNDS ||
+		ck.id == MC_SKELETON))
+	{
+		switch (ck.id)
+		{
+		case MC_SUBMESH:
+			ReadSubMesh(mesh->CreateSubMesh(), stream);
+			break;
 
-    stream->Read(&version, sizeof(int));
+		case MC_BOUNDS:
+			ReadBounds(mesh, stream);
+			hasBound = TRUE;
+			break;
 
-    d_assert(MODEL_FILE_VERSION == version && "this model file isn't version 0.");
+		case MC_SKELETON:
+			ReadSkeleton(mesh, stream);
+			break;
+		}
+	}
+
+	if (!hasBound)
+		mesh->CalcuBounds();
+
+	TString128 mtlSource = File::RemoveExternName(mesh->GetSourceName()) + ".material";
+
+	DataStreamPtr mtlStream = ResourceManager::Instance()->OpenResource(mtlSource.c_str());
+
+	if (mtlStream.NotNull())
+	{
+		MaterialLoader loader;
+		loader.Load(mesh.c_ptr(), mtlStream);
+	}
 }
 
-void MeshLoader::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
+
+void MeshLoader_v0::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 {
     int iVertexCount;
     int iIndexCount;
@@ -129,21 +174,21 @@ void MeshLoader::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 
     decl->Init();
 
-    assert(sm->GetVertexStream()->GetStream(_GEOM_STREAM).NotNull());
+    d_assert(sm->GetVertexStream()->GetStream(_GEOM_STREAM).NotNull());
 
     //skip
     if (!stream->Eof())
         stream->Skip(-MC_CHUNK_SIZE);
 }
 
-void MeshLoader::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
+void MeshLoader_v0::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 {
     String sSkeletonName;
     stream->ReadString(sSkeletonName);
     mesh->SetSkeletonName(sSkeletonName.c_str());
 }
 
-void MeshLoader::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
+void MeshLoader_v0::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
 {
     Vec3 vMin, vMax, vCenter;
     float fRadius;
@@ -158,7 +203,7 @@ void MeshLoader::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
     mesh->SetBoundingSphere(vCenter, fRadius);
 }
 
-void MeshLoader::ReadTransStream(SubMesh * sm, DataStreamPtr & stream)
+void MeshLoader_v0::ReadTransStream(SubMesh * sm, DataStreamPtr & stream)
 {
     VertexDeclarationPtr decl = sm->GetVertexStream()->GetDeclaration();
     VertexBufferPtr buffer;
@@ -190,7 +235,7 @@ void MeshLoader::ReadTransStream(SubMesh * sm, DataStreamPtr & stream)
         stream->Skip(-MC_CHUNK_SIZE);
 }
 
-void MeshLoader::ReadLightStream(SubMesh * sm, DataStreamPtr & stream)
+void MeshLoader_v0::ReadLightStream(SubMesh * sm, DataStreamPtr & stream)
 {
     VertexDeclarationPtr decl = sm->GetVertexStream()->GetDeclaration();
     VertexBufferPtr buffer;
@@ -220,7 +265,7 @@ void MeshLoader::ReadLightStream(SubMesh * sm, DataStreamPtr & stream)
         stream->Skip(-MC_CHUNK_SIZE);
 }
 
-void MeshLoader::ReadTexcStream(SubMesh * sm, DataStreamPtr & stream)
+void MeshLoader_v0::ReadTexcStream(SubMesh * sm, DataStreamPtr & stream)
 {
     VertexDeclarationPtr decl = sm->GetVertexStream()->GetDeclaration();
     VertexBufferPtr buffer;
@@ -250,7 +295,7 @@ void MeshLoader::ReadTexcStream(SubMesh * sm, DataStreamPtr & stream)
         stream->Skip(-MC_CHUNK_SIZE);
 }
 
-void MeshLoader::ReadAnimStream(SubMesh * sm, DataStreamPtr & stream)
+void MeshLoader_v0::ReadAnimStream(SubMesh * sm, DataStreamPtr & stream)
 {
     VertexDeclarationPtr decl = sm->GetVertexStream()->GetDeclaration();
     VertexBufferPtr buffer;
@@ -280,7 +325,7 @@ void MeshLoader::ReadAnimStream(SubMesh * sm, DataStreamPtr & stream)
         stream->Skip(-MC_CHUNK_SIZE);
 }
 
-void MeshLoader::ReadIndexStream(SubMesh * sm, DataStreamPtr & stream)
+void MeshLoader_v0::ReadIndexStream(SubMesh * sm, DataStreamPtr & stream)
 {
     int count = sm->GetIndexStream()->GetCount();
     unsigned char stride;
@@ -316,7 +361,7 @@ void MeshLoader::ReadIndexStream(SubMesh * sm, DataStreamPtr & stream)
     sm->GetIndexStream()->Bind(pIndexBuffer, start);
 }
 
-void MeshLoader::ReadDeclaration(short id, VertexDeclarationPtr & decl, DataStreamPtr & stream)
+void MeshLoader_v0::ReadDeclaration(short id, VertexDeclarationPtr & decl, DataStreamPtr & stream)
 {
     short offset;
     unsigned char type;
@@ -331,7 +376,7 @@ void MeshLoader::ReadDeclaration(short id, VertexDeclarationPtr & decl, DataStre
     decl->AddElement(id, offset, (DECL_TYPE)type, (DECL_USAGE)usage, index);
 }
 
-void MeshLoader::ReadVertexStream(VertexBufferPtr & vb, int & stride, int count, DataStreamPtr & stream)
+void MeshLoader_v0::ReadVertexStream(VertexBufferPtr & vb, int & stride, int count, DataStreamPtr & stream)
 {
     EXCEPTION_DEBUG(vb.IsNull(), "model file error.");
 
@@ -349,93 +394,239 @@ void MeshLoader::ReadVertexStream(VertexBufferPtr & vb, int & stride, int count,
 
 
 
-int MeshLoader::ComputeSubMeshSize(SubMesh * sm)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+void MeshLoader_v1::Load(MeshPtr mesh, DataStreamPtr stream)
 {
-    int size = 0;
+	bool hasBound = false;
 
-    //vertex count, index count, primtive count, primtive type
-    size += sizeof(int) + sizeof(int) + sizeof(int) + sizeof(int);
+	chunk ck;
+	while (ReadChunk(ck, stream))
+	{
+		switch (ck.id)
+		{
+		case MC_SUBMESH:
+			ReadSubMesh(mesh->CreateSubMesh(), stream);
+			break;
 
-    //material name
-    //size += (sm->GetMaterialName().Length() + 1) * sizeof(char);
+		case MC_BOUNDS:
+			ReadBounds(mesh, stream);
+			hasBound = TRUE;
+			break;
 
-    //transfrom, light, texcoord. animation, index stream
-    size += ComputeTransStreamSize(sm) + MC_CHUNK_SIZE;
+		case MC_SKELETON:
+			ReadSkeleton(mesh, stream);
+			break;
+		}
+	}
 
-    if (sm->GetVertexStream()->GetStream(_LIGHT_STREAM).NotNull())
-        size += ComputeLightStreamSize(sm) + MC_CHUNK_SIZE;
-
-    if (sm->GetVertexStream()->GetStream(_TEXC_STREAM).NotNull())
-        size += ComputeTexcStreamSize(sm) + MC_CHUNK_SIZE;
-
-    if (sm->GetVertexStream()->GetStream(_ANIM_STREAM).NotNull())
-        size += ComputeAnimStreamSize(sm) + MC_CHUNK_SIZE;
-
-    if (sm->GetIndexStream()->GetStream().NotNull())
-        size += ComputeIndexStreamSize(sm) + MC_CHUNK_SIZE;
-    
-    return size;
+	if (!hasBound)
+		mesh->CalcuBounds();
 }
 
-int MeshLoader::ComputeBoundsSize(SubMesh * sm)
+void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 {
-    return sizeof(float) * 10;
+	const int K_Version = 0;
+
+	int iVersion;
+	int iVertexCount;
+	int iIndexCount;
+	int iVertexElems;
+
+	stream->Read(&iVersion, sizeof(int));
+	stream->Read(&iVertexCount, sizeof(int));
+	stream->Read(&iIndexCount, sizeof(int));
+	stream->Read(&iVertexElems, sizeof(int));
+
+	int iPrimitiveCount = iIndexCount / 3;
+	int iPrimitiveType = PRIM_TRIANGLELIST;
+
+	d_assert (iVertexElems | VE_POSITION);
+
+	sm->GetVertexStream()->SetCount(iVertexCount);
+	sm->GetIndexStream()->SetCount(iIndexCount);
+	sm->SetPrimitiveCount(iPrimitiveCount);
+	sm->SetPrimitiveType((PRIMITIVE_TYPE)iPrimitiveType);
+
+	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	
+	int vstride = GenVertexDecl(decl, iVertexElems);
+
+	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(vstride * iVertexCount);
+
+	void * vdata = vb->Lock(0, 0, LOCK_NORMAL);
+	{
+		stream->Read(vdata, vstride * iVertexCount);
+	}
+	vb->Unlock();
+
+	FORMAT indexFormat = FMT_INDEX16;
+	if (iIndexCount > 65535)
+		indexFormat = FMT_INDEX32;
+
+	int istride = (indexFormat == FMT_INDEX16) ? 2 : 4;
+	IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(istride * iIndexCount, indexFormat);
+
+	void * idata = ib->Lock(0, 0, LOCK_NORMAL);
+	{
+		stream->Read(idata, istride * iIndexCount);
+
+		int index = 0;
+		short * idx = (short *)idata;
+		for (int i = 0; i < iIndexCount / 3; ++i)
+		{
+			short p0 = idx[index++];
+			short p1 = idx[index++];
+			short p2 = idx[index++];
+
+			int sum = p0 + p1;
+		}
+	}
+	ib->Unlock();
+
+	sm->GetVertexStream()->SetDeclaration(decl);
+	sm->GetVertexStream()->Bind(0, vb, vstride);
+	sm->GetIndexStream()->Bind(ib, 0);
+
+	ReadMaterial(sm, stream);
 }
 
-
-int MeshLoader::ComputeTransStreamSize(SubMesh * sm)
+void MeshLoader_v1::ReadMaterial(SubMesh * sm, DataStreamPtr & stream)
 {
-    VertexElement ve[MAX_ELEMENT];
-    int count;
-    int size = 0;
-    sm->GetVertexStream()->GetDeclaration()->GetStreamItem(_GEOM_STREAM, ve, count);
-    EXCEPTION_DEBUG(count != 0, "transfrom stream error.");
+	int version;
+	int doubleSide, blendMode;
+	Color4 emissive, ambient, diffuse, specular;
+	float specularPower;
+	char emissiveMap[128], diffuseMap[128], normalMap[128], specularMap[128];
 
-    size += (sizeof(short) + sizeof(unsigned char) + sizeof(unsigned char) + sizeof(unsigned char)) * count;
+	stream->Read(&version, sizeof(int));
 
-    return size + sizeof(int) + sm->GetVertexStream()->GetStream(_GEOM_STREAM)->GetSize();
+	stream->Read(&doubleSide, sizeof(int));
+	stream->Read(&blendMode, sizeof(int));
+
+	stream->Read(&emissive, sizeof(Color4));
+	stream->Read(&ambient, sizeof(Color4));
+	stream->Read(&diffuse, sizeof(Color4));
+	stream->Read(&specular, sizeof(Color4));
+	stream->Read(&specularPower, sizeof(float));
+
+	stream->Read(emissiveMap, 128);
+	stream->Read(diffuseMap, 128);
+	stream->Read(normalMap, 128);
+	stream->Read(specularMap, 128);
+
+	Material * mtl = sm->GetMaterial();
+
+	if (doubleSide == 1)
+	{
+		mtl->SetCullMode(CULL_NONE);
+	}
+
+	mtl->SetBlendMode((BLEND_MODE)blendMode);
+
+	mtl->SetEmissive(emissive);
+	mtl->SetAmbient(ambient);
+	mtl->SetDiffuse(diffuse);
+	mtl->SetSpecular(specular);
+
+	mtl->SetEmissiveMap(emissiveMap);
+	mtl->SetDiffuseMap(diffuseMap);
+	mtl->SetNormalMap(normalMap);
+	mtl->SetSpecularMap(specularMap);
 }
 
-int MeshLoader::ComputeLightStreamSize(SubMesh * sm)
+void MeshLoader_v1::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 {
-    VertexElement ve[MAX_ELEMENT];
-    int count;
-    int size = 0;
-    sm->GetVertexStream()->GetDeclaration()->GetStreamItem(_LIGHT_STREAM, ve, count);
-    EXCEPTION_DEBUG(count != 0, "light stream error.");
-
-    size += (sizeof(short) + sizeof(unsigned char) + sizeof(unsigned char) + sizeof(unsigned char)) * count;
-
-    return size + sizeof(int) + sm->GetVertexStream()->GetStream(_LIGHT_STREAM)->GetSize();
+	d_assert (0);
 }
 
-int MeshLoader::ComputeTexcStreamSize(SubMesh * sm)
+void MeshLoader_v1::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
 {
-    VertexElement ve[MAX_ELEMENT];
-    int count;
-    int size = 0;
-    sm->GetVertexStream()->GetDeclaration()->GetStreamItem(_TEXC_STREAM, ve, count);
-    EXCEPTION_DEBUG(count != 0, "texcoord stream error.");
+	const int K_Version = 0;
 
-    size += (sizeof(short) + sizeof(unsigned char) + sizeof(unsigned char) + sizeof(unsigned char)) * count;
+	int iVerison;
+	Vec3 vMin, vMax, vCenter;
+	float fRadius;
 
-    return size + sizeof(int) + sm->GetVertexStream()->GetStream(_TEXC_STREAM)->GetSize();
+	stream->Read(&iVerison, sizeof(int));
+	stream->Read(&vMin, sizeof(Vec3));
+	stream->Read(&vMax, sizeof(Vec3));
+
+	stream->Read(&vCenter, sizeof(Vec3));
+	stream->Read(&fRadius, sizeof(float));
+
+	mesh->SetAabb(vMin, vMax);
+	mesh->SetBoundingSphere(vCenter, fRadius);
 }
 
-int MeshLoader::ComputeAnimStreamSize(SubMesh * sm)
+int MeshLoader_v1::GenVertexDecl(VertexDeclarationPtr decl, int vertexElems)
 {
-    VertexElement ve[MAX_ELEMENT];
-    int count;
-    int size = 0;
-    sm->GetVertexStream()->GetDeclaration()->GetStreamItem(_ANIM_STREAM, ve, count);
-    EXCEPTION_DEBUG(count != 0, "animation stream error.");
+	int voffset = 0;
 
-    size += (sizeof(short) + sizeof(unsigned char) + sizeof(unsigned char) + sizeof(unsigned char)) * count;
+	if (vertexElems & VE_POSITION)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT3, DU_POSITION, 0);
+		voffset += 12;
+	}
 
-    return size + sizeof(int) + sm->GetVertexStream()->GetStream(_ANIM_STREAM)->GetSize();
-}
+	if (vertexElems & VE_NORMAL)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT3, DU_NORMAL, 0);
+		voffset += 12;
+	}
 
-int MeshLoader::ComputeIndexStreamSize(SubMesh * sm)
-{
-    return sizeof(unsigned char) + sizeof(int) + sm->GetIndexStream()->GetStream()->GetSize();
+	if (vertexElems & VE_COLOR)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT4, DU_COLOR, 0);
+		voffset += 16;
+	}
+
+	if (vertexElems & VE_TANGENT)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT3, DU_TANGENT, 0);
+		voffset += 12;
+	}
+
+	if (vertexElems & VE_TEXCOORD)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT2, DU_TEXCOORD, 0);
+		voffset += 8;
+	}
+
+	if (vertexElems & VE_LIGHTMAPUV)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT2, DU_TEXCOORD, 1);
+		voffset += 8;
+	}
+
+	if (vertexElems & VE_BLENDWEIGHTS)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT4, DU_BLENDWEIGHT, 0);
+		voffset += 16;
+	}
+
+	if (vertexElems & VE_BLENDINDICES)
+	{
+		decl->AddElement(0, voffset, DT_UBYTE4, DU_BLENDINDICES, 0);
+		voffset += 4;
+	}
+
+	decl->Init();
+
+	return voffset;
 }

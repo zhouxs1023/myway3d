@@ -57,22 +57,34 @@ void Material::SetSpecular(const Color4 & color)
 
 void Material::SetEmissiveMap(const TString128 & tex)
 {
-    mEmissiveMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	if (tex != "")
+		mEmissiveMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	else
+		mEmissiveMap = RenderHelper::Instance()->GetBlackTexture();
 }
 
 void Material::SetDiffuseMap(const TString128 & tex)
 {
-    mDiffuseMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	if (tex != "")
+		mDiffuseMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	else
+		mDiffuseMap = RenderHelper::Instance()->GetWhiteTexture();
 }
 
 void Material::SetSpecularMap(const TString128 & tex)
 {
-    mSpecularMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	if (tex != "")
+		mSpecularMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	else
+		mSpecularMap = RenderHelper::Instance()->GetBlackTexture();
 }
 
 void Material::SetNormalMap(const TString128 & tex)
 {
-    mNormalMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	if (tex != "")
+		mNormalMap = VideoBufferManager::Instance()->Load2DTexture(tex, tex);
+	else
+		mNormalMap = RenderHelper::Instance()->GetDefaultNormalTexture();
 }
 
 void Material::SetSpecularPower(float power)
@@ -156,78 +168,7 @@ TexturePtr Material::GetNormalMap() const
 
 
 
-MaterialResource::MaterialResource()
-{
-    mMaterials = NULL;
-    mNumMaterials = 0;
-}
-
-MaterialResource::~MaterialResource()
-{
-    safe_delete_array(mMaterials);
-    mNumMaterials = 0;
-}
-
-void MaterialResource::Alloc(int num)
-{
-    safe_delete_array(mMaterials);
-
-    mNumMaterials = num;
-    mMaterials = new Material[num];
-}
-
-Material * MaterialResource::GetMaterial(int index)
-{
-    d_assert (index < mNumMaterials);
-    return &mMaterials[index];
-}
-
-int MaterialResource::GetNumMaterials()
-{
-    return mNumMaterials;
-}
-
-void MaterialResource::Load()
-{
-    if (mLoadState == Resource::LOADED)
-        return ;
-
-    ResourceManager::Instance()->GetResourceLoader()->Load(this);
-}
-
-void MaterialResource::Reload()
-{
-    if (mLoadState == Resource::LOADED)
-        Unload();
-
-    ResourceManager::Instance()->GetResourceLoader()->ForceLoad(this);
-}
-
-void MaterialResource::Unload()
-{
-    safe_delete_array(mMaterials);
-    mNumMaterials = 0;
-
-    mLoadState = Resource::UNLOADED;
-}
-
-void MaterialResource::LoadImp(DataStreamPtr stream)
-{
-    MaterialLoader loader;
-    
-    loader.Load(this, stream);
-
-    mLoadState = Resource::LOADED;
-}
-
-
-
-
-
-
-
-
-
+#include "MWMesh.h"
 
 CULL_MODE GetCullMode(const char * m)
 {
@@ -310,22 +251,6 @@ BLEND_MODE GetBlendMode(const char * m)
         LOG_PRINT_FORMAT("unknown blend mode '%s'.\n", m);
         return BM_OPATICY;
     }
-}
-
-int MaterialLoader::_getNumMaterials()
-{
-    int i = 0;
-    xml_node * root = doc.first_node("Materials"); 
-    xml_node * mat = root->first_node("Material");
-
-    while (mat)
-    {
-        ++i;
-
-        mat = mat->next_sibling("Material");
-    }
-
-    return i;
 }
 
 void MaterialLoader::_loadMaterial(Material * mat, xml_node * node)
@@ -458,31 +383,23 @@ void MaterialLoader::_loadMaterial(Material * mat, xml_node * node)
 }
 
 
-void MaterialLoader::Load(MaterialResource * res, DataStreamPtr stream)
+void MaterialLoader::Load(Mesh * mesh, DataStreamPtr stream)
 {
     doc.parse<0>((char *)stream->GetData());
 
-    int num = _getNumMaterials();
-    int count = num;
     int i = 0;
 
     xml_node * root = doc.first_node("Materials"); 
     xml_node * node = root->first_node("Material");
 
-    res->Alloc(num);
-
-    d_assert (count > 0);
-
     while (node)
     {
-        Material * mat = &res->mMaterials[i++];
+        Material * mat = mesh->GetSubMesh(i++)->GetMaterial();
 
         _loadMaterial(mat, node);
 
         node = node->next_sibling("Material");
     }
-
-    d_assert (i == count);
 }
 
 

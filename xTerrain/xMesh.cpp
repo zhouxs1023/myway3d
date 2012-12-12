@@ -172,7 +172,6 @@ void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
 	Vec3 pos = xApp::Instance()->GetHitPosition(pt.x, pt.y);
 
 	obj->SetPosition(pos);
-	obj->SetScale(0.01f);
 	obj->SetMeshFile(base);
 
 	xApp::Instance()->SetSelectedObj(obj);

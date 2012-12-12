@@ -6,6 +6,7 @@ namespace MaxPlugin {
 
 	xMaterial::xMaterial()
 	{
+		mDoubleSide = FALSE;
 		mBlendMode = BM_OPATICY;
 
 		mEmissive = Color4::Black;

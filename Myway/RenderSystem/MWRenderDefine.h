@@ -621,7 +621,7 @@ struct RenderState
         depthWrite = true;
         depthCheck = DCM_LESS_EQUAL;
         blendMode = BM_OPATICY;
-        alphaTestRef = 0;
+        alphaTestRef = 0.5f;
     }
 };
 

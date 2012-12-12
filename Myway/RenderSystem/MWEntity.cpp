@@ -277,7 +277,7 @@ void Entity::_Init()
         VertexStream * vs1          = sm->GetVertexStream();
         IndexStream * is0           = se->GetIndexStream();
         IndexStream * is1           = sm->GetIndexStream();
-        Material * mtl              = mMesh->GetMaterialSource()->GetMaterial(i);
+        Material * mtl              = sm->GetMaterial();
 
         *vs0 = *vs1;
         *is0 = *is1;

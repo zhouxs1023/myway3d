@@ -1,7 +1,8 @@
 #include "stdafx.h"
 
+#include "MWMeshLoader.h"
 #include "xMesh.h"
-#include "xExporterConfig.h"
+#include "xExportConfig.h"
 
 namespace MaxPlugin {
 
@@ -68,6 +69,7 @@ namespace MaxPlugin {
 
 	xMesh::xMesh()
 	{
+		mVertexElems = 0;
 	}
 
 	xMesh::~xMesh()
@@ -78,6 +80,8 @@ namespace MaxPlugin {
 	{
 		if (obj->GetIGameType() != IGameMesh::IGAME_MESH)
 			return ;
+
+		mVertexElems |= MeshLoader_v1::VE_POSITION;
 
 		// extract mesh
 		IGameMesh* mesh = (IGameMesh*) obj;
@@ -106,12 +110,16 @@ namespace MaxPlugin {
 					float a = mesh->GetAlphaVertex(face->vert[vi]);
 
 					v.SetColor(Color4(c.x, c.y, c.z, a));
+
+					mVertexElems |= MeshLoader_v1::VE_COLOR;
 				}
 
 				if (xExportConfig::Instance()->IsExportNormal())
 				{
 					Point3 n = mesh->GetNormal(face, vi);
 					v.SetNormal(Vec3(n.x, n.y, n.z));
+
+					mVertexElems |= MeshLoader_v1::VE_NORMAL;
 				}
 
 				if (xExportConfig::Instance()->IsExportTexcoord() && texMaps.Count())
@@ -125,6 +133,8 @@ namespace MaxPlugin {
 						tv = mesh->GetMapVertex(texMaps[0], face->vert[vi]);
 
 					v.SetTexcoord(Vec2(tv.x, tv.y));
+
+					mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
 				}
 
 				if (xExportConfig::Instance()->IsExportLightmapUV() && texMaps.Count() > 1)
@@ -138,6 +148,8 @@ namespace MaxPlugin {
 						tv = mesh->GetMapVertex(texMaps[1], face->vert[vi]);
 
 					v.SetLightmapUV(Vec2(tv.x, tv.y));
+
+					mVertexElems |= MeshLoader_v1::VE_LIGHTMAPUV;
 				}
 
 				xface.p[vi] = mVertexList.Add(v);

@@ -1,5 +1,10 @@
 #pragma once
 
+
+namespace MaxPlugin {
+
+class xMesh;
+
 class xMeshExporter : public ITreeEnumProc
 {
 public:
@@ -11,6 +16,8 @@ public:
 protected:
 	int callback(INode *node);
 
+	void WriteSubMesh(xMesh * mesh, File & file);
+
 protected:
 	ExpInterface * mExpInterface;
 	Interface * mInterface;
@@ -20,3 +27,6 @@ protected:
 	Map<TString128, int> mBoneIndexMap;
 	int mBoneIndex;
 };
+
+
+}

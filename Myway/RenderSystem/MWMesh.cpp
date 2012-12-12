@@ -47,6 +47,18 @@ PRIMITIVE_TYPE SubMesh::GetPrimitiveType()
     return mPrimType;
 }
 
+Material * SubMesh::GetMaterial()
+{
+	return &mMaterial;
+}
+
+
+
+
+
+
+
+
 
 SubMesh * Mesh::GetSubMesh(int index)
 { 
@@ -103,12 +115,10 @@ Mesh::Mesh(const TString128 & sName)
   mBound(Vec3::Zero, Vec3::Zero),
   mSphere(Vec3::Zero, 0.0f)
 {
-    mMaterialResource = new MaterialResource();
 }
 
 Mesh::~Mesh()
 {
-    delete mMaterialResource;
     RemoveAllSubMehs();
 }
 
@@ -207,11 +217,6 @@ void Mesh::Load()
     }
 
     ResourceManager::Instance()->GetResourceLoader()->Load(this);
-
-    TString128 source = File::RemoveExternName(GetSourceName()) + ".material";
-
-    mMaterialResource->SetSourceName(source);
-    mMaterialResource->Load();
 }
 
 void Mesh::Reload()
@@ -271,9 +276,4 @@ const Aabb& Mesh::GetAabb() const
 const Sphere & Mesh::GetBoundingSphere() const
 {
     return mSphere;
-}
-
-MaterialResource * Mesh::GetMaterialSource()
-{
-    return mMaterialResource;
 }

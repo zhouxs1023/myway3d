@@ -96,7 +96,6 @@ void ObjCreatorTree::OnLButtonUp(UINT nFlags, CPoint point)
 				Vec3 pos = xApp::Instance()->GetHitPosition(fx, fy);
 
 				obj->SetPosition(pos);
-				obj->SetScale(0.01f);
 			}
 
 			xApp::Instance()->SetSelectedObj(obj);

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "afx.h"
+#include "afxwin.h"
 #include "max.h"
 #include "plugapi.h"
 #include "impexp.h"
