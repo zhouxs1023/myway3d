@@ -23,12 +23,20 @@ xExportConfig::~xExportConfig()
 	SHUT_SLN;
 }
 
+extern HINSTANCE ghInstance;
+
 void xExportConfig::Load()
 {
-	const char * filename = "./xMaxExporter.ini";
+	char path[MAX_PATH];
+
+	GetModuleFileName(ghInstance, path, MAX_PATH);
+
+	TString128 dir = File::GetFileDir(path);
+
+	TString128 filename = dir + "\\xMaxExporter.ini";
 
 	xml_doc doc;
-	char * data = XmlHelper::LoadXmlFromFile(doc, filename);
+	char * data = XmlHelper::LoadXmlFromFile(doc, filename.c_str());
 
 	if (data)
 	{
@@ -95,11 +103,17 @@ void xExportConfig::Load()
 
 void xExportConfig::Save()
 {
-	const char * filename = "./xMaxExporter.ini";
+	char path[MAX_PATH];
+
+	GetModuleFileName(ghInstance, path, MAX_PATH);
+
+	TString128 dir = File::GetFileDir(path);
+
+	TString128 filename = dir + "\\xMaxExporter.ini";
 
 	std::ofstream stream;
 
-	stream.open(filename);
+	stream.open(filename.c_str());
 
 	d_assert (stream.is_open());
 
@@ -113,6 +127,8 @@ void xExportConfig::Save()
 		stream << "    " << "<ExportLightmapUV Value = \"" << (mExportLightmapUV ? "true" : "false") << "\"/>" << std::endl;
 	}
 	stream << "</Config>" << std::endl;
+
+	stream.close();
 }
 
 void xExportConfig::SetExportFilename(const TString128 & filename)

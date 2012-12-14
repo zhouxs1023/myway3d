@@ -1,22 +1,30 @@
 #pragma once
 
+#include "xTextureExporter.h"
 
 namespace MaxPlugin {
 
 class xMesh;
+struct xSubMesh;
 
 class xMeshExporter : public ITreeEnumProc
 {
+	DECLARE_SINGLETON (xMeshExporter);
+
 public:
 	xMeshExporter(ExpInterface * ei, Interface * i);
 	~xMeshExporter();
 
-	void Build();
+	void Export();
+
+	ExpInterface * GetExpInterface() { return mExpInterface; }
+	Interface * GetInterface() { return mInterface; }
+	IGameScene * GetGameScene() { return mGameScene; }
 
 protected:
 	int callback(INode *node);
 
-	void WriteSubMesh(xMesh * mesh, File & file);
+	void WriteSubMesh(xSubMesh * mesh, File & file);
 
 protected:
 	ExpInterface * mExpInterface;

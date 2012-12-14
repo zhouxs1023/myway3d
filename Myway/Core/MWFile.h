@@ -63,7 +63,8 @@ public:
     bool WriteString(const String & data);
 
     static TString128 GetExternName(const TString128 & file);
-    static TString128 GetFileDir(const TString128 & file);
+	static TString128 GetFileDir(const TString128 & file);
+    static TString128 GetBaseName(const TString128 & file);
     static TString128 RemoveExternName(const TString128 & file);
 	static TString128 GetAbsoluteFileName(const TString128 & file);
 

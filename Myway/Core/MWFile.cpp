@@ -234,17 +234,39 @@ TString128 File::GetExternName(const TString128 & file)
 
 TString128 File::GetFileDir(const TString128 & file)
 {
-    const char * str = file.c_str();
-    int len = file.Length();
+	const char * str = file.c_str();
+	int len = file.Length();
 
-    while (len > 0 && (str[len - 1] != '\\' && str[len - 1] != '/'))
-        --len;
+	while (len > 0 && (str[len - 1] != '\\' && str[len - 1] != '/'))
+		--len;
 
-    TString128 dir = file;
+	TString128 dir = file;
 
-    dir[len - 1] = 0;
+	dir[len - 1] = 0;
 
-    return dir;
+	return dir;
+}
+
+TString128 File::GetBaseName(const TString128 & file)
+{
+	const char * str = file.c_str();
+	int len = file.Length();
+	int kLen = len;
+
+	while (len > 0 && (str[len - 1] != '\\' && str[len - 1] != '/'))
+		--len;
+
+	char baseName[128];
+
+	int i = 0;
+	while (len < kLen)
+	{
+		baseName[i++] = str[len++];
+	}
+	
+	baseName[i] = 0;
+
+	return baseName;
 }
 
 TString128 File::RemoveExternName(const TString128 & file)

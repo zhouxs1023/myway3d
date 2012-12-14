@@ -55,6 +55,8 @@ BOOL MyDll::InitInstance()
 	if (FAILED(CoInitialize(NULL)))
 		return FALSE;
 
+	ghInstance = m_hInstance;
+
     return TRUE;
 }
 

@@ -3,8 +3,11 @@
 #include "xMeshExporter.h"
 #include "xExportConfig.h"
 #include "xMesh.h"
+#include "xSkeleton.h"
 
 namespace MaxPlugin {
+
+IMP_SLN(xMeshExporter);
 
 xMeshExporter::xMeshExporter(ExpInterface * ei, Interface * i)
 	: mExpInterface(ei)
@@ -12,10 +15,12 @@ xMeshExporter::xMeshExporter(ExpInterface * ei, Interface * i)
 	, mGameScene(NULL)
 	, mBoneIndex(0)
 {
+	INIT_SLN;
 }
 
 xMeshExporter::~xMeshExporter()
 {
+	SHUT_SLN;
 }
 
 int xMeshExporter::callback(INode *node)
@@ -59,7 +64,7 @@ int xMeshExporter::callback(INode *node)
 	return TREE_CONTINUE;
 }
 
-void xMeshExporter::Build()
+void xMeshExporter::Export()
 {
 	try 
 	{
@@ -73,7 +78,7 @@ void xMeshExporter::Build()
 
 		mGameScene = GetIGameInterface();
 		IGameConversionManager* cm = GetConversionManager();
-		cm->SetCoordSystem(IGameConversionManager::IGAME_OGL);
+		cm->SetCoordSystem(IGameConversionManager::IGAME_D3D);
 		mGameScene->InitialiseIGame(mNodeTab, false);
 		mGameScene->SetStaticFrame(0);
 		int nodeCount = mGameScene->GetTopLevelNodeCount();
@@ -81,6 +86,38 @@ void xMeshExporter::Build()
 		if (nodeCount == 0) {
 			MessageBox(GetActiveWindow(), "No nodes available!", "Error", MB_ICONINFORMATION);
 			mGameScene->ReleaseIGame();
+			return ;
+		}
+
+		// extract node
+		xSkeleton skel;
+
+		for (int i = 0; i < nodeCount; ++i)
+		{
+			IGameNode* node = mGameScene->GetTopLevelNode(i);
+
+			if (node->IsNodeHidden())
+				continue ;
+			
+			skel.Extrat(node);
+		}
+
+		// extract mesh
+		xMesh mesh;
+
+		for (int i = 0; i < nodeCount; ++i)
+		{
+			IGameNode* node = mGameScene->GetTopLevelNode(i);
+
+			if (node->IsNodeHidden())
+				continue ;
+
+			mesh.Extract(node);
+		}
+
+		if (mesh.GetSubMeshCount() == 0)
+		{
+			MessageBox(GetActiveWindow(), "No Objects!", "Error", MB_OK);
 			return ;
 		}
 
@@ -95,28 +132,12 @@ void xMeshExporter::Build()
 		int version = MODEL_FILE_VERSION_1;
 		file.Write(&version, sizeof (int));
 
-		int nodeIdx = 0;
-		while (nodeIdx < nodeCount)
+
+		for (int i = 0; i < mesh.GetSubMeshCount(); ++i)
 		{
-			IGameNode* node = mGameScene->GetTopLevelNode(nodeIdx);
-			IGameObject* obj = node->GetIGameObject();
-
-			obj->InitializeData();
-
-			if (obj->GetIGameType() == IGameMesh::IGAME_MESH)
-			{
-				IGameMaterial* mtl = node->GetNodeMaterial();
-
-				xMesh mesh;
-
-				mesh.Build(obj, mtl);
-
-				WriteSubMesh(&mesh, file);
-			}
-			
-			node->ReleaseIGameObject();
-			nodeIdx++;
+			WriteSubMesh(mesh.GetSubMesh(i), file);
 		}
+
 
 		mGameScene->ReleaseIGame();
 	}
@@ -129,19 +150,19 @@ void xMeshExporter::Build()
 	}
 }
 
-void xMeshExporter::WriteSubMesh(xMesh * mesh, File & file)
+void xMeshExporter::WriteSubMesh(xSubMesh * mesh, File & file)
 {
 	int id = MC_SUBMESH;
 	file.Write(&id, sizeof(int));
 
-	const xVertexList & vertList = mesh->GetVertexList();
-	const Array<xFace> & faceList = mesh->GetFaces();
-	const xMaterial & material = mesh->GetMaterial();
+	const xVertexList & vertList = mesh->mVertexList;
+	const Array<xFace> & faceList = mesh->mFaces;
+	const xMaterial & material = mesh->mMaterial;
 
 	int iVerison = 0;
 	int iVertexCount = vertList.Size();
 	int iIndexCount = faceList.Size() * 3;
-	int iVertexElems = mesh->GetVertexElems();
+	int iVertexElems = mesh->mVertexElems;
 
 	file.Write(&iVerison, sizeof(int));
 

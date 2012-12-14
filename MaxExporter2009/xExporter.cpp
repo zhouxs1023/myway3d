@@ -88,6 +88,7 @@ __declspec( dllexport ) ULONG CanAutoDefer()
 #include "xExportConfig.h"
 #include "xMeshExporter.h"
 #include "xExportSettingDlg.h"
+#include "xTextureExporter.h"
 
 using namespace MaxPlugin;
 
@@ -109,8 +110,12 @@ int	xMaxExport::DoExport(const TCHAR *name,ExpInterface *ei,Interface *i, BOOL s
 
 	if (dlg.DoModal() == IDOK)
 	{
+		xTextureExporter::Instance()->Clear();
+
 		xMeshExporter meshExp(ei, i);
-		meshExp.Build();
+		meshExp.Export();
+
+		xTextureExporter::Instance()->Export();
 
 		return IMPEXP_SUCCESS;
 	}

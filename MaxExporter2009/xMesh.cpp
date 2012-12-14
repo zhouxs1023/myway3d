@@ -3,6 +3,7 @@
 #include "MWMeshLoader.h"
 #include "xMesh.h"
 #include "xExportConfig.h"
+#include "xTextureExporter.h"
 
 namespace MaxPlugin {
 
@@ -37,14 +38,13 @@ namespace MaxPlugin {
 	int xVertexList::Add(const xVertex & v)
 	{
 		int i = 0;
-		for (i = 0; i < Size(); ++i)
+
+		for (int i = 0; i < Size(); ++i)
 		{
 			if (mVerts[i] == v)
-			{
 				return i;
-			}
 		}
-
+	
 		mVerts.PushBack(v);
 
 		return i;
@@ -62,6 +62,12 @@ namespace MaxPlugin {
 		return mVerts[index];
 	}
 
+	xVertex & xVertexList::GetVertex(int index)
+	{
+		d_assert (index < Size());
+
+		return mVerts[index];
+	}
 
 
 
@@ -69,190 +75,294 @@ namespace MaxPlugin {
 
 	xMesh::xMesh()
 	{
-		mVertexElems = 0;
 	}
 
 	xMesh::~xMesh()
 	{
-	}
-
-	void xMesh::Build(IGameObject * obj, IGameMaterial * mtl)
-	{
-		if (obj->GetIGameType() != IGameMesh::IGAME_MESH)
-			return ;
-
-		mVertexElems |= MeshLoader_v1::VE_POSITION;
-
-		// extract mesh
-		IGameMesh* mesh = (IGameMesh*) obj;
-		int vertCount = mesh->GetNumberOfVerts();
-		int faceCount = mesh->GetNumberOfFaces();
-
-		Tab<int> texMaps = mesh->GetActiveMapChannelNum();
-
-		for (int i=0; i<faceCount; i++)
+		for (int i = 0; i < mSubMeshes.Size(); ++i)
 		{
-			FaceEx* face = mesh->GetFace(i);
-
-			xFace xface;
-
-			for (int vi=0; vi<3; vi++) 
-			{
-				Point3 p = mesh->GetVertex(face->vert[vi]);
-
-				xVertex v;
-				
-				v.SetPosition(Vec3(p.x, p.y, p.z));
-
-				if (xExportConfig::Instance()->IsExportColor())
-				{
-					Point3 c = mesh->GetColorVertex(face->vert[vi]);
-					float a = mesh->GetAlphaVertex(face->vert[vi]);
-
-					v.SetColor(Color4(c.x, c.y, c.z, a));
-
-					mVertexElems |= MeshLoader_v1::VE_COLOR;
-				}
-
-				if (xExportConfig::Instance()->IsExportNormal())
-				{
-					Point3 n = mesh->GetNormal(face, vi);
-					v.SetNormal(Vec3(n.x, n.y, n.z));
-
-					mVertexElems |= MeshLoader_v1::VE_NORMAL;
-				}
-
-				if (xExportConfig::Instance()->IsExportTexcoord() && texMaps.Count())
-				{
-					Point3 tv;
-					DWORD indices[3];
-
-					if (mesh->GetMapFaceIndex(texMaps[0], i, indices))
-						tv = mesh->GetMapVertex(texMaps[0], indices[vi]);
-					else
-						tv = mesh->GetMapVertex(texMaps[0], face->vert[vi]);
-
-					v.SetTexcoord(Vec2(tv.x, tv.y));
-
-					mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
-				}
-
-				if (xExportConfig::Instance()->IsExportLightmapUV() && texMaps.Count() > 1)
-				{
-					Point3 tv;
-					DWORD indices[3];
-
-					if (mesh->GetMapFaceIndex(texMaps[1], i, indices))
-						tv = mesh->GetMapVertex(texMaps[1], indices[vi]);
-					else
-						tv = mesh->GetMapVertex(texMaps[1], face->vert[vi]);
-
-					v.SetLightmapUV(Vec2(tv.x, tv.y));
-
-					mVertexElems |= MeshLoader_v1::VE_LIGHTMAPUV;
-				}
-
-				xface.p[vi] = mVertexList.Add(v);
-			}
-
-			mFaces.PushBack(xface);
+			delete mSubMeshes[i];
 		}
 	}
 
-
-	void xMesh::_buildMat(IGameMaterial * mtl)
+	void xMesh::Extract(IGameNode * node)
 	{
-		if (!mtl)
-			return ;
-		
-		int count = mtl->GetSubMaterialCount();
+		if (node->IsNodeHidden())
+			return  ;
 
-		d_assert (count == 0);
+		mMaxMesh.Clear();
 
-		Point4 val4;
+		IGameObject* obj = node->GetIGameObject();
+
+		// export option
+		bool expColor = xExportConfig::Instance()->IsExportColor();
+		bool expNormal = xExportConfig::Instance()->IsExportNormal();
+		bool expTexcoord = xExportConfig::Instance()->IsExportTexcoord();
+		bool expLightmapUV = xExportConfig::Instance()->IsExportLightmapUV();
+
+		obj->InitializeData();
+
+		if (obj->GetIGameType() == IGameMesh::IGAME_MESH)
+		{
+			IGameMesh* mesh = (IGameMesh*) obj;
+			Tab<int> texMaps = mesh->GetActiveMapChannelNum();
+
+			mVertexElems = 0;
+			mVertexElems |= MeshLoader_v1::VE_POSITION;
+
+			// position
+			for (int i = 0; i < mesh->GetNumberOfVerts(); ++i)
+				mMaxMesh.P.PushBack(mesh->GetVertex(i));
+
+			// vertex color
+			for (int i = 0; expColor && i < mesh->GetNumberOfColorVerts(); ++i)
+			{
+				Point3 c = mesh->GetColorVertex(i);
+				float a = mesh->GetAlphaVertex(i);
+
+				Point4 v;
+
+				v.x = c.x;
+				v.y = c.y;
+				v.z = c.z;
+				v.w = a;
+
+				mMaxMesh.C.PushBack(v);
+				
+				mVertexElems |= MeshLoader_v1::VE_COLOR;
+			}
+
+			// normal
+			for (int i = 0; expNormal && i < mesh->GetNumberOfNormals(); ++i)
+			{
+				mMaxMesh.N.PushBack(mesh->GetNormal(i));
+
+				mVertexElems |= MeshLoader_v1::VE_NORMAL;
+			}
+
+			// u v
+			for (int i = 0;  expTexcoord && texMaps.Count() && i < mesh->GetNumberOfMapVerts(texMaps[0]); ++i)
+			{
+				Point3 tv = mesh->GetMapVertex(texMaps[0], i);
+
+				mMaxMesh.UV.PushBack(Point2(tv.x, tv.y));
+
+				mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
+			}
+
+			// light map u v
+			for (int i = 0;  expTexcoord && texMaps.Count() && i < mesh->GetNumberOfMapVerts(texMaps[1]); ++i)
+			{
+				Point3 tv = mesh->GetMapVertex(texMaps[1], i);
+
+				mMaxMesh.LUV.PushBack(Point2(tv.x, tv.y));
+
+				mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
+			}
+
+			_extractSkinInfo(obj);
+
+			_extractSubMesh(mesh);
+		}
+
+		node->ReleaseIGameObject();
+	}
+
+	void xMesh::_extractSkinInfo(IGameObject * obj)
+	{
+		for (int i = 0; i < obj->GetNumModifiers(); i++)
+		{
+			IGameModifier * Modifier = obj->GetIGameModifier(i);
+
+			if (!Modifier->IsSkin())
+				continue ;
+
+			IGameSkin *Skin = (IGameSkin*) Modifier;
+
+			d_assert (Skin->GetNumOfSkinnedVerts() == mMaxMesh.P.Size());
+
+			//Export skinned verts
+			for (int i = 0; i < Skin->GetNumOfSkinnedVerts(); i++)
+			{
+
+				xBlendIndex bi;
+				xBlendWeight bw;
+
+				for (int b = 0; b < Skin->GetNumberOfBones(i) && b < 4; b++)
+				{
+					int boneId = Skin->GetBoneID(i, b);
+					float weight = Skin->GetWeight(i, b);
+
+					bi.i[b] = boneId;
+					bw.w[b] = weight;
+				}
+
+				bw.normalize();
+
+				mMaxMesh.BI.PushBack(bi);
+				mMaxMesh.BW.PushBack(bw);
+			}
+
+			mVertexElems |= MeshLoader_v1::VE_BLENDWEIGHTS;
+			mVertexElems |= MeshLoader_v1::VE_BLENDINDICES;
+		}
+	}
+
+	void xMesh::_addFace(xSubMesh * subMesh, FaceEx * face)
+	{
+		xFace xface;
+
+		for (int j = 0; j < 3; ++j)
+		{
+			xVertex v;
+
+			// position
+			Point3 pos = mMaxMesh.P[face->vert[j]];
+			v.SetPosition(Vec3(pos.x, pos.y, pos.z));
+
+			// normal
+			if (mVertexElems & MeshLoader_v1::VE_NORMAL)
+			{
+				Point3 nrm = mMaxMesh.N[face->norm[j]];
+
+				v.SetNormal(Vec3(nrm.x, nrm.y, nrm.z));
+			}
+
+			// vertex color
+			if (mVertexElems & MeshLoader_v1::VE_COLOR)
+			{
+				Point4 clr = mMaxMesh.C[face->color[j]];
+
+				v.SetColor(Color4(clr.x, clr.y, clr.z, clr.w));
+			}
+
+			// u v
+			if (mVertexElems & MeshLoader_v1::VE_TEXCOORD)
+			{
+				Point2 uv = mMaxMesh.UV[face->texCoord[j]];
+
+				v.SetTexcoord(Vec2(uv.x, uv.y));
+			}
+
+			// light map u v
+			if (mVertexElems & MeshLoader_v1::VE_LIGHTMAPUV)
+			{
+				Point2 uv = mMaxMesh.LUV[face->texCoord[j]];
+				v.SetLightmapUV(Vec2(uv.x, uv.y));
+			}
+
+			// blend index
+			if (mVertexElems & MeshLoader_v1::VE_BLENDINDICES)
+			{
+				xBlendIndex bi = mMaxMesh.BI[face->vert[j]];
+				v.SetBlendIndex(bi);
+			}
+
+			// blend weight
+			if (mVertexElems & MeshLoader_v1::VE_BLENDWEIGHTS)
+			{
+				xBlendWeight bw = mMaxMesh.BW[face->vert[j]];
+				v.SetBlendWeight(bw);
+			}
+
+			xface.p[j] = subMesh->mVertexList.Add(v);
+		}
+
+		subMesh->mFaces.PushBack(xface);
+	}
+
+	void xMesh::_extractSubMesh(IGameMesh * mesh)
+	{
+		Tab<int> matGrps = mesh->GetActiveMatIDs();
+
+		for ( int x=0; x < matGrps.Count(); x++ )
+		{
+			xSubMesh * subMesh = new xSubMesh();
+
+			subMesh->mVertexElems = mVertexElems;
+
+			Tab <FaceEx *> matFaces = mesh->GetFacesFromMatID(matGrps[x]);
+			if (matFaces.Count()>0)
+			{
+				for(int f=0;f<matFaces.Count();f++)
+				{
+					FaceEx *fe = matFaces[f];
+					_addFace(subMesh, mesh->GetFace(f));
+				}
+				std::string strDiffuse;
+				int nColorID = 0;
+				IGameMaterial* mtl = mesh->GetMaterialFromFace( matFaces[0] );
+				if (mtl)
+					_buildMat(subMesh, mtl);
+			}
+
+			mSubMeshes.PushBack(subMesh);
+		}
+	}
+
+	void xMesh::_buildMat(xSubMesh * subMesh, IGameMaterial * mtl)
+	{
+		/*Point4 val4;
 		Point3 val3;
 		PropType pt;
-		IGameProperty* p = mtl->GetAmbientData();
+		IGameProperty* p = NULL;
 
+
+		IGameProperty* p = mtl->GetAmbientData();
 		if (p)
 		{
-			pt = p->GetType();
+		pt = p->GetType();
 
-			if (pt == IGAME_POINT3_PROP) 
-			{
-				p->GetPropertyValue(val3);
-				mMaterial.SetAmbient(Color4(val3.x, val3.y, val3.z, 1));
-			}
-
-			if (pt == IGAME_POINT4_PROP)
-			{
-				p->GetPropertyValue(val4);
-				mMaterial.SetAmbient(Color4(val4.x, val4.y, val4.z, val4.w));
-			}
+		if (pt == IGAME_POINT3_PROP) 
+		{
+		p->GetPropertyValue(val3);
+		mMaterial.SetAmbient(Color4(val3.x, val3.y, val3.z, 1));
+		}
 		}
 
 		p = mtl->GetDiffuseData();
 		if (p)
 		{
-			pt = p->GetType();
+		pt = p->GetType();
 
-			if (pt == IGAME_POINT3_PROP)
-			{
-				p->GetPropertyValue(val3);
-				mMaterial.SetDiffuse(Color4(val3.x, val3.y, val3.z, 1));
-			}
-
-			if (pt == IGAME_POINT4_PROP)
-			{
-				p->GetPropertyValue(val4);
-				mMaterial.SetDiffuse(Color4(val4.x, val4.y, val4.z, val4.w));
-			}
+		if (pt == IGAME_POINT3_PROP)
+		{
+		p->GetPropertyValue(val3);
+		mMaterial.SetDiffuse(Color4(val3.x, val3.y, val3.z, 1));
+		}
 		}
 
 		p = mtl->GetSpecularData();
 		if (p)
 		{
-			pt = p->GetType();
+		pt = p->GetType();
 
-			if (pt == IGAME_POINT3_PROP)
-			{
-				p->GetPropertyValue(val3);
-				mMaterial.SetSpecular(Color4(val3.x, val3.y, val3.z, 1));
-			}
-
-			if (pt == IGAME_POINT4_PROP)
-			{
-				p->GetPropertyValue(val4);
-				mMaterial.SetSpecular(Color4(val4.x, val4.y, val4.z, val4.w));
-			}
+		if (pt == IGAME_POINT3_PROP)
+		{
+		p->GetPropertyValue(val3);
+		mMaterial.SetSpecular(Color4(val3.x, val3.y, val3.z, 1));
+		}
 		}
 
-		p = mtl->GetGlossinessData();
+		p = mtl->GetSpecularLevelData();
 		if (p)
 		{
-			float specularPower;
-			p->GetPropertyValue(specularPower);
-			mMaterial.SetSpecularPower(specularPower);
+		float specularPower;
+		p->GetPropertyValue(specularPower);
+		mMaterial.SetSpecularPower(specularPower);
 		}
 
 		p = mtl->GetEmissiveData();
 		if (p)
 		{
-			pt = p->GetType();
+		pt = p->GetType();
 
-			if (pt == IGAME_POINT3_PROP)
-			{
-				p->GetPropertyValue(val3);
-				mMaterial.SetEmissive(Color4(val3.x, val3.y, val3.z, 1));
-			}
-
-			if (pt == IGAME_POINT4_PROP)
-			{
-				p->GetPropertyValue(val4);
-				mMaterial.SetEmissive(Color4(val4.x, val4.y, val4.z, val4.w));
-			}
+		if (pt == IGAME_POINT3_PROP)
+		{
+		p->GetPropertyValue(val3);
+		mMaterial.SetEmissive(Color4(val3.x, val3.y, val3.z, 1));
 		}
-
+		}*/
 		int numTextures = mtl->GetNumberOfTextureMaps();
 
 		for ( int index = 0; index < numTextures; ++index )
@@ -263,19 +373,26 @@ namespace MaxPlugin {
 				continue;
 
 			const int type = pMap->GetStdMapSlot();
-			std::string bmap(pMap->GetBitmapFileName());
+			const char * tex = pMap->GetBitmapFileName();
+			std::string bmap = tex;
 			bmap = bmap.substr(bmap.find_last_of('\\') + 1);
 
 			if (type == ID_DI)
-				mMaterial.SetDiffuseMap(bmap.c_str());
+				subMesh->mMaterial.SetDiffuseMap(bmap.c_str());
 			else if (type == ID_BU)
-				mMaterial.SetNormalMap(bmap.c_str());
+				subMesh->mMaterial.SetNormalMap(bmap.c_str());
 			else if (type == ID_SP)
-				mMaterial.SetSpecularMap(bmap.c_str());
+				subMesh->mMaterial.SetSpecularMap(bmap.c_str());
 			else if (type == ID_SI)
-				mMaterial.SetEmissiveMap(bmap.c_str());
+				subMesh->mMaterial.SetEmissiveMap(bmap.c_str());
+
+			xTextureExporter::Instance()->Push(pMap->GetBitmapFileName());
 		}
+
 	}
 
-
+	void xMesh::_buildSkinInfo(IGameObject * obj)
+	{
+		
+	}
 }

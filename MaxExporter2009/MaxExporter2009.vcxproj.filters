@@ -17,6 +17,10 @@
     <ClCompile Include="xExportSettingDlg.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="xTextureExporter.cpp" />
+    <ClCompile Include="xSkeleton.cpp">
+      <Filter>Export</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -34,6 +38,10 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="xExportSettingDlg.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTextureExporter.h" />
+    <ClInclude Include="xSkeleton.h">
+      <Filter>Export</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

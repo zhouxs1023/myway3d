@@ -9,6 +9,7 @@
 #include "iskin.h"
 #include "CS\\BipExp.h"
 #include "IGame\\IGame.h"
+#include "IGame\\IGameModifier.h"
 #include "Myway.h"
 
 using namespace Myway;
