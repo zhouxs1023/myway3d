@@ -16,6 +16,8 @@ xExportConfig::xExportConfig()
 	mExportColor = false;
 	mExportTexcoord = true;
 	mExportLightmapUV = false;
+
+	mExportAnimation = true;
 }
 
 xExportConfig::~xExportConfig()
@@ -48,6 +50,8 @@ void xExportConfig::Load()
 		xml_node * ndExportColor = root->first_node("ExportColor");
 		xml_node * ndExportTexcoord = root->first_node("ExportTexcoord");
 		xml_node * ndExportLightmapUV = root->first_node("ExportLightmapUV");
+
+		xml_node * ndExportAnimation = root->first_node("ExportAnimation");
 
 		if (ndExportSelected)
 		{
@@ -96,6 +100,14 @@ void xExportConfig::Load()
 			if (val.LowerR() == "true")
 				mExportLightmapUV = true;
 		}
+
+		if (ndExportAnimation)
+		{
+			TString128 val = ndExportAnimation->first_attribute("Value")->value();
+
+			if (val.LowerR() == "true")
+				mExportAnimation = true;
+		}
 	}
 
 	safe_free(data);
@@ -125,6 +137,7 @@ void xExportConfig::Save()
 		stream << "    " << "<ExportColor Value = \"" << (mExportColor ? "true" : "false") << "\"/>" << std::endl;
 		stream << "    " << "<ExportTexcoord Value = \"" << (mExportTexcoord ? "true" : "false") << "\"/>" << std::endl;
 		stream << "    " << "<ExportLightmapUV Value = \"" << (mExportLightmapUV ? "true" : "false") << "\"/>" << std::endl;
+		stream << "    " << "<ExportAnimation Value = \"" << (mExportAnimation ? "true" : "false") << "\"/>" << std::endl;
 	}
 	stream << "</Config>" << std::endl;
 

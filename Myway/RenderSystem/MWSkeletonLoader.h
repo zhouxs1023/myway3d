@@ -21,21 +21,21 @@ class MW_ENTRY SkeletonLoader
     };
 
 public:
-    static void Load(SkeletonPtr skel, DataStreamPtr stream);
+    static void Load(Skeleton * skel, const TString128 & source);
 
 protected:
     static  bool ReadChunk(chunk & ck, DataStreamPtr & stream);
 
     static void ReadHead(DataStreamPtr & stream);
-    static void ReadBone(SkeletonPtr skel, DataStreamPtr & stream);
-    static void ReadHierarchy(SkeletonPtr skel, DataStreamPtr & stream);
-    static void ReadAnimation(SkeletonPtr skel, DataStreamPtr & stream);
-    static void ReadBoneAnimation(SkeletonPtr skel, Animation * anim, DataStreamPtr & stream);
+    static void ReadBone(Skeleton * skel, DataStreamPtr & stream);
+    static void ReadHierarchy(Skeleton * skel, DataStreamPtr & stream);
+    static void ReadAnimation(Skeleton * skel, DataStreamPtr & stream);
+    static void ReadBoneAnimation(Skeleton * skel, Animation * anim, DataStreamPtr & stream);
 
 protected:
 
-    static int ComputeBoneSize(SkeletonPtr skel);
-    static int ComputeHierarchySize(SkeletonPtr skel);
+    static int ComputeBoneSize(Skeleton * skel);
+    static int ComputeHierarchySize(Skeleton * skel);
     static int ComputeAnimationSize(Animation * anim);
     static int ComputeSkeletonAnimationSize(SkeletonAnimation * anim);
 };

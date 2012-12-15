@@ -4,6 +4,7 @@
 #include "xMesh.h"
 #include "xExportConfig.h"
 #include "xTextureExporter.h"
+#include "xSkeleton.h"
 
 namespace MaxPlugin {
 
@@ -39,7 +40,7 @@ namespace MaxPlugin {
 	{
 		int i = 0;
 
-		for (int i = 0; i < Size(); ++i)
+		for (i = 0; i < Size(); ++i)
 		{
 			if (mVerts[i] == v)
 				return i;
@@ -151,7 +152,7 @@ namespace MaxPlugin {
 			}
 
 			// light map u v
-			for (int i = 0;  expTexcoord && texMaps.Count() && i < mesh->GetNumberOfMapVerts(texMaps[1]); ++i)
+			for (int i = 0;  expTexcoord && texMaps.Count() > 1 && i < mesh->GetNumberOfMapVerts(texMaps[1]); ++i)
 			{
 				Point3 tv = mesh->GetMapVertex(texMaps[1], i);
 
@@ -170,42 +171,60 @@ namespace MaxPlugin {
 
 	void xMesh::_extractSkinInfo(IGameObject * obj)
 	{
-		for (int i = 0; i < obj->GetNumModifiers(); i++)
+		IGameSkin * Skin = obj->GetIGameSkin();
+
+		if (!Skin)
+			return ;
+
+		d_assert (Skin->GetNumOfSkinnedVerts() == mMaxMesh.P.Size());
+
+		//Export skinned verts
+		for (int i = 0; i < Skin->GetNumOfSkinnedVerts(); i++)
 		{
-			IGameModifier * Modifier = obj->GetIGameModifier(i);
+			int type = Skin->GetVertexType(i);
 
-			if (!Modifier->IsSkin())
-				continue ;
+			xBlendIndex bi;
+			xBlendWeight bw;
 
-			IGameSkin *Skin = (IGameSkin*) Modifier;
-
-			d_assert (Skin->GetNumOfSkinnedVerts() == mMaxMesh.P.Size());
-
-			//Export skinned verts
-			for (int i = 0; i < Skin->GetNumOfSkinnedVerts(); i++)
+			if (type==IGameSkin::IGAME_RIGID_BLENDED)
 			{
-
-				xBlendIndex bi;
-				xBlendWeight bw;
-
 				for (int b = 0; b < Skin->GetNumberOfBones(i) && b < 4; b++)
 				{
-					int boneId = Skin->GetBoneID(i, b);
+					INode * bone = Skin->GetBone(i, b);
 					float weight = Skin->GetWeight(i, b);
 
-					bi.i[b] = boneId;
-					bw.w[b] = weight;
+					if (bone)
+					{
+						const char * bname = bone->GetName();
+						int boneId = xSkeleton::Instance()->_getBoneId(bname);
+
+						bi.i[b] = boneId;
+						bw.w[b] = weight;
+					}
 				}
+			}
+			else if (type == IGameSkin::IGAME_RIGID)
+			{
+				INode * bone = Skin->GetBone(i, 0);
 
-				bw.normalize();
+				if (bone)
+				{
+					const char * bname = bone->GetName();
+					int boneId = xSkeleton::Instance()->_getBoneId(bname);
 
-				mMaxMesh.BI.PushBack(bi);
-				mMaxMesh.BW.PushBack(bw);
+					bi.i[0] = boneId;
+					bw.w[0] = 1;
+				}
 			}
 
-			mVertexElems |= MeshLoader_v1::VE_BLENDWEIGHTS;
-			mVertexElems |= MeshLoader_v1::VE_BLENDINDICES;
+			bw.normalize();
+
+			mMaxMesh.BI.PushBack(bi);
+			mMaxMesh.BW.PushBack(bw);
 		}
+
+		mVertexElems |= MeshLoader_v1::VE_BLENDWEIGHTS;
+		mVertexElems |= MeshLoader_v1::VE_BLENDINDICES;
 	}
 
 	void xMesh::_addFace(xSubMesh * subMesh, FaceEx * face)

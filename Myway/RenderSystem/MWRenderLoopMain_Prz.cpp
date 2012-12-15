@@ -190,11 +190,14 @@ namespace Myway {
         RenderQueue * rq = mScheme->GetRenderQueue();
 
         const Array<Renderer *> & objs = rq->GetSolidRender();
-        Technique * tech = mScheme->GetMainShaderProvider()->GetTechnique(ShaderProvider_Main::R_Base);
 
         for (int i = 0; i < objs.Size(); ++i)
         {
             Renderer * rd = objs[i];
+
+			bool skined = (rd->GetBlendMatrix(NULL) > 0);
+
+			Technique * tech = mScheme->GetMainShaderProvider()->GetTechnique(ShaderProvider_Main::R_Base, skined);
 
             render->Render(tech, rd);
         }

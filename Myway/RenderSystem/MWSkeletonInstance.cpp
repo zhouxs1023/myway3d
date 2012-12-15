@@ -3,8 +3,7 @@
 using namespace Myway;
 
 
-SkeletonInstance::SkeletonInstance(SkeletonPtr skel)
-: mRoot(NULL)
+SkeletonInstance::SkeletonInstance(Skeleton * skel)
 {
     mSkeleton = skel;
     _Initialize();
@@ -31,27 +30,30 @@ void SkeletonInstance::_Initialize()
     for (int i = 0; i < mSkeleton->GetHiberarchyCount(); ++i)
     {
         hiberarchy * bp = mSkeleton->GetHiberarchy(i);
-        Bone * parent = GetBone(bp->parent);
-        Bone * child = GetBone(bp->child);
-        parent->AddChild(child);
+
+		if (bp->parent != -1)
+		{
+			Bone * parent = GetBone(bp->parent);
+			Bone * child = GetBone(bp->child);
+			parent->AddChild(child);
+		}
     }
 
     //setup root bone
-    Array<Bone*>::Iterator iter;
-    Array<Bone*>::Iterator end;
+	for (int i = 0; i < mBones.Size(); ++i)
+	{
+		Bone * bone = mBones[i];
 
-    iter = mBones.Begin();
-    end = mBones.End();
+		if (bone->_IsRoot())
+			mRoots.PushBack(bone);
+	}
 
-    while (iter != end && !(*iter)->_IsRoot())
-    {
-        ++iter;
-    }
+	d_assert (mRoots.Size() > 0);
 
-    debug_assert(iter != end, "skeleton can't find root.");
-
-    mRoot = *iter;
-    mRoot->_Intitalize();
+	for (int i = 0; i < mRoots.Size(); ++i)
+	{
+		mRoots[i]->_Intitalize();
+	}
 }
 
 void SkeletonInstance::_Shutdown()
@@ -70,7 +72,7 @@ void SkeletonInstance::_Shutdown()
     }
 
     mBones.Clear();
-    mRoot = NULL;
+	mRoots.Clear();
 }
 
 void SkeletonInstance::_Dump(Bone * bn, const String & sText, const String & sSplit)
@@ -91,7 +93,7 @@ void SkeletonInstance::_Dump(Bone * bn, const String & sText, const String & sSp
     }
 }
 
-void SkeletonInstance::GetBoneMatrix(Mat4 * forms, int * count)
+int SkeletonInstance::GetBoneMatrix(Mat4 * forms)
 {
     int index = 0;
 
@@ -108,17 +110,25 @@ void SkeletonInstance::GetBoneMatrix(Mat4 * forms, int * count)
         ++iter;
     }
 
-    *count = index;
+    return index;
 }
 
 void SkeletonInstance::UpdateBoneMatrix()
 {
-    mRoot->_UpdateTransform();
+	for (int i = 0; i < mRoots.Size(); ++i)
+	{
+		mRoots[i]->_UpdateTransform();
+	}
 }
 
-Bone * SkeletonInstance::GetRootBone()
+int SkeletonInstance::GetRootBoneCount()
 {
-    return mRoot;
+	return mRoots.Size();
+}
+
+Bone * SkeletonInstance::GetRootBone(int i)
+{
+	return mRoots[i];
 }
 
 void SkeletonInstance::ResetBone()
@@ -192,9 +202,4 @@ int SkeletonInstance::GetAnimationCount()
 Animation * SkeletonInstance::GetAnimation(int index)
 {
     return mSkeleton->GetAnimation(index);
-}
-
-const TString128 & SkeletonInstance::GetSkeletonName()
-{
-    return mSkeleton->GetName();
 }

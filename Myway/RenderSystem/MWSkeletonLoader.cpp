@@ -14,7 +14,7 @@
             -- data
                 -- name
                 -- position
-                -- oreintation
+                -- orientation
                 -- scale
 
         hierarchy
@@ -49,8 +49,13 @@ bool SkeletonLoader::ReadChunk(chunk & ck, DataStreamPtr & stream)
            stream->Read(&ck.length, sizeof(int)) == sizeof(int);
 }
 
-void SkeletonLoader::Load(SkeletonPtr skel, DataStreamPtr stream)
+void SkeletonLoader::Load(Skeleton * skel, const TString128 & source)
 {
+	DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source.c_str());
+
+	if (stream == NULL)
+		return ;
+
     ReadHead(stream);
 
     chunk ck;
@@ -81,7 +86,7 @@ void SkeletonLoader::Load(SkeletonPtr skel, DataStreamPtr stream)
     if (skel != NULL && skel->GetJointCount() > MAX_BLEND_MATRIX_VS)
     {
         LOG_PRINT_FORMAT("Warning: mesh '%s' joint count more than %d, so using soft skined.\n",
-            skel->GetName().c_str(), MAX_BLEND_MATRIX_VS);
+            source.c_str(), MAX_BLEND_MATRIX_VS);
     }
 }
 
@@ -96,7 +101,7 @@ void SkeletonLoader::ReadHead(DataStreamPtr & stream)
    d_assert (sMagic == SKELETON_FILE_MAGIC && iVersion == SKELETON_FILE_VERSION);
 }
 
-void SkeletonLoader::ReadBone(SkeletonPtr skel, DataStreamPtr & stream)
+void SkeletonLoader::ReadBone(Skeleton * skel, DataStreamPtr & stream)
 {
     int count;
     String name;
@@ -110,13 +115,13 @@ void SkeletonLoader::ReadBone(SkeletonPtr skel, DataStreamPtr & stream)
         stream->ReadString(name);
         bn = skel->CreateJoint(name.c_str());
 
-        stream->Read(&bn->position, sizeof(Vec3));
-        stream->Read(&bn->orientation, sizeof(Quat));
-        stream->Read(&bn->scale, sizeof(Vec3));
+		stream->Read(&bn->position, sizeof(Vec3));
+		stream->Read(&bn->orientation, sizeof(Quat));
+		stream->Read(&bn->scale, sizeof(Vec3));
     }
 }
 
-void SkeletonLoader::ReadHierarchy(SkeletonPtr skel, DataStreamPtr & stream)
+void SkeletonLoader::ReadHierarchy(Skeleton * skel, DataStreamPtr & stream)
 {
     int count;
     short parent;
@@ -133,7 +138,7 @@ void SkeletonLoader::ReadHierarchy(SkeletonPtr skel, DataStreamPtr & stream)
     }
 }
 
-void SkeletonLoader::ReadAnimation(SkeletonPtr skel, DataStreamPtr & stream)
+void SkeletonLoader::ReadAnimation(Skeleton * skel, DataStreamPtr & stream)
 {
     String name;
     float len;
@@ -161,36 +166,36 @@ void SkeletonLoader::ReadAnimation(SkeletonPtr skel, DataStreamPtr & stream)
         stream->Skip(-CHUNK_SIZE);
 }
 
-void SkeletonLoader::ReadBoneAnimation(SkeletonPtr skel, Animation * anim, DataStreamPtr & stream)
+void SkeletonLoader::ReadBoneAnimation(Skeleton * skel, Animation * anim, DataStreamPtr & stream)
 {
-    short bone_index;
-    stream->Read(&bone_index, sizeof(short));
+	short bone_index;
+	stream->Read(&bone_index, sizeof(short));
 
-    SkeletonAnimation * skel_anim;
-    skel_anim = anim->CreateSkeletonAnimation(bone_index);
+	SkeletonAnimation * skel_anim;
+	skel_anim = anim->CreateSkeletonAnimation(bone_index);
 
-    int count;
-    stream->Read(&count, sizeof(int));
+	int count;
+	stream->Read(&count, sizeof(int));
 
-    KeyFrame * kf;
-    float time;
-    Vec3 trans;
-    Quat rotate;
-    Vec3 scale;
-    
-    for (int i = 0; i < count; ++i)
-    {
-        stream->Read(&time, sizeof(float));
-        stream->Read(&trans, sizeof(float) * 3);
-        stream->Read(&rotate, sizeof(float) * 4);
-        stream->Read(&scale, sizeof(float) * 3);
+	KeyFrame * kf;
+	float time;
+	Vec3 trans;
+	Quat rotate;
+	Vec3 scale;
 
-        kf = skel_anim->CreateKeyFrame();
-        kf->SetTime(time);
-        kf->SetTranslate(trans);
-        kf->SetRotation(rotate);
-        kf->SetScale(scale);
-    }
+	for (int i = 0; i < count; ++i)
+	{
+		stream->Read(&time, sizeof(float));
+		stream->Read(&trans, sizeof(float) * 3);
+		stream->Read(&rotate, sizeof(float) * 4);
+		stream->Read(&scale, sizeof(float) * 3);
+
+		kf = skel_anim->CreateKeyFrame();
+		kf->SetTime(time);
+		kf->SetTranslate(trans);
+		kf->SetRotation(rotate);
+		kf->SetScale(scale);
+	}
 }
 
 
@@ -198,7 +203,7 @@ void SkeletonLoader::ReadBoneAnimation(SkeletonPtr skel, Animation * anim, DataS
 
 
 
-int SkeletonLoader::ComputeBoneSize(SkeletonPtr skel)
+int SkeletonLoader::ComputeBoneSize(Skeleton * skel)
 {
     int count = (int)skel->GetJointCount();
     d_assert(count < 65536);
@@ -215,7 +220,7 @@ int SkeletonLoader::ComputeBoneSize(SkeletonPtr skel)
     return size + sizeof(int);
 }
 
-int SkeletonLoader::ComputeHierarchySize(SkeletonPtr skel)
+int SkeletonLoader::ComputeHierarchySize(Skeleton * skel)
 {
     return skel->GetHiberarchyCount() * (sizeof(short) + sizeof(short)) + sizeof(int);
 }

@@ -78,7 +78,6 @@ protected:
     RenderSystem *          mRenderSystem;
 
     World *                 mWorld;
-    SkeletonManager *       mSkeletonManager;
     MeshManager *           mMeshManager;
     DllManager *            mDllManager;
     ResourceManager *       mResourceManager;

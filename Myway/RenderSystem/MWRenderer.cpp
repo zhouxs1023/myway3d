@@ -21,9 +21,9 @@ void Renderer::GetWorldTransform(Mat4 * form)
     *form = Mat4::Identity;
 }
 
-void Renderer::GetBlendMatrix(Mat4 * forms, int * count)
+int Renderer::GetBlendMatrix(Mat4 * forms)
 {
-    *count = 0;
+	return 0;
 }
 
 void Renderer::BeginRendering()

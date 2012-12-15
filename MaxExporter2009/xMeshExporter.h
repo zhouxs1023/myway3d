@@ -6,8 +6,9 @@ namespace MaxPlugin {
 
 class xMesh;
 struct xSubMesh;
+class xSkeleton;
 
-class xMeshExporter : public ITreeEnumProc
+class xMeshExporter
 {
 	DECLARE_SINGLETON (xMeshExporter);
 
@@ -21,19 +22,14 @@ public:
 	Interface * GetInterface() { return mInterface; }
 	IGameScene * GetGameScene() { return mGameScene; }
 
-protected:
-	int callback(INode *node);
-
 	void WriteSubMesh(xSubMesh * mesh, File & file);
+	void WriteSkel(xSkeleton * skel, File & file);
 
 protected:
 	ExpInterface * mExpInterface;
 	Interface * mInterface;
 
 	IGameScene * mGameScene;
-	Tab<INode*> mNodeTab;
-	Map<TString128, int> mBoneIndexMap;
-	int mBoneIndex;
 };
 
 

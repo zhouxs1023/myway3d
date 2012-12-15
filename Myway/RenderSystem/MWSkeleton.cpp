@@ -4,30 +4,13 @@
 
 using namespace Myway;
 
-Skeleton::Skeleton(const TString128 & sName)
-: mName(sName)
+Skeleton::Skeleton()
 {
 }
 
 Skeleton::~Skeleton()
 {
-    Array<Animation*>::Iterator iter;
-    Array<Animation*>::Iterator end;
-
-    iter = mAnimations.Begin();
-    end = mAnimations.End();
-
-    while (iter != end)
-    {
-        delete *iter;
-
-        ++iter;
-    }
-}
-
-const TString128 & Skeleton::GetName()
-{
-    return mName;
+	Shutdown();
 }
 
 joint * Skeleton::CreateJoint(const TString128 & sBoneName)
@@ -128,58 +111,12 @@ Animation * Skeleton::GetAnimation(int index)
     return mAnimations[index];
 }
 
-void Skeleton::DeleteSelf()
+void Skeleton::Shutdown()
 {
-    SkeletonManager::Instance()->Destroy(this);
-}
+	for (int i = 0; i < mAnimations.Size(); ++i)
+		delete mAnimations[i];
 
-
-
-
-
-void Skeleton::Load()
-{
-    if (mLoadState == Resource::LOADED)
-        return ;
-
-    if (CanLoad())
-        ResourceManager::Instance()->GetResourceLoader()->Load(this);
-    else
-        mLoadState = Resource::LOADED;
-
-}
-
-void Skeleton::Reload()
-{
-    if (!CanLoad())
-        return ;
-
-    if (mLoadState == Resource::LOADED)
-        Unload();
-
-    ResourceManager::Instance()->GetResourceLoader()->ForceLoad(this);
-}
-
-void Skeleton::Unload()
-{
-    if (!CanLoad())
-        return ;
-
-    Array<Animation*>::Iterator whr = mAnimations.Begin();
-    Array<Animation*>::Iterator end = mAnimations.End();
-
-    while (whr != end)
-    {
-        delete *whr;
-        ++whr;
-    }
-
-    mAnimations.Clear();
-    mJoints.Clear();
-    mHiberarchys.Clear();
-}
-
-void Skeleton::LoadImp(DataStreamPtr stream)
-{
-    SkeletonLoader::Load(this, stream);
+	mJoints.Clear();
+	mHiberarchys.Clear();
+	mAnimations.Clear();
 }

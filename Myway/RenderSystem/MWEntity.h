@@ -49,7 +49,7 @@ public:
 
     virtual void GetWorldPosition(Vec3 * pos);
     virtual void GetWorldTransform(Mat4 * form);
-    virtual void GetBlendMatrix(Mat4 * forms, int * count);
+    virtual int GetBlendMatrix(Mat4 * forms);
 
     virtual VertexStream * GetVertexStream();
 

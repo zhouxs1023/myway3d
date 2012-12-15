@@ -9,7 +9,6 @@ Engine::Engine()
 , mInputSystem(NULL)
 , mAudioSystem(NULL)
 , mRenderScheme(NULL)
-, mSkeletonManager(NULL)
 , mMeshManager(NULL)
 , mDllManager(NULL)
 , mResourceManager(NULL)
@@ -48,7 +47,6 @@ void Engine::Init(const DeviceProperty * pDeviceProperty,
     ParseConfig(sConfigs);
     ParsePlugin(sPlugins);
 
-    mSkeletonManager = new SkeletonManager();
     mMeshManager = new MeshManager();
 
     PluginManager::Instance()->InstallAll();
@@ -68,7 +66,6 @@ void Engine::Shutdown()
 
     safe_delete(mWorld);
     safe_delete(mMeshManager);
-    safe_delete(mSkeletonManager);
 
     safe_delete(mShaderLibManager);
 

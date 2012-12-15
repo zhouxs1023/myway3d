@@ -5,17 +5,20 @@
 namespace Myway
 {
 
-class MW_ENTRY SkeletonInstance : public AllocObj
+class MW_ENTRY SkeletonInstance
 {
+	DECLARE_ALLOC();
+
 public:
-    SkeletonInstance(SkeletonPtr skel);
+    SkeletonInstance(Skeleton * skel);
     virtual ~SkeletonInstance();
 
-    void GetBoneMatrix(Mat4 * forms, int * count);
+    int GetBoneMatrix(Mat4 * forms);
     void UpdateBoneMatrix();
     void ResetBone();
 
-    Bone * GetRootBone();
+	int GetRootBoneCount();
+    Bone * GetRootBone(int i);
 
     int GetBoneCount();
     Bone * GetBone(const TString128 & sName);
@@ -24,7 +27,6 @@ public:
     Animation * GetAnimation(const TString128 & sAnimation);
     int GetAnimationCount();
     Animation * GetAnimation(int index);
-    const TString128 & GetSkeletonName();
 
 protected:
     void _Initialize();
@@ -33,9 +35,9 @@ protected:
     void _Dump(Bone * bn, const String & sText, const String & sSplit);
 
 protected:
-    SkeletonPtr     mSkeleton;
+    Skeleton *     mSkeleton;
     Array<Bone*>   mBones;
-    Bone *          mRoot;
+	Array<Bone*>   mRoots;
 };
 
 }

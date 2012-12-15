@@ -70,21 +70,6 @@ int Mesh::GetSubMeshCount()
     return mMeshes.Size();
 }
 
-void Mesh::SetSkeletonName(const TString128 & sName)
-{
-    mSkeleton = sName;
-}
-
-bool Mesh::HasSkeleton()
-{ 
-    return mSkeleton.Length() != 0; 
-}
-
-const TString128 & Mesh::GetSkeletonName()
-{ 
-    return mSkeleton;
-}
-
 const TString128 & Mesh::GetName() const
 {
     return mName;
@@ -149,6 +134,11 @@ void Mesh::RemoveAllSubMehs()
     }
 
     mMeshes.Clear();
+}
+
+Skeleton * Mesh::GetSkeleton()
+{
+	return &mSkeleton;
 }
 
 void Mesh::CalcuBounds()
@@ -238,7 +228,7 @@ void Mesh::Unload()
     mBound = Aabb(Vec3::Zero, Vec3::Zero);
     mSphere = Sphere(Vec3::Zero, 0.0f);
     RemoveAllSubMehs();
-    mSkeleton = "";
+	mSkeleton.Shutdown();
 }
 
 void Mesh::LoadImp(DataStreamPtr stream)

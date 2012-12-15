@@ -1,12 +1,14 @@
 #pragma once
 
-#include "MWShaderProvider.h"
+#include "MWShaderFX.h"
 
 namespace Myway
 {
 
-    class MW_ENTRY ShaderProvider_Main : public ShaderProvider
+    class MW_ENTRY ShaderProvider_Main
     {
+		DECLARE_ALLOC();
+
     public:
         enum
         {
@@ -18,16 +20,17 @@ namespace Myway
 
     public:
         ShaderProvider_Main();
-        virtual ~ShaderProvider_Main();
+        ~ShaderProvider_Main();
 
-        virtual Technique * GetTechnique(int type);
+        Technique * GetTechnique(int type, bool skined);
 
         Technique * GetFrushTech() { return mFrushTech; }
         Technique * GetClearTech() { return mClearTech; }
 
     protected:
         ShaderLib * mShaderLib;
-        Technique * mTechs[R_MAX];
+		Technique * mTechs[R_MAX];
+        Technique * mTechs_Skined[R_MAX];
 
         Technique * mFrushTech;
         Technique * mClearTech;

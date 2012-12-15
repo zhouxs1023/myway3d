@@ -29,15 +29,21 @@ void SubEntity::GetWorldTransform(Mat4 * forms)
     *forms = mParent->GetAttachNode()->GetWorldMatrix();
 }
 
-void SubEntity::GetBlendMatrix(Mat4 * forms, int * count)
+int SubEntity::GetBlendMatrix(Mat4 * forms)
 {
+	int count = 0;
+
     if (mParent->GetAttachNode()->_NeedUpdate())
         mParent->GetAttachNode()->_UpdateTransform();
 
     if (mParent->HasSkeletion())
     {
         SkeletonInstance * skel = mParent->GetSkeletonInstance();
-        skel->GetBoneMatrix(forms, count);
+
+		if (forms == NULL)
+			return skel->GetBoneCount();
+
+		count = skel->GetBoneMatrix(forms);
 
         if (mSoftSkined)
         {
@@ -101,15 +107,16 @@ void SubEntity::GetBlendMatrix(Mat4 * forms, int * count)
                 }
             }
 
-            *count = 0;
+            return 0;
         }
         else
         {
+			return count;
         }
     }
     else
     {
-        *count = 0;
+        return 0;
     }
 }
 
@@ -289,35 +296,26 @@ void Entity::_Init()
         mEntitys.PushBack(se);
     };
 
-    if (mMesh->HasSkeleton())
+    if (mMesh->GetSkeleton()->GetJointCount() > 0)
     {
-        const TString128 & skel_name = mMesh->GetSkeletonName();
-        SkeletonPtr skel = SkeletonManager::Instance()->Find(skel_name);
+        Skeleton * skel = mMesh->GetSkeleton();
 
-        if (skel.IsNull())
-        {
-            skel = SkeletonManager::Instance()->Load(skel_name, skel_name);
-        }
+		mSkeleton = new SkeletonInstance(skel);
+		mAnims = new AnimationSet();
 
-        if (skel.NotNull())
-        {
-            mSkeleton = new SkeletonInstance(skel);
-            mAnims = new AnimationSet();
+		for (int i = 0; i < mSkeleton->GetAnimationCount(); ++i)
+		{
+			Animation * anim = mSkeleton->GetAnimation(i);
+			mAnims->CreateState(anim);
+		}
 
-            for (int i = 0; i < mSkeleton->GetAnimationCount(); ++i)
-            {
-                Animation * anim = mSkeleton->GetAnimation(i);
-                mAnims->CreateState(anim);
-            }
-
-            if (skel->GetJointCount() > MAX_BLEND_MATRIX_VS)
-            {
-                for (int i = 0; i < mEntitys.Size(); ++i)
-                {
-                    mEntitys[i]->NotifySoftSkined();
-                }
-            }
-        }
+		if (skel->GetJointCount() > MAX_BLEND_MATRIX_VS)
+		{
+			for (int i = 0; i < mEntitys.Size(); ++i)
+			{
+				mEntitys[i]->NotifySoftSkined();
+			}
+		}
     }
 
     SetBounds(mMesh->GetAabb(), mMesh->GetBoundingSphere());

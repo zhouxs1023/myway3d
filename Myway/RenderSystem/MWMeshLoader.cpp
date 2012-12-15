@@ -2,6 +2,7 @@
 #include "MWMaterial.h"
 #include "MWMeshManager.h"
 #include "MWResourceManager.h"
+#include "MWSkeletonLoader.h"
 
 #define _GEOM_STREAM    0
 #define _LIGHT_STREAM   1
@@ -25,21 +26,13 @@ void MeshLoader::Load(MeshPtr mesh, DataStreamPtr stream)
 
 	stream->Read(&version, sizeof(int));
 
-	switch (version)
-	{
-	case MODEL_FILE_VERSION:
+	if (version == MODEL_FILE_VERSION)
 		MeshLoader_v0::Load(mesh, stream);
-		break;
-
-	case MODEL_FILE_VERSION_1:
+	else if (version == MeshLoader_v1::K_File_Verion)
 		MeshLoader_v1::Load(mesh, stream);
-		break;
+	else
+		d_assert (0);
 
-	default:
-		d_assert(0);
-		break;
-	};
-    
 	stream->Close();
 }
 
@@ -185,7 +178,13 @@ void MeshLoader_v0::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 {
     String sSkeletonName;
     stream->ReadString(sSkeletonName);
-    mesh->SetSkeletonName(sSkeletonName.c_str());
+	
+	TString128 Source = mesh->GetSourceName();
+	Source = File::GetFileDir(Source);
+	Source += sSkeletonName.c_str();
+
+	SkeletonLoader::Load(mesh->GetSkeleton(), Source);
+    //mesh->SetSkeletonName(sSkeletonName.c_str());
 }
 
 void MeshLoader_v0::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
@@ -432,6 +431,10 @@ void MeshLoader_v1::Load(MeshPtr mesh, DataStreamPtr stream)
 		case MC_SKELETON:
 			ReadSkeleton(mesh, stream);
 			break;
+
+		case MC_SKELANIM:
+			ReadSkelAnim(mesh, stream);
+			break;
 		}
 	}
 
@@ -449,6 +452,9 @@ void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 	int iVertexElems;
 
 	stream->Read(&iVersion, sizeof(int));
+
+	d_assert (iVersion == K_Skeleton_Version);
+
 	stream->Read(&iVertexCount, sizeof(int));
 	stream->Read(&iIndexCount, sizeof(int));
 	stream->Read(&iVertexElems, sizeof(int));
@@ -516,6 +522,8 @@ void MeshLoader_v1::ReadMaterial(SubMesh * sm, DataStreamPtr & stream)
 
 	stream->Read(&version, sizeof(int));
 
+	d_assert (version == K_Material_Version);
+
 	stream->Read(&doubleSide, sizeof(int));
 	stream->Read(&blendMode, sizeof(int));
 
@@ -552,7 +560,97 @@ void MeshLoader_v1::ReadMaterial(SubMesh * sm, DataStreamPtr & stream)
 
 void MeshLoader_v1::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 {
-	d_assert (0);
+	Skeleton * skel = mesh->GetSkeleton();
+	int version = -1;
+
+	stream->Read(&version, sizeof (int));
+
+	d_assert (version == K_Skeleton_Version);
+
+	int boneCount = 0;
+
+	stream->Read(&boneCount, sizeof (int));
+
+	for (int i = 0; i < boneCount; ++i)
+	{
+		char Name[128];
+		Vec3 Position;
+		Quat Orientation;
+		float Scale;
+
+		stream->Read(&Name[0],  128);
+		stream->Read(&Position, sizeof(Vec3));
+		stream->Read(&Orientation, sizeof(Quat));
+		stream->Read(&Scale, sizeof(float)); // equal ratio scale.
+
+		joint * bn = skel->CreateJoint(Name);
+
+		bn->position = Position;
+		bn->orientation = Orientation;
+		bn->scale = Scale;
+	}
+
+	for (int i = 0; i < boneCount; ++i)
+	{
+		short parent;
+		short child;
+
+		stream->Read(&parent, sizeof(short));
+		stream->Read(&child, sizeof(short));
+
+		skel->SetupHiberarchy(parent, child);
+	}
+}
+
+void MeshLoader_v1::ReadSkelAnim(MeshPtr mesh, DataStreamPtr & stream)
+{
+	Skeleton * skel = mesh->GetSkeleton();
+	int version = -1;
+
+	stream->Read(&version, sizeof (int));
+
+	d_assert (version == K_SkelAnim_Version);
+
+	char name[128];
+
+	stream->Read(name, 128);
+
+	Animation * anim = skel->CreateAnimation(name);
+	
+	int numAnims = 0;
+	stream->Read(&numAnims, sizeof(int));
+
+	for (int i = 0; i < numAnims; ++i)
+	{
+		short boneId;
+		stream->Read(&boneId, sizeof(short));
+
+		SkeletonAnimation * skel_anim;
+		skel_anim = anim->CreateSkeletonAnimation(boneId);
+
+		int count;
+		stream->Read(&count, sizeof(int));
+
+		KeyFrame * kf;
+		float time;
+		Vec3 trans;
+		Quat rotate;
+		Vec3 scale;
+
+		for (int i = 0; i < count; ++i)
+		{
+			stream->Read(&time, sizeof(float));
+			stream->Read(&trans, sizeof(float) * 3);
+			stream->Read(&rotate, sizeof(float) * 4);
+			stream->Read(&scale, sizeof(float) * 3);
+
+			kf = skel_anim->CreateKeyFrame();
+			kf->SetTime(time);
+			kf->SetTranslate(trans);
+			kf->SetRotation(rotate);
+			kf->SetScale(scale);
+		}
+	}
 }
 
 void MeshLoader_v1::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
@@ -614,16 +712,16 @@ int MeshLoader_v1::GenVertexDecl(VertexDeclarationPtr decl, int vertexElems)
 		voffset += 8;
 	}
 
-	if (vertexElems & VE_BLENDWEIGHTS)
-	{
-		decl->AddElement(0, voffset, DT_FLOAT4, DU_BLENDWEIGHT, 0);
-		voffset += 16;
-	}
-
 	if (vertexElems & VE_BLENDINDICES)
 	{
 		decl->AddElement(0, voffset, DT_UBYTE4, DU_BLENDINDICES, 0);
 		voffset += 4;
+	}
+
+	if (vertexElems & VE_BLENDWEIGHTS)
+	{
+		decl->AddElement(0, voffset, DT_FLOAT4, DU_BLENDWEIGHT, 0);
+		voffset += 16;
 	}
 
 	decl->Init();

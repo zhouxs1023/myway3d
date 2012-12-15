@@ -13,7 +13,6 @@ xMeshExporter::xMeshExporter(ExpInterface * ei, Interface * i)
 	: mExpInterface(ei)
 	, mInterface(i)
 	, mGameScene(NULL)
-	, mBoneIndex(0)
 {
 	INIT_SLN;
 }
@@ -21,47 +20,6 @@ xMeshExporter::xMeshExporter(ExpInterface * ei, Interface * i)
 xMeshExporter::~xMeshExporter()
 {
 	SHUT_SLN;
-}
-
-int xMeshExporter::callback(INode *node)
-{
-	TimeValue start = mInterface->GetAnimRange().Start();
-	Object *obj = node->EvalWorldState(start).obj;
-	Class_ID cid = obj->ClassID();
-
-	// nodes that have Biped controllers are bones -- ignore the ones that are dummies
-	if (cid == Class_ID(DUMMY_CLASS_ID, 0))
-		return TREE_CONTINUE;
-
-	Control *c = node->GetTMController();
-	if ((c->ClassID() == BIPSLAVE_CONTROL_CLASS_ID) ||
-		(c->ClassID() == BIPBODY_CONTROL_CLASS_ID) ||
-		(c->ClassID() == FOOTPRINT_CLASS_ID)) {
-
-			if (node->GetParentNode() != NULL)
-			{
-				mBoneIndexMap.Insert(node->GetName(), mBoneIndex++);
-			}
-
-			return TREE_CONTINUE;
-	}
-
-	if (!obj->CanConvertToType(Class_ID(TRIOBJ_CLASS_ID, 0)))
-		return TREE_CONTINUE;
-
-	if (xExportConfig::Instance()->IsExportSelected())
-	{
-		if (node->Selected())
-		{
-			mNodeTab.Append(1, &node);
-		}
-	}
-	else
-	{
-		mNodeTab.Append(1, &node);
-	}
-
-	return TREE_CONTINUE;
 }
 
 void xMeshExporter::Export()
@@ -74,17 +32,16 @@ void xMeshExporter::Export()
 			mGameScene = 0;
 		}
 
-		mExpInterface->theScene->EnumTree(this);
-
 		mGameScene = GetIGameInterface();
 		IGameConversionManager* cm = GetConversionManager();
 		cm->SetCoordSystem(IGameConversionManager::IGAME_D3D);
-		mGameScene->InitialiseIGame(mNodeTab, false);
+		mGameScene->InitialiseIGame(xExportConfig::Instance()->IsExportSelected());
 		mGameScene->SetStaticFrame(0);
 		int nodeCount = mGameScene->GetTopLevelNodeCount();
 
-		if (nodeCount == 0) {
-			MessageBox(GetActiveWindow(), "No nodes available!", "Error", MB_ICONINFORMATION);
+		if (nodeCount == 0)
+		{
+			MessageBox(GetActiveWindow(), "No nodes available!", "Error", MB_OK);
 			mGameScene->ReleaseIGame();
 			return ;
 		}
@@ -129,15 +86,15 @@ void xMeshExporter::Export()
 
 		file.Write(MODEL_FILE_MAGIC, MODEL_FILE_MAGIC_LEN);
 
-		int version = MODEL_FILE_VERSION_1;
+		int version = MeshLoader_v1::K_File_Verion;
 		file.Write(&version, sizeof (int));
-
 
 		for (int i = 0; i < mesh.GetSubMeshCount(); ++i)
 		{
 			WriteSubMesh(mesh.GetSubMesh(i), file);
 		}
 
+		WriteSkel(&skel, file);
 
 		mGameScene->ReleaseIGame();
 	}
@@ -159,7 +116,7 @@ void xMeshExporter::WriteSubMesh(xSubMesh * mesh, File & file)
 	const Array<xFace> & faceList = mesh->mFaces;
 	const xMaterial & material = mesh->mMaterial;
 
-	int iVerison = 0;
+	int iVerison = MeshLoader_v1::K_SubMesh_Version;
 	int iVertexCount = vertList.Size();
 	int iIndexCount = faceList.Size() * 3;
 	int iVertexElems = mesh->mVertexElems;
@@ -180,6 +137,8 @@ void xMeshExporter::WriteSubMesh(xSubMesh * mesh, File & file)
 		const Vec3 & tangent = v.GetTangent();
 		const Vec2 & texcoord = v.GetTexcoord();
 		const Vec2 & lightmapuv = v.GetLightmapUV();
+		const xBlendIndex & bi = v.GetBlendIndex(); 
+		const xBlendWeight & bw = v.GetBlendWeight();
 
 		if (iVertexElems & MeshLoader_v1::VE_POSITION)
 			file.Write(&position, sizeof(Vec3));
@@ -198,6 +157,14 @@ void xMeshExporter::WriteSubMesh(xSubMesh * mesh, File & file)
 
 		if (iVertexElems & MeshLoader_v1::VE_LIGHTMAPUV)
 			file.Write(&lightmapuv, sizeof(Vec2));
+
+		if (iVertexElems & MeshLoader_v1::VE_BLENDINDICES)
+			file.Write(&bi, sizeof(xBlendIndex));
+
+		if (iVertexElems & MeshLoader_v1::VE_BLENDWEIGHTS)
+		{
+			file.Write(&bw, sizeof(xBlendWeight));
+		}
 	}
 
 	for (int i = 0; i < faceList.Size(); ++i)
@@ -228,7 +195,7 @@ void xMeshExporter::WriteSubMesh(xSubMesh * mesh, File & file)
 	}
 
 	// 2. Write Material
-	int mtlVersion = 0;
+	int mtlVersion = MeshLoader_v1::K_Material_Version;
 
 	int doubleSide = material.GetDoubleSide();
 	int blendMode = material.GetBlendMode();
@@ -260,5 +227,42 @@ void xMeshExporter::WriteSubMesh(xSubMesh * mesh, File & file)
 	file.Write(normalMap.c_str(), 128);
 	file.Write(specularMap.c_str(), 128);
 }
+
+void xMeshExporter::WriteSkel(xSkeleton * skel, File & file)
+{
+	if (skel->GetBoneCount() == 0)
+		return ;
+
+	int id = MC_SKELETON;
+	file.Write(&id, sizeof(int));
+
+	file.Write(&MeshLoader_v1::K_Skeleton_Version, sizeof(int));
+
+	int boneCount = skel->GetBoneCount();
+
+	file.Write(&boneCount, sizeof(int));
+
+	for (int i = 0; i < boneCount; ++i)
+	{
+		xBone * bone = skel->GetBone(i);
+
+		file.Write(bone->name.c_str(), 128);
+		file.Write(&bone->position, sizeof(Point3));
+		file.Write(&bone->orientation, sizeof(::Quat));
+		file.Write(&bone->scale, sizeof(float));
+	}
+
+	for (int i = 0; i < boneCount; ++i)
+	{
+		xBone * bone = skel->GetBone(i);
+
+		short parent = bone->parent;
+		short child = (short)i;
+
+		file.Write(&parent, sizeof(short));
+		file.Write(&child, sizeof(short));
+	}
+}
+
 
 }

@@ -57,6 +57,7 @@ namespace Myway
 #define MC_SUBMESH                          0x0100
 #define MC_BOUNDS                           0x0200
 #define MC_SKELETON                         0x0300
+#define MC_SKELANIM							0x0400
 
 #define MC_SUBMESH_TRANSFROM_STREAM         0x0101
 #define MC_SUBMESH_LIGHT_STREAM             0x0102
@@ -70,7 +71,6 @@ namespace Myway
 #define MODEL_FILE_MAGIC                    "Myway Model"
 #define MODEL_FILE_MAGIC_LEN				(12)
 #define MODEL_FILE_VERSION                  (('M' << 24) | ('D' << 16) | ('L' << 8) | 0)
-#define MODEL_FILE_VERSION_1                (MODEL_FILE_VERSION + 1)
 
 #define MC_CHUNK_SIZE                       6
 
@@ -118,8 +118,6 @@ protected:
 };
 
 
-
-
 class MeshLoader_v1
 {
 	struct chunk
@@ -144,6 +142,13 @@ public:
 		VE_BLENDINDICES = 1 << 7
 	};
 
+	static const int K_File_Verion = MODEL_FILE_VERSION + 1;
+	
+	static const int K_SubMesh_Version = 0;
+	static const int K_Material_Version = 0;
+	static const int K_Skeleton_Version = 0;
+	static const int K_SkelAnim_Version = 0;
+
 public:
 	static void Load(MeshPtr pMesh, DataStreamPtr stream);
 
@@ -151,6 +156,7 @@ protected:
 	static void ReadSubMesh(SubMesh * sm, DataStreamPtr & stream);
 	static void ReadMaterial(SubMesh * sm, DataStreamPtr & stream);
 	static void ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream);
+	static void ReadSkelAnim(MeshPtr mesh, DataStreamPtr & stream);
 	static void ReadBounds(MeshPtr mesh, DataStreamPtr & stream);
 
 	static int GenVertexDecl(VertexDeclarationPtr decl, int vertexElems);

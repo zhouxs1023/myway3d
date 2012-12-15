@@ -7,7 +7,7 @@
 namespace Myway
 {
 
-struct MW_ENTRY  joint : public AllocObj
+struct MW_ENTRY joint : public AllocObj
 {
     TString128 sName;
     Vec3 position;
@@ -15,22 +15,19 @@ struct MW_ENTRY  joint : public AllocObj
     Vec3 scale;
 };
 
-struct MW_ENTRY  hiberarchy : public AllocObj
+struct MW_ENTRY hiberarchy : public AllocObj
 {
     short parent;
     short child;
 };
 
-class MW_ENTRY Skeleton : public Resource, public RefObj
+class MW_ENTRY Skeleton
 {
     DECLARE_ALLOC();
-    DeclareRefObj();
 
 public:
-    Skeleton(const TString128 & sName);
+    Skeleton();
     ~Skeleton();
-
-    const TString128 & GetName();
 
     joint * CreateJoint(const TString128 & sName);
     void SetupHiberarchy(short parent, short child);
@@ -49,11 +46,7 @@ public:
     int GetAnimationCount();
     Animation * GetAnimation(int index);
 
-    virtual void Load();
-    virtual void Reload();
-    virtual void Unload();
-
-    virtual void LoadImp(DataStreamPtr stream);
+	void Shutdown();
 
 public:
     TString128             mName;
@@ -61,8 +54,5 @@ public:
     Array<hiberarchy>      mHiberarchys;
     Array<Animation*>      mAnimations;
 };
-
-DeclareSmartPtr(Skeleton);
-
 
 }

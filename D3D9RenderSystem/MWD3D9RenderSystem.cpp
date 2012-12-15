@@ -546,7 +546,7 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 
     // world transform
     obj->GetWorldTransform(&mMatWorld);
-    obj->GetBlendMatrix(mMatBlend, &mNumBlends);
+    mNumBlends = obj->GetBlendMatrix(mMatBlend);
 
     SetWorldTransform(mMatWorld);
     SetBlendTransform(mMatBlend, mNumBlends);

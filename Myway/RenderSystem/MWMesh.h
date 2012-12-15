@@ -71,9 +71,7 @@ public:
     void                        RemoveSubMesh(int index);
     void                        RemoveAllSubMehs();
 
-    void                        SetSkeletonName(const TString128 & sName);
-    bool                        HasSkeleton();
-    const TString128 &          GetSkeletonName();
+	Skeleton *					GetSkeleton();
 
     void                        CalcuBounds();
 
@@ -87,8 +85,7 @@ protected:
     Aabb                    mBound;
     Sphere                  mSphere;
     Array<SubMesh*>         mMeshes;
-    TString128              mSkeleton;
-
+	Skeleton				mSkeleton;
 };
 
 DeclareSmartPtr(Mesh);

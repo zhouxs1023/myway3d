@@ -91,7 +91,7 @@ namespace MaxPlugin {
 		const xBlendWeight & GetBlendWeight() const { return mBlendWeight; }
 
 		void SetBlendIndex(const xBlendIndex & bi) { mBlendIndex = bi; }
-		const xBlendIndex & GetBlendIndex(int i) const { return mBlendIndex; }
+		const xBlendIndex & GetBlendIndex() const { return mBlendIndex; }
 
 		bool operator ==(const xVertex & rk) const
 		{

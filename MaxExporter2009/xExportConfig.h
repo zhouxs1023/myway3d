@@ -35,6 +35,9 @@ public:
 	void SetExportLightmapUV(bool b) { mExportLightmapUV = b; }
 	bool IsExportLightmapUV() const { return mExportLightmapUV; }
 
+	void SetExportAnimation(bool b) { mExportAnimation = b; }
+	bool IsExportAnimation() const { return mExportAnimation; }
+
 protected:
 	TString128 mExportFilename;
 	TString128 mExportPath;
@@ -46,4 +49,6 @@ protected:
 	bool mExportColor;
 	bool mExportTexcoord;
 	bool mExportLightmapUV;
+
+	bool mExportAnimation;
 };

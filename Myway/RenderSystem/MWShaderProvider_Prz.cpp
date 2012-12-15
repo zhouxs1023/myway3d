@@ -12,6 +12,10 @@ namespace Myway
         mTechs[R_Mirror] = mShaderLib->GetTechnique("mirror");
         mTechs[R_Shadow] = mShaderLib->GetTechnique("shadow");
 
+		mTechs_Skined[R_Base] = mShaderLib->GetTechnique("baseSkined");
+		mTechs_Skined[R_Mirror] = mShaderLib->GetTechnique("mirrorSkined");
+		mTechs_Skined[R_Shadow] = mShaderLib->GetTechnique("shadowSkined");
+
         mFrushTech = mShaderLib->GetTechnique("Frush");
         mClearTech = mShaderLib->GetTechnique("Clear");
 
@@ -23,9 +27,13 @@ namespace Myway
     {
     }
 
-    Technique * ShaderProvider_Main::GetTechnique(int type)
+    Technique * ShaderProvider_Main::GetTechnique(int type, bool skined)
     {
         d_assert (type < R_MAX);
-        return mTechs[type];
+
+		if (!skined)
+			return mTechs[type];
+		else
+			return mTechs_Skined[type];
     }
 }
