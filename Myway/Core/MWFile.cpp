@@ -242,7 +242,7 @@ TString128 File::GetFileDir(const TString128 & file)
 
 	TString128 dir = file;
 
-	dir[len - 1] = 0;
+	dir[len] = 0;
 
 	return dir;
 }
