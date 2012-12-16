@@ -181,7 +181,16 @@ void MeshLoader_v0::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 	
 	TString128 Source = mesh->GetSourceName();
 	Source = File::GetFileDir(Source);
-	Source += sSkeletonName.c_str();
+
+	if (Source == "")
+	{
+		Source = sSkeletonName.c_str();
+	}
+	else
+	{
+		Source += "\\";
+		Source += sSkeletonName.c_str();
+	}
 
 	SkeletonLoader::Load(mesh->GetSkeleton(), Source);
     //mesh->SetSkeletonName(sSkeletonName.c_str());
