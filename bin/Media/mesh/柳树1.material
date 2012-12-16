@@ -1,0 +1,10 @@
+<Materials>
+	<Material>
+		<diffuse_map filename = "ÁøÊ÷¸É1.dds" />
+	</Material>
+	<Material>
+		<blend_mode value = "alpha_test" />
+		<alpha_test_ref value = "0.5" />
+		<diffuse_map filename = "ÁøÒ¶1.dds" />
+	</Material>
+</Materials>
