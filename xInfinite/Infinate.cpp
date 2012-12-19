@@ -301,4 +301,18 @@ void CInfinateApp::OnExportScene()
 {
 }
 
+void CInfinateApp::OnViewObjectCreator()
+{
+}
 
+void CInfinateApp::OnViewExporter()
+{
+}
+
+void CInfinateApp::OnViewProperty()
+{
+}
+
+void CInfinateApp::OnOther()
+{
+}

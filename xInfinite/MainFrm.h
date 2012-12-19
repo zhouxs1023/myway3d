@@ -17,19 +17,14 @@ public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
 
-// 实现
-public:
-#ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
-#endif
-
-protected:  // 控件条嵌入成员
+protected:
 	xApp mApp;
 
 	CMFCMenuBar m_wndMenuBar;
 	CMFCStatusBar m_wndStatusBar;
 	CMFCToolBarImages m_UserImages;
+
+	Array<CDockablePane*> mPanels;
 
 	xObjectView mObjectView;
 	xPropertyGrid mProperty;

@@ -44,6 +44,11 @@ protected:
 	afx_msg void OnOpenScene();
 	afx_msg void OnSaveScene();
 	afx_msg void OnExportScene();
+
+	afx_msg void OnViewObjectCreator();
+	afx_msg void OnViewExporter();
+	afx_msg void OnViewProperty();
+	afx_msg void OnOther();
 };
 
 extern CInfinateApp theApp;

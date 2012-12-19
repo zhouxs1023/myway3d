@@ -65,12 +65,10 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (!m_wndMenuBar.Create(this))
 	{
 		TRACE0("未能创建菜单栏\n");
-		return -1;      // 未能创建
+		return -1;
 	}
 
 	m_wndMenuBar.SetPaneStyle(m_wndMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
-
-	// 防止菜单栏在激活时获得焦点
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
 	// 允许用户定义的工具栏操作:
@@ -84,9 +82,9 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
 	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
-	m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
+	/*m_wndMenuBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wndMenuBar);
+	DockPane(&m_wndMenuBar);*/
 
 	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
@@ -169,20 +167,6 @@ void CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 	/*HICON hPropertiesBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndProperties.SetIcon(hPropertiesBarIcon, FALSE);*/
 }
-
-// CMainFrame 诊断
-
-#ifdef _DEBUG
-void CMainFrame::AssertValid() const
-{
-	CFrameWndEx::AssertValid();
-}
-
-void CMainFrame::Dump(CDumpContext& dc) const
-{
-	CFrameWndEx::Dump(dc);
-}
-#endif //_DEBUG
 
 
 // CMainFrame 消息处理程序
@@ -341,4 +325,8 @@ void CMainFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 	{
 		xApp::Instance()->Activate(true);
 	}
+}
+
+void CMainFrame::AddDockablePane(CDockablePane * panel)
+{
 }
