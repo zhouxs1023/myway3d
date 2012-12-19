@@ -29,6 +29,7 @@ BOOL xExportSettingDlg::OnInitDialog()
 	bool expColor = xExportConfig::Instance()->IsExportColor();
 	bool expTangent = xExportConfig::Instance()->IsExportTangent();
 	bool expLightmapUV = xExportConfig::Instance()->IsExportLightmapUV();
+	bool expAnimation = xExportConfig::Instance()->IsExportAnimation();
 
 	CButton * bnSelected = (CButton *)GetDlgItem(IDC_CK_Selected);
 	CButton * bnNormal = (CButton *)GetDlgItem(IDC_CK_Normal);
@@ -36,6 +37,7 @@ BOOL xExportSettingDlg::OnInitDialog()
 	CButton * bnColor = (CButton *)GetDlgItem(IDC_CK_Color);
 	CButton * bnTangent = (CButton *)GetDlgItem(IDC_CK_Tangent);
 	CButton * bnLightmapUV = (CButton *)GetDlgItem(IDC_CK_LightmapUV);
+	CButton * bnAnimation = (CButton *)GetDlgItem(IDC_CK_Animation);
 
 	bnSelected->SetCheck(expSelected ? BST_CHECKED : BST_UNCHECKED);
 	bnNormal->SetCheck(expNormal ? BST_CHECKED : BST_UNCHECKED);
@@ -43,6 +45,7 @@ BOOL xExportSettingDlg::OnInitDialog()
 	bnColor->SetCheck(expColor ? BST_CHECKED : BST_UNCHECKED);
 	bnTangent->SetCheck(expTangent ? BST_CHECKED : BST_UNCHECKED);
 	bnLightmapUV->SetCheck(expLightmapUV ? BST_CHECKED : BST_UNCHECKED);
+	bnAnimation->SetCheck(expAnimation ? BST_CHECKED : BST_UNCHECKED);
 
 
 	return TRUE;
@@ -61,6 +64,7 @@ void xExportSettingDlg::OnOK()
 	CButton * bnColor = (CButton *)GetDlgItem(IDC_CK_Color);
 	CButton * bnTangent = (CButton *)GetDlgItem(IDC_CK_Tangent);
 	CButton * bnLightmapUV = (CButton *)GetDlgItem(IDC_CK_LightmapUV);
+	CButton * bnAnimation = (CButton *)GetDlgItem(IDC_CK_Animation);
 
 	bool expSelected = (bnSelected->GetCheck() == BST_CHECKED);
 	bool expNormal = (bnNormal->GetCheck() == BST_CHECKED);
@@ -68,6 +72,7 @@ void xExportSettingDlg::OnOK()
 	bool expColor = (bnColor->GetCheck() == BST_CHECKED);
 	bool expTangent = (bnTangent->GetCheck() == BST_CHECKED);
 	bool expLightmapUV = (bnLightmapUV->GetCheck() == BST_CHECKED);
+	bool expAnimation = (bnAnimation->GetCheck() == BST_CHECKED);
 
 	xExportConfig::Instance()->SetExportSelected(expSelected);
 	xExportConfig::Instance()->SetExportNormal(expNormal);
@@ -75,6 +80,7 @@ void xExportSettingDlg::OnOK()
 	xExportConfig::Instance()->SetExportColor(expColor);
 	xExportConfig::Instance()->SetExportTangent(expTangent);
 	xExportConfig::Instance()->SetExportLightmapUV(expLightmapUV);
+	xExportConfig::Instance()->SetExportAnimation(expAnimation);
 
 	xExportConfig::Instance()->Save();
 

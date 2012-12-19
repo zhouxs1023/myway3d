@@ -17,7 +17,7 @@ xExportConfig::xExportConfig()
 	mExportTexcoord = true;
 	mExportLightmapUV = false;
 
-	mExportAnimation = true;
+	mExportAnimation = false;
 
 	mExportAnimName = "Default";
 }
