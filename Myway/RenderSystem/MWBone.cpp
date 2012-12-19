@@ -321,7 +321,7 @@ void Bone::RayTracing(const Ray & ray, List<Mover*> & geos, const guid128 & id, 
 void Bone::_UpdateTransform()
 {
     //transform local
-    Math::MatTransform(mMatLocal, mInitPos, mOrientation, mScale);
+    Math::MatTransform(mMatLocal, mPos, mOrientation, mScale);
 
     if (mParent)
     {

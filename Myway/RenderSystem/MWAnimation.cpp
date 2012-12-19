@@ -126,10 +126,19 @@ void SkeletonAnimation::UpdateAnimation(SkeletonInstance * skel, float time)
         Math::QuatSlerp(rotate, mFrames[key1].GetRotation(), mFrames[key2].GetRotation(), t);
         Math::VecLerp(scale, mFrames[key1].GetScale(), mFrames[key2].GetScale(), t);
 
-        bone->Translate(trans, TS_LOCAL);
-        bone->Rotate(rotate, TS_LOCAL);
-        bone->Scale(scale);
-    }
+		if (skel->IsRelative())
+		{
+			bone->Translate(trans, TS_LOCAL);
+			bone->Rotate(rotate, TS_LOCAL);
+			bone->Scale(scale);
+		}
+		else
+		{
+			bone->SetPosition(trans);
+			bone->SetOrientation(rotate);
+			bone->SetScale(scale);
+		}
+	}
 }
 
 KeyFrame * SkeletonAnimation::CreateKeyFrame()
@@ -199,6 +208,17 @@ int Animation::GetSkeletonAnimationCount()
     return mSkelAnims.Size();
 }
 
+void Animation::_calcuLength()
+{
+	d_assert (mSkelAnims.Size() > 0);
+
+	int count = mSkelAnims[0]->GetFrameCount();
+	
+	mLen = mSkelAnims[0]->GetKeyFrame(count - 1)->GetTime();
+
+	d_assert (mLen > 0);
+}
+
 void Animation::SetLength(float len)
 {
     mLen = len;
@@ -216,18 +236,18 @@ float Animation::GetLength() const
 
 void Animation::_UpdateAnimation(SkeletonInstance * skel, float time)
 {
-    Array<SkeletonAnimation*>::Iterator iter;
-    Array<SkeletonAnimation*>::Iterator end;
+	Array<SkeletonAnimation*>::Iterator iter;
+	Array<SkeletonAnimation*>::Iterator end;
 
-    iter = mSkelAnims.Begin();
-    end = mSkelAnims.End();
+	iter = mSkelAnims.Begin();
+	end = mSkelAnims.End();
 
-    while (iter != end)
-    {
-        (*iter)->UpdateAnimation(skel, time);
+	while (iter != end)
+	{
+		(*iter)->UpdateAnimation(skel, time);
 
-        ++iter;
-    }
+		++iter;
+	}
 }
 
 

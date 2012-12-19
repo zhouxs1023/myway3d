@@ -6,6 +6,7 @@ using namespace Myway;
 
 Skeleton::Skeleton()
 {
+	mRelative = false;
 }
 
 Skeleton::~Skeleton()

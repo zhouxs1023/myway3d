@@ -585,12 +585,12 @@ void MeshLoader_v1::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 		char Name[128];
 		Vec3 Position;
 		Quat Orientation;
-		float Scale;
+		Vec3 Scale;
 
 		stream->Read(&Name[0],  128);
 		stream->Read(&Position, sizeof(Vec3));
 		stream->Read(&Orientation, sizeof(Quat));
-		stream->Read(&Scale, sizeof(float)); // equal ratio scale.
+		stream->Read(&Scale, sizeof(Vec3)); // equal ratio scale.
 
 		joint * bn = skel->CreateJoint(Name);
 
@@ -631,14 +631,16 @@ void MeshLoader_v1::ReadSkelAnim(MeshPtr mesh, DataStreamPtr & stream)
 
 	for (int i = 0; i < numAnims; ++i)
 	{
-		short boneId;
-		stream->Read(&boneId, sizeof(short));
+		int boneId, count;
+
+		stream->Read(&boneId, sizeof(int));
+		stream->Read(&count, sizeof(int));
+
+		if (count == 0)
+			continue;
 
 		SkeletonAnimation * skel_anim;
 		skel_anim = anim->CreateSkeletonAnimation(boneId);
-
-		int count;
-		stream->Read(&count, sizeof(int));
 
 		KeyFrame * kf;
 		float time;
@@ -660,6 +662,8 @@ void MeshLoader_v1::ReadSkelAnim(MeshPtr mesh, DataStreamPtr & stream)
 			kf->SetScale(scale);
 		}
 	}
+
+	anim->_calcuLength();
 }
 
 void MeshLoader_v1::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)

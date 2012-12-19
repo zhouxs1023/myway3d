@@ -28,6 +28,9 @@ public:
     int GetAnimationCount();
     Animation * GetAnimation(int index);
 
+	// Is Relative Init.
+	bool IsRelative() const { return mSkeleton->IsRelative(); }
+
 protected:
     void _Initialize();
     void _Shutdown();

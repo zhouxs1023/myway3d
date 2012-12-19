@@ -6,9 +6,9 @@ namespace MaxPlugin{
 	{
 		float time;
 
-		Point3 position;
-		::Quat orientation;
-		Point3 scale;
+		Vec3 position;
+		MQuat orientation;
+		Vec3 scale;
 
 		bool operator == (const xKeyFrame & rk) const
 		{
@@ -24,9 +24,9 @@ namespace MaxPlugin{
 
 		TString128 name;
 
-		Point3 position;
-		::Quat orientation;
-		Point3 scale;
+		Vec3 position;
+		MQuat orientation;
+		Vec3 scale;
 
 		Array<xKeyFrame> keyFrames;
 

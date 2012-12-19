@@ -48,11 +48,15 @@ public:
 
 	void Shutdown();
 
+	void SetRelative(bool b) { mRelative = b; }
+	bool IsRelative() const { return mRelative; }
+
 public:
     TString128             mName;
     Array<joint>           mJoints;
     Array<hiberarchy>      mHiberarchys;
     Array<Animation*>      mAnimations;
+	bool				   mRelative;
 };
 
 }

@@ -95,6 +95,7 @@ void xMeshExporter::Export()
 		}
 
 		WriteSkel(&skel, file);
+		WriteSkelAnim(&skel, file);
 
 		mGameScene->ReleaseIGame();
 	}
@@ -247,9 +248,9 @@ void xMeshExporter::WriteSkel(xSkeleton * skel, File & file)
 		xBone * bone = skel->GetBone(i);
 
 		file.Write(bone->name.c_str(), 128);
-		file.Write(&bone->position, sizeof(Point3));
-		file.Write(&bone->orientation, sizeof(::Quat));
-		file.Write(&bone->scale, sizeof(float));
+		file.Write(&bone->position, sizeof(Vec3));
+		file.Write(&bone->orientation, sizeof(MQuat));
+		file.Write(&bone->scale, sizeof(Vec3));
 	}
 
 	for (int i = 0; i < boneCount; ++i)
@@ -261,6 +262,41 @@ void xMeshExporter::WriteSkel(xSkeleton * skel, File & file)
 
 		file.Write(&parent, sizeof(short));
 		file.Write(&child, sizeof(short));
+	}
+}
+
+void xMeshExporter::WriteSkelAnim(xSkeleton * skel, File & file)
+{
+	if (skel->GetBoneCount() == 0)
+		return ;
+
+	int cId = MC_SKELANIM;
+
+	int boneCount = skel->GetBoneCount();
+
+	file.Write(&cId, sizeof(int));
+
+	file.Write(&MeshLoader_v1::K_SkelAnim_Version, sizeof(int));
+	file.Write(xExportConfig::Instance()->GetExportAnimName().c_str(), 128);
+	file.Write(&boneCount, sizeof(int));
+
+	for (int i = 0; i < boneCount; ++i)
+	{
+		xBone * bone = skel->GetBone(i);
+
+		int kSize = bone->keyFrames.Size();
+
+		file.Write(&i, sizeof(int));
+		file.Write(&kSize, sizeof (int));
+
+		for (int j = 0; j < kSize; ++j)
+		{
+			const xKeyFrame & kf = bone->keyFrames[j];
+			file.Write(&kf.time, sizeof(float));
+			file.Write(&kf.position, sizeof(Point3));
+			file.Write(&kf.orientation, sizeof(::Quat));
+			file.Write(&kf.scale, sizeof(Point3));
+		}
 	}
 }
 

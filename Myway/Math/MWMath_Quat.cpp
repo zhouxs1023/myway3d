@@ -175,7 +175,7 @@ void Math::QuatFromDir(Quat & qOut, const Vec3 & dir1, const Vec3 & dir2, const 
 */
 void Math::QuatFromPitchYawRoll(Quat & qOut, float pitch, float yaw, float roll)
 {
-#ifdef WIN32
+#if 0
     const float half_1 = 0.5f;
     float val[6];
 

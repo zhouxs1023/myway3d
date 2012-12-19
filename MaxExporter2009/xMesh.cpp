@@ -5,6 +5,7 @@
 #include "xExportConfig.h"
 #include "xTextureExporter.h"
 #include "xSkeleton.h"
+#include "xUtility.h"
 
 namespace MaxPlugin {
 
@@ -113,7 +114,7 @@ namespace MaxPlugin {
 
 			// position
 			for (int i = 0; i < mesh->GetNumberOfVerts(); ++i)
-				mMaxMesh.P.PushBack(mesh->GetVertex(i));
+				mMaxMesh.P.PushBack(xUtility::ToVec3(mesh->GetVertex(i)));
 
 			// vertex color
 			for (int i = 0; expColor && i < mesh->GetNumberOfColorVerts(); ++i)
@@ -121,14 +122,7 @@ namespace MaxPlugin {
 				Point3 c = mesh->GetColorVertex(i);
 				float a = mesh->GetAlphaVertex(i);
 
-				Point4 v;
-
-				v.x = c.x;
-				v.y = c.y;
-				v.z = c.z;
-				v.w = a;
-
-				mMaxMesh.C.PushBack(v);
+				mMaxMesh.C.PushBack(Vec4(c.x, c.y, c.z, a));
 				
 				mVertexElems |= MeshLoader_v1::VE_COLOR;
 			}
@@ -136,7 +130,7 @@ namespace MaxPlugin {
 			// normal
 			for (int i = 0; expNormal && i < mesh->GetNumberOfNormals(); ++i)
 			{
-				mMaxMesh.N.PushBack(mesh->GetNormal(i));
+				mMaxMesh.N.PushBack(xUtility::ToVec3(mesh->GetNormal(i)));
 
 				mVertexElems |= MeshLoader_v1::VE_NORMAL;
 			}
@@ -146,7 +140,7 @@ namespace MaxPlugin {
 			{
 				Point3 tv = mesh->GetMapVertex(texMaps[0], i);
 
-				mMaxMesh.UV.PushBack(Point2(tv.x, tv.y));
+				mMaxMesh.UV.PushBack(Vec2(tv.x, tv.y));
 
 				mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
 			}
@@ -156,7 +150,7 @@ namespace MaxPlugin {
 			{
 				Point3 tv = mesh->GetMapVertex(texMaps[1], i);
 
-				mMaxMesh.LUV.PushBack(Point2(tv.x, tv.y));
+				mMaxMesh.LUV.PushBack(Vec2(tv.x, tv.y));
 
 				mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
 			}

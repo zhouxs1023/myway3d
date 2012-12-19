@@ -21,6 +21,9 @@
     <ClCompile Include="xSkeleton.cpp">
       <Filter>Export</Filter>
     </ClCompile>
+    <ClCompile Include="xUtility.cpp">
+      <Filter>Export</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -41,6 +44,9 @@
     </ClInclude>
     <ClInclude Include="xTextureExporter.h" />
     <ClInclude Include="xSkeleton.h">
+      <Filter>Export</Filter>
+    </ClInclude>
+    <ClInclude Include="xUtility.h">
       <Filter>Export</Filter>
     </ClInclude>
   </ItemGroup>

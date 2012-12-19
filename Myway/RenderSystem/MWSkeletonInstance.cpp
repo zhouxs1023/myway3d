@@ -182,11 +182,7 @@ Bone * SkeletonInstance::GetBone(short handle)
 {
     assert(handle < mBones.Size());
 
-    Array<Bone*>::Iterator iter;
-
-    iter = mBones.Begin() + handle;
-
-    return *iter;
+	return mBones[handle];
 }
 
 Animation * SkeletonInstance::GetAnimation(const TString128 & sAnimation)

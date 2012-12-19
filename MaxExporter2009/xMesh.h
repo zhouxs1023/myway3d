@@ -43,11 +43,11 @@ namespace MaxPlugin {
 
 	struct xMaxMesh
 	{
-		Array<Point3> P;			// position
-		Array<Point3> N;			// normal
-		Array<Point4> C;			// vertex color
-		Array<Point2> UV;			// uv
-		Array<Point2> LUV;			// light map uv
+		Array<Vec3> P;			// position
+		Array<Vec3> N;			// normal
+		Array<Vec4> C;			// vertex color
+		Array<Vec2> UV;			// uv
+		Array<Vec2> LUV;			// light map uv
 		Array<xBlendWeight> BW;		// blend weight
 		Array<xBlendIndex> BI;	// blend indices
 

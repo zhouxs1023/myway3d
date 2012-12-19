@@ -16,6 +16,7 @@ public:
 	const TString128 & GetExportFilename() const { return mExportFilename; }
 	const TString128 & GetExportPath() const { return mExportPath; }
 	const TString128 & GetExportBaseName() const { return mExportBaseName; }
+	const TString128 & GetExportAnimName() const { return mExportAnimName; }
 
 	void SetExportSelected(bool b) { mExportSelected = b; }
 	bool IsExportSelected() const { return mExportSelected; }
@@ -42,6 +43,7 @@ protected:
 	TString128 mExportFilename;
 	TString128 mExportPath;
 	TString128 mExportBaseName;
+	TString128 mExportAnimName;
 
 	bool mExportSelected;
 	bool mExportNormal;

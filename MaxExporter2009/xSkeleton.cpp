@@ -2,6 +2,7 @@
 
 #include "xSkeleton.h"
 #include "xMeshExporter.h"
+#include "xUtility.h"
 
 void Warn( LPCTSTR sz )
 {
@@ -31,7 +32,7 @@ namespace MaxPlugin {
 	void _dumpSampleKeys(IGameControl * pGameControl, xBone * bone)
 	{
 		IGameKeyTab Key;
-		if(pGameControl->GetFullSampledKeys(Key, 1, IGameControlType(IGAME_TM), true) )
+		if(pGameControl->GetFullSampledKeys(Key, 1, IGAME_TM, true) )
 		{
 			int count = Key.Count();
 			for(int i=0;i<count;i++)
@@ -40,11 +41,11 @@ namespace MaxPlugin {
 				{
 					xKeyFrame k;
 
-					k.time = Key[i].t / xMeshExporter::Instance()->GetGameScene()->GetSceneTicks() / GetFrameRate();
+					k.time = (float)Key[i].t / (float)xMeshExporter::Instance()->GetGameScene()->GetSceneTicks() / (float)GetFrameRate();
 
-					k.position = Key[i].sampleKey.gval.Translation();
-					k.orientation = Key[i].sampleKey.gval.Rotation();
-					k.scale = Key[i].sampleKey.gval.Scaling();
+					k.position = xUtility::ToVec3(Key[i].sampleKey.gval.Translation());
+					k.orientation = xUtility::ToQuat(Key[i].sampleKey.gval.Rotation());
+					k.scale = xUtility::ToVec3(Key[i].sampleKey.gval.Scaling());
 
 					bone->keyFrames.PushBack(k);
 				}
@@ -129,8 +130,10 @@ namespace MaxPlugin {
 	{
 		IGameObject * obj = node->GetIGameObject();
 		IGameObject::MaxType T = obj->GetMaxType();
+		IGameObject::ObjectTypes type = obj->GetIGameType();
+		const char * name = node->GetName();
 		
-		switch(obj->GetIGameType())
+		switch(type)
 		{
 		case IGameObject::IGAME_BONE:
 		case IGameObject::IGAME_HELPER:
@@ -153,10 +156,31 @@ namespace MaxPlugin {
 				IGameControl * pGameControl = node->GetIGameControl();
 				// base matrix
 				{
-					GMatrix matWorld = node->GetWorldTM();
-					bone->position = matWorld.Translation();
-					bone->orientation = matWorld.Rotation();
-					bone->scale = matWorld.Scaling();
+					GMatrix matWorld = node->GetLocalTM();
+
+					bone->position = xUtility::ToVec3(matWorld.Translation());
+					bone->orientation = xUtility::ToQuat(matWorld.Rotation());
+					bone->scale = xUtility::ToVec3(matWorld.Scaling());
+
+					/*if (node->GetNodeParent())
+					{
+						int parentId = _getBoneId(node->GetNodeParent()->GetName());
+
+						if (parentId != -1)
+						{
+							xBone * parentBn = GetBone(parentId);
+
+							bone->position = bone->position - parentBn->position;
+							bone->orientation = parentBn->orientation.Inverse() * bone->orientation;
+							bone->scale = bone->scale / parentBn->scale;
+						}
+					}*/
+
+					Vec3 x = bone->orientation.AxisX();
+					Vec3 y = bone->orientation.AxisY();
+					Vec3 z = bone->orientation.AxisZ();
+
+					int __i = 0;
 				}
 
 				if (false == _dumpAnim(pGameControl, bone))

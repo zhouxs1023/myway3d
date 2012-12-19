@@ -10,6 +10,9 @@
 #include "CS\\BipExp.h"
 #include "IGame\\IGame.h"
 #include "IGame\\IGameModifier.h"
+#include "decomp.h"
 #include "Myway.h"
 
 using namespace Myway;
+
+typedef Myway::Quat MQuat;

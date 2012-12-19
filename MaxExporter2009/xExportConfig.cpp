@@ -18,6 +18,8 @@ xExportConfig::xExportConfig()
 	mExportLightmapUV = false;
 
 	mExportAnimation = true;
+
+	mExportAnimName = "Default";
 }
 
 xExportConfig::~xExportConfig()

@@ -84,6 +84,7 @@
     <ClCompile Include="xMeshExporter.cpp" />
     <ClCompile Include="xSkeleton.cpp" />
     <ClCompile Include="xTextureExporter.cpp" />
+    <ClCompile Include="xUtility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="xMeshExporter.h" />
     <ClInclude Include="xSkeleton.h" />
     <ClInclude Include="xTextureExporter.h" />
+    <ClInclude Include="xUtility.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MaxExporter2009.rc" />

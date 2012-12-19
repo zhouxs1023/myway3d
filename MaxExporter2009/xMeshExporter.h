@@ -24,6 +24,7 @@ public:
 
 	void WriteSubMesh(xSubMesh * mesh, File & file);
 	void WriteSkel(xSkeleton * skel, File & file);
+	void WriteSkelAnim(xSkeleton * skel, File & file);
 
 protected:
 	ExpInterface * mExpInterface;

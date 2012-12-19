@@ -56,6 +56,8 @@ void SkeletonLoader::Load(Skeleton * skel, const TString128 & source)
 	if (stream == NULL)
 		return ;
 
+	skel->SetRelative(true);
+
     ReadHead(stream);
 
     chunk ck;

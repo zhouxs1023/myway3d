@@ -95,6 +95,8 @@ public:
 
     void _UpdateAnimation(SkeletonInstance * skel, float time);
 
+	void _calcuLength();
+
 protected:
     TString128                  mName;
     float                       mLen;
