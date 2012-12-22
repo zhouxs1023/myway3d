@@ -8,6 +8,9 @@ namespace Myway {
     class MW_ENTRY RenderEvent
     {
     public:
+		static Event OnEngineInit;
+		static Event OnEngineShutdown;
+
         static Event OnPreUpdateScene;
         static Event OnPostUpdateScene;
 

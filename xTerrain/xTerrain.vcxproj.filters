@@ -48,6 +48,9 @@
     <ClCompile Include="xPropertyGridColorPick.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="xTree.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -96,6 +99,9 @@
     </ClInclude>
     <ClInclude Include="xPropertyGridColorPick.h">
       <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xTree.h">
+      <Filter>Src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

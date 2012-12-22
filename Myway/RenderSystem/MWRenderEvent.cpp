@@ -2,6 +2,9 @@
 
 namespace Myway {
 
+	Event RenderEvent::OnEngineInit;
+	Event RenderEvent::OnEngineShutdown;
+
     Event RenderEvent::OnPreUpdateScene;
     Event RenderEvent::OnPostUpdateScene;
 

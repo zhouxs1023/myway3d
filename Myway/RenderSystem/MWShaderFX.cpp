@@ -101,8 +101,9 @@ SamplerState & Technique::GetSamplerState(int index)
 //
 // ShaderLib
 //
-ShaderLib::ShaderLib(const TString128 & name)
+ShaderLib::ShaderLib(const TString128 & name, const TString128 & source)
 : mName(name)
+, mSource(source)
 {
 }
 
@@ -128,6 +129,11 @@ ShaderLib::~ShaderLib()
 const TString128 & ShaderLib::GetName()
 {
     return mName;
+}
+
+const TString128 & ShaderLib::GetSource()
+{
+	return mSource;
 }
 
 
@@ -290,7 +296,7 @@ ShaderLib * ShaderLibManager::LoadShaderLib(const TString128 & name, const TStri
             return NULL;
         }
 
-        lib = new ShaderLib(name);
+        lib = new ShaderLib(name, source);
         mShaderLibs.PushBack(lib);
         ShaderLibLoader::Load(lib, stream);
     }
@@ -305,7 +311,7 @@ ShaderLib * ShaderLibManager::CreateShaderLib(const TString128 & name)
     if (lib)
         return NULL;
 
-    lib = new ShaderLib(name);
+    lib = new ShaderLib(name, "");
 
     mShaderLibs.PushBack(lib);
 

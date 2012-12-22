@@ -3,6 +3,9 @@
 #include "xApp.h"
 #include "xScene.h"
 
+const Aabb xObj::K_DefaultBound = Aabb(-5, -5, -5, 5, 5, 5);
+const Sphere xObj::K_DefaultSphere = Sphere(0, 0, 0, 5);
+
 DF_PROPERTY_BEGIN(xObj)
 	DF_PROPERTY(xObj, Name, "General", "Name", PT_TString, 128)
 DF_PROPERTY_END()

@@ -14,18 +14,20 @@ xMesh::xMesh(const TString128 & name)
 	, OnUpdate(&xEvent::OnUpdate, this, &xMesh::_Update)
 	, OnRenderSkel(&RenderEvent::OnAfterDeffererShading, this, &xMesh::_renderSkel)
 {
-	MeshFile = "temp.mesh";
+	MeshFile = "";
 	Position = Vec3::Zero;
 	Orientation = Quat::Identity;
 	Scale = Vec3::Unit;
 
 	mAnimState = NULL;
 
-    mNode = World::Instance()->CreateSceneNode();
-    mEntity = World::Instance()->CreateEntity(name, MeshFile);
+	mNode = World::Instance()->CreateSceneNode();
+	mEntity = World::Instance()->CreateEntity(name);
 	mNode->Attach(mEntity);
-	
+
 	mNode->GetFlag().SetFlags(PICK_Flag);
+
+	mEntity->SetBounds(xObj::K_DefaultBound, xObj::K_DefaultSphere);
 }
 
 xMesh::~xMesh()
@@ -80,10 +82,10 @@ bool xMesh::OnPropertyChanged(const Property * p)
 	{
 		SetName(Name);
 	}
-    else if (p->name == "MeshFile")
-    {
-        SetMeshFile(MeshFile);
-    }
+	else if (p->name == "MeshFile")
+	{
+		SetMeshFile(MeshFile);
+	}
 	else if (p->name == "AnimName")
 	{
 		SetAnimName(AnimName);
@@ -101,7 +103,7 @@ bool xMesh::OnPropertyChanged(const Property * p)
 		SetScale(Scale);
 	}
 
-    return true;
+	return true;
 }
 
 void xMesh::SetName(const TString128 & name)
@@ -233,7 +235,7 @@ void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
 
 	obj->SetPosition(pos);
 	obj->SetMeshFile(base);
-	obj->SetScale(0.05f);
+	obj->SetScale(0.2f);
 
 	xApp::Instance()->SetSelectedObj(obj);
 }

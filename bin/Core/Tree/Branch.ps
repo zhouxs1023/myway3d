@@ -1,0 +1,36 @@
+///////////////////////////////////////////////////////////////////////  
+//  BranchPS
+//
+
+struct SBranchOutput
+{
+    float3  vDiffuseTexCoords     : TEXCOORD0;  // .xy = diffuse tecoords, .z = lod fade hint
+    float2  vNormalTexCoords      : TEXCOORD2;  // .xy = normal map texcoords (not necessarily tied to diffuse texcoords)
+    float4  vNormal               : TEXCOORD4;  // .xyz = normal-mapping vector, .w = depth
+    float2  vSelfShadowTexCoords  : TEXCOORD1;  // .xy = self-shadow texcoords
+    float2  vDetailTexCoords      : TEXCOORD3;  // .xy = detail map texcoords
+	float4	vProjPos			  : TEXCOORD5;
+};
+
+struct PS_OUT
+{
+    float4 color	: COLOR0;
+    float4 normal	: COLOR1;
+    float4 material : COLOR2;
+    float4 depth	: COLOR3;
+};
+
+uniform sampler2D samBranchDiffuseMap : register(s0);
+uniform float4 gClipPlane;
+
+PS_OUT main(SBranchOutput In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+    Out.color = tex2D(samBranchDiffuseMap, In.vDiffuseTexCoords.xy);
+	Out.normal = float4(In.vNormal.xy, 0, 0);
+	Out.material = float4(1, 1, 1, 1);
+    Out.depth = float4(In.vProjPos.w * gClipPlane.w, 0, 0, 0);
+    
+    return Out;
+}

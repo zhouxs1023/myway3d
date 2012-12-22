@@ -23,6 +23,7 @@
 #include "MWPlane.h"
 #include "MWQuaternion.h"
 #include "MWSkinInfl.h"
+#include "MWCurve.h"
 
 
 namespace Myway

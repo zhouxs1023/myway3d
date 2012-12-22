@@ -9,6 +9,10 @@ class X_ENTRY xObj : public IPropertyObj
 {
 	DECLARE_PROPERTY(IPropertyObj);
 
+public:
+	static const Aabb K_DefaultBound;
+	static const Sphere K_DefaultSphere;
+
 protected:
 	TString128 Name;
 

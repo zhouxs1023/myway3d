@@ -51,10 +51,11 @@ class MW_ENTRY ShaderLib
     DECLARE_ALLOC();
 
 public:
-    ShaderLib(const TString128 & name);
+    ShaderLib(const TString128 & name, const TString128 & source);
     ~ShaderLib();
 
     const TString128 & GetName();
+	const TString128 & GetSource();
 
     ShaderProgram * AddShader(const TString128 & name,
                               SHADER_LANGUAGE language,
@@ -78,6 +79,7 @@ public:
 
 protected:
     TString128 mName;
+	TString128 mSource;
     Array<ShaderProgram*> mShaders;
     Array<Technique*>  mTechniques;
 };

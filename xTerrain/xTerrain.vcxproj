@@ -42,7 +42,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../xEditor;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../xEditor;../MSpeedTree;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
@@ -95,6 +95,7 @@
     <ClCompile Include="xTerrainLayerInfoDlg.cpp" />
     <ClCompile Include="xTerrainOp.cpp" />
     <ClCompile Include="xTerrainPane.cpp" />
+    <ClCompile Include="xTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -114,6 +115,7 @@
     <ClInclude Include="xTerrainLayerInfoDlg.h" />
     <ClInclude Include="xTerrainOp.h" />
     <ClInclude Include="xTerrainPane.h" />
+    <ClInclude Include="xTree.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="xTerrain.rc" />

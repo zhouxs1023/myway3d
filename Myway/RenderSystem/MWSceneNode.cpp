@@ -371,7 +371,7 @@ void SceneNode::_UpdateTransform()
     iter = mMovers.Begin();
     if (iter != end)
     {
-        mAabbWorld = (*iter)->GetWorldAabb();
+		mAabbWorld = (*iter)->GetWorldAabb();
 
         while (++iter != end)
             Math::AABBMerge(mAabbWorld, mAabbWorld, (*iter)->GetWorldAabb());
@@ -381,7 +381,9 @@ void SceneNode::_UpdateTransform()
     }
     else
     {
-        mAabbWorld.minimum = mAabbWorld.maximum = mPosition;
+        mAabbWorld.minimum = mPosition;
+		mAabbWorld.maximum = mPosition;
+
         mSphWorld.center = mPosition;
         mSphWorld.radius = 0;
     }

@@ -14,6 +14,7 @@
 namespace Myway
 {
 
+static TString128 gLoadCurrentPath;
 
 class D3D9Include : public ID3DXInclude
 {
@@ -23,7 +24,8 @@ public:
 
     STDMETHOD(Open)(D3DXINCLUDE_TYPE IncludeType, LPCSTR pFileName, LPCVOID pParentData, LPCVOID *ppData, UINT *pBytes)
     {
-        DataStreamPtr stream = ResourceManager::Instance()->OpenResource(pFileName);
+		TString128 loadFile = gLoadCurrentPath + pFileName;
+        DataStreamPtr stream = ResourceManager::Instance()->OpenResource(loadFile.c_str());
 
         if (stream.NotNull())
         {
@@ -79,6 +81,8 @@ ShaderProgram * D3D9ShaderProgramManager::CreateShader(const TString128 & name,
     DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source.c_str());
     d_assert (stream != NULL);
     _StreamException(stream, source);
+
+	gLoadCurrentPath = File::GetFileDir(source);
 
     if (!IsSupported(profile))
     {
@@ -301,6 +305,7 @@ void D3D9ShaderProgramManager::LoadCgProgramCode(String & code, int size)
 
         head = code.SubStr(i + 1, j - i - 1);
 
+		head = gLoadCurrentPath.c_str() + head;
         DataStreamPtr stream = ResourceManager::Instance()->OpenResource(head.c_str());
 
         if (stream.IsNull())

@@ -588,6 +588,9 @@
     <ClInclude Include="RenderSystem\MWProjectionGrid.h">
       <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
     </ClInclude>
+    <ClInclude Include="Math\MWCurve.h">
+      <Filter>Myway\Math</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -1153,6 +1156,9 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWProjectionGrid.cpp">
       <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
+    </ClCompile>
+    <ClCompile Include="Math\MWCurve.cpp">
+      <Filter>Myway\Math</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

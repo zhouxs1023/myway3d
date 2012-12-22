@@ -160,10 +160,14 @@ namespace Myway
             const char * name = aName->value();
             SHADER_LANGUAGE lan = GetShaderLanguage(aLanguage->value());
             SHADER_PROFILE pro = GetShaderProfile(aProfile->value());
-            const char * source = aSource->value();
+            TString128 source = aSource->value();
             const char * entry = "main";
 
-            ShaderProgram * shader = lib->AddShader(name, lan, pro, source, entry, &params);
+			TString128 path = File::GetFileDir(lib->GetSource());
+
+			source = path + source;
+
+            ShaderProgram * shader = lib->AddShader(name, lan, pro, source.c_str(), entry, &params);
             d_assert (shader);
         }
     }

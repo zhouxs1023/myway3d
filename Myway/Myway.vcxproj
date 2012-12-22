@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Math\MWCurve.h" />
     <ClInclude Include="Myway.h" />
     <ClInclude Include="Core\MWAllocObj.h" />
     <ClInclude Include="Core\MWArchive.h" />
@@ -350,6 +351,7 @@
     <ClCompile Include="Core\MWTaskManager.cpp" />
     <ClCompile Include="Core\MWThread.cpp" />
     <ClCompile Include="Core\MWTimer.cpp" />
+    <ClCompile Include="Math\MWCurve.cpp" />
     <ClCompile Include="RenderSystem\MWOcean.cpp" />
     <ClCompile Include="RenderSystem\MWProjectionGrid.cpp" />
     <ClCompile Include="RenderSystem\MWTrigger.cpp" />

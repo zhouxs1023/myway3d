@@ -57,10 +57,14 @@ void Engine::Init(const DeviceProperty * pDeviceProperty,
 
     mRenderHelper = new RenderHelper();
     mRenderScheme = new RS_Scheme();
+
+	RenderEvent::OnEngineInit(NULL, NULL);
 }
 
 void Engine::Shutdown()
 {
+	RenderEvent::OnEngineShutdown(NULL, NULL);
+
     safe_delete(mRenderScheme);
     safe_delete(mRenderHelper);
 
