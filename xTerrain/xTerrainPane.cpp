@@ -30,6 +30,8 @@ xTerrainPane::xTerrainPane()
 	, OnUpdate(&xEvent::OnUpdate, this, &xTerrainPane::_Update)
 	, OnRender(&RenderEvent::OnAfterDeffererShading, this, &xTerrainPane::_Render)
 	, OnRenderUI(&RenderEvent::OnAfterRender, this, &xTerrainPane::_RenderUI)
+	, OnUnLoadScene(&xEvent::OnUnloadScene, this, &xTerrainPane::_UnloadScene)
+	, OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xTerrainPane::_AfterloadScene)
 {
 	INIT_SLN;
 }
@@ -197,4 +199,16 @@ void xTerrainPane::_RenderUI(void * param0, void * param1)
 	{
 		mEditLayer._RenderSectionLayer();
 	}
+}
+
+void xTerrainPane::_UnloadScene(void * param0, void * param1)
+{
+	mEditLayer.SetLayer(-1);
+	mLayerDlg._UnloadScene(NULL, NULL);
+}
+
+void xTerrainPane::_AfterloadScene(void * param0, void * param1)
+{
+	mEditLayer.SetLayer(-1);
+	mLayerDlg._AfterLoadScene(NULL, NULL);
 }

@@ -33,6 +33,8 @@ protected:
 	void _Update(void * param0, void * param1);
 	void _Render(void * param0, void * param1);
 	void _RenderUI(void * param0, void * param1);
+	void _UnloadScene(void * param0, void * param1);
+	void _AfterloadScene(void * param0, void * param1);
 
 protected:
 	tEventListener<xTerrainPane> OnCreatePane;
@@ -41,6 +43,8 @@ protected:
 	tEventListener<xTerrainPane> OnUpdate;
 	tEventListener<xTerrainPane> OnRender;
 	tEventListener<xTerrainPane> OnRenderUI;
+	tEventListener<xTerrainPane> OnUnLoadScene;
+	tEventListener<xTerrainPane> OnAfterLoadScene;
 
 	CMFCTabCtrl mTab;
 

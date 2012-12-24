@@ -10,7 +10,7 @@
 
 namespace Myway {
 
-const int K_Terrain_Version = 1;
+const int K_Terrain_Version = 2;
 const int K_Terrain_Magic = 'TRN0';
 
 Terrain::Terrain(const Config & config)
@@ -269,6 +269,7 @@ void Terrain::_Load(const char * filename)
 	d_assert (stream != NULL);
 
 	int magic, version;
+	int * sectionLayers = NULL;
 
 	stream->Read(&magic, sizeof(int));
 
@@ -324,12 +325,53 @@ void Terrain::_Load(const char * filename)
 		mWeights = new Color[mConfig.iWeightMapSize];
 		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
 	}
+	else if (version == 2)
+	{
+		int count = 0;
+
+		count = stream->Read(&mConfig, sizeof(Config));
+		count = stream->Read(mLayer, sizeof(Layer), kMaxLayers);
+
+		count = stream->Read(&mBound, sizeof(Aabb));
+
+		mHeights = new float[mConfig.iVertexCount];
+		count = stream->Read(&mHeights[0], sizeof(float), mConfig.iVertexCount);
+
+		mNormals = new Color[mConfig.iVertexCount];
+		count = stream->Read(&mNormals[0], sizeof(Color), mConfig.iVertexCount);
+
+		mWeights = new Color[mConfig.iWeightMapSize];
+		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
+
+		sectionLayers = new int[mConfig.iSectionCount * kMaxBlendLayers];
+
+		count = stream->Read(sectionLayers, kMaxBlendLayers * sizeof(int), mConfig.iSectionCount);
+	}
 	else
 	{
 		d_assert (0);
 	}
 
 	_init();
+
+	if (sectionLayers)
+	{
+		int index = 0;
+		for (int j = 0; j < mConfig.zSectionCount; ++j)
+		{
+			for (int i = 0; i < mConfig.xSectionCount; ++i)
+			{
+				TerrainSection * section = GetSection(i, j);
+
+				for (int l = 0; l < kMaxBlendLayers; ++l)
+					section->SetLayer(l, sectionLayers[index * kMaxBlendLayers + l]);
+
+				++index;
+			}
+		}
+	}
+
+	safe_delete_array (sectionLayers);
 
 	mInited = true;
 }
@@ -362,6 +404,21 @@ void Terrain::Save(const char * filename)
 	
 	// write weights
 	count = file.Write(mWeights, sizeof(Color), mConfig.iWeightMapSize);
+
+	// write section layer
+	for (int j = 0; j < mConfig.zSectionCount; ++j)
+	{
+		for (int i = 0; i < mConfig.xSectionCount; ++i)
+		{
+			TerrainSection * section = GetSection(i, j);
+			
+			for (int l = 0; l < kMaxBlendLayers; ++l)
+			{
+				int layer = section->GetLayer(l);
+				file.Write(&layer, sizeof(int));
+			}
+		}
+	}
 
 	file.Close();
 }

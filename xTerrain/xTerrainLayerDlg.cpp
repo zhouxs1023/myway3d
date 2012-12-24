@@ -86,23 +86,43 @@ void xTerrainLayerDlg::_Init(void * param0, void * param1)
 
 	SetDlgItemText(IDC_Edit_TL_BrushSize, "50");
 	SetDlgItemText(IDC_Edit_TL_BrushDensity, "0.5");
+}
 
+void xTerrainLayerDlg::_UnloadScene(void * param0, void * param1)
+{
+	CListBox * list = (CListBox *)GetDlgItem(IDC_List_TL_Layers);
+
+	while (list->GetCount())
+		list->DeleteString(0);
+
+	mLayerIds.Clear();
+}
+
+void xTerrainLayerDlg::_AfterLoadScene(void * param0, void * param1)
+{
 	// init layer list
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 	CListBox * list = (CListBox *)GetDlgItem(IDC_List_TL_Layers);
-	
-	if (terrain)
-	{
-		int index = 0;
-		for (int i = 0; i < Terrain::kMaxLayers; ++i)
-		{
-			const Terrain::Layer * layer = terrain->GetLayer(i);
 
-			if (layer->detail != "")
-			{
-				list->InsertString(index, layer->detail.c_str());
-				mLayerIds.PushBack(i);
-			}
+	while (list->GetCount())
+	{
+		list->DeleteString(0);
+	}
+
+	mLayerIds.Clear();
+
+	if (!terrain)
+		return ;
+
+	int index = 0;
+	for (int i = 0; i < Terrain::kMaxLayers; ++i)
+	{
+		const Terrain::Layer * layer = terrain->GetLayer(i);
+
+		if (layer->detail != "")
+		{
+			list->InsertString(index, layer->detail.c_str());
+			mLayerIds.PushBack(i);
 		}
 	}
 }
@@ -153,10 +173,25 @@ void xTerrainLayerDlg::OnAddLayer()
 
 void xTerrainLayerDlg::OnRemoveLayer()
 {
-	Terrain * tn = Environment::Instance()->GetTerrain();
+	Terrain * terrain = Environment::Instance()->GetTerrain();
 
-	if (tn == NULL)
+	if (terrain == NULL)
 		return ;
+
+	CListBox * list = (CListBox *)GetDlgItem(IDC_List_TL_Layers);
+
+	int curSel = list->GetCurSel();
+
+	if (curSel < 0)
+		return ;
+
+	list->DeleteString(curSel);
+
+	int layer = mLayerIds[curSel];
+
+	terrain->RemoveLayer(curSel);
+
+	mLayerIds.Erase(curSel);
 }
 
 void xTerrainLayerDlg::OnEditLayer()

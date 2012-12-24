@@ -10,6 +10,9 @@ public:
 	~xTerrainLayerDlg();
 
 	void _Init(void * param0, void * param1);
+	void _UnloadScene(void * param0, void * param1);
+	void _AfterLoadScene(void * param0, void * param1);
+
 	int GetCurLayer();
 
 protected:
