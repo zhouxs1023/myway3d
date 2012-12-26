@@ -1,0 +1,29 @@
+/*
+--------------------------------------------------------------------------------
+                pssm caster vertex program
+--------------------------------------------------------------------------------
+*/
+
+#include "MWDefines.mwdef"
+
+struct _IN
+{
+    vec4    position    : POSITION;
+};
+
+struct _OUT
+{
+    vec4    position    : POSITION;
+    vec2    depth       : TEXCOORD0;  
+};
+
+_OUT main(          _IN     In,
+           param    mat4x4  matShadowWVP)
+{
+    _OUT Out;
+    
+    Out.position = mul(In.position, matShadowWVP);
+    Out.depth = Out.position.zw;
+    
+    return Out;
+}

@@ -1,0 +1,27 @@
+/*
+--------------------------------------------------------------------------------
+                shadow caster fragment program
+--------------------------------------------------------------------------------
+*/
+
+#include "MWDefines.mwdef"
+
+struct _IN
+{
+    vec2 depth      : TEXCOORD0;
+};
+
+struct _OUT
+{
+    vec4 color      : COLOR;
+};
+
+_OUT main(_IN In)
+{
+    _OUT Out;
+    
+    float d = In.depth.x / In.depth.y;
+    Out.color = vec4(d, d, d, 1);
+    
+    return Out;
+}

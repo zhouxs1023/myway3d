@@ -1,0 +1,136 @@
+/*
+--------------------------------------------------------------------------------
+                pssm receiver fragment program
+--------------------------------------------------------------------------------
+*/
+
+#include "MWDefines.mwdef"
+
+//#define _DEBUG
+
+struct _IN
+{
+    vec4 position   : TEXCOORD0;
+    vec4 texcoord0  : TEXCOORD1;
+    vec4 texcoord1  : TEXCOORD2;
+    vec4 texcoord2  : TEXCOORD3;
+};
+
+struct _OUT
+{
+    vec4 color      : COLOR;
+};
+
+param samp2     texture0;
+param samp2     texture1;
+param samp2     texture2;
+param vec4      color;
+param vec4      split;
+
+
+vec3 ShadowPCFSample(samp2 tex, float depth, vec3 shadow, float tdepth[4])
+{
+    vec3 color = vec3(0, 0, 0);
+    
+    color += depth > tdepth[0] ? shadow : 1;
+    color += depth > tdepth[1] ? shadow : 1;
+    color += depth > tdepth[2] ? shadow : 1;
+    color += depth > tdepth[3] ? shadow : 1;
+    
+    color /= 4;
+
+    return color;
+}
+
+_OUT main(_IN In)
+{
+    _OUT Out = (_OUT)0;
+    
+    In.position.z /= In.position.w;
+    vec2 InvTexSize = 1.0f / 1024.0f;
+    
+    // texcoord 0
+    vec4 texcoord0 = In.texcoord0;
+	texcoord0 /= texcoord0.w;
+	texcoord0.x = (texcoord0.x + 1) / 2;
+	texcoord0.y = (1 - texcoord0.y) / 2;
+    float bais = color.w;
+    float depthAdjust0 = texcoord0.z + bais;
+    
+    vec2 tcoord0[4] =
+    {
+        texcoord0.xy + vec2(-1, -1) * InvTexSize, texcoord0.xy + vec2(0, -1) * InvTexSize,
+        texcoord0.xy + vec2(-1, 0) * InvTexSize,  texcoord0.xy + vec2(0, 0) * InvTexSize
+    };
+    
+    float tdepth0[4] = 
+    {
+		tex2D(texture0, tcoord0[0]).r,  tex2D(texture0, tcoord0[1]).r,
+		tex2D(texture0, tcoord0[2]).r,  tex2D(texture0, tcoord0[3]).r,
+    };
+    
+    // texcoord 1
+    vec4 texcoord1 = In.texcoord1;
+	texcoord1 /= texcoord1.w;
+	texcoord1.x = (texcoord1.x + 1) / 2;
+	texcoord1.y = (1 - texcoord1.y) / 2;
+    float depthAdjust1 = texcoord1.z + color.w;
+    
+    vec2 tcoord1[4] =
+    {
+        texcoord1.xy + vec2(-1, -1) * InvTexSize, texcoord1.xy + vec2(0, -1) * InvTexSize,
+        texcoord1.xy + vec2(-1, 0) * InvTexSize,  texcoord1.xy + vec2(0, 0) * InvTexSize
+    };
+    
+    float tdepth1[4] = 
+    {
+		tex2D(texture1, tcoord1[0]).r,  tex2D(texture1, tcoord1[1]).r,
+		tex2D(texture1, tcoord1[2]).r,  tex2D(texture1, tcoord1[3]).r,
+    };
+    
+    // texcoord 2
+    vec4 texcoord2 = In.texcoord2;
+	texcoord2 /= texcoord2.w;
+	texcoord2.x = (texcoord2.x + 1) / 2;
+	texcoord2.y = (1 - texcoord2.y) / 2;
+    float depthAdjust2 = texcoord2.z + color.w;
+    
+    vec2 tcoord2[4] =
+    {
+        texcoord2.xy + vec2(-1, -1) * InvTexSize, texcoord2.xy + vec2(0, -1) * InvTexSize,
+        texcoord2.xy + vec2(-1, 0) * InvTexSize,  texcoord2.xy + vec2(0, 0) * InvTexSize
+    };
+    
+    float tdepth2[4] = 
+    {
+		tex2D(texture2, tcoord2[0]).r,  tex2D(texture2, tcoord2[1]).r,
+		tex2D(texture2, tcoord2[2]).r,  tex2D(texture2, tcoord2[3]).r,
+    };
+    
+    float3 debugColor = 1;
+    
+    // shadowing
+    if (In.position.z < split.x)
+    {
+        Out.color.rgb = ShadowPCFSample(texture0, depthAdjust0, color.rgb, tdepth0);
+        debugColor = vec3(1, 0, 0);
+    }
+    else if (In.position.z < split.y)
+    {
+        Out.color.rgb = ShadowPCFSample(texture1, depthAdjust1, color.rgb, tdepth1);
+        debugColor = vec3(0, 1, 0);
+    }
+    else
+    {
+        Out.color.rgb = ShadowPCFSample(texture2, depthAdjust2, color.rgb, tdepth2);
+        debugColor = vec3(0, 0, 1);
+    }
+    
+    #ifdef _DEBUG
+        Out.color.rgb += debugColor;
+    #endif
+    
+    Out.color.a = 1.0f;
+    
+    return Out;
+}
