@@ -32,5 +32,6 @@ namespace Myway {
 		static Event OnAfterTerrainRender;
 
 		static Event OnAfterRender;
+		static Event OnDebugRender;
     };
 }

@@ -18,7 +18,7 @@ struct VS_OUT
 	float4 normalDepth 	: TEXCOORD3;
 };
 
-uniform mat4x4 matWorld;
+uniform mat4x4 matWV;
 uniform mat4x4 matWVP;
 
 VS_OUT main(VS_IN In)
@@ -31,7 +31,7 @@ VS_OUT main(VS_IN In)
     //copy tcoord
     Out.tcoord = In.tcoord;
     
-    Out.normalDepth.xyz = normalize(mul(In.normal, float3x3(matWorld)));
+    Out.normalDepth.xyz = normalize(mul(In.normal, float3x3(matWV)));
     Out.normalDepth.w = Out.position.w;
     
     return Out;

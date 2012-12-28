@@ -27,5 +27,5 @@ namespace Myway {
 	Event RenderEvent::OnAfterTerrainRender;
 
 	Event RenderEvent::OnAfterRender;
-
+	Event RenderEvent::OnDebugRender;
 }

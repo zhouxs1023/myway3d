@@ -27,6 +27,7 @@ public:
 protected:
     IDirect3DDevice9 *      mD3D9Device;
     IDirect3DSurface9 *     mRenderTarget;
+	TexturePtr				mTexture;
 };
 
 }

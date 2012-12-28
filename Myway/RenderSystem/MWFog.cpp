@@ -35,9 +35,9 @@ namespace Myway {
 
         uFogParam->SetUnifom(fogStart, fogEnd, 1 / (fogEnd - fogStart), 0);
         uFogColor->SetUnifom(fogColor.r, fogColor.g, fogColor.b, 0);
-        uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
-        uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
-        uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
+		uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
+		uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
+		uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
 
         SamplerState state;
         state.Address = TEXA_CLAMP;

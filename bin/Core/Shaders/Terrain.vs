@@ -22,6 +22,7 @@ struct VS_OUT
 };
 
 
+uniform mat4x4      matView;
 uniform mat4x4      matWVP;
 
 uniform float4		gTransform;
@@ -62,6 +63,7 @@ VS_OUT main(VS_IN In)
 	VS_OUT Out = (VS_OUT)0;
 	
 	float4 position = CalcuPosition(In.xz, In.y);
+	float3 normal = In.normal.xyz * 2 - 1;
 	
 	float2 detailUV = CalcuDetailUV(position.xz);
 
@@ -76,7 +78,7 @@ VS_OUT main(VS_IN In)
     Out.tcoord34.xy = detailUV * gUVScale.z;
     Out.tcoord34.zw = detailUV * gUVScale.w;
     
-    Out.normalDepth.xyz = In.normal.xyz * 2 - 1;
+    Out.normalDepth.xyz = mul(normal, (float3x3)matView);
     Out.normalDepth.w = Out.position.w;
     
     return Out;

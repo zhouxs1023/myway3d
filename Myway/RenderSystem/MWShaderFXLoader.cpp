@@ -29,6 +29,8 @@ namespace Myway
             return SPBT_VIEW_PROJ_MATRIX;
         else if (strcmp(type, "matWVP") == 0)
             return SPBT_WORLD_VIEW_PROJ_MATRIX;
+		else if (strcmp(type, "matWV") == 0)
+			return SPBT_WORLD_VIEW_MATRIX;
         else if (strcmp(type, "matBlend") == 0)
             return SPBT_BLEND_MATRIX;
 

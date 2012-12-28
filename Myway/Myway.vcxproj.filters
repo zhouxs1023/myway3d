@@ -591,6 +591,12 @@
     <ClInclude Include="Math\MWCurve.h">
       <Filter>Myway\Math</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSystem\MWShadow.h">
+      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWSSAO.h">
+      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -1159,6 +1165,12 @@
     </ClCompile>
     <ClCompile Include="Math\MWCurve.cpp">
       <Filter>Myway\Math</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWShadow.cpp">
+      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWSSAO.cpp">
+      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

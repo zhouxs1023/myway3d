@@ -71,8 +71,20 @@ void Camera::SetDirection(const Vec3 & v)
    
     Vec3 d = v.Normalize();
     Vec3 u = mNode->GetUp();
-    Vec3 r = u.Cross(d);
-    u = d.Cross(r);
+	Vec3 r = mNode->GetRight();
+
+	float du = d.Dot(u);
+
+	if (fabs(du) > 0.999f)
+	{
+		u = d.Cross(r);
+		r = u.Cross(d);
+	}
+	else
+	{
+		r = u.Cross(d);
+		u = d.Cross(r);
+	}
 
     Quat q;
 

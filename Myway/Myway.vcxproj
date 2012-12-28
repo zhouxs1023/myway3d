@@ -136,6 +136,8 @@
     <ClInclude Include="Physics\MWKDTree.h" />
     <ClInclude Include="RenderSystem\MWOcean.h" />
     <ClInclude Include="RenderSystem\MWProjectionGrid.h" />
+    <ClInclude Include="RenderSystem\MWShadow.h" />
+    <ClInclude Include="RenderSystem\MWSSAO.h" />
     <ClInclude Include="RenderSystem\MWTrigger.h" />
     <ClInclude Include="Core\MWAllocator.h" />
     <ClInclude Include="Core\MWArray.h" />
@@ -354,6 +356,8 @@
     <ClCompile Include="Math\MWCurve.cpp" />
     <ClCompile Include="RenderSystem\MWOcean.cpp" />
     <ClCompile Include="RenderSystem\MWProjectionGrid.cpp" />
+    <ClCompile Include="RenderSystem\MWShadow.cpp" />
+    <ClCompile Include="RenderSystem\MWSSAO.cpp" />
     <ClCompile Include="RenderSystem\MWTrigger.cpp" />
     <ClCompile Include="Core\MWXml.cpp" />
     <ClCompile Include="Math\MWAabb.cpp" />

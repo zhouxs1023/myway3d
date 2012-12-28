@@ -1,0 +1,19 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform sampler2D gTex_Normal;
+
+float4 main(PS_IN In) : COLOR
+{
+	float3 nrm = tex2D(gTex_Normal, In.uv0).rgb;;
+	nrm = (nrm + 1) / 2;
+	
+	return float4(nrm.xyz, 1);
+}

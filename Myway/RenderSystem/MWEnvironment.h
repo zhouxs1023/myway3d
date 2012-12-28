@@ -12,6 +12,7 @@
 #include "MWFog.h"
 #include "MWGodRay.h"
 #include "MWHDR.h"
+#include "MWSSAO.h"
 
 #include "MWEvKeyFrame.h"
 
@@ -48,6 +49,7 @@ namespace Myway {
         Fog * GetFog() { return mFog; }
         GodRay * GetGodRay() { return mGodRay; }
         HDRLighting * GetHDR() { return mHDR; }
+		SSAO * GetSSAO() { return mSSAO; }
 
         EvKeyFrame * GetKeyFrame(int type) { return &mKeyFrames[type]; }
         EvGlobalParam * GetGlobalParam() { return &mGlobalParam; }
@@ -93,6 +95,7 @@ namespace Myway {
         Fog * mFog;
         GodRay * mGodRay;
         HDRLighting * mHDR;
+		SSAO * mSSAO;
 
         EvKeyFrame mKeyFrames[EVKT_Max];
         EvGlobalParam mGlobalParam;

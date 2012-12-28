@@ -175,20 +175,20 @@ namespace Myway {
 
     void GodRay::_blur()
     {
-        mRenderTarget->Stretch(mTexture.c_ptr());
+		mRenderTarget->Stretch(mTexture.c_ptr());
 
-        SamplerState state;
-        state.Address = TEXA_CLAMP;
+		SamplerState state;
+		state.Address = TEXA_CLAMP;
 
-        RenderSystem::Instance()->SetTexture(0, state, mTexture.c_ptr());
+		RenderSystem::Instance()->SetTexture(0, state, mTexture.c_ptr());
 
-        RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurH);
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurH);
 
-        mRenderTarget->Stretch(mTexture.c_ptr());
+		mRenderTarget->Stretch(mTexture.c_ptr());
 
-        RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurV);
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurV);
 
-        mRenderTarget->Stretch(mTexture.c_ptr());
+		mRenderTarget->Stretch(mTexture.c_ptr());
     }
 
     void GodRay::_blend()
@@ -203,11 +203,11 @@ namespace Myway {
 		uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, sunColor.a);
         uBlendWeight->SetUnifom(blendWeight, 0, 0, 0);
 
-        SamplerState state;
-        state.Address = TEXA_CLAMP;
+		SamplerState state;
+		state.Address = TEXA_CLAMP;
 
-        RenderSystem::Instance()->SetTexture(0, state, mTexture.c_ptr());
+		RenderSystem::Instance()->SetTexture(0, state, mTexture.c_ptr());
 
-        RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_BLEND, mTech_Blend);
+		RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_BLEND, mTech_Blend);
     }
 }

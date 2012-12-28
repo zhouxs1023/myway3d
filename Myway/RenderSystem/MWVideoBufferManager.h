@@ -109,6 +109,8 @@ public:
         const TString128 & sName, int iWidth, int iHeight,
         FORMAT Format, MULTI_SAMPLE Msaa) = 0;
 
+	virtual RenderTargetPtr CreateRenderTarget(TexturePtr rtTex) = 0;
+
     /*
         Create Depth Stencil Buffer
             @Param:

@@ -1,0 +1,93 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PIn
+{
+    float2 uv  : TEXCOORD0;
+};
+
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+
+uniform float4x4 ptMat;
+
+uniform sampler2D depthMap : register (s0);
+uniform sampler2D normalMap : register (s1);
+uniform sampler2D randMap  : register (s2);
+
+float3 getPosition(float d, float2 uv)
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * uv.x + gCornerDownDir * uv.y;
+	return p.xyz * d;
+}
+
+float3 computeZ(float2 xy)
+{
+    return float3(xy, sqrt(1.0 - dot(xy, xy)));
+}
+
+float4 _Tex2DLod(sampler2D map, float2 uv)
+{
+    return tex2Dlod(map, float4(uv.xy, 0, 0));
+}
+
+float4 main(PIn In) : COLOR
+{
+	#define MAX_RAND_SAMPLES 14
+
+    const float3 RAND_SAMPLES[MAX_RAND_SAMPLES] =
+    {
+        float3(1, 0, 0),
+        float3(	-1, 0, 0),
+        float3(0, 1, 0),
+        float3(0, -1, 0),
+        float3(0, 0, 1),
+        float3(0, 0, -1),
+        normalize(float3(1, 1, 1)),
+        normalize(float3(-1, 1, 1)),
+        normalize(float3(1, -1, 1)),
+        normalize(float3(1, 1, -1)),
+        normalize(float3(-1, -1, 1)),
+        normalize(float3(-1, 1, -1)),
+        normalize(float3(1, -1, -1)),
+        normalize(float3(-1, -1, -1))
+    };
+
+    #define NUM_BASE_SAMPLES 14
+
+    float3 randN = _Tex2DLod(randMap, In.uv * 24).xyz * 2.0 - 1.0;
+    float depth = _Tex2DLod(depthMap, In.uv).r;
+
+    float3 viewPos = getPosition(depth, In.uv);
+    float3 viewNorm = _Tex2DLod(normalMap, In.uv).xyz;
+
+    float occ = 0;
+
+    for (int i = 0; i < NUM_BASE_SAMPLES; ++i)
+    {
+        float3 randomDir = reflect(RAND_SAMPLES[i], randN) + viewNorm;
+
+        #define RADIUS 1
+
+		float4 samplePos = float4(viewPos.xyz + randomDir * RADIUS, 1);
+        float4 nuv = mul(samplePos, ptMat);
+		nuv.xy = nuv.xy / nuv.w * float2(0.5f, -0.5f) + 0.5f;
+
+		float samplerDepth = _Tex2DLod(depthMap, nuv.xy).r;
+		float dd = depth - samplerDepth;
+
+		float zd = 10000.0 * max(dd, 0.0); 
+
+		if (dd * 10000 < 20.0f)
+			occ += 1.0 / (1.0 + zd * zd);
+		else
+			occ += 1;
+	}
+
+    occ = occ / NUM_BASE_SAMPLES;
+
+    return float4(occ, occ, occ, 1);
+}

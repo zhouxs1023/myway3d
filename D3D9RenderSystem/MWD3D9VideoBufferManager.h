@@ -46,8 +46,8 @@ public:
         const TString128 & sName, int iWidth, int iHeight,
         int iMipLevel, FORMAT Format, USAGE usage);
 
-    virtual TexturePtr CreateTextureRT(
-        const TString128 & sName, int iWidth, int iHeight, FORMAT Format);
+	virtual TexturePtr CreateTextureRT(
+		const TString128 & sName, int iWidth, int iHeight, FORMAT Format);
 
     TexturePtr CreateVolumeTexture(
         const TString128 & sName, int iWidth, int iHeight, int iDepth,
@@ -60,6 +60,8 @@ public:
     RenderTargetPtr CreateRenderTarget(
         const TString128 & sName, int iWidth, int iHeight,
         FORMAT Format, MULTI_SAMPLE Msaa);
+
+	RenderTargetPtr CreateRenderTarget(TexturePtr rtTex);
 
     DepthStencilPtr CreateDepthStencil(
         const TString128 & sName, int iWidth, int iHeight,

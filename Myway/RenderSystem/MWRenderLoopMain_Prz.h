@@ -8,11 +8,10 @@
 
 namespace Myway
 {
-
-    class RS_Scheme;
-
     class MW_ENTRY RenderLoop_Main
     {
+		friend class RS_Scheme;
+
     public:
         RenderLoop_Main(RS_Scheme * sch);
         ~RenderLoop_Main();

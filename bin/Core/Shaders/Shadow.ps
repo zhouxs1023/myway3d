@@ -1,0 +1,58 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct _IN
+{
+    float2 uv  : TEXCOORD0;
+};
+
+uniform sampler2D depthTex : register(s0);
+uniform sampler2D shadowTex : register(s0);
+uniform float4 gShadowInfo;
+uniform float4x4 matShadow;
+
+
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+
+float4 getPosition(float d, float2 uv)
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * uv.x + gCornerDownDir * uv.y;
+	return float4(p.xyz * d, 1);
+}
+
+float4 main(_IN In) : COLOR
+{
+	float depth = tex2D(depthTex, In.uv).r;
+	float4 pos = getPosition(depth, In.uv);
+
+	clip(pos.z - gShadowInfo.x);
+	clip(gShadowInfo.y - pos.z);
+
+	pos = mul(pos, matShadow);
+
+	float2 shadowUV = pos.xy * float2(0.5f, -0.5f) + 0.5f;
+
+	float InvTexSize = 1 / 2048.f;
+
+	float shadow = 0;
+
+	for (int j = -2; j <= 2; ++j)
+	{
+		for (int i = -2; i <= 2; ++i)
+		{
+			float2 uv = float2(i, j) * InvTexSize + shadowUV;
+
+			float d = tex2D(shadowTex, uv).r;
+
+			shadow += pos.z > d ? 0 : 1;
+		}
+	}
+
+	shadow /= 25;
+
+	return float4(shadow, shadow, shadow, 1);
+}

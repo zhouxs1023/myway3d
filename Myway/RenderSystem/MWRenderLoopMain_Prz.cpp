@@ -11,17 +11,17 @@ namespace Myway {
 
         const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
 
+		mTex_Color = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Color", -1, -1, FMT_A16B16G16R16F);
+		mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", -1, -1, FMT_A16B16G16R16F);
+		mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16B16G16R16F);
+		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", -1, -1, FMT_G32R32F);
+
         mRT_Color = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Color", -1, -1, FMT_A16B16G16R16F,  MSAA_NONE);
-        mRT_Normal = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Normal", -1, -1, FMT_G32R32F,  MSAA_NONE);
-        //mRT_Material = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Material", -1, -1, FMT_A16B16G16R16F,  MSAA_NONE);
-        mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Depth", -1, -1, FMT_G32R32F,  MSAA_NONE);
+        mRT_Normal = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Normal);
+        mRT_Material = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Material);
+        mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);
 
         mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_DepthStencil", -1, -1, FMT_D24S8,  MSAA_NONE);
-
-        mTex_Color = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Color", -1, -1, FMT_A16B16G16R16F);
-        mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", -1, -1, FMT_G32R32F);
-        mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16B16G16R16F);
-        mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", -1, -1, FMT_G32R32F);
     }
 
     RenderLoop_Main::~RenderLoop_Main()
@@ -71,6 +71,11 @@ namespace Myway {
 		render->SetRenderTarget(1, NULL);
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
+
+		if (Environment::Instance()->GetSSAO())
+			Environment::Instance()->GetSSAO()->Render(mTex_Depth.c_ptr(), mTex_Normal.c_ptr());
+
+		_updateTexture();
 
         // --->sun lighting
         if (Environment::Instance()->GetSun())
@@ -132,16 +137,17 @@ namespace Myway {
 
 		   _updateColorTexture();
 	   }
-       
 
-		if (Environment::Instance()->GetHDR())
-			Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
+	   if (Environment::Instance()->GetHDR())
+		   Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
 
 		RenderEvent::OnAfterDeffererShading(NULL, NULL);
 
 		// render forward objects
 
 		RenderEvent::OnAfterRender(NULL, NULL);
+
+		RenderEvent::OnDebugRender(NULL, NULL);
 
         _updateColorTexture();
 
@@ -156,9 +162,9 @@ namespace Myway {
     void RenderLoop_Main::_updateTexture()
     {
         mRT_Color->Stretch(mTex_Color.c_ptr());
-        mRT_Normal->Stretch(mTex_Normal.c_ptr());
+        //mRT_Normal->Stretch(mTex_Normal.c_ptr());
         //mRT_Material->Stretch(mTex_Material.c_ptr());
-        mRT_Depth->Stretch(mTex_Depth.c_ptr());
+        //mRT_Depth->Stretch(mTex_Depth.c_ptr());
     }
 
     void RenderLoop_Main::_updateColorTexture()

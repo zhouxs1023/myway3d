@@ -3,7 +3,7 @@
 
 	<Shaders>
 		<Shader name = "baseVS" language = "cg" profile = "vs30" source = "base.vs" >
-			<param name = "matWorld" type = "float4x4" btype = "matWorld" />
+			<param name = "matWV" type = "float4x4" btype = "matWV" />
 			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
 		</Shader>
 

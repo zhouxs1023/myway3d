@@ -70,7 +70,8 @@ public:
     Vec3 & operator *= (const Mat4 & m);
 
 public:
-    Vec3 Minimum(const Vec3 & rk) const;
+	Vec3 Minimum(const Vec3 & rk) const;
+    Vec3 Maximum(const Vec3 & rk) const;
     float Dot(const Vec3 & rk) const;
     float Length() const;
     float LengthSq() const;

@@ -55,6 +55,9 @@ namespace Myway {
         Color4 diffuse = Color4::White;
         Color4 specular = Color4::White;
 
+		
+		lightDir = lightDir.TransformN(World::Instance()->MainCamera()->GetViewMatrix());
+
         uLightDir->SetUnifom(lightDir.x, lightDir.y, lightDir.z, 0);
         uAmbient->SetUnifom(ambient.r, ambient.g, ambient.b, ambient.a);
         uDiffuse->SetUnifom(diffuse.r, diffuse.g, diffuse.b, diffuse.a);

@@ -220,6 +220,13 @@ Vec3 Vec3::Minimum(const Vec3 & rk) const
     return vOut;
 }
 
+Vec3 Vec3::Maximum(const Vec3 & rk) const
+{
+	Vec3 vOut;
+	Math::VecMaximum(vOut, *this, rk);
+	return vOut;
+}
+
 float Vec3::Dot(const Vec3 & rk) const
 {
     return Math::VecDot(*this, rk);

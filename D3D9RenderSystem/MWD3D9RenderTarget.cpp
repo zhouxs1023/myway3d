@@ -33,11 +33,13 @@ void D3D9RenderTarget::Stretch(Texture * p)
 
     t->GetSurfaceLevel(0, &surface);
 
-    hr = mD3D9Device->StretchRect(mRenderTarget, NULL, surface, NULL, D3DTEXF_POINT);
+	if (mRenderTarget != surface)
+	{
+		hr = mD3D9Device->StretchRect(mRenderTarget, NULL, surface, NULL, D3DTEXF_POINT);
+		D3DErrorExceptionFunction(StretchRect, hr);
+	}
 
     surface->Release();
-
-    D3DErrorExceptionFunction(StretchRect, hr);
 }
 
 void D3D9RenderTarget::LostDevice()
@@ -49,22 +51,44 @@ void D3D9RenderTarget::ResetDevice()
 {
     assert(!mRenderTarget);
 
-    const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+	if (mTexture != NULL)
+	{
+		int rWidth = mTexture->GetWidth(), rHeight = mTexture->GetHeight(); 
 
-    HRESULT hr = D3D_OK;
+		if (rWidth == -1 || rHeight == -1)
+		{
+			rWidth = Engine::Instance()->GetDeviceProperty()->Width;
+			rHeight = Engine::Instance()->GetDeviceProperty()->Height;
+		}
 
-    D3DMULTISAMPLE_TYPE Msaa = D3D9Mapping::GetD3DMultiSampleType(mMSAA);
-    D3DFORMAT Format = D3D9Mapping::GetD3DFormat(mFormat);
+		IDirect3DSurface9 * pD3D9RenderTarget = NULL;
 
-    int rWidth = mWidth, rHeight = mHeight;
-    if (rWidth == -1 || rHeight == -1)
-    {
-        rWidth = dp->Width;
-        rHeight = dp->Height;
-    }
+		mWidth = rWidth;
+		mHeight = rHeight;
 
-    hr = mD3D9Device->CreateRenderTarget(rWidth, rHeight, Format, Msaa, 0, FALSE, &mRenderTarget, NULL);
-    D3DErrorExceptionFunction(CreateRenderTarget, hr);
+		D3D9Texture * d3dTex = (D3D9Texture *)mTexture.c_ptr();
+
+		d3dTex->GetD3DTexture()->GetSurfaceLevel(0, &mRenderTarget);
+	}
+	else
+	{
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+
+		HRESULT hr = D3D_OK;
+
+		D3DMULTISAMPLE_TYPE Msaa = D3D9Mapping::GetD3DMultiSampleType(mMSAA);
+		D3DFORMAT Format = D3D9Mapping::GetD3DFormat(mFormat);
+
+		int rWidth = mWidth, rHeight = mHeight;
+		if (rWidth == -1 || rHeight == -1)
+		{
+			rWidth = dp->Width;
+			rHeight = dp->Height;
+		}
+
+		hr = mD3D9Device->CreateRenderTarget(rWidth, rHeight, Format, Msaa, 0, FALSE, &mRenderTarget, NULL);
+		D3DErrorExceptionFunction(CreateRenderTarget, hr);
+	}
 }
 
 

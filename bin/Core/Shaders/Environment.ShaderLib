@@ -3,6 +3,7 @@
 
 	<Shaders>
 		<Shader name = "TerrainVS" language = "cg" profile = "vs30" source = "Terrain.vs" >
+        <param name = "matView" type = "float4x4" btype = "matView" />
 			  <param name = "matWVP" type = "float4x4" btype = "matWVP" />
 		</Shader>
 
@@ -148,7 +149,23 @@
 		<Shader name = "HDR_ToneMapPS" language = "cg" profile = "ps30" source = "HDR_ToneMap.ps" >
     </Shader>
 
-	</Shaders>
+    <Shader name = "SSAOPS" language = "cg" profile = "ps30" source = "SSAO.ps" >
+    </Shader>
+
+    <Shader name = "SSAOBlendPS" language = "cg" profile = "ps30" source = "SSAOBlend.ps" >
+    </Shader>
+
+    <Shader name = "ShadowDepthVS" language = "cg" profile = "vs30" source = "ShadowDepth.vs" >
+    </Shader>
+
+    <Shader name = "ShadowDepthPS" language = "cg" profile = "ps30" source = "ShadowDepth.ps" >
+    </Shader>
+
+    <Shader name = "ShadowPS" language = "cg" profile = "ps30" source = "Shadow.ps" >
+    </Shader>
+
+
+  </Shaders>
 
 	<Techniques>
 
@@ -241,6 +258,18 @@
 
 		<Technique name = "HDR_ToneMap" vs = "QuadVS" ps = "HDR_ToneMapPS">
 		</Technique>
+
+    <Technique name = "SSAO" vs = "QuadVS" ps = "SSAOPS">
+    </Technique>
+
+    <Technique name = "SSAOBlend" vs = "QuadVS" ps = "SSAOBlendPS">
+    </Technique>
+
+    <Technique name = "ShadowDepth" vs = "ShadowDepthVS" ps = "ShadowDepthPS">
+    </Technique>
+
+    <Technique name = "Shadow" vs = "QuadVS" ps = "ShadowPS">
+    </Technique>
 
 	</Techniques>
 

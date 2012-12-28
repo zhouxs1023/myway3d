@@ -7,6 +7,7 @@
 #include "xToolBar.h"
 #include "xGizmo.h"
 #include "xUndoRedo.h"
+#include "xDebugRender.h"
 
 enum eTransformOperator
 {
@@ -97,6 +98,8 @@ protected:
 	xObjManager mObjMgr;
 
 	xUndoRedoManager mUndoRedoManager;
+
+	xDebugRender mDebugRender;
 
 	tEventListener<xApp> OnUnloadScene;
 };

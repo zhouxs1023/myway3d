@@ -33,8 +33,14 @@
 
     <Shader name = "TerrainLayerPS" language = "cg" profile = "ps30" source = "TerrainLayer.ps" >
     </Shader>
-    
-	</Shaders>
+
+    <Shader name = "QuadVS" language = "cg" profile = "vs30" source = "Quad.vs" >
+    </Shader>
+
+    <Shader name = "DebugNormalPS" language = "cg" profile = "ps30" source = "DebugNormal.ps" >
+    </Shader>
+
+  </Shaders>
 
 	<Techniques>
     
@@ -54,6 +60,9 @@
     </Technique>
 
     <Technique name = "TerrainLayer" vs = "TerrainLayerVS" ps = "TerrainLayerPS">
+    </Technique>
+
+    <Technique name = "DebugNormal" vs = "QuadVS" ps = "DebugNormalPS">
     </Technique>
     
 	</Techniques>

@@ -1,0 +1,17 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+uniform sampler2D gTexAo;
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 clr = tex2D(gTexAo, In.uv0);
+	return float4(clr.xxx, 1);
+}

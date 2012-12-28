@@ -36,6 +36,9 @@
     <ClInclude Include="xUndoRedo.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="xDebugRender.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -71,6 +74,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="xUndoRedo.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="xDebugRender.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

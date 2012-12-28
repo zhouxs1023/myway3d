@@ -53,6 +53,7 @@ namespace Myway {
         mFog = new Fog();
         mGodRay = new GodRay();
         mHDR = new HDRLighting();
+		mSSAO = new SSAO();
     }
 
     void Environment::DeInitEv()
@@ -66,7 +67,8 @@ namespace Myway {
 
         safe_delete (mFog);
         safe_delete (mGodRay);
-        safe_delete (mHDR);
+		safe_delete (mHDR);
+        safe_delete (mSSAO);
     }
 
     /*void Environment::LoadTerrain(const char * source)

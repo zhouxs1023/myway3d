@@ -51,6 +51,16 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
+		mTex_Quad = video->CreateTextureRT("HDR_Tex_Quad", width, height, FMT_A16B16G16R16F);
+		mTex_Bloom0 = video->CreateTextureRT("HDR_Tex_Bloom0", width, height, FMT_A8R8G8B8);
+		mTex_Bloom1 = video->CreateTextureRT("HDR_Tex_Bloom1", width / 2, height / 2, FMT_A8R8G8B8);
+		mTex_Bloom2 = video->CreateTextureRT("HDR_Tex_Bloom2", width / 4, height / 4, FMT_A8R8G8B8);
+		mTex_64x64 = video->CreateTextureRT("HDR_Tex_64x", 64, 64, FMT_R16F);
+		mTex_16x16 = video->CreateTextureRT("HDR_Tex_16x", 16, 16, FMT_R16F);
+		mTex_4x4 = video->CreateTextureRT("HDR_Tex_4x", 4, 4, FMT_R16F);
+		mTex_1x1_0 = video->CreateTextureRT("HDR_Tex_1x_0", 1, 1, FMT_R16F);
+		mTex_1x1_1 = video->CreateTextureRT("HDR_Tex_1x_1", 1, 1, FMT_R16F);
+
         mRT_Quad = video->CreateRenderTarget("HDR_RT_Quad", width, height, FMT_A16B16G16R16F, MSAA_NONE);
         mRT_Bloom0 = video->CreateRenderTarget("HDR_RT_Bloom0", width, height, FMT_A8R8G8B8, MSAA_NONE);
         mRT_Bloom1 = video->CreateRenderTarget("HDR_RT_Bloom1", width / 2, height / 2, FMT_A8R8G8B8, MSAA_NONE);
@@ -59,16 +69,6 @@ namespace Myway {
         mRT_16x16 = video->CreateRenderTarget("HDR_RT_16x", 16, 16, FMT_R16F, MSAA_NONE);
         mRT_4x4 = video->CreateRenderTarget("HDR_RT_4x", 4, 4, FMT_R16F, MSAA_NONE);
         mRT_1x1 = video->CreateRenderTarget("HDR_RT_1x", 1, 1, FMT_R16F, MSAA_NONE);
-
-        mTex_Quad = video->CreateTextureRT("HDR_Tex_Quad", width, height, FMT_A16B16G16R16F);
-        mTex_Bloom0 = video->CreateTextureRT("HDR_Tex_Bloom0", width, height, FMT_A8R8G8B8);
-        mTex_Bloom1 = video->CreateTextureRT("HDR_Tex_Bloom1", width / 2, height / 2, FMT_A8R8G8B8);
-        mTex_Bloom2 = video->CreateTextureRT("HDR_Tex_Bloom2", width / 4, height / 4, FMT_A8R8G8B8);
-        mTex_64x64 = video->CreateTextureRT("HDR_Tex_64x", 64, 64, FMT_R16F);
-        mTex_16x16 = video->CreateTextureRT("HDR_Tex_16x", 16, 16, FMT_R16F);
-        mTex_4x4 = video->CreateTextureRT("HDR_Tex_4x", 4, 4, FMT_R16F);
-        mTex_1x1_0 = video->CreateTextureRT("HDR_Tex_1x_0", 1, 1, FMT_R16F);
-        mTex_1x1_1 = video->CreateTextureRT("HDR_Tex_1x_1", 1, 1, FMT_R16F);
     }
 
     void HDRLighting::_initTech()

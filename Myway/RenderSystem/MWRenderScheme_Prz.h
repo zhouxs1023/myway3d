@@ -23,6 +23,11 @@ namespace Myway
         RenderLoop_Main * GetRenderLoopMain() { return mRenderLoopMain; }
         RenderQueue * GetRenderQueue() { return &mRenderQueue; }
 
+		virtual Texture * GetDepthTexture() { return mRenderLoopMain->mTex_Depth.c_ptr(); };
+		virtual Texture * GetColorTexture() { return mRenderLoopMain->mTex_Color.c_ptr(); };
+		virtual Texture * GetNormalTexture() { return mRenderLoopMain->mTex_Normal.c_ptr(); };
+		virtual Texture * GetMaterialTexture() { return mRenderLoopMain->mTex_Material.c_ptr(); };
+
     protected:
         VisibleCullResult mMainResult;
 

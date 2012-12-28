@@ -333,8 +333,6 @@ RenderTargetPtr D3D9VideoBufferManager::CreateRenderTarget(const TString128 & sN
     DWORD MultiSampleQuality = 0;
     IDirect3DTexture9 * pD3D9Texture = NULL;
     IDirect3DSurface9 * pD3D9RenderTarget = NULL;
-
-   
        
     hr = mD3D9Device->CreateRenderTarget(rWidth, rHeight, D3DFormat, MultiSampleType,
                                          MultiSampleQuality, FALSE, &pD3D9RenderTarget, NULL);
@@ -354,6 +352,36 @@ RenderTargetPtr D3D9VideoBufferManager::CreateRenderTarget(const TString128 & sN
     mRenderTargets.Insert(pTexture->GetName(), pTexture);;
 
     return RenderTargetPtr(pTexture);
+}
+
+RenderTargetPtr D3D9VideoBufferManager::CreateRenderTarget(TexturePtr rtTex)
+{
+	int rWidth = rtTex->GetWidth(), rHeight = rtTex->GetHeight(); 
+
+	if (rWidth == -1 || rHeight == -1)
+	{
+		rWidth = Engine::Instance()->GetDeviceProperty()->Width;
+		rHeight = Engine::Instance()->GetDeviceProperty()->Height;
+	}
+
+	IDirect3DSurface9 * pD3D9RenderTarget = NULL;
+
+	D3D9RenderTarget * pTexture = new D3D9RenderTarget(mD3D9Device);
+
+	pTexture->mName = rtTex->GetName();
+	pTexture->mWidth = rWidth;
+	pTexture->mHeight = rHeight;
+	pTexture->mFormat = rtTex->GetFormat();
+	pTexture->mMSAA = MSAA_NONE;
+	pTexture->mTexture = rtTex;
+
+	D3D9Texture * d3dTex = (D3D9Texture *)rtTex.c_ptr();
+
+	d3dTex->GetD3DTexture()->GetSurfaceLevel(0, &pTexture->mRenderTarget);
+
+	mRenderTargets.Insert(pTexture->GetName(), pTexture);
+
+	return RenderTargetPtr(pTexture);
 }
 
 DepthStencilPtr D3D9VideoBufferManager::CreateDepthStencil(const TString128 & sName,
