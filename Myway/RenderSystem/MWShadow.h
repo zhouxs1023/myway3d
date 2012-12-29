@@ -16,7 +16,7 @@ namespace Myway {
 		Shadow();
 		~Shadow();
 
-		void Do();
+		void Do(Texture * depthTex);
 
 		void SetDist(int index, float dist) { d_assert (index + 1 < K_NumShadowLayers); mDist[index + 1] = dist; }
 		float GetDist(int index) const { d_assert (index + 1 < K_NumShadowLayers); return mDist[index + 1]; }
@@ -34,7 +34,7 @@ namespace Myway {
 		void _updateCamera();
 		void _impVisibleCull();
 		void _renderDepth();
-		void _genShadowMap();
+		void _genShadowMap(Texture * depthTex);
 
 
 	protected:
@@ -42,6 +42,7 @@ namespace Myway {
 		float mOffset;
 
 		Camera * mLightCamera;
+		SceneNode * mLightCameraNode;
 		Mat4 mInverseWorldCameraVP;
 		Mat4 mCascadedViewProjMatrix[K_NumShadowLayers];
 
