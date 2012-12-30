@@ -266,6 +266,7 @@
     </Technique>
 
     <Technique name = "ShadowDepth" vs = "ShadowDepthVS" ps = "ShadowDepthPS">
+      <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
     </Technique>
 
     <Technique name = "Shadow" vs = "QuadVS" ps = "ShadowPS">

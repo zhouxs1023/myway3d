@@ -46,6 +46,20 @@ void D3D9RenderSystem::Init()
     mWindow = new D3D9RenderWindow(this);
 }
 
+void D3D9RenderSystem::_BeginEvent(const char * str)
+{
+	wchar_t eventName[1024];
+
+	CharSet::AnsiToUnicode(eventName, 1024, str);
+
+	D3DPERF_BeginEvent(D3DCOLOR_RGBA(0, 0, 0, 0xFF), eventName);
+}
+
+void D3D9RenderSystem::_EndEvent()
+{
+	D3DPERF_EndEvent();
+}
+
 void D3D9RenderSystem::OnResize()
 {
     mWindow->OnResize();

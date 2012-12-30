@@ -174,6 +174,52 @@ void Quat::FromPitchYawRoll(float pitch, float yaw, float roll)
     Math::QuatFromPitchYawRoll(*this, pitch, yaw, roll);
 }
 
+Quat Quat::S_FromAxis(const Vec3 & vAxis, float rads)
+{
+	Quat q;
+
+	q.FromAxis(vAxis, rads);
+
+	return q;
+}
+
+Quat Quat::S_FromAxis(const Vec3 & xAxis, const Vec3 & yAxis, const Vec3 & zAxis)
+{
+	Quat q;
+
+	q.FromAxis(xAxis, yAxis, zAxis);
+
+	return q;
+}
+
+Quat Quat::S_FromDir(const Vec3 & dir1, const Vec3 & dir2, const Vec3 & fallbackAxis, bool normalize)
+{
+	Quat q;
+
+	q.FromDir(dir1, dir2, fallbackAxis, normalize);
+
+	return q;
+}
+
+Quat Quat::S_FromMatrix(const Mat4 & rot)
+{
+	Quat q;
+
+	q.FromMatrix(rot);
+
+	return q;
+}
+
+Quat Quat::S_FromPitchYawRoll(float pitch, float yaw, float roll)
+{
+	Quat q;
+
+	q.FromPitchYawRoll(pitch, yaw, roll);
+
+	return q;
+}
+
+
 Quat Quat::Slerp(const Quat & rk, float t)
 {
     Quat quat;

@@ -63,6 +63,12 @@ public:
     void FromMatrix(const Mat4 & rot);
     void FromPitchYawRoll(float pitch, float yaw, float roll);
 
+	static Quat S_FromAxis(const Vec3 & vAxis, float rads);
+	static Quat S_FromAxis(const Vec3 & xAxis, const Vec3 & yAxis, const Vec3 & zAxis);
+	static Quat S_FromDir(const Vec3 & dir1, const Vec3 & dir2, const Vec3 & fallbackAxis = Vec3::Zero, bool normalize = true);
+	static Quat S_FromMatrix(const Mat4 & rot);
+	static Quat S_FromPitchYawRoll(float pitch, float yaw, float roll);
+
     Quat Slerp(const Quat & rk, float t);
 
     void ToAxis(Vec3 & axis, float & rads) const;

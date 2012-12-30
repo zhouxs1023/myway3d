@@ -15,7 +15,7 @@ namespace Myway {
 		mLightCameraNode->Attach(mLightCamera);
 
 		mDist[0] = 0;
-		mDist[1] = 50;
+		mDist[1] = 100;
 		mDist[2] = 150;
 		mDist[3] = 500;
 		mDist[4] = 1000;
@@ -55,10 +55,10 @@ namespace Myway {
 
 		_updateCamera();
 
-		for (int i = 0; i < 4; ++i)
+		for (int i = 0; i < 4 && i < 1; ++i)
 		{
-			//Mat4 matCrop = _calcuCropMatrix(i);
-			Mat4 matCrop = Mat4::Identity;
+			Mat4 matCrop = _calcuCropMatrix(i);
+			matCrop = Mat4::Identity;
 			mCascadedViewProjMatrix[i] = mLightCamera->GetViewProjMatrix() * matCrop;
 		}
 
@@ -99,28 +99,12 @@ namespace Myway {
 
 	Mat4 Shadow::_calcuCropMatrix(int layer)
 	{
-		float s0, s1;
-		s0 = mDist[layer];
-		s1 = mDist[layer + 1];
-
-		Vec3 vs0(0, 0, s0), vs1(0, 0, s1);
-		Math::VecTransform(vs0, vs0, mLightCamera->GetProjMatrix());
-		Math::VecTransform(vs1, vs1, mLightCamera->GetProjMatrix());
-		s0 = vs0.z, s1 = vs1.z;
-
 		Vec3 frustum[8];
 
-		frustum[0] = Vec3(-1, 1, s0);
-		frustum[1] = Vec3(-1, 1, s1);
-		frustum[2] = Vec3(1, 1, s0);
-		frustum[3] = Vec3(1, 1, s1);
-		frustum[4] = Vec3(-1, -1, s0);
-		frustum[5] = Vec3(-1, -1, s1);
-		frustum[6] = Vec3(1, -1, s0);
-		frustum[7] = Vec3(1, -1, s1);
+		float nearClip = mDist[layer];
+		float farClip = mDist[layer + 1];
 
-		Math::VecTransform(frustum, frustum, mInverseWorldCameraVP, 8);
-
+		World::Instance()->MainCamera()->GetWorldCorner(frustum, nearClip, farClip);
 		Aabb cropBB = _calcuAabb(frustum);
 
 		cropBB.minimum.z = 0.0f; 
@@ -129,15 +113,13 @@ namespace Myway {
 		float offsetX, offsetY, offsetZ;
 		scaleX = 2.0f / (cropBB.maximum.x - cropBB.minimum.x);
 		scaleY = 2.0f / (cropBB.maximum.y - cropBB.minimum.y);
-		offsetX = -0.5f * (cropBB.maximum.x + cropBB.minimum.x) * scaleX;
-		offsetY = -0.5f * (cropBB.maximum.y + cropBB.minimum.y) * scaleY;
-		scaleZ = 1.0f / (cropBB.maximum.z - cropBB.minimum.z);
-		offsetZ = -cropBB.minimum.z * scaleZ; 
+		offsetX = -cropBB.minimum.x * scaleX - 1;
+		offsetY = -cropBB.minimum.y * scaleY - 1;
 
 		return Mat4(scaleX,		0,			0,	0,
 					0,			scaleY,     0,	0,
-					0,			0,			0,	0,
-					offsetX,	offsetY,	1,	1);
+					0,			0,			1,	0,
+					offsetX,	offsetY,	0,	1);
 	}
 
 	void Shadow::_updateCamera()
@@ -147,7 +129,7 @@ namespace Myway {
 		mInverseWorldCameraVP = World::Instance()->MainCamera()->GetViewProjMatrix().Inverse();
 
 		float nearClip = worldCam->GetNearClip();
-		float farClip = mDist[3];
+		float farClip = mDist[1];
 
 		mDist[0] = nearClip;
 
@@ -157,14 +139,19 @@ namespace Myway {
 
 		if (Math::Abs(zAixs.Dot(yAixs)) > 0.99f)
 		{
-			yAixs = zAixs.Cross(xAixs);
-			xAixs = yAixs.Cross(zAixs);
+			yAixs = zAixs.CrossN(xAixs);
+			xAixs = yAixs.CrossN(zAixs);
 		}
 		else
 		{
-			xAixs = yAixs.Cross(zAixs);
-			yAixs = zAixs.Cross(zAixs);
+			xAixs = yAixs.CrossN(zAixs);
+			yAixs = zAixs.CrossN(xAixs);
 		}
+
+		if (xAixs.Dot(worldCam->GetDirection()) < 0)
+			xAixs = -xAixs;
+
+		yAixs = zAixs.CrossN(xAixs);
 
 		Mat4 matView;
 		Quat qOrient = Quat::S_FromAxis(xAixs, yAixs, zAixs);
@@ -184,8 +171,8 @@ namespace Myway {
 
 		for (int i = 0; i < 8; ++i)
 		{
-			aabb.minimum = Math::Minimum(aabb.minimum, corner[i]);
-			aabb.maximum = Math::Maximum(aabb.maximum, corner[i]);
+			aabb.minimum = aabb.minimum.Minimum(corner[i]);
+			aabb.maximum = aabb.maximum.Maximum(corner[i]);
 		}
 
 		Vec3 center = aabb.GetCenter();
@@ -286,7 +273,7 @@ namespace Myway {
 			uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
 			uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
 
-			uShadowInfo->SetUnifom(mDist[i], mDist[i + 1], 0, 0);
+			//uShadowInfo->SetUnifom(mDist[i], mDist[i + 1], 0, 0);
 			uMatShadow->SetMatrix(matInverseView * mCascadedViewProjMatrix[i]);
 			
 			SamplerState state;
@@ -294,6 +281,9 @@ namespace Myway {
 			state.Filter = TEXF_POINT;
 
 			render->SetTexture(0, state, depthTex);
+
+			state.Address = TEXA_BORDER;
+			state.BorderColor = Color::White;
 			render->SetTexture(1, state, mTex_Depth[i].c_ptr());
 
 			RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Shadow);

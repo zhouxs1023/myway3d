@@ -142,11 +142,11 @@ bool ShadowRenderPSSM::UpdateCamera(Camera * pShadowCamera, int number, int dire
 #if 0
         Vec3 _min, _max;
 
-        const Mat4 & _v1 = mat2;
-        const Mat4 & _v2 = m_caster_camera->GetViewMatrix();
-        D3DXMATRIX __d3dv;
-        Vec3 __at = eye + dir;
-        D3DXMatrixLookAtLH(&__d3dv, (const D3DXVECTOR3 *)&eye, (const D3DXVECTOR3 *)&__at, (const D3DXVECTOR3 *)&up);
+		const Mat4 & _v1 = mat2;
+		const Mat4 & _v2 = m_caster_camera->GetViewMatrix();
+		D3DXMATRIX __d3dv;
+		Vec3 __at = eye + dir;
+		D3DXMatrixLookAtLH(&__d3dv, (const D3DXVECTOR3 *)&eye, (const D3DXVECTOR3 *)&__at, (const D3DXVECTOR3 *)&up);
 
         Vec3 p3[8];
         const Mat4 & _mvp = m_caster_camera->GetViewProjMatrix();

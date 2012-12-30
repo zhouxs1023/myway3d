@@ -50,11 +50,10 @@ namespace Myway {
         ShaderParam * uDiffuse = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gDiffuse");
         ShaderParam * uSpecular = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gSpecular");
 
-        Vec3 lightDir = -Environment::Instance()->GetEvParam()->SunDir;
+        Vec3 lightDir = -Environment::Instance()->GetEvParam()->LightDir;
         Color4 ambient = Color4::Gray;
         Color4 diffuse = Color4::White;
         Color4 specular = Color4::White;
-
 		
 		lightDir = lightDir.TransformN(World::Instance()->MainCamera()->GetViewMatrix());
 
@@ -67,7 +66,14 @@ namespace Myway {
         state.Filter = TEXF_POINT;
 
         RenderSystem::Instance()->SetTexture(0, state, colorTex);
-        RenderSystem::Instance()->SetTexture(1, state, normalTex);
+		RenderSystem::Instance()->SetTexture(1, state, normalTex);
+
+		TexturePtr shadowTex = RenderHelper::Instance()->GetWhiteTexture();
+		if (Environment::Instance()->GetShadow())
+			shadowTex = Environment::Instance()->GetShadow()->GetShadowMap();
+
+		state.Filter = TEXF_DEFAULT;
+        RenderSystem::Instance()->SetTexture(2, state, shadowTex.c_ptr());
 
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Lighting);
     }

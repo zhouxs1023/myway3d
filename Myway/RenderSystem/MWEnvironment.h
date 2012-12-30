@@ -13,6 +13,7 @@
 #include "MWGodRay.h"
 #include "MWHDR.h"
 #include "MWSSAO.h"
+#include "MWShadow.h"
 
 #include "MWEvKeyFrame.h"
 
@@ -44,6 +45,7 @@ namespace Myway {
         Sun * GetSun() { return mSun; }
         Moon * GetMoon() { return mMoon; }
         Cloud * GetCloud() { return mCloud; }
+		Shadow * GetShadow() { return mShadow; }
 		WaterManager * GetWaterManager() { return mWaterManager; }
 
         Fog * GetFog() { return mFog; }
@@ -72,6 +74,7 @@ namespace Myway {
         float _getSkyU(float time);
         float _getSunRoll(float time);
         float _getMoonRoll(float time);
+		float _getLightRoll(float time);
 
         void _update(void * param0, void * param1);
         void _updateTime();
@@ -88,6 +91,7 @@ namespace Myway {
         Sun * mSun;
         Moon * mMoon;
         Cloud * mCloud;
+		Shadow * mShadow;
 
         Terrain * mTerrain;
 

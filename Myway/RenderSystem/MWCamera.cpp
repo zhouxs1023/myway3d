@@ -157,6 +157,32 @@ const Vec3 * Camera::GetWorldCorner()
     return mWorldCorner;
 }
 
+void Camera::GetWorldCorner(Vec3 * corner, float nearClip, float farClip)
+{
+	Vec3 nearPos = Vec3(0, 0, nearClip);
+	Vec3 farPos = Vec3(0, 0, farClip);
+
+	nearPos *= GetProjMatrix();
+	farPos *= GetProjMatrix();
+
+	Vec3 t_corner[8] = { Vec3(-1, 1, 0), Vec3(1, 1, 0), Vec3(-1, -1, 0), Vec3(1, -1, 0), 
+						 Vec3(-1, 1, 1), Vec3(1, 1, 1), Vec3(-1, -1, 1), Vec3(1, -1, 1) };
+
+	for (int i = 0; i < 4; ++i)
+	{
+		t_corner[i].z = nearPos.z;
+		t_corner[i + 4].z = farPos.z;
+	}
+
+	Mat4 matInverseVP = GetViewProjMatrix().Inverse();
+
+	for (int i = 0; i < 8; ++i)
+	{
+		corner[i] = t_corner[i] * matInverseVP;
+	}
+}
+
+
 void Camera::Update()
 {
     d_assert (mNode);
@@ -186,8 +212,8 @@ void Camera::Update()
         
         Vec3 corner[8] = { Vec3(-1, 1, 0), Vec3(1, 1, 0), Vec3(-1, -1, 0), Vec3(1, -1, 0), 
                            Vec3(-1, 1, 1), Vec3(1, 1, 1), Vec3(-1, -1, 1), Vec3(1, -1, 1) };
-        Mat4 matInvProj = mMatProj.Inverse();
-        Mat4 matInvView = mMatView.Inverse();
+		Mat4 matInvProj = mMatProj.Inverse();
+		Mat4 matInvView = mMatView.Inverse();
 
         for (int i = 0; i < 8; ++i)
             mCorner[i] = corner[i] * matInvProj;

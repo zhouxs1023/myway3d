@@ -72,14 +72,16 @@ namespace Myway {
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
 
+		// ---> shadow
+		if (Environment::Instance()->GetShadow())
+			Environment::Instance()->GetShadow()->Do(mTex_Depth.c_ptr());
+
+		// --->sun lighting
+		if (Environment::Instance()->GetSun())
+			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Normal.c_ptr());
+
 		if (Environment::Instance()->GetSSAO())
 			Environment::Instance()->GetSSAO()->Render(mTex_Depth.c_ptr(), mTex_Normal.c_ptr());
-
-		_updateTexture();
-
-        // --->sun lighting
-        if (Environment::Instance()->GetSun())
-            Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Normal.c_ptr());
 
         _updateColorTexture();
 

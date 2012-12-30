@@ -54,6 +54,7 @@ namespace Myway {
         mGodRay = new GodRay();
         mHDR = new HDRLighting();
 		mSSAO = new SSAO();
+		mShadow = new Shadow();
     }
 
     void Environment::DeInitEv()
@@ -69,6 +70,7 @@ namespace Myway {
         safe_delete (mGodRay);
 		safe_delete (mHDR);
         safe_delete (mSSAO);
+		safe_delete (mShadow);
     }
 
     /*void Environment::LoadTerrain(const char * source)
@@ -160,6 +162,21 @@ namespace Myway {
         return degree;
     }
 
+	float Environment::_getLightRoll(float time)
+	{
+		float roll = 0;
+
+		if (time >= 6 && time <= 18)
+			roll = _getSunRoll(time);
+		else
+			roll = _getMoonRoll(time);
+
+		roll = Math::Maximum(roll, 30.0f);
+		roll = Math::Minimum(roll, 150.f);
+
+		return roll;
+	}
+
     void Environment::_update(void * param0, void * param1)
     {
         _updateTime();
@@ -220,6 +237,7 @@ namespace Myway {
 
         float sunRoll = _getSunRoll(mCurTime);
         float moonRoll = _getMoonRoll(mCurTime);
+		float lightRoll = _getLightRoll(mCurTime);
         float lightYaw = mGlobalParam.SunYaw;
         float lightPicth = mGlobalParam.SunPicth;
 
@@ -227,6 +245,7 @@ namespace Myway {
 
         p.SunDir = _makeSunDir(lightYaw, lightPicth, sunRoll);
         p.MoonDir = _makeMoonDir(lightYaw, lightPicth, moonRoll);
+		p.LightDir = _makeSunDir(lightYaw, lightPicth, lightRoll);
 
         p.SunColor = Math::Lerp(kf0.SunColor, kf1.SunColor, d);
         p.SunLum = Math::Lerp(kf0.SunLum, kf1.SunLum, d);

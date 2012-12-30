@@ -47,6 +47,7 @@ public:
     const Frustum & GetFrustum();
     const Vec3 *    GetCorner();
     const Vec3 *    GetWorldCorner();
+	void			GetWorldCorner(Vec3 * corner, float nearClip, float farClip);
 
     Visibility      GetVisibility(const Aabb & box);
     Visibility      GetVisibility(const Sphere & sph);

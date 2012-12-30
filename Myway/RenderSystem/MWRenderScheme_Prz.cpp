@@ -1,5 +1,6 @@
 #include "MWRenderScheme_Prz.h"
 #include "MWRenderEvent.h"
+#include "MWEnvironment.h"
 
 namespace Myway
 {

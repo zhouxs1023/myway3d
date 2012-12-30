@@ -303,7 +303,9 @@
     <None Include="..\bin\Core\Shaders\ColorSharp.ps" />
     <None Include="..\bin\Core\Shaders\DownSampler2x.ps" />
     <None Include="..\bin\Core\Shaders\DownSampler4x.ps" />
-    <None Include="..\bin\Core\Shaders\Environment.ShaderLib" />
+    <None Include="..\bin\Core\Shaders\Environment.ShaderLib">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="..\bin\Core\Shaders\Fog.ps" />
     <None Include="..\bin\Core\Shaders\Frush.ps" />
     <None Include="..\bin\Core\Shaders\GodRay.ps" />

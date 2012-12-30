@@ -13,6 +13,9 @@
 namespace Myway
 {
 
+#define  RS_BeginEvent(name) Myway::RenderSystem::Instance()->_BeginEvent(name)
+#define  RS_EndEvent() Myway::RenderSystem::Instance()->_EndEvent()
+
 /* Interface: RenderSystem
 --------------------------------------------------------------
     @Remark:
@@ -29,6 +32,9 @@ public:
 
     virtual void            Init() = 0;
     virtual void            OnResize() = 0;
+
+	virtual void			_BeginEvent(const char * str) = 0;	// for pix
+	virtual void			_EndEvent() = 0; 
 
     virtual bool            CheckTextureFormat(FORMAT format, USAGE usage, bool autoGenMimmap = false) = 0;
     virtual bool            CheckRenderTargetFormat(FORMAT format) = 0;

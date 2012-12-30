@@ -356,7 +356,7 @@ void Math::VecRefract(Vec4 & v, const Vec4 & i, const Vec4 & n, float eta)
 
 void Math::VecCrossN(Vec3 & vOut, const Vec3 & v1, const Vec3 & v2)
 {
-#ifdef WIN32
+#if 0
     /*
     *     x = y1 * z2 - z1 * y2
     *     y = z1 * x2 - x1 * z2

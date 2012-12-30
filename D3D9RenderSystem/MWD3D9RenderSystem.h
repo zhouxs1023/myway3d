@@ -19,6 +19,9 @@ public:
 
     virtual void                        OnResize();
 
+	virtual void						_BeginEvent(const char * str);
+	virtual void						_EndEvent();
+
     virtual bool                        CheckMSAAFormat(FORMAT format, MULTI_SAMPLE msaa);
     virtual bool                        CheckTextureFormat(FORMAT format, USAGE usage, bool autoGenMimmap);
     virtual bool                        CheckRenderTargetFormat(FORMAT Format);

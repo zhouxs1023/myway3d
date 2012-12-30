@@ -2,14 +2,13 @@
 //
 //
 //
-
 struct _IN
 {
     float2 uv  : TEXCOORD0;
 };
 
 uniform sampler2D depthTex : register(s0);
-uniform sampler2D shadowTex : register(s0);
+uniform sampler2D shadowTex : register(s1);
 uniform float4 gShadowInfo;
 uniform float4x4 matShadow;
 
@@ -27,10 +26,13 @@ float4 getPosition(float d, float2 uv)
 float4 main(_IN In) : COLOR
 {
 	float depth = tex2D(depthTex, In.uv).r;
+
+	clip (0.9999 - depth);
+
 	float4 pos = getPosition(depth, In.uv);
 
-	clip(pos.z - gShadowInfo.x);
-	clip(gShadowInfo.y - pos.z);
+	//clip(pos.z - gShadowInfo.x);
+	//clip(gShadowInfo.y - pos.z);
 
 	pos = mul(pos, matShadow);
 
@@ -39,6 +41,7 @@ float4 main(_IN In) : COLOR
 	float InvTexSize = 1 / 2048.f;
 
 	float shadow = 0;
+	float adjDepth = pos.z - 0.003f;
 
 	for (int j = -2; j <= 2; ++j)
 	{
@@ -46,9 +49,9 @@ float4 main(_IN In) : COLOR
 		{
 			float2 uv = float2(i, j) * InvTexSize + shadowUV;
 
-			float d = tex2D(shadowTex, uv).r;
+			float d = tex2Dlod(shadowTex, float4(uv, 0, 0)).r;
 
-			shadow += pos.z > d ? 0 : 1;
+			shadow += adjDepth > d ? 0 : 1;
 		}
 	}
 

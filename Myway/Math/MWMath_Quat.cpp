@@ -279,49 +279,45 @@ void Math::QuatFromMatrix(Quat & q, const Mat4 & m)
     // check the diagonal
     if(m._11 + m._22 + m._33 > 0.0)
     {
-        t = 1.0f + m._11 + m._22 + m._33;
-        s = 0.5f / Math::Sqrt(t);
+		s = 0.5f / Math::Sqrt(1.0f + m._11 + m._22 + m._33);
 
-        q.w = t * s;
-        q.x = (m._23 - m._32) * s;
-        q.y = (m._31 - m._13) * s;
-        q.z = (m._12 - m._21) * s;
+		q.w = 0.25f / s;
+		q.x = (m._23 - m._32) * s;
+		q.y = (m._31 - m._13) * s;
+		q.z = (m._12 - m._21) * s;
     }
 
     // column 1
     else if(m._11 > m._22 && m._11 > m._33)
     {
-        t = 1.0f + m._11 - m._22 - m._33;
-        s = 0.5f / Math::Sqrt(t);
+        s = 2.0f * Math::Sqrt(1.0f + m._11 - m._22 - m._33);
 
-        q.x = t * s;
-        q.y = (m._12 + m._21) * s;
-        q.z = (m._13 + m._31) * s;
-        q.w = (m._23 - m._32) * s;
+        q.x = 0.25f * s;
+        q.y = (m._12 + m._21) / s;
+        q.z = (m._13 + m._31) / s;
+        q.w = (m._23 - m._32) / s;
     }
 
     // column 2
     else if( m._22 > m._33)
     {
-        t = 1.0f + m._22 - m._11 - m._33;
-        s = 0.5f / Math::Sqrt(t);
+        s = 2.0f * Math::Sqrt(1.0f + m._22 - m._11 - m._33);
 
-        q.y = t * s;
-        q.x = (m._21 + m._12) * s;
-        q.z = (m._32 + m._23) * s;
-        q.w = (m._31 - m._13) * s;
+        q.y = 0.25f * s;
+        q.x = (m._21 + m._12) / s;
+        q.z = (m._32 + m._23) / s;
+        q.w = (m._31 - m._13) / s;
     }
 
     // column 3
     else
     {
-        t = 1.0f + m._33 - m._11 - m._22;
-        s = 0.5f / Math::Sqrt(t);
+        s = 2.0f * Math::Sqrt(1.0f + m._33 - m._11 - m._22);
 
-        q.z = t * s;
-        q.x = (m._31 + m._13) * s;
-        q.y = (m._32 + m._23) * s;
-        q.w = (m._21 - m._12) * s;
+        q.z = 0.25f * s;
+        q.x = (m._31 + m._13) / s;
+        q.y = (m._32 + m._23) / s;
+        q.w = (m._12 - m._21) / s;
     }
 }
 
