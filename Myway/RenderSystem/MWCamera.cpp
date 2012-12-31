@@ -5,7 +5,7 @@ using namespace Myway;
 
 Camera::Camera(const TString128 & name)
 : Mover(name)
-, mFov(Math::PI_1_4)
+, mFov(Math::PI_1_3)
 , mNear(0.1f)
 , mFar(10000.0f)
 , mAspect(1.3333333f)

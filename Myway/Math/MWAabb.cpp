@@ -205,6 +205,18 @@ inline Aabb Aabb::GetRightBottomBack() const
     return Aabb(minimum.x + fHalfWidth, minimum.y, minimum.z + fHalfDepth, maximum.x, maximum.y - fHalfHeight, maximum.z);
 }
 
+void Aabb::GetPoints(Vec3 * points) const
+{
+	points[0] = GetLeftBottomFrontPoint();
+	points[1] = GetLeftTopFrontPoint();
+	points[2] = GetRightBottomFrontPoint();
+	points[3] = GetRightTopFrontPoint();
+	points[4] = GetLeftBottomBackPoint();
+	points[5] = GetLeftTopBackPoint();
+	points[6] = GetRightBottomBackPoint();
+	points[7] = GetRightTopBackPoint();
+}
+
 inline Aabb & Aabb::operator =(const Aabb & aabb)
 {
     minimum = aabb.minimum;

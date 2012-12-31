@@ -15,6 +15,7 @@ public:
                             Renderer();
     virtual                 ~Renderer();
 
+	virtual const Aabb &	GetWorldAabb();
     virtual void            GetWorldPosition(Vec3 * pos);
     virtual void            GetWorldTransform(Mat4 * form);
     virtual int				GetBlendMatrix(Mat4 * forms);

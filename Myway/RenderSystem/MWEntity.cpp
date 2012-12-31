@@ -19,6 +19,11 @@ SubEntity::~SubEntity()
 {
 }
 
+const Aabb & SubEntity::GetWorldAabb()
+{
+	return mParent->GetWorldAabb();
+}
+
 void SubEntity::GetWorldPosition(Vec3 * pos)
 {
     *pos = mParent->GetAttachNode()->GetWorldPosition();

@@ -14,13 +14,17 @@ namespace Myway {
 
 		mLightCameraNode->Attach(mLightCamera);
 
-		mDist[0] = 0;
-		mDist[1] = 100;
-		mDist[2] = 150;
-		mDist[3] = 500;
-		mDist[4] = 1000;
+		mDist[0] = 100;
+		mDist[1] = 400;
+		mDist[2] = 1200;
+		mDist[3] = 2000;
 
-		mOffset = 1000;
+		mBias[0] = 0.0005f;
+		mBias[1] = 0.0015f;
+		mBias[2] = 0.003f;
+		mBias[3] = 0.008f;
+
+		mOffset = 5000;
 
 		_initRT();
 
@@ -34,11 +38,8 @@ namespace Myway {
 
 	void Shadow::_initRT()
 	{
-		for (int i = 0; i < K_NumShadowLayers; ++i)
-		{
-			mTex_Depth[i] = VideoBufferManager::Instance()->CreateTextureRT(TString128("Core_Shadow_Tex") + i, 2048, 2048, FMT_R16F);
-			mRT_Depth[i] = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth[i]);
-		}
+		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_DepthTex", 2048, 2048, FMT_R32F);
+		mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);
 
 		mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_Shadow_DepthStencil", 2048, 2048, FMT_D24S8, MSAA_NONE);
 
@@ -55,24 +56,23 @@ namespace Myway {
 
 		_updateCamera();
 
-		for (int i = 0; i < 4 && i < 1; ++i)
+		/*for (int i = 0; i < 4; ++i)
 		{
-			Mat4 matCrop = _calcuCropMatrix(i);
-			matCrop = Mat4::Identity;
-			mCascadedViewProjMatrix[i] = mLightCamera->GetViewProjMatrix() * matCrop;
-		}
+		Mat4 matCrop = _calcuCropMatrix(i);
+		mCascadedViewProjMatrix[i] = mLightCamera->GetViewProjMatrix() * matCrop;
+		}*/
 
 		_impVisibleCull();
 
-		RS_BeginEvent("ShadowMap_RenderDepth");
+		RS_BeginEvent("ShadowMap");
 
-		_renderDepth();
 
-		RS_EndEvent();
-
-		RS_BeginEvent("ShadowMap_GenShadow");
-
-		_genShadowMap(depthTex);
+		for (int i = 0; i < K_NumShadowLayers; ++i)
+		{
+			_calcuCascadedMatrix(i);
+			_renderDepth(i);
+			_genShadowMap(i, depthTex);
+		}
 
 		RS_EndEvent();
 
@@ -109,8 +109,8 @@ namespace Myway {
 
 		cropBB.minimum.z = 0.0f; 
 
-		float scaleX, scaleY, scaleZ;
-		float offsetX, offsetY, offsetZ;
+		float scaleX, scaleY;
+		float offsetX, offsetY;
 		scaleX = 2.0f / (cropBB.maximum.x - cropBB.minimum.x);
 		scaleY = 2.0f / (cropBB.maximum.y - cropBB.minimum.y);
 		offsetX = -cropBB.minimum.x * scaleX - 1;
@@ -122,6 +122,78 @@ namespace Myway {
 					offsetX,	offsetY,	0,	1);
 	}
 
+	void Shadow::_calcuCascadedMatrix(int layer)
+	{
+		Camera * worldCam = World::Instance()->MainCamera();
+
+		mInverseWorldCameraVP = World::Instance()->MainCamera()->GetViewProjMatrix().Inverse();
+
+		float nearClip, farClip = mDist[layer];
+
+		if (layer == 0)
+			nearClip = worldCam->GetNearClip();
+		else
+			nearClip = mDist[layer - 1];
+
+		Vec3 xAixs = worldCam->GetDirection();
+		Vec3 yAixs = worldCam->GetUp();
+		Vec3 zAixs = Environment::Instance()->GetEvParam()->LightDir;
+
+		if (Math::Abs(zAixs.Dot(yAixs)) > 0.99f)
+		{
+			yAixs = zAixs.CrossN(xAixs);
+			xAixs = yAixs.CrossN(zAixs);
+		}
+		else
+		{
+			xAixs = yAixs.CrossN(zAixs);
+			yAixs = zAixs.CrossN(xAixs);
+		}
+
+		if (xAixs.Dot(worldCam->GetDirection()) < 0)
+			xAixs = -xAixs;
+
+		yAixs = zAixs.CrossN(xAixs);
+
+		Mat4 matView, matProj;
+		Quat qOrient = Quat::S_FromAxis(xAixs, yAixs, zAixs);
+
+		matView.MakeViewLH(worldCam->GetPosition(), qOrient);
+
+		Vec3 corner[8], t_corner[8];
+
+		worldCam->GetWorldCorner(t_corner, nearClip, farClip);
+
+		float dist = t_corner[4].Distance(t_corner[5]);
+
+		for (int i = 0; i < 8; ++i)
+		{
+			corner[i] = t_corner[i] * matView;
+		}
+
+		Aabb aabb = Aabb::Invalid;
+
+		for (int i = 0; i < 8; ++i)
+		{
+			aabb.minimum = aabb.minimum.Minimum(corner[i]);
+			aabb.maximum = aabb.maximum.Maximum(corner[i]);
+		}
+
+		Vec3 center = aabb.GetCenter();
+		float width = aabb.GetWidth();
+		float height = aabb.GetHeight();
+		float depth = aabb.GetDepth();
+
+		center *= matView.Inverse();
+
+		Vec3 lightPos = center - zAixs * mOffset;
+
+		matView.MakeViewLH(lightPos, qOrient);
+		matProj.MakeOrthoLH(width, height, nearClip, mOffset + depth / 2);
+
+		mCascadedViewProjMatrix[layer] = matView * matProj;
+	}
+
 	void Shadow::_updateCamera()
 	{
 		Camera * worldCam = World::Instance()->MainCamera();
@@ -129,9 +201,7 @@ namespace Myway {
 		mInverseWorldCameraVP = World::Instance()->MainCamera()->GetViewProjMatrix().Inverse();
 
 		float nearClip = worldCam->GetNearClip();
-		float farClip = mDist[1];
-
-		mDist[0] = nearClip;
+		float farClip = mDist[3];
 
 		Vec3 xAixs = worldCam->GetDirection();
 		Vec3 yAixs = worldCam->GetUp();
@@ -158,13 +228,15 @@ namespace Myway {
 
 		matView.MakeViewLH(worldCam->GetPosition(), qOrient);
 
-		Vec3 corner[8];
+		Vec3 corner[8], t_corner[8];
 
-		worldCam->GetWorldCorner(corner, nearClip, farClip);
+		worldCam->GetWorldCorner(t_corner, nearClip, farClip);
+
+		float dist = t_corner[4].Distance(t_corner[5]);
 
 		for (int i = 0; i < 8; ++i)
 		{
-			corner[i] *= matView;
+			corner[i] = t_corner[i] * matView;
 		}
 
 		Aabb aabb = Aabb::Invalid;
@@ -206,43 +278,62 @@ namespace Myway {
 		mRenderQueue.PushRenderer(mCullResult.nodes);
 	}
 
-	void Shadow::_renderDepth()
+	bool Shadow::_isVisible(const Aabb & bound, const Mat4 & matViewPorj)
+	{
+		Vec3 point[8];
+
+		bound.GetPoints(point);
+
+		Math::VecTransform(point, point, matViewPorj, 8);
+
+		for (int i = 0; i < 8; ++i)
+		{
+			if (point[i].x >= -1 && point[i].x <= +1 &&
+				point[i].y >= -1 && point[i].y <= +1 &&
+				point[i].z >= -0 && point[i].z <= +1)
+				return true;
+		}
+
+		return false;
+	}
+
+	void Shadow::_renderDepth(int layer)
 	{
 		RenderSystem * render = RenderSystem::Instance();
 
-		for (int i = 0; i < K_NumShadowLayers && i < 1; ++i)
+		render->SetRenderTarget(0, mRT_Depth.c_ptr());
+		render->SetDepthStencil(mDepthStencil.c_ptr());
+
+		render->ClearBuffer(NULL, true, true, false, Color::White);
+
+		const Array<Renderer *> & objs = mRenderQueue.GetSolidRender();
+
+		ShaderParam * uMatWVP = mTech_ShadowDepth->GetVertexShaderParamTable()->GetParam("matWVP");
+
+		for (int j = 0; j < objs.Size(); ++j)
 		{
-			render->SetRenderTarget(0, mRT_Depth[i].c_ptr());
-			render->SetDepthStencil(mDepthStencil.c_ptr());
+			Renderer * rd = objs[j];
 
-			render->ClearBuffer(NULL, true, true, false, Color::White);
+			if (!_isVisible(rd->GetWorldAabb(), mCascadedViewProjMatrix[layer]))
+				continue;
 
-			const Array<Renderer *> & objs = mRenderQueue.GetSolidRender();
+			bool skined = (rd->GetBlendMatrix(NULL) > 0);
 
-			ShaderParam * uMatWVP = mTech_ShadowDepth->GetVertexShaderParamTable()->GetParam("matWVP");
+			Mat4 form;
 
-			for (int j = 0; j < objs.Size(); ++j)
-			{
-				Renderer * rd = objs[j];
+			rd->GetWorldTransform(&form);
 
-				bool skined = (rd->GetBlendMatrix(NULL) > 0);
+			form *= mCascadedViewProjMatrix[layer];
 
-				Mat4 form;
+			uMatWVP->SetMatrix(form);
 
-				rd->GetWorldTransform(&form);
-
-				form *= mCascadedViewProjMatrix[i];
-
-				uMatWVP->SetMatrix(form);
-				
-				render->Render(mTech_ShadowDepth, rd);
-			}
-
-			OnRenderDepth(this, &i);
+			render->Render(mTech_ShadowDepth, rd);
 		}
+
+		OnRenderDepth(this, &layer);
 	}
 
-	void Shadow::_genShadowMap(Texture * depthTex)
+	void Shadow::_genShadowMap(int layer, Texture * depthTex)
 	{
 		RenderSystem * render = RenderSystem::Instance();
 
@@ -251,6 +342,9 @@ namespace Myway {
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
 		render->SetDepthStencil(NULL);
+
+		if (layer == 0)
+			render->ClearBuffer(NULL, true, false, false, Color::White);
 
 		Camera * cam = World::Instance()->MainCamera();
 		const Vec3 * corner = cam->GetCorner();
@@ -261,32 +355,39 @@ namespace Myway {
 		Vec3 cornerRightDir = corner[5] - corner[4];
 		Vec3 cornerDownDir = corner[6] - corner[4];
 
-		for (int i = 0; i < K_NumShadowLayers && i < 1; ++i)
-		{
-			ShaderParam * uShadowInfo = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gShadowInfo");
-			ShaderParam * uMatShadow = mTech_Shadow->GetPixelShaderParamTable()->GetParam("matShadow");
-			ShaderParam * uCornerLeftTop = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
-			ShaderParam * uCornerRightDir = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
-			ShaderParam * uCornerDownDir = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
+		Vec4 shadowInfo = Vec4::Zero;
 
-			uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
-			uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
-			uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
+		if (layer == 0)
+			shadowInfo.x = cam->GetNearClip();
+		else
+			shadowInfo.x = mDist[layer - 1];
 
-			//uShadowInfo->SetUnifom(mDist[i], mDist[i + 1], 0, 0);
-			uMatShadow->SetMatrix(matInverseView * mCascadedViewProjMatrix[i]);
+		shadowInfo.y = mDist[layer];
+		shadowInfo.z = mBias[layer];
+
+		ShaderParam * uShadowInfo = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gShadowInfo");
+		ShaderParam * uMatShadow = mTech_Shadow->GetPixelShaderParamTable()->GetParam("matShadow");
+		ShaderParam * uCornerLeftTop = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
+		ShaderParam * uCornerRightDir = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
+		ShaderParam * uCornerDownDir = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
+
+		uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
+		uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
+		uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
+
+		uShadowInfo->SetUnifom(shadowInfo.x, shadowInfo.y, shadowInfo.z, 0);
+		uMatShadow->SetMatrix(matInverseView * mCascadedViewProjMatrix[layer]);
 			
-			SamplerState state;
-			state.Address = TEXA_CLAMP;
-			state.Filter = TEXF_POINT;
+		SamplerState state;
+		state.Address = TEXA_CLAMP;
+		state.Filter = TEXF_POINT;
 
-			render->SetTexture(0, state, depthTex);
+		render->SetTexture(0, state, depthTex);
 
-			state.Address = TEXA_BORDER;
-			state.BorderColor = Color::White;
-			render->SetTexture(1, state, mTex_Depth[i].c_ptr());
+		state.Address = TEXA_BORDER;
+		state.BorderColor = Color::White;
+		render->SetTexture(1, state, mTex_Depth.c_ptr());
 
-			RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Shadow);
-		}
+		RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_TEST, mTech_Shadow);
 	}
 }

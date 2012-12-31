@@ -34,6 +34,10 @@ float4 main(_IN In) : COLOR
 	//clip(pos.z - gShadowInfo.x);
 	//clip(gShadowInfo.y - pos.z);
 
+	bool OutOf = true;
+	if (pos.z >= gShadowInfo.x && pos.z < gShadowInfo.y)
+		OutOf = false;
+
 	pos = mul(pos, matShadow);
 
 	float2 shadowUV = pos.xy * float2(0.5f, -0.5f) + 0.5f;
@@ -41,7 +45,7 @@ float4 main(_IN In) : COLOR
 	float InvTexSize = 1 / 2048.f;
 
 	float shadow = 0;
-	float adjDepth = pos.z - 0.003f;
+	float adjDepth = pos.z - gShadowInfo.z;
 
 	for (int j = -2; j <= 2; ++j)
 	{
@@ -57,5 +61,10 @@ float4 main(_IN In) : COLOR
 
 	shadow /= 25;
 
-	return float4(shadow, shadow, shadow, 1);
+	float a = 1;
+
+	if (OutOf)
+		a = 0;
+
+	return float4(shadow, shadow, shadow, a);
 }

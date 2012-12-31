@@ -57,6 +57,8 @@ public:
     Aabb GetRightBottomFront() const;
     Aabb GetRightBottomBack() const;
 
+	void GetPoints(Vec3 * points) const;
+
     Aabb & operator =(const Aabb & aabb);
     Aabb   operator *(float x) const;
     Aabb   operator /(float x) const;

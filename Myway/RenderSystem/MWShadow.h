@@ -18,8 +18,11 @@ namespace Myway {
 
 		void Do(Texture * depthTex);
 
-		void SetDist(int index, float dist) { d_assert (index + 1 < K_NumShadowLayers); mDist[index + 1] = dist; }
-		float GetDist(int index) const { d_assert (index + 1 < K_NumShadowLayers); return mDist[index + 1]; }
+		void SetDist(int index, float dist) { mDist[index] = dist; }
+		float GetDist(int index) const { return mDist[index]; }
+
+		void SetBias(int index, float bias) { mBias[index] = bias; }
+		float getBias(int index) const { return mBias[index]; }
 
 		void SetOffset(float off) { mOffset = off; }
 		float GetOffset() const { return mOffset; }
@@ -31,14 +34,18 @@ namespace Myway {
 
 		Mat4 _calcuCropMatrix(int layer);
 		Aabb _calcuAabb(const Vec3 * v);
+		void _calcuCascadedMatrix(int layer);
 		void _updateCamera();
 		void _impVisibleCull();
-		void _renderDepth();
-		void _genShadowMap(Texture * depthTex);
+		void _renderDepth(int layer);
+		void _genShadowMap(int layer, Texture * depthTex);
+
+		bool _isVisible(const Aabb & bound, const Mat4 & matViewPorj);
 
 
 	protected:
-		float mDist[K_NumShadowLayers + 1];
+		float mDist[K_NumShadowLayers];
+		float mBias[K_NumShadowLayers];
 		float mOffset;
 
 		Camera * mLightCamera;
@@ -46,9 +53,9 @@ namespace Myway {
 		Mat4 mInverseWorldCameraVP;
 		Mat4 mCascadedViewProjMatrix[K_NumShadowLayers];
 
-		RenderTargetPtr mRT_Depth[K_NumShadowLayers];
+		RenderTargetPtr mRT_Depth;
 		DepthStencilPtr mDepthStencil;
-		TexturePtr mTex_Depth[K_NumShadowLayers];
+		TexturePtr mTex_Depth;
 
 		RenderTargetPtr mRT_Shadow;
 		TexturePtr mTex_Shadow;

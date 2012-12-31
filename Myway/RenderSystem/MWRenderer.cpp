@@ -11,6 +11,11 @@ Renderer::~Renderer()
 {
 }
 
+const Aabb & Renderer::GetWorldAabb()
+{
+	return Aabb::Identiy;
+}
+
 void Renderer::GetWorldPosition(Vec3 * pos)
 {
     *pos = Vec3::Zero;
