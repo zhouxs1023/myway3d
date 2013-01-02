@@ -230,6 +230,11 @@ void xApp::_input()
             cam->Yaw(pt.x * 0.005f, TS_PARENT);
         }
     }
+
+	if (IMouse::Instance()->MouseWheel())
+	{
+		cam->Move(0.5f * IMouse::Instance()->MouseWheel());
+	}
 }
 
 void xApp::Init(HWND hWnd)

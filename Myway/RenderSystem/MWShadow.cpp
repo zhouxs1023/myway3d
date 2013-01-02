@@ -34,6 +34,8 @@ namespace Myway {
 
 	Shadow::~Shadow()
 	{
+		World::Instance()->DestroyCamera(mLightCamera);
+		World::Instance()->DestroySceneNode(mLightCameraNode);
 	}
 
 	void Shadow::_initRT()
@@ -189,7 +191,7 @@ namespace Myway {
 		Vec3 lightPos = center - zAixs * mOffset;
 
 		matView.MakeViewLH(lightPos, qOrient);
-		matProj.MakeOrthoLH(width, height, nearClip, mOffset + depth / 2);
+		matProj.MakeOrthoLH(width, height, nearClip, mOffset + depth);
 
 		mCascadedViewProjMatrix[layer] = matView * matProj;
 	}
@@ -261,7 +263,7 @@ namespace Myway {
 		mLightCamera->SetOrthoWidth(width);
 		mLightCamera->SetOrthoHeight(height);
 		mLightCamera->SetNearClip(nearClip);
-		mLightCamera->SetFarClip(mOffset + depth / 2);
+		mLightCamera->SetFarClip(mOffset + depth);
 		mLightCamera->SetProjectionType(PROJTYPE_ORTHO);
 	}
 
@@ -286,15 +288,23 @@ namespace Myway {
 
 		Math::VecTransform(point, point, matViewPorj, 8);
 
-		for (int i = 0; i < 8; ++i)
+		Vec3 vMin, vMax;
+
+		vMin = point[0];
+		vMax = point[0];
+
+		for (int i = 1; i < 8; ++i)
 		{
-			if (point[i].x >= -1 && point[i].x <= +1 &&
-				point[i].y >= -1 && point[i].y <= +1 &&
-				point[i].z >= -0 && point[i].z <= +1)
-				return true;
+			Math::VecMinimum(vMin, vMin, point[i]);
+			Math::VecMaximum(vMax, vMax, point[i]);
 		}
 
-		return false;
+		if (vMax.x < -1 || vMin.x > +1 ||
+			vMax.y < -1 || vMin.y > +1 ||
+			vMax.z < -0 || vMin.z > +1)
+			return false;
+
+		return true;
 	}
 
 	void Shadow::_renderDepth(int layer)

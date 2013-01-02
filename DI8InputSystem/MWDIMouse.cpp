@@ -103,6 +103,10 @@ bool DIMouse::MouseMoved()
     return false;
 }
 
+int DIMouse::MouseWheel()
+{
+	return m_mouseState.lZ;
+}
 
 Point2i DIMouse::GetPosition()
 {

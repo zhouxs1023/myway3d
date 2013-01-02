@@ -19,6 +19,7 @@ public:
 	virtual bool KeyPressed(MouseKeyCode key);
 
     virtual bool MouseMoved();
+	virtual int MouseWheel();
 
 	virtual Point2i GetPosition();
 	virtual Point2i GetPositionGlobal();

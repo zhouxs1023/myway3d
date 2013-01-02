@@ -20,6 +20,7 @@ public:
 	virtual bool KeyPressed(MouseKeyCode key) = 0;
 
     virtual bool MouseMoved() = 0;
+	virtual int MouseWheel() = 0;
 
 	virtual Point2i GetPosition() = 0;
 	virtual Point2i GetPositionGlobal() = 0;
