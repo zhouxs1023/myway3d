@@ -437,6 +437,18 @@ enum MULTI_SAMPLE
     MW_ALIGN_ENUM(MULTI_SAMPLE)
 };
 
+/* enum: SMAA_TYPE
+----------------------------------------------------------
+----------------------------------------------------------
+*/
+enum SMAA_TYPE
+{
+	SMAA_NONE,
+	SMAA_LOW,
+	SMAA_MEDIUM,
+	SMAA_HIGH,
+	SMAA_ULTRA
+};
 
 /* enum: PRIMITIVE_TYPE
 ----------------------------------------------------------
@@ -490,6 +502,7 @@ struct MW_ENTRY DeviceProperty
     bool            bVSync;                 //是否垂直同步 
     int             RefreshRate;            //屏幕刷新率(窗口模式必须为0)
     bool            bNVPerfHUD;             //NVidia PerfHUD
+	SMAA_TYPE		SmaaType;				//SMAA类型
 
     DeviceProperty()
     {
@@ -502,6 +515,7 @@ struct MW_ENTRY DeviceProperty
         bVSync = FALSE;
         RefreshRate = 0;
         bNVPerfHUD = TRUE;
+		SmaaType = SMAA_HIGH;
     }
 };
 

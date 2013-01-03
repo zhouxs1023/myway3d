@@ -4,6 +4,9 @@
     <Filter Include="D3D9RenderSystem">
       <UniqueIdentifier>{2a644a2d-4a6c-4950-969d-a33981013913}</UniqueIdentifier>
     </Filter>
+    <Filter Include="D3D9RenderSystem\SMAA">
+      <UniqueIdentifier>{1fdd5be5-f3d2-47a8-b615-24a169a78116}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MWD3D9DepthStencil.cpp">
@@ -53,6 +56,12 @@
     </ClCompile>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MWD3D9RenderSystemPlugin.cpp" />
+    <ClCompile Include="SMAA.cpp">
+      <Filter>D3D9RenderSystem\SMAA</Filter>
+    </ClCompile>
+    <ClCompile Include="MWSMAAController.cpp">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MWD3D9DepthStencil.h">
@@ -102,5 +111,17 @@
     </ClInclude>
     <ClInclude Include="MWD3D9RenderSystemEntry.h" />
     <ClInclude Include="MWD3D9RenderSystemPlugin.h" />
+    <ClInclude Include="AreaTex.h">
+      <Filter>D3D9RenderSystem\SMAA</Filter>
+    </ClInclude>
+    <ClInclude Include="SearchTex.h">
+      <Filter>D3D9RenderSystem\SMAA</Filter>
+    </ClInclude>
+    <ClInclude Include="SMAA.h">
+      <Filter>D3D9RenderSystem\SMAA</Filter>
+    </ClInclude>
+    <ClInclude Include="MWSMAAController.h">
+      <Filter>D3D9RenderSystem</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

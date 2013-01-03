@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "xApp.h"
 #include "xPlugin.h"
+#include "xScene.h"
 
 DWORD WINAPI MainLoop(LPVOID p)
 {
@@ -84,7 +85,9 @@ void xApp::Run()
 
 			xEvent::OnUpdate(NULL, NULL);
 
-			if (mActivate)
+			InputSystem::Instance()->Update();
+
+			if (mActivate && xScene::Instance()->IsInited())
 				_input();
 
 			mEngine->Run();
@@ -105,8 +108,6 @@ void xApp::Run()
 
 void xApp::_input()
 {
-    InputSystem::Instance()->Update();
-
     SceneNode * cam = World::Instance()->MainCameraNode();
 
     if (IKeyboard::Instance()->KeyPressed(KC_W))

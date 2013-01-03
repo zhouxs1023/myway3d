@@ -105,6 +105,9 @@ bool DIMouse::MouseMoved()
 
 int DIMouse::MouseWheel()
 {
+	if (!IsActive())
+		return 0;
+
 	return m_mouseState.lZ;
 }
 

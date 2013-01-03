@@ -22,6 +22,9 @@ public:
 	virtual void						_BeginEvent(const char * str);
 	virtual void						_EndEvent();
 
+	virtual void						BeginOcclusionQuery();
+	virtual int							EndOcclusionQuery();
+
     virtual bool                        CheckMSAAFormat(FORMAT format, MULTI_SAMPLE msaa);
     virtual bool                        CheckTextureFormat(FORMAT format, USAGE usage, bool autoGenMimmap);
     virtual bool                        CheckRenderTargetFormat(FORMAT Format);
@@ -83,6 +86,8 @@ public:
     virtual void                        Render(Technique * efx, Renderer * obj);
     virtual void                        Render(Technique * efx, RenderOp * rd);
 
+	virtual void						DoSMAA(RenderTarget * rt, Texture * colorTex);
+
     virtual int                         GetFramePrimitiveCount();
     virtual int                         GetFrameBatchCount();
 
@@ -100,6 +105,7 @@ public:
 protected:
     IDirect3D9 *                        mDirect3D;
     IDirect3DDevice9 *                  mD3DDevice;
+	IDirect3DQuery9 *					mD3DQuery;
 
     int                                 mMipmapLevel;
 

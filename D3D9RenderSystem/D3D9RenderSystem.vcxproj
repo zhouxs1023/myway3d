@@ -111,8 +111,11 @@
     <ClCompile Include="MWD3D9VideoBufferManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MWD3D9RenderSystemPlugin.cpp" />
+    <ClCompile Include="MWSMAAController.cpp" />
+    <ClCompile Include="SMAA.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AreaTex.h" />
     <ClInclude Include="MWD3D9DepthStencil.h" />
     <ClInclude Include="MWD3D9DeviceCaps.h" />
     <ClInclude Include="MWD3D9Image.h" />
@@ -130,6 +133,9 @@
     <ClInclude Include="MWD3D9VideoBufferManager.h" />
     <ClInclude Include="MWD3D9RenderSystemEntry.h" />
     <ClInclude Include="MWD3D9RenderSystemPlugin.h" />
+    <ClInclude Include="MWSMAAController.h" />
+    <ClInclude Include="SearchTex.h" />
+    <ClInclude Include="SMAA.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Myway\Myway.vcxproj">

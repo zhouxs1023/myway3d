@@ -22,6 +22,7 @@ D3D9RenderSystem::D3D9RenderSystem(void)
         mRenderTarget[i] = NULL;
 
     mDepthStencil = NULL;
+	mD3DQuery = NULL;
 }
 
 D3D9RenderSystem::~D3D9RenderSystem(void)
@@ -44,6 +45,8 @@ void D3D9RenderSystem::Init()
     EnumDrives();
 
     mWindow = new D3D9RenderWindow(this);
+
+	mD3DDevice->CreateQuery( D3DQUERYTYPE_OCCLUSION, &mD3DQuery);
 }
 
 void D3D9RenderSystem::_BeginEvent(const char * str)
@@ -58,6 +61,29 @@ void D3D9RenderSystem::_BeginEvent(const char * str)
 void D3D9RenderSystem::_EndEvent()
 {
 	D3DPERF_EndEvent();
+}
+
+void D3D9RenderSystem::BeginOcclusionQuery()
+{
+	HRESULT hr = mD3DQuery->Issue(D3DISSUE_BEGIN);
+
+	d_assert (hr == D3D_OK);
+}
+
+int	D3D9RenderSystem::EndOcclusionQuery()
+{
+	HRESULT hr = mD3DQuery->Issue(D3DISSUE_END);
+
+	d_assert (hr == D3D_OK);
+
+	DWORD pixels = 0;
+
+	do 
+	{
+		hr = mD3DQuery->GetData((void *) &pixels, sizeof(DWORD), D3DGETDATA_FLUSH);
+	} while (hr == S_FALSE);
+
+	return pixels;
 }
 
 void D3D9RenderSystem::OnResize()
@@ -700,6 +726,11 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 
     mBatchCount += 1;
     mPrimitivCount += primcount;
+}
+
+void D3D9RenderSystem::DoSMAA(RenderTarget * rt, Texture * colorTex)
+{
+	mWindow->DoSMAA(rt, colorTex);
 }
 
 void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)

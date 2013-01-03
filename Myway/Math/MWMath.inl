@@ -463,7 +463,12 @@ inline float Math::ClampUnit(float x)
 template<class T>
 inline T Math::Lerp(const T & a, const T & b, float k)
 {
-    return a + (b - a) * k;
+	if (k < 0)
+		return a;
+	else if (k > 1)
+		return b;
+	else
+		return a + (b - a) * k;
 }
 
 

@@ -21,6 +21,7 @@ namespace Myway {
         void _initTechnique();
         void _initRenderTarget();
 
+		void _occlusion();
         void _renderSun();
         void _godray(Texture * depthTex);
         void _blur();
@@ -29,6 +30,7 @@ namespace Myway {
     protected:
         RenderOp mRender_Sun;
 
+		Technique * mTech_SunOcc;
         Technique * mTech_Sun;
         Technique * mTech_GodRay;
         Technique * mTech_BlurH;
@@ -37,6 +39,7 @@ namespace Myway {
 
         RenderTargetPtr mRenderTarget;
         TexturePtr mTexture;
+		float mLighting;
 
 		tEventListener<GodRay> OnResize;
     };

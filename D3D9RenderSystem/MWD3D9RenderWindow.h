@@ -5,6 +5,7 @@
 #include "MWD3D9DeviceCaps.h"
 #include "MWD3D9VideoBufferManager.h"
 #include "MWD3D9ShaderProgramManager.h"
+#include "MWSMAAController.h"
 
 namespace Myway
 {
@@ -17,7 +18,6 @@ class RS_ENTRY D3D9RenderWindow
 
 public:
     D3D9RenderWindow(D3D9RenderSystem * pRenderSystem);
-
    ~D3D9RenderWindow();
 
     void            OnResize();
@@ -30,6 +30,8 @@ public:
 
     RenderTarget *  GetRenderTarget() { return mRenderTarget; }
     DepthStencil *  GetDepthStencil() { return mDepthStencil; }
+
+	void			DoSMAA(RenderTarget * rt, Texture * colorTex);
 
 protected:
     void _acquire();
@@ -46,6 +48,8 @@ protected:
     D3D9ShaderProgramManager *      mShaderProgramManager;
 
     D3D9DeviceCaps                  mDevCaps;
+
+	SMAAController *				mSMAAController;
 };
 
 }

@@ -16,7 +16,6 @@ float4 main(PS_IN In) : COLOR
 {
 	float4 clr = tex2D(gTex_Blured, In.uv0);
 	clr.a *= gBlendWeight.x;
-	clr.rbg *= 2;
 
 	return float4(gSunColor.rgb, clr.a);
 }

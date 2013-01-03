@@ -8,8 +8,7 @@ struct PS_IN
 	float2 uv0 : TEXCOORD0;
 };
 
-
-uniform float4 gSunParam; // x - power, y - lum, z - inner
+uniform float4 gSunParam; // x: inner, y: 1 / (outer - inner), z: power
 
 float4 main(PS_IN In) : COLOR
 {

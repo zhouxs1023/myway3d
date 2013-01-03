@@ -18,6 +18,8 @@ public:
 
     virtual void Stretch(Texture * p);
 
+	IDirect3DSurface9 * GetD3DSurface() { return mRenderTarget; }
+
     friend class    D3D9VideoBufferManager; 
     friend class    Image;
     friend class    D3D9RenderSystem;

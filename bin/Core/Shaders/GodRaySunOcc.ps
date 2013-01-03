@@ -1,0 +1,20 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+float4 main(PS_IN In) : COLOR
+{
+	float2 dir = 0.5 - In.uv0;
+	
+	float k = length(dir);
+
+	clip(0.5f - k);
+
+	return 1;
+}

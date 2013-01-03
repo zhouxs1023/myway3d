@@ -23,7 +23,7 @@ namespace Myway
         void _updateColorTexture();
 
         void _clear();
-        void _frush();
+        void _frush(RenderTarget * finalRT);
 
         void _renderSolidObjects();
 

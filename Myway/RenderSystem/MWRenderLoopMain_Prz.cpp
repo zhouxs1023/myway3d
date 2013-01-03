@@ -153,12 +153,7 @@ namespace Myway {
 
         _updateColorTexture();
 
-        render->SetRenderTarget(0, finalRT);
-        render->SetRenderTarget(1, NULL);
-        render->SetRenderTarget(2, NULL);
-        render->SetRenderTarget(3, NULL);
-
-        _frush();
+        _frush(finalRT);
     }
 
     void RenderLoop_Main::_updateTexture()
@@ -180,16 +175,38 @@ namespace Myway {
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, clearTech);
     }
 
-    void RenderLoop_Main::_frush()
-    {
-        Technique * frushTech = mScheme->GetMainShaderProvider()->GetFrushTech();
+    void RenderLoop_Main::_frush(RenderTarget * finalRT)
+	{
+		RenderSystem * render = RenderSystem::Instance();
 
-        SamplerState state;
-        state.Filter = TEXF_POINT;
-        state.Address = TEXA_CLAMP;
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
 
-        RenderSystem::Instance()->SetTexture(0, state, mTex_Color.c_ptr());
-        RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, frushTech);
+		if (dp->SmaaType != SMAA_NONE)
+		{
+			render->DoSMAA(mRT_Color.c_ptr(), mTex_Color.c_ptr());
+			_updateColorTexture();
+		}
+
+		render->SetRenderTarget(0, finalRT);
+		render->SetRenderTarget(1, NULL);
+		render->SetRenderTarget(2, NULL);
+		render->SetRenderTarget(3, NULL);
+
+
+		/*if (dp->SmaaType != SMAA_NONE)
+		{
+		}
+		else*/
+		{
+			Technique * frushTech = mScheme->GetMainShaderProvider()->GetFrushTech();
+
+			SamplerState state;
+			state.Filter = TEXF_POINT;
+			state.Address = TEXA_CLAMP;
+
+			RenderSystem::Instance()->SetTexture(0, state, mTex_Color.c_ptr());
+			RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, frushTech);
+		}
     }
 
     void RenderLoop_Main::_renderSolidObjects()

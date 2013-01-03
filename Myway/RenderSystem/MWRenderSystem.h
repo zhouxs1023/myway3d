@@ -36,6 +36,9 @@ public:
 	virtual void			_BeginEvent(const char * str) = 0;	// for pix
 	virtual void			_EndEvent() = 0; 
 
+	virtual void			BeginOcclusionQuery() = 0;
+	virtual int				EndOcclusionQuery() = 0;
+
     virtual bool            CheckTextureFormat(FORMAT format, USAGE usage, bool autoGenMimmap = false) = 0;
     virtual bool            CheckRenderTargetFormat(FORMAT format) = 0;
     virtual bool            CheckMSAAFormat(FORMAT format, MULTI_SAMPLE msaa) = 0;
@@ -96,6 +99,8 @@ public:
 
     virtual void            Render(Technique * efx, Renderer * obj) = 0;
     virtual void            Render(Technique * efx, RenderOp * rd) = 0;
+
+	virtual void			DoSMAA(RenderTarget * rt, Texture * colorTex) = 0;
 
     virtual int             GetFramePrimitiveCount() = 0;
     virtual int             GetFrameBatchCount() = 0;

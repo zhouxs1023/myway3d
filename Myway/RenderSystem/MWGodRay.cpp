@@ -22,7 +22,9 @@ namespace Myway {
 
         RenderTarget * oldRt = render->GetRenderTarget(0);
 
-        render->SetRenderTarget(0, mRenderTarget.c_ptr());
+		render->_BeginEvent("Godray");
+
+		_occlusion();
 
         _renderSun();
         _godray(depthTex);
@@ -31,6 +33,8 @@ namespace Myway {
         render->SetRenderTarget(0, oldRt);
 
         _blend();
+
+		render->_EndEvent();
     }
 
     void GodRay::_resize(void * param0, void * param1)
@@ -87,6 +91,7 @@ namespace Myway {
 
     void GodRay::_initTechnique()
     {
+		mTech_SunOcc = Environment::Instance()->GetShaderLib()->GetTechnique("GodRaySunOcc");
         mTech_Sun = Environment::Instance()->GetShaderLib()->GetTechnique("GodRaySun");
         mTech_GodRay = Environment::Instance()->GetShaderLib()->GetTechnique("GodRay");
         mTech_BlurH = Environment::Instance()->GetShaderLib()->GetTechnique("BlurH");
@@ -112,9 +117,81 @@ namespace Myway {
         mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height, FMT_A8R8G8B8);
     }
 
+	void GodRay::_occlusion()
+	{
+		RenderSystem * render = RenderSystem::Instance();
+
+		Camera * cam = World::Instance()->MainCamera();
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+
+		int width = dp->Width;
+		int height = dp->Height;
+
+		float sunSize = Environment::Instance()->GetEvParam()->GodRaySunSize;
+		Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
+		float farclip = cam->GetFarClip() * 0.899f;
+		Vec3 pos = cam->GetPosition() - farclip * sunDir;
+
+		ShaderParam * uTransform = mTech_SunOcc->GetVertexShaderParamTable()->GetParam("gTransform");
+
+		uTransform->SetUnifom(pos.x, pos.y, pos.z, sunSize);
+
+		int pixels, pixelsToRendering;
+		{
+			mRender_Sun.rState.depthCheck = DCM_ALWAYS;
+			mRender_Sun.rState.colorWrite = 0;
+
+			render->BeginOcclusionQuery();
+
+			render->Render(mTech_SunOcc, &mRender_Sun);
+
+			pixels = render->EndOcclusionQuery();
+		}
+
+		{
+			mRender_Sun.rState.depthCheck = DCM_ALWAYS;
+			mRender_Sun.rState.colorWrite = 0;
+
+			render->BeginOcclusionQuery();
+
+			render->Render(mTech_SunOcc, &mRender_Sun);
+
+			pixels = render->EndOcclusionQuery();
+		}
+		
+		{
+			mRender_Sun.rState.depthCheck = DCM_LESS;
+			mRender_Sun.rState.colorWrite = 0;
+
+			render->BeginOcclusionQuery();
+
+			render->Render(mTech_SunOcc, &mRender_Sun);
+
+			pixelsToRendering = render->EndOcclusionQuery();
+		}
+
+		{
+			mRender_Sun.rState.depthCheck = DCM_ALWAYS;
+			mRender_Sun.rState.colorWrite = CWE_ALL;
+		}
+
+		float k = float(pixelsToRendering + 1) / float(pixels + 1);
+
+		if (k < 0.5f)
+		{
+			k = (0.5f - k) / 0.3f;
+
+			mLighting = Math::Lerp(1.0f, 2.5f, k);
+		}
+		else
+			mLighting = 1;
+	}
+
     void GodRay::_renderSun()
     {
         RenderSystem * render = RenderSystem::Instance();
+
+		render->SetRenderTarget(0, mRenderTarget.c_ptr());
 
         render->ClearBuffer(NULL, true, false, false, Color(0, 0, 0, 0));
 
@@ -138,7 +215,7 @@ namespace Myway {
 
         //uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, sunColor.a);
 		//uSunParam->SetUnifom(sunPower, sunLum, 0, 0);
-        uSunParam->SetUnifom(sunInner, 1 / (0.5f - sunInner), 0, 1);
+		uSunParam->SetUnifom(sunInner, 1 / (0.5f - sunInner), 1, 1);
 
         render->Render(mTech_Sun, &mRender_Sun);
     }
@@ -194,7 +271,7 @@ namespace Myway {
     void GodRay::_blend()
     {
 		float sunLum = Environment::Instance()->GetEvParam()->GodRaySunLum;
-		Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor * sunLum;
+		Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor * sunLum * mLighting;
         float blendWeight = Environment::Instance()->GetEvParam()->GodRayBlendWeight;
 
         ShaderParam * uBlendWeight = mTech_Blend->GetPixelShaderParamTable()->GetParam("gBlendWeight");
