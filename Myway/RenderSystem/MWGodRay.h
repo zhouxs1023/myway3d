@@ -39,7 +39,8 @@ namespace Myway {
 
         RenderTargetPtr mRenderTarget;
         TexturePtr mTexture;
-		float mLighting;
+		float mOccLighting;
+		float mOccRadius;
 
 		tEventListener<GodRay> OnResize;
     };

@@ -99,8 +99,12 @@ float CalcuDeepWeight(float2 projUV, float3 wpos, float3 vpos)
 	float k1 = max(0, diff1 / gRefractionDist);
 
 	float k = k0 * 0.5 + k1 * 0.5f;
+	float kv = min(1, length(vpos) / 300.0f);
 	
-	return min(1, k);
+	k = min(1, k);
+	k = lerp(k, 1, kv);
+
+	return k;
 }
 
 float3 CalcuSunColor(float3 normal, float3 eyeDir)
@@ -136,8 +140,6 @@ float4 main(PS_IN In) : COLOR
 	
 	col.rgb += CalcuSunColor(normal, eyeDir);
 
-	//col.rgb = col.rgb * 0.00000000001 + float3(0, 0, 1);
-	
 	col.a = 1;
 	
 	return col;

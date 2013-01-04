@@ -569,9 +569,9 @@ void D3D9RenderSystem::SetTexture(int index, const SamplerState & state, Texture
 
         Vec4 size;
 
-        size.x = 0.0f;
-        size.y = 0.0f;
-        size.z = 0.0f;
+        size.x = 1.0f;
+        size.y = 1.0f;
+        size.z = 1.0f;
         size.w = 1.0f;
 
         RenderRegister::Instance()->SetTextureSize(index, size);

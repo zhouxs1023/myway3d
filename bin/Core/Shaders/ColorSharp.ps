@@ -22,14 +22,22 @@ float4 main(PS_IN In) : COLOR
 	float4 c_orig = tex2D(gTex, In.uv0);
 	
 	float4 c_blured = 0;
+
+	const float2 filter_detal[8] = {
+		float2(-1, -1), float2(0, -1), float2(1, -1),
+		float2(-1,  0),                float2(1,  0),
+		float2(-1,  1), float2(0,  1), float2(1,  1),
+	};
+
+	for (int i = 0; i < 8; ++i)
+	{
+		c_blured += tex2D(gTex, In.uv0 + filter_detal[i] * gInvTexSize.xy);
+	}
 	
-	c_blured += tex2D(gTex, In.uv0 + float2(-x, 0));
-	c_blured += tex2D(gTex, In.uv0 + float2(+x, 0));
-	c_blured += tex2D(gTex, In.uv0 + float2(0, -y));
-	c_blured += tex2D(gTex, In.uv0 + float2(0, +y));
-	c_blured /= 4;
+	c_blured /= 8;
 	
 	float4 clr = c_orig + (c_orig - c_blured) * gSharpParam.x;
+	clr = saturate(clr);
 	clr.a = c_orig.a;
 	
 	return clr;

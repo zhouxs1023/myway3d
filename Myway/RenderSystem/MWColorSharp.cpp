@@ -1,6 +1,7 @@
 #include "MWColorSharp.h"
 #include "MWEnvironment.h"
 #include "MWRenderHelper.h"
+#include "MWKeyboard.h"
 
 namespace Myway {
 
@@ -16,6 +17,16 @@ namespace Myway {
 
     void ColorSharp::Render(Texture * tex)
     {
+		static bool btest = true;
+
+		if (IKeyboard::Instance()->KeyUp(KC_5))
+			btest = !btest;
+
+		if (!btest)
+			return ;
+
+		RenderSystem::Instance()->_BeginEvent("ColorSharp");
+
         float colorSharpScale = Environment::Instance()->GetEvParam()->ColorSharpScale;
 
         ShaderParam * uSharpParam = mTech->GetPixelShaderParamTable()->GetParam("gSharpParam");
@@ -29,5 +40,7 @@ namespace Myway {
         RenderSystem::Instance()->SetTexture(0, state, tex);
 
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech);
+
+		RenderSystem::Instance()->_EndEvent();
     }
 }

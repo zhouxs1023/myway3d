@@ -7,12 +7,16 @@ namespace Myway
 #define DEFAULT_MOON_TEXTURE "Moon.dds"
 
     DF_PROPERTY_BEGIN(EvKeyFrame)
-        DF_PROPERTY(EvKeyFrame, SkyLum, "Sky", "SkyLum",       PT_Float,   4)
+        DF_PROPERTY(EvKeyFrame, SkyLum, "Sky", "SkyLum", PT_Float, 4)
 
-        DF_PROPERTY(EvKeyFrame, SunColor, "Sky", "SunColor",     PT_Color,   16)
-        DF_PROPERTY(EvKeyFrame, SunLum, "Sky", "SunLum",       PT_Float,   4)
-        DF_PROPERTY(EvKeyFrame, SunPower, "Sky", "SunPower",     PT_Float,   4)
-        DF_PROPERTY(EvKeyFrame, SunSize, "Sky", "SunSize",      PT_Float,   4)
+        DF_PROPERTY(EvKeyFrame, SunColor, "Sky", "SunColor", PT_Color, 16)
+        DF_PROPERTY(EvKeyFrame, SunLum, "Sky", "SunLum", PT_Float, 4)
+        DF_PROPERTY(EvKeyFrame, SunPower, "Sky", "SunPower", PT_Float, 4)
+        DF_PROPERTY(EvKeyFrame, SunSize, "Sky", "SunSize", PT_Float, 4)
+
+		DF_PROPERTY(EvKeyFrame, LightAmbient, "Sky", "LightAmbient", PT_Color, 16)
+		DF_PROPERTY(EvKeyFrame, LightDiffuse, "Sky", "LightDiffuse", PT_Color, 16)
+		DF_PROPERTY(EvKeyFrame, LightSpecular, "Sky", "LightSpecular", PT_Color, 16)
 
         DF_PROPERTY(EvKeyFrame, MoonPhase, "Sky", "MoonPhase",    PT_Float,   4)
         DF_PROPERTY(EvKeyFrame, MoonLum, "Sky", "MoonLum",      PT_Float,   4)
@@ -73,6 +77,9 @@ namespace Myway
         SunLum = 0.5f;
         SunPower = 3;
         SunSize = 2000;
+		LightAmbient = Color4::Gray;
+		LightDiffuse = Color4::White;
+		LightSpecular = Color4::Black;
 
         MoonPhase = 1.4f;
         MoonLum = 1;
@@ -195,6 +202,10 @@ namespace Myway
         SunLum = 0.5f;
         SunPower = 3;
         SunSize = 2000;
+
+		LightAmbient = Color4::Gray;
+		LightDiffuse = Color4::White;
+		LightSpecular = Color4::Black;
 
         MoonPase = 1.4f;
         MoonLum = 1;

@@ -51,9 +51,9 @@ namespace Myway {
         ShaderParam * uSpecular = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gSpecular");
 
         Vec3 lightDir = -Environment::Instance()->GetEvParam()->LightDir;
-        Color4 ambient = Color4::Gray;
-        Color4 diffuse = Color4::White;
-        Color4 specular = Color4::White;
+        Color4 ambient = Environment::Instance()->GetEvParam()->LightAmbient;
+        Color4 diffuse = Environment::Instance()->GetEvParam()->LightDiffuse;
+        Color4 specular = Environment::Instance()->GetEvParam()->LightSpecular;
 		
 		lightDir = lightDir.TransformN(World::Instance()->MainCamera()->GetViewMatrix());
 

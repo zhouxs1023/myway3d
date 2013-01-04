@@ -5,16 +5,6 @@
 namespace Myway
 {
 
-class RenderTargetListener
-{
-public:
-    RenderTargetListener() {}
-    virtual ~RenderTargetListener() {}
-
-    virtual void BeginRendering() {}
-    virtual void EndRendering() {}
-};
-
 class MW_ENTRY RenderTarget : public RefObj
 {
 public:
@@ -23,11 +13,11 @@ public:
 
     virtual void Stretch(Texture * texture) = 0;
 
-    const TString128 & GetName() const { return mName; }
-    int GetWidth() const { return mWidth; }
-    int GetHeight() const { return mHeight; }
-    FORMAT GetFormat() const { return mFormat; }
-    MULTI_SAMPLE GetMultiSampleType() const { return mMSAA; }
+    const TString128 & GetName() const;
+    int GetWidth() const;
+    int GetHeight() const;
+    FORMAT GetFormat() const;
+    MULTI_SAMPLE GetMultiSampleType() const;
 
 protected:
     TString128 mName;

@@ -6,7 +6,7 @@
 
 class xMesh : public xObj
 {
-    DECLARE_PROPERTY(xObj);
+	DECLARE_PROPERTY(xObj);
 
 public:
 	TString128 MeshFile;
@@ -16,8 +16,8 @@ public:
 	Vec3 Scale;
 
 public:
-    xMesh(const TString128 & name);
-    virtual ~xMesh();
+	xMesh(const TString128 & name);
+	virtual ~xMesh();
 
 	virtual TString128 GetTypeName() { return "Mesh"; }
 
@@ -40,7 +40,7 @@ public:
 
 	virtual Aabb GetBound();
 
-    virtual bool OnPropertyChanged(const Property * p);
+	virtual bool OnPropertyChanged(const Property * p);
 
 protected:
 	void _Update(void * param0, void * param1);
@@ -48,8 +48,8 @@ protected:
 	void _renderSkel(void * param0, void * param1);
 
 protected:
-    SceneNode * mNode;
-    Entity * mEntity;
+	SceneNode * mNode;
+	Entity * mEntity;
 	AnimationState * mAnimState;
 
 	tEventListener<xMesh> OnUpdate;

@@ -15,6 +15,9 @@ namespace Myway
         float SunLum;
         float SunPower;
         float SunSize;
+		Color4 LightAmbient;
+		Color4 LightDiffuse;
+		Color4 LightSpecular;
 
         float MoonPhase;
         float MoonLum;
@@ -142,6 +145,9 @@ namespace Myway
         Vec3 SunDir;
         Vec3 MoonDir;
         Vec3 LightDir;
+		Color4 LightAmbient;
+		Color4 LightDiffuse;
+		Color4 LightSpecular;
 
         Color4 SunColor;
         float SunLum;

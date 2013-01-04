@@ -113,8 +113,8 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
-        mRenderTarget = video->CreateRenderTarget("Core_GodRay_RT", width, height, FMT_A8R8G8B8, MSAA_NONE);
-        mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height, FMT_A8R8G8B8);
+        mRenderTarget = video->CreateRenderTarget("Core_GodRay_RT", width, height, FMT_A16B16G16R16F, MSAA_NONE);
+        mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height, FMT_A16B16G16R16F);
     }
 
 	void GodRay::_occlusion()
@@ -177,14 +177,18 @@ namespace Myway {
 
 		float k = float(pixelsToRendering + 1) / float(pixels + 1);
 
-		if (k < 0.5f)
+		if (k < 0.8f)
 		{
-			k = (0.5f - k) / 0.3f;
+			k = (0.8f - k) / 0.6f;
 
-			mLighting = Math::Lerp(1.0f, 2.5f, k);
+			mOccLighting = Math::Lerp(1.0f, 2.5f, k);
+			mOccRadius = Math::Lerp(1.0f, 2.0f, k);
 		}
 		else
-			mLighting = 1;
+		{
+			mOccLighting = 1;
+			mOccRadius = 1;
+		}
 	}
 
     void GodRay::_renderSun()
@@ -202,7 +206,7 @@ namespace Myway {
         float sunInner = Environment::Instance()->GetEvParam()->GodRaySunInner;
         float sunPower = Environment::Instance()->GetEvParam()->GodRaySunPower;
         Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
-        float sunSize = Environment::Instance()->GetEvParam()->GodRaySunSize;
+        float sunSize = Environment::Instance()->GetEvParam()->GodRaySunSize * mOccRadius;
 
         float farclip = cam->GetFarClip() * 0.9f;
         Vec3 pos = cam->GetPosition() - farclip * sunDir;
@@ -271,7 +275,7 @@ namespace Myway {
     void GodRay::_blend()
     {
 		float sunLum = Environment::Instance()->GetEvParam()->GodRaySunLum;
-		Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor * sunLum * mLighting;
+		Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor * sunLum * mOccLighting;
         float blendWeight = Environment::Instance()->GetEvParam()->GodRayBlendWeight;
 
         ShaderParam * uBlendWeight = mTech_Blend->GetPixelShaderParamTable()->GetParam("gBlendWeight");

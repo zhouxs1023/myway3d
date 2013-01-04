@@ -14,6 +14,7 @@
 #include "MWHDR.h"
 #include "MWSSAO.h"
 #include "MWShadow.h"
+#include "MWColorSharp.h"
 
 #include "MWEvKeyFrame.h"
 
@@ -52,6 +53,7 @@ namespace Myway {
         GodRay * GetGodRay() { return mGodRay; }
         HDRLighting * GetHDR() { return mHDR; }
 		SSAO * GetSSAO() { return mSSAO; }
+		ColorSharp * GetColorSharp() { return mColorSharp; }
 
         EvKeyFrame * GetKeyFrame(int type) { return &mKeyFrames[type]; }
         EvGlobalParam * GetGlobalParam() { return &mGlobalParam; }
@@ -100,6 +102,7 @@ namespace Myway {
         GodRay * mGodRay;
         HDRLighting * mHDR;
 		SSAO * mSSAO;
+		ColorSharp * mColorSharp;
 
         EvKeyFrame mKeyFrames[EVKT_Max];
         EvGlobalParam mGlobalParam;

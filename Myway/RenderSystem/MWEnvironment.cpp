@@ -25,6 +25,7 @@ namespace Myway {
         mFog = NULL;
         mGodRay = NULL;
         mHDR = NULL;
+		mColorSharp = NULL;
 
         mMode = EVPM_KeyFrame;
         mCurKey = EVKT_Morning;
@@ -55,6 +56,7 @@ namespace Myway {
         mHDR = new HDRLighting();
 		mSSAO = new SSAO();
 		mShadow = new Shadow();
+		mColorSharp = new ColorSharp();
     }
 
     void Environment::DeInitEv()
@@ -71,6 +73,7 @@ namespace Myway {
 		safe_delete (mHDR);
         safe_delete (mSSAO);
 		safe_delete (mShadow);
+		safe_delete (mColorSharp);
     }
 
     /*void Environment::LoadTerrain(const char * source)
@@ -251,6 +254,10 @@ namespace Myway {
         p.SunLum = Math::Lerp(kf0.SunLum, kf1.SunLum, d);
         p.SunPower = Math::Lerp(kf0.SunPower, kf1.SunPower, d);
         p.SunSize = Math::Lerp(kf0.SunSize, kf1.SunSize, d);
+
+		p.LightAmbient = Math::Lerp(kf0.LightAmbient, kf1.LightAmbient, d);
+		p.LightDiffuse = Math::Lerp(kf0.LightDiffuse, kf1.LightDiffuse, d);
+		p.LightSpecular = Math::Lerp(kf0.LightSpecular, kf1.LightSpecular, d);
 
         p.MoonPase = Math::Lerp(kf0.MoonPhase, kf1.MoonPhase, d);
         p.MoonLum = Math::Lerp(kf0.MoonLum, kf1.MoonLum, d);

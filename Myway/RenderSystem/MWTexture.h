@@ -12,17 +12,17 @@ public:
     Texture();
     virtual ~Texture();
 
-    virtual void    Lock(int iLevel, LockedBox * pLockedBox, const Boxi * pBox, int LockFlags) = 0;
-    virtual void    Unlock(int iLevel) = 0;
+    virtual void Lock(int iLevel, LockedBox * pLockedBox, const Boxi * pBox, int LockFlags) = 0;
+    virtual void Unlock(int iLevel) = 0;
 
-    const TString128 & GetName() const      { return mName; }
-    int             GetWidth() const        { return mWidth; }
-    int             GetHeight() const       { return mHeight; }
-    int             GetDepth() const        { return mDepth; }
-    int             GetMipLevels() const    { return mMipLevels; } 
-    USAGE           GetUsage() const        { return mUsage; }
-    FORMAT          GetFormat() const       { return mFormat; }
-    TEXTURE_TYPE    GetTextureType() const  { return mType; }
+	const TString128 & GetName() const;
+	int GetWidth() const;
+	int GetHeight() const;
+	int GetDepth() const;
+	int GetMipLevels() const;
+	USAGE GetUsage() const;
+	FORMAT GetFormat() const;
+	TEXTURE_TYPE GetTextureType() const;
 
 protected:
     TString128 mName;

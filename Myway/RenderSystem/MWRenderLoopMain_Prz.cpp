@@ -109,51 +109,57 @@ namespace Myway {
         if (Environment::Instance()->GetGodRay())
             Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 
-       _updateColorTexture();
+		_updateColorTexture();
 
-	   if (Environment::Instance()->GetWaterManager())
-	   {
-		   // ---> render caustics
-		   if (WaterManager::Instance()->IsUnderWater())
-			   WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+		if (Environment::Instance()->GetWaterManager())
+		{
+			// ---> render caustics
+			if (WaterManager::Instance()->IsUnderWater())
+				WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-		   _updateColorTexture();
+			_updateColorTexture();
 
-		   if (WaterManager::Instance()->IsUnderWater())
-			   WaterManager::Instance()->RenderUnderFog(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+			if (WaterManager::Instance()->IsUnderWater())
+				WaterManager::Instance()->RenderUnderFog(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-		   if (WaterManager::Instance()->IsUnderWater())
-			   WaterManager::Instance()->RenderUnderBubble();
+			if (WaterManager::Instance()->IsUnderWater())
+				WaterManager::Instance()->RenderUnderBubble();
 
-		   // ---> render water
-		   WaterManager::Instance()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+			// ---> render water
+			WaterManager::Instance()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
 
-		   _updateColorTexture();
+			_updateColorTexture();
 
-		   //
-		   if (WaterManager::Instance()->IsUnderWater())
-			   WaterManager::Instance()->RenderUnderNoise(mTex_Color.c_ptr());
+			//
+			if (WaterManager::Instance()->IsUnderWater())
+				WaterManager::Instance()->RenderUnderNoise(mTex_Color.c_ptr());
 
-		   if (WaterManager::Instance()->IsUnderWater())
-			   WaterManager::Instance()->RenderUnderGodRay();
+			if (WaterManager::Instance()->IsUnderWater())
+				WaterManager::Instance()->RenderUnderGodRay();
 
-		   _updateColorTexture();
-	   }
+			_updateColorTexture();
+		}
 
-	   if (Environment::Instance()->GetHDR())
-		   Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
+		if (Environment::Instance()->GetColorSharp())
+			Environment::Instance()->GetColorSharp()->Render(mTex_Color.c_ptr());
 
 		RenderEvent::OnAfterDeffererShading(NULL, NULL);
 
-		// render forward objects
+		// ---> render forward objects
+
+		// ---> hdr
+		_updateColorTexture();
+
+		if (Environment::Instance()->GetHDR())
+			Environment::Instance()->GetHDR()->Render(mTex_Color.c_ptr());
 
 		RenderEvent::OnAfterRender(NULL, NULL);
 
 		RenderEvent::OnDebugRender(NULL, NULL);
 
-        _updateColorTexture();
+		_updateColorTexture();
 
-        _frush(finalRT);
+		_frush(finalRT);
     }
 
     void RenderLoop_Main::_updateTexture()

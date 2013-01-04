@@ -642,8 +642,24 @@ void World::CullLights(VisibleCullResult & result, Camera * cam)
         // current it's false
         Light * light = *whr;
 
-        if (light->IsVisible())
-            result.lights.PushBack(light);
+		if (!light->IsVisible())
+			continue;
+
+		switch (light->GetType())
+		{
+		case LT_DIRECTIONAL:
+			result.lights.PushBack(light);
+			break;
+
+		case LT_POINT:
+		case LT_SPOT:
+			{
+				Sphere sph = Sphere(light->GetPosition(), light->GetRange());
+				if (cam->IsVisible(sph))
+					result.lights.PushBack(light);
+			}
+			break;
+		}
 
         ++whr;
     }
