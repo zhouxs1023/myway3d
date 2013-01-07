@@ -127,6 +127,7 @@ BOOL CMainFrame::CreateDockingWindows()
 
 	mObjectView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&mObjectView);
+	mObjectView.ShowPane(FALSE, FALSE, TRUE);
 
 	// property
 	if (!mProperty.Create("Property", this, CRect(0, 0, 200, 200), TRUE, ID_VIEW_PROPERTIESWND, 
@@ -148,6 +149,8 @@ BOOL CMainFrame::CreateDockingWindows()
 
 	mExplorer.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&mExplorer);
+	mExplorer.ShowPane(FALSE, FALSE, TRUE);
+
 
 	xEvent::OnCreatePane(this, NULL);
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MSpeedTreeEntry.h"
+#include "MTreeEntry.h"
 #include "MWMath.h"
 #include "MWResource.h"
 #include "MTreeGlobal.h"

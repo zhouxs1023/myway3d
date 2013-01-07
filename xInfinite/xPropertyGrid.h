@@ -15,7 +15,7 @@ public:
 
 
 
-class xPropertyGrid : public CDockablePane
+class xPropertyGrid : public IDockPane
 {
 	DECLARE_SINGLETON(xPropertyGrid);
 	DECLARE_MESSAGE_MAP()

@@ -186,6 +186,8 @@ void Engine::Run()
         mLastFPSCalcTime = time;
     }
 
+	RenderSystem::Instance()->SetTime(time);
+
     mWorld->UpdateFrame();
 }
 

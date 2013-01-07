@@ -99,7 +99,7 @@ float CalcuDeepWeight(float2 projUV, float3 wpos, float3 vpos)
 	float k1 = max(0, diff1 / gRefractionDist);
 
 	float k = k0 * 0.5 + k1 * 0.5f;
-	float kv = min(1, length(vpos) / 300.0f);
+	float kv = min(1, (length(vpos) - 300) / (1000 - 300));
 	
 	k = min(1, k);
 	k = lerp(k, 1, kv);

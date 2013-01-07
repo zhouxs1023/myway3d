@@ -1,15 +1,12 @@
 #include "MForest.h"
-#include "MWRenderEvent.h"
 #include "Engine.h"
-#include "SpeedTreeExp.h"
+#include "MWRenderEvent.h"
 
 namespace Myway {
 
 	IMP_SLN (MForest);
 
 	MForest::MForest()
-		: OnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &MForest::_preVisibleCull)
-		, OnRender(&RenderEvent::OnAfterRenderSolid, this, &MForest::_render)
 	{
 		INIT_SLN;
 
@@ -25,186 +22,93 @@ namespace Myway {
 
 	void MForest::Init()
 	{
-		mWind.Load("SpeedTree\\SpeedWind.ini");
-
-		mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("SpeedTree.ShaderLib", "SpeedTree\\SpeedTree.ShaderLib");
+		mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Tree.ShaderLib", "Tree\\Tree.ShaderLib");
 		d_assert (mShaderLib);
 
-		mTech_Branch = mShaderLib->GetTechnique("Branch");
+		mTech_VegMesh = mShaderLib->GetTechnique("GrassMesh");
+		mTech_VegBillboard = mShaderLib->GetTechnique("GrassBillboasrd");
+		mTech_VegX2 = mShaderLib->GetTechnique("GrassX2");
 
-		d_assert (mTech_Branch);
+		d_assert (mTech_VegX2);
 
-		mParam_Branch.Bind(mTech_Branch);
+		MVegetation * veg = new MVegetation();
+
+		veg->Name = "Default";
+		veg->Type = MVegetation::GT_X2;
+		veg->DiffuseMap = VideoBufferManager::Instance()->Load2DTexture("Tree\\g1.tga", "Tree\\g1.tga");
+
+		mVegetations.PushBack(veg);
 	}
 
 	void MForest::Shutdown()
 	{
-		d_assert(mTreeInstances.Size() == 0);
-		d_assert(mTrees.Size() == 0);
+		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
+		{
+			delete mVegetationBlocks[i];
+		}
+
+		mVegetationBlocks.Clear();
+
+		for (int i = 0; i < mVegetations.Size(); ++i)
+		{
+			delete mVegetations[i];
+		}
+
+		mVegetations.Clear();
 	}
 
 	void MForest::_preVisibleCull(void*, void*)
 	{
-		mVisibleInsts.Clear();
-	}
-
-	void MForest::Advance()
-	{
-		float time = Engine::Instance()->GetTime();
-
-		mWind.Advance(time);
-
-		const Vec3 & camPos = World::Instance()->MainCamera()->GetPosition();
-		const Vec3 & camDir = World::Instance()->MainCamera()->GetDirection();
-
-		SpeedTreeExp::SetCamera((float *)&camPos, (float *)&camDir);
 	}
 
 	void MForest::_render(void*, void*)
 	{
-		mWind._getWindMaxtrix(mMatWind);
+		_drawMeshVeg();
+		_drawBillboardVeg();
+		_drawX2Veg();
+	}
 
-		for (int i = 0; i < mVisibleInsts.Size(); ++i)
+	void MForest::_drawMeshVeg()
+	{
+	}
+
+	void MForest::_drawBillboardVeg()
+	{
+	}
+
+	void MForest::_drawX2Veg()
+	{
+		for (int i = 0; i < mVisibleVegetationBlocks.Size(); ++i)
 		{
-			_renderBranch(mVisibleInsts[i]);
-		}
-	}
+			MVegetationBlock * block = mVisibleVegetationBlocks[i];
 
-	void MForest::_renderBranch(MTreeInstance * inst)
-	{
-		MTreePtr tree = inst->GetTree();
-
-		if (tree == NULL || tree->GetLoadState() != Resource::LOADED)
-			return ;
-
-		RenderOp * rop = tree->GetRenderOp_Branch();
-
-		if (rop == NULL)
-			 return ;
-
-		Node * node = inst->GetAttachNode();
-
-		d_assert (node == NULL);
-
-		const Vec3 & position = node->GetPosition();
-		const Quat & rotation = node->GetOrientation();
-		const Vec3 & scale = node->GetScale();
-
-		Vec4 posNscale = Vec4(position, scale.x);
-		Mat4 matRotation = rotation.ToMatrix();
-		Mat4 * matWind = mMatWind;
-		float windMatOff = inst->GetWindMatrixOffset();
-
-		mParam_Branch.uWindMatOff->SetFloat(windMatOff);
-		mParam_Branch.uWindMatrix->SetMatrix(matWind, MTreeGlobal::K_NumWindMatrices);
-		mParam_Branch.uPosition->SetVector(posNscale);
-		mParam_Branch.uMatRotation->SetMatrix(matRotation);
-
-		RenderSystem::Instance()->Render(mTech_Branch, rop);
-	}
-
-
-	void MForest::Clear()
-	{
-		for (int i = 0; mTreeInstances.Size(); ++i)
-		{
-			delete mTreeInstances[i];
-		}
-
-		mTreeInstances.Clear();
-	}
-
-	void MForest::_addVisibleTree(MTreeInstance * inst)
-	{
-		mVisibleInsts.PushBack(inst);
-	}
-
-	MTreeInstance * MForest::CreateTreeInstance(const TString128 & name)
-	{
-		d_assert (GetTreeInstance(name) == NULL);
-
-		MTreeInstance * inst = new MTreeInstance(name);
-
-		mTreeInstances.PushBack(inst);
-
-		return inst;
-	}
-
-	MTreeInstance * MForest::GetTreeInstance(const TString128 & name)
-	{
-		for (int i = 0; i < mTreeInstances.Size(); ++i)
-		{
-			if (mTreeInstances[i]->GetName() == name)
+			for (int j = 0; j < block->GetRenderOpCount(); ++j)
 			{
-				return mTreeInstances[i];
+				if (block->GetRenderOpGeoType(j) != MVegetation::GT_X2)
+					continue;
+
+				RenderOp * rop = block->GetRenderOp(j);
+
+				RenderSystem::Instance()->Render(mTech_VegX2, rop);
 			}
 		}
-
-		return NULL;
 	}
 
-	void MForest::DestroyTreeInstance(MTreeInstance * inst)
-	{
-		MTreeInstance * instDelete = NULL;
 
-		for (int i = 0; i < mTreeInstances.Size(); ++i)
-		{
-			if (mTreeInstances[i] == inst)
-			{
-				mTreeInstances.Erase(i);
-				break;
-			}
-		}
 
-		d_assert (instDelete != NULL);
 
-		delete instDelete;
-	}
 
-	MTreePtr MForest::LoadTree(const TString128 & sourceName)
-	{
-		MTreePtr tree = GetTree(sourceName);
 
-		if (tree != NULL)
-			return tree;
 
-		tree = new MTree(sourceName);
-		tree->Load();
 
-		mTrees.PushBack(tree.c_ptr());
 
-		return tree;
-	}
 
-	void MForest::DestroyTree(MTree * tree)
-	{
-		MTree * treeDelete = NULL;
 
-		for (int i = 0; i < mTrees.Size(); ++i)
-		{
-			if (mTrees[i] == tree)
-			{
-				treeDelete = tree;
-				mTrees.Erase(i);
-				break;
-			}
-		}
 
-		d_assert (treeDelete != NULL);
 
-		delete treeDelete;
-	}
 
-	MTreePtr MForest::GetTree(const TString128 & sourceName)
-	{
-		for (int i = 0; i < mTrees.Size(); ++i)
-		{
-			if (mTrees[i]->GetSourceName() == sourceName)
-				return mTrees[i];
-		}
 
-		return NULL;
-	}
+
 
 
 
@@ -238,7 +142,6 @@ namespace Myway {
 
 	void MForestListener::_update(void * param0, void * param1)
 	{
-		mForest->Advance();
 	}
 }
 

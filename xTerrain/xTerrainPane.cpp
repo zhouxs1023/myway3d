@@ -24,7 +24,8 @@ END_MESSAGE_MAP()
 IMP_SLN(xTerrainPane);
 
 xTerrainPane::xTerrainPane()
-	: OnCreatePane(&xEvent::OnCreatePane, this, &xTerrainPane::_Create)
+	: IDockPane("Terrain") 
+	, OnCreatePane(&xEvent::OnCreatePane, this, &xTerrainPane::_Create)
 	, OnInit(&xEvent::OnInitUI, this, &xTerrainPane::_Init)
 	, OnShutdown(&xEvent::OnShutdown, this, &xTerrainPane::_Shutdown)
 	, OnUpdate(&xEvent::OnUpdate, this, &xTerrainPane::_Update)
@@ -125,6 +126,8 @@ void xTerrainPane::_Create(void * param0, void * param1)
 
 	EnableDocking(CBRS_ALIGN_ANY);
 	frame->DockPane(this);
+
+	ShowPane(FALSE, FALSE, TRUE);
 }
 
 void xTerrainPane::_Init(void * param0, void * param1)

@@ -14,10 +14,11 @@ public:
     void SetDeclaration(VertexDeclarationPtr decl);
     VertexDeclarationPtr GetDeclaration() const;
 
-    void Bind(int number, VertexBufferPtr stream, int stride);
+    void Bind(int number, VertexBufferPtr stream, int stride, int instance = 0);
 
     VertexBufferPtr GetStream(int index) const;
     int GetStreamStride(int index) const;
+	int GetStreamInstance(int index) const;
 
     void SetCount(int size);
     int GetCount() const;
@@ -29,6 +30,7 @@ public:
     int mCount;
     VertexDeclarationPtr mDeclaration;
     int mStrides[MAX_VERTEX_STREAM];
+	int mInstances[MAX_VERTEX_STREAM];
     VertexBufferPtr mStreams[MAX_VERTEX_STREAM];
 };
 

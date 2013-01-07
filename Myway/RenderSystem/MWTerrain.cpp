@@ -110,29 +110,37 @@ void Terrain::_init()
 		for (int i = 0; i < mConfig.xSectionCount; ++i)
 		{
 
-			TString128 texName = TString128("TWeightMap_") + i + "_" + j; 
+			TString128 texName = TString128("TWeightMap_") + j + "_" + i; 
 			TexturePtr texture = VideoBufferManager::Instance()->CreateTexture(texName, kWeightMapSize, kWeightMapSize, 0, FMT_A8R8G8B8);
-
-			LockedBox lb;
-			texture->Lock(0, &lb, NULL, LOCK_NORMAL);
-
-			int * clr = (int *)lb.pData;
-			Color * weights = mWeights + j * kWeightMapSize * mConfig.xWeightMapSize + i * kWeightMapSize;
-
-			for (int m = 0; m < kWeightMapSize; ++m)
-			{
-				for (int n = 0; n < kWeightMapSize; ++n)
-				{
-					*clr++ = RGBA(weights[n].r, weights[n].g, weights[n].b, weights[n].a);
-				}
-
-				weights += kWeightMapSize;
-			}
-
-			texture->Unlock(0);
 
 			mWeightMaps[index++] = texture;
 		}
+	}
+
+	for (int i = 0; i < mSections.Size(); ++i)
+	{
+		TerrainSection * section = mSections[i];
+
+		int x = section->GetSectionX();
+		int z = section->GetSectionZ();
+
+		TexturePtr weightMap = GetWeightMap(x, z);
+
+		LockedBox lb;
+		weightMap->Lock(0, &lb, NULL, LOCK_DISCARD);
+
+		Color * data = mWeights + z * kWeightMapSize * mConfig.xWeightMapSize + x * kWeightMapSize;
+		int * dest = (int *)lb.pData;
+		for (int k = 0; k < kWeightMapSize; ++k)
+		{
+			for (int p = 0; p < kWeightMapSize; ++p)
+				dest[p] = RGBA(data[p].r, data[p].g, data[p].b, data[p].a);
+
+			dest += kWeightMapSize;
+			data += mConfig.xWeightMapSize;
+		}
+
+		weightMap->Unlock(0);
 	}
 
 	// load default detail map

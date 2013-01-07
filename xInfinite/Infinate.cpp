@@ -15,6 +15,7 @@
 #include "xScene.h"
 #include "xSceneNewDlg.h"
 #include "xSceneOpenDlg.h"
+#include "xPaneDlg.h"
 
 // CInfinateApp
 
@@ -25,6 +26,8 @@ BEGIN_MESSAGE_MAP(CInfinateApp, CWinAppEx)
 	ON_COMMAND(ID_Scene_Open, &CInfinateApp::OnOpenScene)
 	ON_COMMAND(ID_Scene_Save, &CInfinateApp::OnSaveScene)
 	ON_COMMAND(ID_Scene_Export, &CInfinateApp::OnExportScene)
+
+	ON_COMMAND(ID_VIEW_PANE, &CInfinateApp::OnViewPane)
 
 END_MESSAGE_MAP()
 
@@ -301,18 +304,9 @@ void CInfinateApp::OnExportScene()
 {
 }
 
-void CInfinateApp::OnViewObjectCreator()
+void CInfinateApp::OnViewPane()
 {
-}
+	xPaneDlg dlg;
 
-void CInfinateApp::OnViewExporter()
-{
-}
-
-void CInfinateApp::OnViewProperty()
-{
-}
-
-void CInfinateApp::OnOther()
-{
+	dlg.DoModal();
 }

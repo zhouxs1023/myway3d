@@ -8,7 +8,7 @@ namespace Myway
         mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("main", "PZ_Main.ShaderLib");
         d_assert (mShaderLib);
 
-        mTechs[R_Base] = mShaderLib->GetTechnique("base");
+		mTechs[R_Base] = mShaderLib->GetTechnique("base");
         mTechs[R_Mirror] = mShaderLib->GetTechnique("mirror");
         mTechs[R_Shadow] = mShaderLib->GetTechnique("shadow");
 

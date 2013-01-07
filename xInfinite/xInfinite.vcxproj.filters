@@ -51,6 +51,9 @@
     <ClCompile Include="xResourceView.cpp">
       <Filter>Ui</Filter>
     </ClCompile>
+    <ClCompile Include="xPaneDlg.cpp">
+      <Filter>Ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Infinate.h">
@@ -96,6 +99,9 @@
       <Filter>Ui</Filter>
     </ClInclude>
     <ClInclude Include="xResourceView.h">
+      <Filter>Ui</Filter>
+    </ClInclude>
+    <ClInclude Include="xPaneDlg.h">
       <Filter>Ui</Filter>
     </ClInclude>
   </ItemGroup>

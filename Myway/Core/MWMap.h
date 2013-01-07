@@ -35,6 +35,14 @@ class Map : public AllocObj
         _node() : parent(NULL), left(NULL), right(NULL), color(__RBT_RED) {}
         ~_node() {}
 
+		void Init()
+		{
+			parent = NULL;
+			left = NULL;
+			right = NULL;
+			color = __RBT_RED;
+		}
+
         void SetLeftChild(_node * node)
         {
             left = node;

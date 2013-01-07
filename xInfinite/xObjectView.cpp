@@ -119,7 +119,8 @@ void ObjCreatorTree::OnTimer(UINT_PTR nIDEvent)
 
 
 xObjectView::xObjectView()
-	: OnInit(&xEvent::OnInitUI, this, &xObjectView::_Init)
+	: IDockPane("ObjectView")
+	, OnInit(&xEvent::OnInitUI, this, &xObjectView::_Init)
 {
 }
 

@@ -24,6 +24,9 @@ public:
     void GetElement(VertexElement & ve);
     const VertexElement * GetElementByUsage(DECL_USAGE usage);
 
+	int GetElementCount() { return mElementCount; }
+	const VertexElement & GetElement(int index) { d_assert (index < mElementCount); return mElements[index]; }
+
 protected:
     VertexElement mElements[MAX_ELEMENT];
     int mElementCount;

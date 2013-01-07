@@ -105,8 +105,8 @@ namespace Myway {
         if (Environment::Instance()->GetCloud())
             Environment::Instance()->GetCloud()->Render();
 
-        // ---> render godray
-        if (Environment::Instance()->GetGodRay())
+        // ---> render godray for under water
+        if (Environment::Instance()->GetGodRay() && WaterManager::Instance()->IsUnderWater())
             Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 
 		_updateColorTexture();
@@ -137,6 +137,13 @@ namespace Myway {
 			if (WaterManager::Instance()->IsUnderWater())
 				WaterManager::Instance()->RenderUnderGodRay();
 
+			_updateColorTexture();
+		}
+
+		// ---> render godray for up water
+		if (Environment::Instance()->GetGodRay() && !WaterManager::Instance()->IsUnderWater())
+		{
+			Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 			_updateColorTexture();
 		}
 

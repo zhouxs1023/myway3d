@@ -121,7 +121,7 @@ void xTerrainLayerDlg::_AfterLoadScene(void * param0, void * param1)
 
 		if (layer->detail != "")
 		{
-			list->InsertString(index, layer->detail.c_str());
+			list->InsertString(index++, layer->detail.c_str());
 			mLayerIds.PushBack(i);
 		}
 	}

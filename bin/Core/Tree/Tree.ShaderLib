@@ -10,6 +10,13 @@
 			<param name = "gClipPlane" type = "float4" btype = "clipPlane" />
 		</Shader>
 
+    <Shader name = "GrassX2VS" language = "cg" profile = "vs30" source = "GrassX2.vs" >
+      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    </Shader>
+
+    <Shader name = "GrassX2PS" language = "cg" profile = "ps30" source = "GrassX2.ps" >
+      <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+    </Shader>
 	
 	</Shaders>
 
@@ -18,6 +25,8 @@
 			<sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
 		</Technique>
 
+    <Technique name = "GrassX2" vs = "GrassX2VS" ps = "GrassX2PS">
+    </Technique>
 
 	</Techniques>
 

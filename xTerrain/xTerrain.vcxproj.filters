@@ -54,6 +54,9 @@
     <ClCompile Include="xLight.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="xForest.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -107,6 +110,9 @@
       <Filter>Src</Filter>
     </ClInclude>
     <ClInclude Include="xLight.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xForest.h">
       <Filter>Src</Filter>
     </ClInclude>
   </ItemGroup>

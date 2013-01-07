@@ -18,7 +18,8 @@ static char THIS_FILE[]=__FILE__;
 IMP_SLN (xPropertyGrid);
 
 xPropertyGrid::xPropertyGrid()
-	: OnSelectObj(&xEvent::OnSelectObj, this, &xPropertyGrid::_OnSelect)
+	: IDockPane("Property")
+	, OnSelectObj(&xEvent::OnSelectObj, this, &xPropertyGrid::_OnSelect)
 	, OnUnSelectObj(&xEvent::OnUnSelectObj, this, &xPropertyGrid::_OnUnSelect)
 {
 	INIT_SLN;

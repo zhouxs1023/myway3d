@@ -15,14 +15,15 @@ inline MultiMap<Key, T>::~MultiMap()
 template <class Key, class T>
 inline void MultiMap<Key, T>::Clear()
 {
-    _node * node = mHead;
+	/*_node * node = mHead;
 
-    while (node)
-    {
-        node->mem.second.Clear();
-        node = node->next;
-    }
+	while (node)
+	{
+		node->mem.second.Clear();
+		node = node->next;
+	}*/
 
+	mAlloc.Shutdown();
     mHead = NULL;
 }
 

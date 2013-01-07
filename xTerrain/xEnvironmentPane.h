@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IDockPane.h"
+
 class xKeyFrameTab : public CMFCTabCtrl
 {
 	DECLARE_MESSAGE_MAP()
@@ -9,7 +11,7 @@ protected:
 };
 
 
-class xEnvironmentPane : public CDockablePane
+class xEnvironmentPane : public IDockPane
 {
 	DECLARE_MESSAGE_MAP()
 

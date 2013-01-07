@@ -1,9 +1,8 @@
 #pragma once
 
-#include "MSpeedTreeEntry.h"
-#include "MTree.h"
-#include "MWind.h"
-#include "MTreeInstance.h"
+#include "MTreeEntry.h"
+#include "MVegetation.h"
+#include "MVegetationBlock.h"
 
 namespace Myway {
 
@@ -16,64 +15,32 @@ namespace Myway {
 		MForest();
 		~MForest();
 
-		void Advance();
-
-		MTreeInstance * CreateTreeInstance(const TString128 & name);
-		MTreeInstance * GetTreeInstance(const TString128 & name);
-		void DestroyTreeInstance(MTreeInstance * inst);
-
-		MTreePtr LoadTree(const TString128 & sourceName);
-		void DestroyTree(MTree * tree);
-		MTreePtr GetTree(const TString128 & sourceName);
-
-		void Clear();
-
-		void _addVisibleTree(MTreeInstance * inst);
-
 	protected:
 		void Init();
 		void Shutdown();
 
+		void LoadVegetations(const TString128 & source);
+		MVegetation * GetVegetation(const TString128 & name) const;
+
 		void _render(void*, void*);
 		void _preVisibleCull(void*, void*);
 
-		void _renderBranch(MTreeInstance * inst);
+
+		void _drawMeshVeg();
+		void _drawBillboardVeg();
+		void _drawX2Veg();
 
 	protected:
-		struct BranchParam {
-			ShaderParam * uWindMatOff;
-			ShaderParam * uWindMatrix;
-
-			ShaderParam * uPosition;
-			ShaderParam * uMatRotation;
-
-			void Bind(Technique * tech)
-			{
-				uWindMatOff = tech->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
-				uWindMatrix = tech->GetVertexShaderParamTable()->GetParam("gWindMatrices");
-				
-				uPosition = tech->GetVertexShaderParamTable()->GetParam("gTreePosition");
-				uMatRotation = tech->GetVertexShaderParamTable()->GetParam("gMatRotation");
-			}
-		};
-
-	protected:
-		MTreeWind mWind;
-
-		Array<MTree *> mTrees;
-		Array<MTreeInstance *> mTreeInstances;
-		Array<MTreeInstance *> mVisibleInsts;
-
 		ShaderLib * mShaderLib;
-		Technique * mTech_Branch;
-		Technique * mTech_Frond;
-		Technique * mTech_Leaf;
-		BranchParam mParam_Branch;
 
-		Mat4 mMatWind[MTreeGlobal::K_NumWindMatrices];
+		Array<MVegetation *> mVegetations;
+		Array<MVegetationBlock *> mVegetationBlocks;
 
-		tEventListener<MForest> OnPreVisibleCull;
-		tEventListener<MForest> OnRender;
+		Array<MVegetationBlock *> mVisibleVegetationBlocks;
+
+		Technique * mTech_VegMesh;
+		Technique * mTech_VegBillboard;
+		Technique * mTech_VegX2;
 	};
 
 

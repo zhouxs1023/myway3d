@@ -164,9 +164,85 @@ protected:
 	SceneNode * mSceneNode;
 };
 
+
+#include <map>
+#include <vector>
+
+void __test()
+{
+	std::map<int, std::string> mapNpc, mapNpcHead;
+	std::vector<int> vecNpcId;
+	std::vector<std::string> vecNpc;
+
+	xml_doc doc;
+
+	XmlHelper::LoadXmlFromFile(doc, "Npc.xml");
+
+	xml_node * root = doc.first_node("enum");
+	xml_node * node = root->first_node("item");
+	
+	while (node)
+	{
+		const char * sId = node->first_attribute("ID")->value();
+		const char * sName = node->first_attribute("name")->value();
+
+		int id = atoi(sId);
+
+		mapNpc.insert(std::pair<int, std::string>(id, sName));
+
+		node = node->next_sibling();
+	}
+
+	xml_doc doc1;
+
+	XmlHelper::LoadXmlFromFile(doc, "NpcÍ·Ïñ.xml");
+
+	root = doc.first_node("Root");
+	node = root->first_node("item");
+
+	while (node)
+	{
+		const char * sId = node->first_attribute("ID")->value();
+		const char * sName = node->first_attribute("File")->value();
+
+		int id = atoi(sId);
+
+		mapNpcHead.insert(std::pair<int, std::string>(id, sName));
+
+		node = node->next_sibling();
+	}
+
+	std::map<int, std::string>::iterator whr = mapNpc.begin();
+
+	while (whr != mapNpc.end())
+	{
+		int id = whr->first;
+
+		if (mapNpcHead.find(id) == mapNpcHead.end())
+		{
+			vecNpcId.push_back(id);
+			vecNpc.push_back(whr->second);
+		}
+
+		++whr;
+	}
+
+	std::ofstream file;
+
+	file.open("NpcHead.txt", std::ios_base::binary);
+
+	for (int i = 0; i < vecNpc.size(); ++i)
+	{
+		file << "<item ID = \"" << TString128(vecNpcId[i]).c_str() << "\" File = \"" << vecNpc[i].c_str() << "\" />\r\n";
+	}
+
+	file.close();
+}
+
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	//Test();
+	__test();
 
 	char sFileName[1024];
 	GetModuleFileName(GetModuleHandle(NULL), sFileName, 1024);

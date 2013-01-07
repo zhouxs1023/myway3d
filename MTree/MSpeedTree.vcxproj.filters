@@ -9,42 +9,31 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MTree.h">
-      <Filter>src</Filter>
+    <ClInclude Include="MBranch.h">
+      <Filter>Tree</Filter>
     </ClInclude>
-    <ClInclude Include="MWind.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="MTreeGlobal.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="MTreeInstance.h">
-      <Filter>src</Filter>
+    <ClInclude Include="MVegetation.h">
+      <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="MForest.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="MSpeedTreePlugin.h" />
-    <ClInclude Include="MSpeedTreeEntry.h" />
-    <ClInclude Include="MBranch.h">
+    <ClInclude Include="MVegetationBlock.h">
       <Filter>Tree</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MTree.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MBranch.cpp">
+      <Filter>Tree</Filter>
     </ClCompile>
-    <ClCompile Include="MWind.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="MTreeInstance.cpp">
-      <Filter>src</Filter>
+    <ClCompile Include="MVegetation.cpp">
+      <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="MForest.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MBranch.cpp">
+    <ClCompile Include="MVegetationBlock.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>

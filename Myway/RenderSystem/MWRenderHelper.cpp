@@ -119,7 +119,7 @@ namespace Myway
 
         VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20);
 
-        vxStream->Bind(0, vb, 20);
+        vxStream->Bind(0, vb, 20, 0);
         vxStream->SetCount(iVertexCount);
 
         mScreenQuad.iPrimCount = iPrimCount;

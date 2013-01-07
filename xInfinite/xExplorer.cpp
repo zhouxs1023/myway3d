@@ -119,7 +119,8 @@ public:
 IMPLEMENT_SERIAL(xExplorerMenuButton, CMFCToolBarMenuButton, 1)
 
 xExplorer::xExplorer()
-: OnInit(&xEvent::OnInit, this, &xExplorer::_Init)
+: IDockPane("Explorer")
+, OnInit(&xEvent::OnInit, this, &xExplorer::_Init)
 , OnUnloadScene(&xEvent::OnUnloadScene, this, &xExplorer::_UnloadScene)
 , OnSerialize(&xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
 , OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)

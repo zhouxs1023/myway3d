@@ -235,7 +235,6 @@ void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
 
 	obj->SetPosition(pos);
 	obj->SetMeshFile(base);
-	obj->SetScale(0.2f);
 
 	xApp::Instance()->SetSelectedObj(obj);
 }

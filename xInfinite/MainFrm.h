@@ -3,34 +3,25 @@
 #include "OutputWnd.h"
 #include "xPropertyGrid.h"
 #include "xExplorer.h"
+#include "IDockPane.h"
 
 class CMainFrame : public CFrameWndEx
 {
-	static Event OnProcessMsg;
-	
+	DECLARE_DYNCREATE(CMainFrame)
+	DECLARE_MESSAGE_MAP()
+
 protected:
 	CMainFrame();
-	DECLARE_DYNCREATE(CMainFrame)
 	virtual ~CMainFrame();
 
 public:
 	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
 
-protected:
-	xApp mApp;
+	xObjectView * GetObjectView() { return &mObjectView; }
+	xPropertyGrid * GetPropertyGrid() { return &mProperty; }
+	xExplorer * GetExplorer() { return &mExplorer; }
 
-	CMFCMenuBar m_wndMenuBar;
-	CMFCStatusBar m_wndStatusBar;
-	CMFCToolBarImages m_UserImages;
-
-	Array<CDockablePane*> mPanels;
-
-	xObjectView mObjectView;
-	xPropertyGrid mProperty;
-	xExplorer mExplorer;
-
-// 生成的消息映射函数
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void OnViewCustomize();
@@ -41,10 +32,21 @@ protected:
 	afx_msg void OnClose();
 	afx_msg void OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized);
 
-	DECLARE_MESSAGE_MAP()
-
 	BOOL CreateDockingWindows();
 	void SetDockingWindowIcons(BOOL bHiColorIcons);
+
+protected:
+	xApp mApp;
+
+	CMFCMenuBar m_wndMenuBar;
+	CMFCStatusBar m_wndStatusBar;
+	CMFCToolBarImages m_UserImages;
+
+	Array<IDockPane*> mPanels;
+
+	xObjectView mObjectView;
+	xPropertyGrid mProperty;
+	xExplorer mExplorer;
 };
 
 

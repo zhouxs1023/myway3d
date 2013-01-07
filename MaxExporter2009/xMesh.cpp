@@ -28,7 +28,6 @@ namespace MaxPlugin {
 
 
 
-
 	xVertexList::xVertexList()
 	{
 	}
@@ -104,7 +103,9 @@ namespace MaxPlugin {
 
 		obj->InitializeData();
 
-		if (obj->GetIGameType() == IGameMesh::IGAME_MESH)
+		IGameMesh::ObjectTypes type = obj->GetIGameType();
+
+		if (type == IGameMesh::IGAME_MESH)
 		{
 			IGameMesh* mesh = (IGameMesh*) obj;
 			Tab<int> texMaps = mesh->GetActiveMapChannelNum();
@@ -376,6 +377,9 @@ namespace MaxPlugin {
 		mMaterial.SetEmissive(Color4(val3.x, val3.y, val3.z, 1));
 		}
 		}*/
+
+		d_assert (!mtl->IsMultiType());
+
 		int numTextures = mtl->GetNumberOfTextureMaps();
 
 		for ( int index = 0; index < numTextures; ++index )
@@ -387,9 +391,10 @@ namespace MaxPlugin {
 
 			const int type = pMap->GetStdMapSlot();
 			const char * tex = pMap->GetBitmapFileName();
+			const char * ttt = pMap->GetTextureName();
 			std::string bmap = tex;
 			bmap = bmap.substr(bmap.find_last_of('\\') + 1);
-
+			
 			if (type == ID_DI)
 				subMesh->mMaterial.SetDiffuseMap(bmap.c_str());
 			else if (type == ID_BU)
@@ -398,6 +403,9 @@ namespace MaxPlugin {
 				subMesh->mMaterial.SetSpecularMap(bmap.c_str());
 			else if (type == ID_SI)
 				subMesh->mMaterial.SetEmissiveMap(bmap.c_str());
+
+			if (type == ID_OP)
+				subMesh->mMaterial.SetBlendMode(BM_ALPHA_TEST);
 
 			xTextureExporter::Instance()->Push(pMap->GetBitmapFileName());
 		}

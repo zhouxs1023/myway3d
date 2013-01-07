@@ -43,7 +43,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <PreprocessorDefinitions>X_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>X_EXPORT;_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <DisableSpecificWarnings>4355</DisableSpecificWarnings>
     </ClCompile>
     <Link>
@@ -76,6 +76,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="IDockPane.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="xApp.h" />
     <ClInclude Include="xBaseOperator.h" />
@@ -92,6 +93,7 @@
     <ClInclude Include="xUndoRedo.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="IDockPane.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

@@ -39,6 +39,9 @@
     <ClInclude Include="xDebugRender.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="IDockPane.h">
+      <Filter>source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -77,6 +80,9 @@
       <Filter>source</Filter>
     </ClCompile>
     <ClCompile Include="xDebugRender.cpp">
+      <Filter>source</Filter>
+    </ClCompile>
+    <ClCompile Include="IDockPane.cpp">
       <Filter>source</Filter>
     </ClCompile>
   </ItemGroup>

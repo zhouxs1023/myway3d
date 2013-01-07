@@ -106,7 +106,8 @@ END_MESSAGE_MAP()
 IMP_SLN(xEnvironmentPane);
 
 xEnvironmentPane::xEnvironmentPane()
-	: OnInit(&xEvent::OnInitUI, this, &xEnvironmentPane::_Init)
+	: IDockPane("Environment") 
+	, OnInit(&xEvent::OnInitUI, this, &xEnvironmentPane::_Init)
 	, OnShutdown(&xEvent::OnShutdown, this, &xEnvironmentPane::_Shutdown)
 	, OnCreatePane(&xEvent::OnCreatePane, this, &xEnvironmentPane::_Create)
 	, OnUpdate(&xEvent::OnUpdate, this, &xEnvironmentPane::_Update)
@@ -310,6 +311,8 @@ void xEnvironmentPane::_Create(void * param0, void * param1)
 
 	EnableDocking(CBRS_ALIGN_ANY);
 	frame->DockPane(this);
+
+	ShowPane(FALSE, FALSE, TRUE);
 }
 
 void xEnvironmentPane::_Init(void * param0, void * param1)

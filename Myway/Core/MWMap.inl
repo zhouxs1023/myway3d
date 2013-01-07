@@ -135,6 +135,9 @@ template <class Key, class T, class Less>
 typename Map<Key, T, Less>::Iterator Map<Key, T, Less>::Insert(const Key & k, const T & v)
 {
     _node * node = mAlloc.Alloc();
+
+	node->Init();
+
     node->SetPair(k, v);
 
     _Insert(node);

@@ -13,20 +13,15 @@
   <ItemGroup>
     <ClInclude Include="MBranch.h" />
     <ClInclude Include="MForest.h" />
-    <ClInclude Include="MSpeedTreeEntry.h" />
-    <ClInclude Include="MSpeedTreePlugin.h" />
-    <ClInclude Include="MTree.h" />
-    <ClInclude Include="MTreeGlobal.h" />
-    <ClInclude Include="MTreeInstance.h" />
-    <ClInclude Include="MWind.h" />
+    <ClInclude Include="MVegetation.h" />
+    <ClInclude Include="MVegetationBlock.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MBranch.cpp" />
     <ClCompile Include="MForest.cpp" />
-    <ClCompile Include="MTree.cpp" />
-    <ClCompile Include="MTreeInstance.cpp" />
-    <ClCompile Include="MWind.cpp" />
+    <ClCompile Include="MVegetation.cpp" />
+    <ClCompile Include="MVegetationBlock.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BB20FA9-256F-48FF-899E-CC648315552B}</ProjectGuid>
@@ -60,15 +55,15 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;..\ThirdParty\SpeedTree\Include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MTREE_EXPORT;MW_IMPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>../bin/debug/MSpeedTree_d.dll</OutputFile>
-      <ImportLibrary>../bin/lib/MSpeedTree_d.lib</ImportLibrary>
-      <AdditionalLibraryDirectories>..\ThirdParty\SpeedTree\Lib;../bin/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>myway_d.lib;SpeedTree_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../bin/debug/MTree_d.dll</OutputFile>
+      <ImportLibrary>../bin/lib/MTree_d.lib</ImportLibrary>
+      <AdditionalLibraryDirectories>../bin/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>myway_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

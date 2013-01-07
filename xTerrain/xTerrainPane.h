@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IDockPane.h"
 #include "xTerrainOp.h"
 #include "xTerrainHeightDlg.h"
 #include "xTerrainLayerDlg.h"
@@ -7,7 +8,7 @@
 #include "xEditTerrainLayer.h"
 
 
-class xTerrainPane : public CDockablePane
+class xTerrainPane : public IDockPane
 {
 	DECLARE_MESSAGE_MAP()
 

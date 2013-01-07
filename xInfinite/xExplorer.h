@@ -34,7 +34,7 @@ protected:
 	xExplorer * mExplorer;
 };
 
-class xExplorer : public CDockablePane
+class xExplorer : public IDockPane
 {
 	DECLARE_MESSAGE_MAP()
 

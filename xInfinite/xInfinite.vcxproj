@@ -100,6 +100,7 @@
     <ClCompile Include="InfinateView.cpp" />
     <ClCompile Include="MainFrm.cpp" />
     <ClCompile Include="OutputWnd.cpp" />
+    <ClCompile Include="xPaneDlg.cpp" />
     <ClCompile Include="xPropertyGrid.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -117,6 +118,7 @@
     <ClInclude Include="InfinateView.h" />
     <ClInclude Include="MainFrm.h" />
     <ClInclude Include="OutputWnd.h" />
+    <ClInclude Include="xPaneDlg.h" />
     <ClInclude Include="xPropertyGrid.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="resource.h" />

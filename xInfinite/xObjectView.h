@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ViewTree.h"
+#include "IDockPane.h"
 
 class CFileViewToolBar : public CMFCToolBar
 {
@@ -33,7 +34,7 @@ protected:
 	int mDragTimer;
 };
 
-class xObjectView : public CDockablePane
+class xObjectView : public IDockPane
 {
 	DECLARE_MESSAGE_MAP()
 

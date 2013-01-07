@@ -8,6 +8,7 @@
 #include "xGizmo.h"
 #include "xUndoRedo.h"
 #include "xDebugRender.h"
+#include "IDockPane.h"
 
 enum eTransformOperator
 {
@@ -51,6 +52,10 @@ public:
 
 	ShaderLib * GetHelperShaderLib() { return mHelperShaderLib; }
 
+	void AddPane(IDockPane * pane) { mDockPanes.PushBack(pane); }
+	int GetPaneCount() { return mDockPanes.Size(); }
+	IDockPane * GetPane(int i) { return mDockPanes[i]; }
+
 	void SetSelectedObj(xObj * obj);
 	void SetSelectedObjs(xObj ** objs, int size);
 	int GetSelectedObjSize();
@@ -82,6 +87,7 @@ protected:
 
 	bool mNeedResize;
 
+	Array<IDockPane *> mDockPanes;
 	Array<xObj *> mSelectedObjs;
 
 	int mOperator;

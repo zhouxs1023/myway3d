@@ -688,6 +688,7 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
     for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
     {
         int stride = vstream->GetStreamStride(i);
+		int instances = vstream->GetStreamInstance(i);
         VertexBufferPtr vb = vstream->GetStream(i);
 
         if (stride && vb.NotNull())
@@ -699,6 +700,19 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
         {
             hr = mD3DDevice->SetStreamSource(i, NULL, 0, 0);
         }
+
+		if (instances > 1)
+		{
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INDEXEDDATA | instances);
+		}
+		else if (instances == 1)
+		{
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INSTANCEDATA | instances);
+		}
+		else
+		{
+			mD3DDevice->SetStreamSourceFreq(i, 1);
+		}
 
         D3DErrorExceptionFunction(SetStreamSource, hr);
     }
@@ -826,6 +840,7 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
 
     for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
     {
+		int instances = vstream->GetStreamInstance(i);
         int stride = vstream->GetStreamStride(i);
         VertexBufferPtr vb = vstream->GetStream(i);
 
@@ -838,6 +853,19 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
         {
             hr = mD3DDevice->SetStreamSource(i, NULL, 0, 0);
         }
+
+		if (instances > 1)
+		{
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INDEXEDDATA | instances);
+		}
+		else if (instances == 1)
+		{
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INSTANCEDATA | instances);
+		}
+		else
+		{
+			mD3DDevice->SetStreamSourceFreq(i, 1);
+		}
 
         D3DErrorExceptionFunction(SetStreamSource, hr);
     }
