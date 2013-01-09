@@ -81,6 +81,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="xAfxResourceSetup.cpp" />
+    <ClCompile Include="xEditTerrainVeg.cpp" />
     <ClCompile Include="xForest.cpp" />
     <ClCompile Include="xLight.cpp" />
     <ClCompile Include="xPropertyGridColorPick.cpp" />
@@ -97,12 +98,14 @@
     <ClCompile Include="xTerrainLayerInfoDlg.cpp" />
     <ClCompile Include="xTerrainOp.cpp" />
     <ClCompile Include="xTerrainPane.cpp" />
+    <ClCompile Include="xTerrainVegDlg.cpp" />
     <ClCompile Include="xTree.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="xAfxResourceSetup.h" />
+    <ClInclude Include="xEditTerrainVeg.h" />
     <ClInclude Include="xForest.h" />
     <ClInclude Include="xLight.h" />
     <ClInclude Include="xPropertyGridColorPick.h" />
@@ -119,6 +122,7 @@
     <ClInclude Include="xTerrainLayerInfoDlg.h" />
     <ClInclude Include="xTerrainOp.h" />
     <ClInclude Include="xTerrainPane.h" />
+    <ClInclude Include="xTerrainVegDlg.h" />
     <ClInclude Include="xTree.h" />
   </ItemGroup>
   <ItemGroup>

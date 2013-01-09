@@ -4,8 +4,10 @@
 #include "xTerrainOp.h"
 #include "xTerrainHeightDlg.h"
 #include "xTerrainLayerDlg.h"
+#include "xTerrainVegDlg.h"
 #include "xEditTerrainHeight.h"
 #include "xEditTerrainLayer.h"
+#include "xEditTerrainVeg.h"
 
 
 class xTerrainPane : public IDockPane
@@ -51,8 +53,10 @@ protected:
 
 	xTerrainHeightDlg mHeightDlg;
 	xTerrainLayerDlg mLayerDlg;
+	xTerrainVegDlg mVegDlg;
 
 	xEditTerrainHeight mEditHeight;
 	xEditTerrainLayer mEditLayer;
+	xEditTerrainVeg mEditVeg;
 };
 

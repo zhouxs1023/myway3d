@@ -707,7 +707,7 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 		}
 		else if (instances == 1)
 		{
-			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INSTANCEDATA | instances);
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INSTANCEDATA | 1);
 		}
 		else
 		{
@@ -717,8 +717,9 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
         D3DErrorExceptionFunction(SetStreamSource, hr);
     }
 
-    IndexBufferPtr ib = istream->GetStream();
-    int istart = istream->GetStartVertex();
+
+	IndexBufferPtr ib = istream->GetStream();
+	int istart = istream->GetStartVertex();
 
     if (ib.NotNull())
     {
@@ -833,7 +834,7 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
 
     int vcount = vstream->GetCount();
 
-    VertexDeclarationPtr decl = vstream->GetDeclaration();
+    VertexDeclarationPtr decl = vstream->GetDeclaration(); d_assert (decl != NULL);
     D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
 
     hr = mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
@@ -844,6 +845,19 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
         int stride = vstream->GetStreamStride(i);
         VertexBufferPtr vb = vstream->GetStream(i);
 
+		if (instances > 1)
+		{
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INDEXEDDATA | instances);
+		}
+		else if (instances == 1)
+		{
+			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INSTANCEDATA | 1);
+		}
+		else
+		{
+			mD3DDevice->SetStreamSourceFreq(i, 1);
+		}
+
         if (stride && vb.NotNull())
         {
             D3D9VertexBuffer * d3dvb = (D3D9VertexBuffer*)vb.c_ptr();
@@ -853,28 +867,17 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
         {
             hr = mD3DDevice->SetStreamSource(i, NULL, 0, 0);
         }
-
-		if (instances > 1)
-		{
-			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INDEXEDDATA | instances);
-		}
-		else if (instances == 1)
-		{
-			mD3DDevice->SetStreamSourceFreq(i, D3DSTREAMSOURCE_INSTANCEDATA | instances);
-		}
-		else
-		{
-			mD3DDevice->SetStreamSourceFreq(i, 1);
-		}
+		
 
         D3DErrorExceptionFunction(SetStreamSource, hr);
     }
 
-    IndexBufferPtr ib = istream->GetStream();
-    int istart = istream->GetStartVertex();
+
+	IndexBufferPtr ib = istream->GetStream();
+	int istart = istream->GetStartVertex();
 
     if (ib.NotNull())
-    {
+	{
         D3D9IndexBuffer * d3dib = (D3D9IndexBuffer*)(ib.c_ptr());
 
         hr = mD3DDevice->SetIndices(d3dib->GetD3DIndexBuffer());

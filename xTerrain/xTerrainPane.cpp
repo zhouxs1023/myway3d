@@ -7,6 +7,7 @@
 
 #define xHeightPage 0
 #define xLayerPage 1
+#define xVegPage 2
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -75,8 +76,16 @@ int xTerrainPane::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
+	// create vegetation dialog
+	if (!mVegDlg.Create(IDD_Terrain_Veg, &mTab))
+	{
+		TRACE0("Create \"Terrain Vegetation Dialog\" failed!\n");
+		return -1;
+	}
+
 	mTab.AddTab(&mHeightDlg, "Height");
 	mTab.AddTab(&mLayerDlg, "Layer");
+	mTab.AddTab(&mVegDlg, "Vegetation");
 
 	AdjustLayout();
 
@@ -134,15 +143,18 @@ void xTerrainPane::_Init(void * param0, void * param1)
 {
 	mEditHeight._Init(NULL, NULL);
 	mEditLayer._Init(NULL, NULL);
+	mEditVeg._Init(NULL, NULL);
 
 	mHeightDlg._Init(NULL, NULL);
 	mLayerDlg._Init(NULL, NULL);
+	mVegDlg._Init(NULL, NULL);
 }
 
 void xTerrainPane::_Shutdown(void * param0, void * param1)
 {
 	mEditHeight._Shutdown(NULL, NULL);
 	mEditLayer._Shutdown(NULL, NULL);
+	mEditVeg._Shutdown(NULL, NULL);
 }
 
 void xTerrainPane::_Update(void * param0, void * param1)
@@ -165,6 +177,10 @@ void xTerrainPane::_Update(void * param0, void * param1)
 	{
 		mEditLayer._Update(NULL, NULL);
 	}
+	else if (isel == xVegPage)
+	{
+		mEditVeg._Update(NULL, NULL);
+	}
 }
 
 void xTerrainPane::_Render(void * param0, void * param1)
@@ -183,6 +199,10 @@ void xTerrainPane::_Render(void * param0, void * param1)
 	else if (isel == xLayerPage)
 	{
 		mEditLayer._Render(NULL, NULL);
+	}
+	else if (isel == xVegPage)
+	{
+		mEditVeg._Render(NULL, NULL);
 	}
 }
 
@@ -208,10 +228,12 @@ void xTerrainPane::_UnloadScene(void * param0, void * param1)
 {
 	mEditLayer.SetLayer(-1);
 	mLayerDlg._UnloadScene(NULL, NULL);
+	mVegDlg._UnloadScene(NULL, NULL);
 }
 
 void xTerrainPane::_AfterloadScene(void * param0, void * param1)
 {
 	mEditLayer.SetLayer(-1);
 	mLayerDlg._AfterLoadScene(NULL, NULL);
+	mVegDlg._AfterLoadScene(NULL, NULL);
 }

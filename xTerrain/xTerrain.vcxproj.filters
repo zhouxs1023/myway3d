@@ -57,6 +57,12 @@
     <ClCompile Include="xForest.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="xEditTerrainVeg.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrainVegDlg.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -114,6 +120,12 @@
     </ClInclude>
     <ClInclude Include="xForest.h">
       <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainVeg.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrainVegDlg.h">
+      <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

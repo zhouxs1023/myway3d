@@ -1,10 +1,11 @@
 #pragma once
 
 #include "MVegetation.h"
+#include "MWSceneNode.h"
 
 namespace Myway {
 
-	class MVegetationBlock
+	class MVegetationBlock : public Mover
 	{
 		struct Inst
 		{
@@ -13,30 +14,35 @@ namespace Myway {
 			float Size;
 		};
 
+		typedef MVegetation *MVegetationPtr;
+
 	public:
 		MVegetationBlock(int xSection, int ySection, const RectF & rc);
 		~MVegetationBlock();
 
+		virtual void AddRenderQueue(RenderQueue * rq);
+
 		void AddVegetation(MVegetation * veg, const Vec3 & position, float size);
+		void RemoveVegetation(MVegetation * veg, const RectF & rc);
 
-		void ReInitGeometry();
+		void UpdateGeometry();
 
-		const Aabb & GetBound() const { return mBound; }
 		const RectF & GetRect() const { return mRect; }
 		int GetXSection() const { return mXSection; }
 		int GetZSection() const { return mZSection; }
 
 		int GetRenderOpCount() const { return mNumOfRenderOps; }
 		RenderOp * GetRenderOp(int index) const { d_assert (index < mNumOfRenderOps); return &mRenderOps[index]; }
-		int GetRenderOpGeoType(int index) const { d_assert (index < mNumOfRenderOps); return mGeoTypes[index]; }
+		MVegetation * GetRenderVegetation(int index) const { d_assert (index < mNumOfRenderOps); return mRenderVegs[index]; }
 
 	protected:
 		void _mergeVeg_Mesh(List<Inst> & Vegs, int index);
 		void _mergeVeg_Billboard(List<Inst> & Vegs, int index);
 		void _mergeVeg_X2(List<Inst> & Vegs, int index);
 
+		void _calcuBound();
+
 	protected:
-		Aabb mBound;
 		RectF mRect;
 		int mXSection;
 		int mZSection;
@@ -45,7 +51,10 @@ namespace Myway {
 
 		int mNumOfRenderOps;
 		RenderOp * mRenderOps;
-		int * mGeoTypes;
+		MVegetationPtr * mRenderVegs;
+		SceneNode * mSceneNode;
+
+		bool mNeedUpdate;
 	};
 
 }

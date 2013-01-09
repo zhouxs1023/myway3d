@@ -1,6 +1,5 @@
 #pragma once
 
-#include "MWMaterial.h"
 #include "MWMesh.h"
 
 namespace Myway {

@@ -23,7 +23,7 @@ protected:
 	afx_msg void OnBrushSize();
 	afx_msg void OnBrushDensity();
 
-	BOOL OnInitDialog();
+	afx_msg BOOL OnInitDialog();
 
 protected:
 	Array<int> mLayerIds;
