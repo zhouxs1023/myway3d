@@ -5,6 +5,9 @@
 
 namespace Myway {
 
+	static const int MForest_VegMagic = 'MFrt';
+	static const int MForest_VegVersion = 0;
+
 	IMP_SLN (MForest);
 
 	MForest::MForest()
@@ -32,29 +35,25 @@ namespace Myway {
 
 		d_assert (mTech_VegX2);
 
-		MVegetation * veg = new MVegetation();
-
-		veg->Name = "Default";
-		veg->Type = MVegetation::GT_X2;
-		veg->DiffuseMap = VideoBufferManager::Instance()->Load2DTexture("g1.tga", "g1.tga");
-
-		mVegetations.PushBack(veg);
+		mVegBlockRect = RectF(0, 0, 0, 0);
+		mXVegBlockCount = 0;
+		mZVegBlockCount = 0;
 	}
 
 	void MForest::Shutdown()
 	{
-		Unload();
+		UnloadVeg();
 	}
 
 	void MForest::Update()
 	{
 		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
 		{
-			mVegetationBlocks[i]->UpdateGeometry();
+			mVegetationBlocks[i]->_UpdateGeometry();
 		}
 	}
 
-	void MForest::Unload()
+	void MForest::UnloadVeg()
 	{
 		RemoveAllVegetationBlock();
 
@@ -71,22 +70,192 @@ namespace Myway {
 		mVisibleVegetationBlocks.PushBack(block);
 	}
 
-	void MForest::AddVegetation(const TString128 & name, MVegetation::GeomType type,
+	
+
+	void MForest::LoadVeg(const TString128 & source)
+	{
+		UnloadVeg();
+
+		DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source.c_str());
+
+		if (stream == NULL)
+			return ;
+
+		int magic, version;
+
+		stream->Read(&magic, sizeof(int));
+		stream->Read(&version, sizeof(int));
+
+		d_assert (magic == MForest_VegMagic);
+		d_assert (version == MForest_VegVersion);
+		
+		int vegCount;
+		stream->Read(&vegCount, sizeof(int));
+
+		for (int i = 0; i < vegCount; ++i)
+		{
+			TString32 Name;
+			int Type;
+			TString128 MeshFile, DiffuseMap, NormalMap, SpecularMap;
+
+			stream->Read(Name.c_str(), 32);
+			stream->Read(&Type, sizeof(int));
+			stream->Read(MeshFile.c_str(), 128);
+			stream->Read(DiffuseMap.c_str(), 128);
+			stream->Read(NormalMap.c_str(), 128);
+			stream->Read(SpecularMap.c_str(), 128);
+
+			AddVegetation(Name, (MVegetation::GeomType)Type, MeshFile, DiffuseMap, NormalMap, SpecularMap);
+		}
+
+		RectF rect;
+		int xBlockCount, zBlockCount;
+
+		stream->Read(&rect, sizeof(rect));
+		stream->Read(&xBlockCount, sizeof(int));
+		stream->Read(&zBlockCount, sizeof(int));
+
+		CreateVegetationBlocks(rect, xBlockCount, zBlockCount);
+
+		for (int j = 0; j < zBlockCount; ++j)
+		{
+			for (int i = 0; i < xBlockCount; ++i)
+			{
+				MVegetationBlock * block = GetVegetationBlock(i, j);
+				List<MVegetationBlock::Inst> & instList = block->_getInstList();
+
+				int instCount;
+				TString32 Name;
+				Vec3 Position;
+				float Size;
+
+				stream->Read(&instCount, sizeof(int));
+
+				for (int k = 0; k < instCount; ++k)
+				{
+					stream->Read(Name.c_str(), 32);
+					stream->Read(&Position, sizeof(Vec3));
+					stream->Read(&Size, sizeof(float));
+
+					MVegetationBlock::Inst inst;
+
+					inst.Veg = GetVegetationByName(Name);
+					inst.Position = Position;
+					inst.Size = Size;
+
+					instList.PushBack(inst);
+				}
+
+				block->_notifyNeedUpdate();
+			}
+		}
+	}
+
+	void MForest::SaveVeg(const TString128 & source)
+	{
+		File file;
+
+		file.Open(source.c_str(), OM_WRITE_BINARY);
+
+		file.Write(&MForest_VegMagic, sizeof(int));
+		file.Write(&MForest_VegVersion, sizeof(int));
+
+		// save vegetation
+		int vegCount = mVegetations.Size();
+		file.Write(&vegCount, sizeof(int));
+
+		for (int i = 0; i < mVegetations.Size(); ++i)
+		{
+			MVegetation * veg = mVegetations[i];
+			TString32 Name = veg->Name;
+			int Type = veg->Type;
+			TString128 MeshFile = veg->pMesh != NULL ? veg->pMesh->GetSourceName() : "";
+			TString128 DiffuseMap = veg->DiffuseMap != NULL ? veg->DiffuseMap->GetSourceName() : "";
+			TString128 NormalMap = veg->NormalMap != NULL ? veg->NormalMap->GetSourceName() : "";
+			TString128 SpecularMap = veg->SpecularMap != NULL ? veg->SpecularMap->GetSourceName() : "";
+
+			file.Write(Name.c_str(), 32);
+			file.Write(&Type, sizeof(int));
+			file.Write(MeshFile.c_str(), 128);
+			file.Write(DiffuseMap.c_str(), 128);
+			file.Write(NormalMap.c_str(), 128);
+			file.Write(SpecularMap.c_str(), 128);
+		}
+
+		// save block
+		file.Write(&mVegBlockRect, sizeof(RectF));
+		file.Write(&mXVegBlockCount, sizeof(int));
+		file.Write(&mZVegBlockCount, sizeof(int));
+
+		for (int j = 0; j < mZVegBlockCount; ++j)
+		{
+			for (int i = 0; i < mXVegBlockCount; ++i)
+			{
+				MVegetationBlock * block = GetVegetationBlock(i, j);
+				int count = block->_getInstanceSize();
+				List<MVegetationBlock::Inst> & insts = block->_getInstList();
+
+				file.Write(&count, sizeof(int));
+
+				List<MVegetationBlock::Inst>::Iterator whr = insts.Begin();
+				List<MVegetationBlock::Inst>::Iterator end = insts.End();
+
+				while (whr != end)
+				{
+					const TString32 & Name = whr->Veg->Name;
+					const Vec3 & Position = whr->Position;
+					float Size = whr->Size;
+
+					file.Write(Name.c_str(), 32);
+					file.Write(&Position, sizeof(Vec3));
+					file.Write(&Size, sizeof(float));
+
+					++whr;
+				}
+			}
+		}
+	}
+
+	void MForest::AddVegetation(const TString32 & name, MVegetation::GeomType type,
 								const TString128 & mesh, const TString128 & diffueMap,
 								const TString128 & normalMap, const TString128 & specularMap)
 	{
 		MVegetation * veg = new MVegetation;
 
 		veg->Name = name;
+		veg->Type = type;
+
+		if (mesh != "" && type == MVegetation::GT_Mesh)
+			veg->pMesh = MeshManager::Instance()->Load(mesh, mesh);
+
 		veg->DiffuseMap = VideoBufferManager::Instance()->Load2DTexture(diffueMap, diffueMap);
 
-		if (normalMap != "")
+		if (normalMap != "" && type == MVegetation::GT_Mesh)
 			veg->NormalMap = VideoBufferManager::Instance()->Load2DTexture(normalMap, normalMap);
 
-		if (specularMap != "")
+		if (specularMap != "" && type == MVegetation::GT_Mesh)
 			veg->SpecularMap = VideoBufferManager::Instance()->Load2DTexture(specularMap, specularMap);
 
 		mVegetations.PushBack(veg);
+	}
+
+	void MForest::RemoveVegetation(MVegetation * veg)
+	{
+		for (int i = 0; i < mVegetations.Size(); ++i)
+		{
+			if (mVegetations[i] == veg)
+			{
+				_OnVegRemoved(veg);
+
+				delete veg;
+
+				mVegetations.Erase(i);
+
+				return ;
+			}
+		}
+
+		d_assert (0);
 	}
 
 	int MForest::GetVegetationCount() const
@@ -99,7 +268,7 @@ namespace Myway {
 		return mVegetations[index];
 	}
 
-	MVegetation * MForest::GetVegetationByName(const TString128 & name)
+	MVegetation * MForest::GetVegetationByName(const TString32 & name)
 	{
 		for (int i = 0; i < mVegetations.Size(); ++i)
 		{
@@ -112,6 +281,15 @@ namespace Myway {
 		return NULL;
 	}
 
+	void MForest::OnVegetationChanged(MVegetation * veg)
+	{
+		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
+		{
+			MVegetationBlock * block = mVegetationBlocks[i];
+			block->_OnVegChanged(veg);
+		}
+	}
+
 	void MForest::AddVegetationInst(MVegetation * veg, const Vec3 & position, float size)
 	{
 		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
@@ -120,7 +298,7 @@ namespace Myway {
 			const RectF & rc = block->GetRect();
 
 			if (position.x >= rc.x1 && position.x <= rc.x2 &&
-				position.y >= rc.y1 && position.y <= rc.y2)
+				position.z >= rc.y1 && position.z <= rc.y2)
 			{
 				block->AddVegetation(veg, position, size);
 				break;
@@ -133,6 +311,9 @@ namespace Myway {
 		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
 		{
 			MVegetationBlock * block = mVegetationBlocks[i];
+
+			if (block->_getInstanceSize() == 0)
+				continue;
 
 			const RectF & rcBlock = block->GetRect();
 
@@ -156,6 +337,10 @@ namespace Myway {
 	{
 		d_assert (xCount > 0 && zCount > 0);
 
+		mXVegBlockCount = xCount;
+		mZVegBlockCount = zCount;
+		mVegBlockRect = rect;
+
 		float xStep = (rect.x2 - rect.x1) / xCount;
 		float zStep = (rect.y2 - rect.y1) / zCount;
 
@@ -175,6 +360,18 @@ namespace Myway {
 				mVegetationBlocks.PushBack(block);
 			}
 		}
+	}
+
+	MVegetationBlock * MForest::GetVegetationBlock(int x, int z)
+	{
+		d_assert (x < mXVegBlockCount && z < mZVegBlockCount);
+
+		return mVegetationBlocks[z * mXVegBlockCount + x];
+	}
+
+	int MForest::GetVegetationBlockCount()
+	{
+		return mVegetationBlocks.Size();
 	}
 
 	void MForest::RemoveAllVegetationBlock()
@@ -238,6 +435,16 @@ namespace Myway {
 			}
 		}
 	}
+
+
+	void MForest::_OnVegRemoved(MVegetation * veg)
+	{
+		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
+		{
+			mVegetationBlocks[i]->_OnVegRemoved(veg);
+		}
+	}
+
 
 
 

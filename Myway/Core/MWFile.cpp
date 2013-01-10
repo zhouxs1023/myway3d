@@ -24,7 +24,7 @@ File::~File()
     Close();
 }
 
-bool File::Open(const char * file, int mode)
+bool File::Open(const char * file, OPEN_MODE mode)
 {
 	Close();
 	switch (mode)

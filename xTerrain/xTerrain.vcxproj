@@ -100,6 +100,7 @@
     <ClCompile Include="xTerrainPane.cpp" />
     <ClCompile Include="xTerrainVegDlg.cpp" />
     <ClCompile Include="xTree.cpp" />
+    <ClCompile Include="xVegetationDlg.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resource.h" />
@@ -124,6 +125,7 @@
     <ClInclude Include="xTerrainPane.h" />
     <ClInclude Include="xTerrainVegDlg.h" />
     <ClInclude Include="xTree.h" />
+    <ClInclude Include="xVegetationDlg.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="xTerrain.rc" />

@@ -27,7 +27,7 @@ public:
 	File();
 	~File();
 
-	bool			Open(const char * file, int mode = OM_WRITE_BINARY);
+	bool			Open(const char * file, OPEN_MODE mode = OM_WRITE_BINARY);
 	void			Close();
 	bool			IsOpen();
 	bool			Skip(int offset);
@@ -78,7 +78,7 @@ public:
 
 private:
 	FILE *		mHandle;
-	int			mMode;
+	OPEN_MODE	mMode;
 	TString128  mFile;
     bool        mEof;
 };

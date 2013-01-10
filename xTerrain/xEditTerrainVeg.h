@@ -2,6 +2,12 @@
 
 class xEditTerrainVeg
 {
+	struct Brush
+	{
+		float size;
+		Vec3 position;
+	};
+
 public:
 	xEditTerrainVeg();
 	~xEditTerrainVeg();
@@ -19,4 +25,7 @@ protected:
 	float mBrushSize;
 	int mBrushDensity;
 	bool mBrushOp_Add;
+
+	Brush mBrush;
+	Technique * mTech_Brush;
 };

@@ -17,21 +17,28 @@ namespace Myway {
 		MForest();
 		~MForest();
 
-		void AddVegetation(const TString128 & name, MVegetation::GeomType type,
+		void LoadVeg(const TString128 & source);
+		void SaveVeg(const TString128 & source);
+
+		void AddVegetation(const TString32 & name, MVegetation::GeomType type,
 			const TString128 & mesh, const TString128 & diffueMap,
 			const TString128 & normalMap, const TString128 & specularMap);
-
+		void RemoveVegetation(MVegetation * veg);
 		int GetVegetationCount() const;
+		void OnVegetationChanged(MVegetation * veg);
+
 		MVegetation * GetVegetation(int index);
-		MVegetation * GetVegetationByName(const TString128 & name);
+		MVegetation * GetVegetationByName(const TString32 & name);
 
 		void AddVegetationInst(MVegetation * veg, const Vec3 & position, float size);
 		void RemoveVegetationInst(const RectF & rc, MVegetation * veg);
 
 		void CreateVegetationBlocks(const RectF & rect, int xCount, int zCount);
+		MVegetationBlock * GetVegetationBlock(int x, int z);
+		int GetVegetationBlockCount();
 		void RemoveAllVegetationBlock();
 
-		void Unload();
+		void UnloadVeg();
 
 		void _AddVisibleVegetationBlock(MVegetationBlock * block);
 
@@ -43,17 +50,21 @@ namespace Myway {
 		void _render();
 		void _preVisibleCull();
 
-
 		void _drawMeshVeg();
 		void _drawBillboardVeg();
 		void _drawX2Veg();
+
+		void _OnVegRemoved(MVegetation * veg);
 
 	protected:
 		ShaderLib * mShaderLib;
 
 		Array<MVegetation *> mVegetations;
-		Array<MVegetationBlock *> mVegetationBlocks;
 
+		RectF mVegBlockRect;
+		int mXVegBlockCount;
+		int mZVegBlockCount;
+		Array<MVegetationBlock *> mVegetationBlocks;
 		Array<MVegetationBlock *> mVisibleVegetationBlocks;
 
 		Technique * mTech_VegMesh;

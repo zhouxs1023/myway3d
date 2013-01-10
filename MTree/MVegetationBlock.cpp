@@ -144,11 +144,6 @@ namespace Myway {
 
 		mInsts.PushBack(inst);
 
-		_calcuBound();
-
-		if (mNode)
-			mNode->_NotifyUpdate();
-
 		mNeedUpdate = true;
 	}
 
@@ -162,20 +157,61 @@ namespace Myway {
 			const Vec3 & position = whr->Position;
 
 			if (position.x >= rc.x1 && position.x <= rc.x2 &&
-				position.y >= rc.y1 && position.y <= rc.y2)
+				position.z >= rc.y1 && position.z <= rc.y2)
 			{
 				whr = mInsts.Erase(whr);
 				mNeedUpdate = true;
+
+				continue;
 			}
 
 			++whr;
 		}
 	}
 
-	void MVegetationBlock::UpdateGeometry()
+	void MVegetationBlock::_OnVegRemoved(MVegetation * veg)
+	{
+		List<Inst>::Iterator whr = mInsts.Begin();
+		List<Inst>::Iterator end = mInsts.End();
+
+		while (whr != end)
+		{
+			if (whr->Veg == veg)
+			{
+				whr = mInsts.Erase(whr);
+				mNeedUpdate = true;
+
+				continue;
+			}
+
+			++whr;
+		}
+	}
+
+	void MVegetationBlock::_OnVegChanged(MVegetation * veg)
+	{
+		List<Inst>::Iterator whr = mInsts.Begin();
+		List<Inst>::Iterator end = mInsts.End();
+
+		while (whr != end)
+		{
+			if (whr->Veg == veg)
+			{
+				mNeedUpdate = true;
+
+				break;
+			}
+
+			++whr;
+		}
+	}
+
+	void MVegetationBlock::_UpdateGeometry()
 	{
 		if (!mNeedUpdate)
 			return ;
+
+		_calcuBound();
 
 		safe_delete_array (mRenderOps);
 		safe_delete_array (mRenderVegs); 
@@ -431,6 +467,9 @@ namespace Myway {
 
 		mSphLocal.center = mAabbLocal.GetCenter();
 		mSphLocal.radius = mSphLocal.center.Distance(mAabbLocal.minimum);
+
+		if (mNode)
+			mNode->_NotifyUpdate();
 	}
 
 }

@@ -7,6 +7,7 @@ namespace Myway {
 
 	class MVegetationBlock : public Mover
 	{
+	public:
 		struct Inst
 		{
 			MVegetation * Veg;
@@ -25,8 +26,6 @@ namespace Myway {
 		void AddVegetation(MVegetation * veg, const Vec3 & position, float size);
 		void RemoveVegetation(MVegetation * veg, const RectF & rc);
 
-		void UpdateGeometry();
-
 		const RectF & GetRect() const { return mRect; }
 		int GetXSection() const { return mXSection; }
 		int GetZSection() const { return mZSection; }
@@ -34,6 +33,14 @@ namespace Myway {
 		int GetRenderOpCount() const { return mNumOfRenderOps; }
 		RenderOp * GetRenderOp(int index) const { d_assert (index < mNumOfRenderOps); return &mRenderOps[index]; }
 		MVegetation * GetRenderVegetation(int index) const { d_assert (index < mNumOfRenderOps); return mRenderVegs[index]; }
+
+		void _OnVegRemoved(MVegetation * veg);
+		void _OnVegChanged(MVegetation * veg);
+		void _UpdateGeometry();
+
+		int _getInstanceSize()  { return mInsts.Size(); }
+		List<Inst> & _getInstList() { return mInsts; }
+		void _notifyNeedUpdate() { mNeedUpdate = TRUE; }
 
 	protected:
 		void _mergeVeg_Mesh(List<Inst> & Vegs, int index);

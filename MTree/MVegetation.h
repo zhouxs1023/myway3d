@@ -15,7 +15,7 @@ namespace Myway {
 			GT_Mesh
 		};
 
-		TString128 Name;
+		TString32 Name;
 		GeomType Type;
 		MeshPtr pMesh;
 		TexturePtr DiffuseMap;

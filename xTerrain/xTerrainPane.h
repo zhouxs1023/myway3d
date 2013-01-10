@@ -24,6 +24,11 @@ public:
 
 	xEditTerrainHeight * GetTerrainHeight() { return &mEditHeight; }
 	xEditTerrainLayer * GetTerrainLayer() { return &mEditLayer; }
+	xEditTerrainVeg * GetTerrainVeg() { return &mEditVeg; }
+
+	xTerrainHeightDlg * GetTerrainHeightDlg() { return &mHeightDlg; }
+	xTerrainLayerDlg * GetTerrainLayerDlg() { return &mLayerDlg; }
+	xTerrainVegDlg * GetTerrainVegDlg() { return &mVegDlg; }
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
