@@ -192,9 +192,16 @@ namespace Myway {
 	{
 		RenderSystem * render = RenderSystem::Instance();
 
+		static bool btestAA = true;
+
+		if (IKeyboard::Instance()->KeyUp(KC_6))
+		{
+			btestAA = !btestAA;
+		}
+
 		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
 
-		if (dp->SmaaType != SMAA_NONE)
+		if (dp->SmaaType != SMAA_NONE && btestAA)
 		{
 			render->DoSMAA(mRT_Color.c_ptr(), mTex_Color.c_ptr());
 			_updateColorTexture();

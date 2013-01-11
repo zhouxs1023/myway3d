@@ -6,12 +6,14 @@
 struct PS_IN
 {
     float2 uv		: TEXCOORD0;
+	float3 normal	: TEXCOORD1;
     float4 pos 		: TEXCOORD2;
     float4 projPos	: TEXCOORD3;
 };
 
-uniform sampler2D gTex_Normal;
-uniform sampler2D gTex_Refr;
+uniform sampler2D gTex_Normal : register (s0);
+uniform sampler2D gTex_Refr : register (s1);
+uniform sampler2D gTex_Fresnel : register (s2);
 
 uniform float4 gFresnelParam;
 uniform float4 gTintColor;
@@ -20,16 +22,30 @@ uniform float4 gFogParam;
 uniform float4 gFogColor;
 uniform float3 gCameraPos;
 
+float CalcuFresnel(float3 normal, float3 eyeDir)
+{
+	float dp = dot(normal, eyeDir);
+	return tex2D(gTex_Fresnel, float2(dp, 0)).r;
+}
+
 float4 main(PS_IN In) : COLOR
 {
 	float2 projUV = In.projPos.xy / In.projPos.w * float2(0.5, -0.5) + 0.5;
+	float3 normal = normalize(In.normal);
 
 	float3 noise = gNoiseScale * (tex2D(gTex_Normal, In.uv).xyz - 0.5);
-	projUV += noise.xy;
+	projUV += noise.xy * 0.0000001 + normal.xz * 0.05f;
+
+	float3 eyeDir = normalize(gCameraPos - In.pos.xyz);
+	float fresnel = CalcuFresnel(-normal, eyeDir);
+
+	//fresnel = pow(fresnel, 2);
 
 	float4 refrColor = tex2D(gTex_Refr, projUV);
 
-	float4 col = lerp(refrColor, gTintColor, 0.4f);
+	float4 col = lerp(refrColor, gTintColor, 0.1f);
+
+	col = lerp(gFogColor, col, fresnel);
 	
 	float len = length(gCameraPos - In.pos.xyz);
 	float fog = (len - gFogParam.x) * gFogParam.z;

@@ -12,6 +12,7 @@
 
     <Shader name = "GrassX2VS" language = "cg" profile = "vs30" source = "GrassX2.vs" >
       <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+      <param name = "Time" type = "float" btype = "time" />
     </Shader>
 
     <Shader name = "GrassX2PS" language = "cg" profile = "ps30" source = "GrassX2.ps" >

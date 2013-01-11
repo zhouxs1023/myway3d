@@ -14,6 +14,7 @@ struct VS_OUT
 {
     float4 pos		: POSITION;
     float2 uv0		: TEXCOORD0;
+	float3 normal	: TEXCOORD1;
     float4 pos_  	: TEXCOORD2;
     float4 projPos	: TEXCOORD3;
 };
@@ -32,6 +33,7 @@ VS_OUT main(VS_IN In)
     Out.pos_ = worldPos;
     Out.pos = mul(worldPos, matWVP);
     Out.uv0 = worldPos.xz * gUVParam.xy + gUVParam.zw;
+	Out.normal = In.normal;
     Out.projPos = Out.pos;
     
     return Out;

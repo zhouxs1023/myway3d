@@ -159,6 +159,7 @@ namespace Myway {
         render->SetTexture(1, state, depthTex);
         render->SetTexture(2, state, colorTex);
         render->SetTexture(3, state, mTex_Refl.c_ptr());
+		state.Filter = TEXF_LINEAR;
         render->SetTexture(4, state, mTex_Fresnel.c_ptr());
 
         SamplerState state1;
@@ -209,6 +210,7 @@ namespace Myway {
 		render->SetTexture(0, state, mTex_Wave.c_ptr());
 		state.Address = TEXA_CLAMP;
 		render->SetTexture(1, state, colorTex);
+		render->SetTexture(2, state, mTex_Fresnel.c_ptr());
 
 		render->Render(mTech_UnderWater, mProjGrid->GetRender());
 	}
