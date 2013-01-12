@@ -37,46 +37,12 @@ void xEnvironment::_OnUnloadScene(void * param0, void * param1)
 
 void _SavePropertyObj(IPropertyObj * obj, xSerializer & Serializer)
 {
-	int iPropertySize = obj->GetPropertySize();
-
-	for (int j = 0; j < iPropertySize; ++j)
-	{
-		const Property * p = obj->GetProperty(j);
-		const void * data = obj->GetPropertyData(p);
-
-		Serializer << p->name;
-		Serializer << p->size;
-		Serializer.Write(data, p->size);
-	}
-
-	Serializer << TString128("_eof");
+	Serializer << obj;
 }
 
 void _LoadPropertyObj(IPropertyObj * obj, xSerializer & Serializer)
 {
-	char buffer[1024];
-
-	while (1)
-	{
-		TString128 name;
-		int size;
-
-		Serializer >> name;
-
-		if (name == "_eof")
-			break;
-
-		Serializer >> size;
-
-		d_assert (size < 1024);
-
-		Serializer.Read(buffer, size);
-
-		const Property * p = obj->GetProperty(name.c_str());
-
-		if (p)
-			obj->SetPropertyData(p, buffer);
-	}
+	Serializer >> obj;
 }
 
 void xEnvironment::_OnSerialize(void * param0, void * param1)

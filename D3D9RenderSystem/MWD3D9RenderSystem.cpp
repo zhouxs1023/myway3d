@@ -743,6 +743,16 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
     mPrimitivCount += primcount;
 }
 
+void D3D9RenderSystem::SetSMAAType(eSmaaType::enum_t type)
+{
+	mWindow->SetSMAAType(type);
+}
+
+eSmaaType::enum_t D3D9RenderSystem::GetSMAAType()
+{
+	return mWindow->GetSMAAType();
+}
+
 void D3D9RenderSystem::DoSMAA(RenderTarget * rt, Texture * colorTex)
 {
 	mWindow->DoSMAA(rt, colorTex);

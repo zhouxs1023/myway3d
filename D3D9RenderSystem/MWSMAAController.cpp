@@ -1,4 +1,5 @@
 #include "MWSMAAController.h"
+#include "MWD3D9RenderSystem.h"
 #include "Engine.h"
 
 namespace Myway {
@@ -6,6 +7,7 @@ namespace Myway {
 	SMAAController::SMAAController()
 	{
 		mSMAA = NULL;
+		mType = eSmaaType::SMAA_NONE;
 	}
 
 	SMAAController::~SMAAController()
@@ -13,35 +15,36 @@ namespace Myway {
 		Shutdown();
 	}
 
-	void SMAAController::Init(IDirect3DDevice9 * device)
+	void SMAAController::Init()
 	{
 		Shutdown();
 
-		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
-
-		if (dp->SmaaType == SMAA_NONE)
+		if (mType == eSmaaType::SMAA_NONE)
 			return ;
 
 		SMAA::Preset preset = SMAA::PRESET_HIGH;
 
-		switch (dp->SmaaType)
+		switch (mType)
 		{
-		case SMAA_LOW:
+		case eSmaaType::SMAA_LOW:
 			preset = SMAA::PRESET_LOW;
 			break;
 
-		case SMAA_MEDIUM:
+		case eSmaaType::SMAA_MEDIUM:
 			preset = SMAA::PRESET_MEDIUM;
 			break;
 
-		case SMAA_HIGH:
+		case eSmaaType::SMAA_HIGH:
 			preset = SMAA::PRESET_HIGH;
 			break;
 
-		case SMAA_ULTRA:
+		case eSmaaType::SMAA_ULTRA:
 			preset = SMAA::PRESET_ULTRA;
 			break;
 		}
+
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+		IDirect3DDevice9 * device = ((D3D9RenderSystem *)RenderSystem::Instance())->GetD3DDevice();
 
 		mSMAA = new SMAA(device, dp->Width, dp->Height, preset);
 	}
@@ -49,6 +52,15 @@ namespace Myway {
 	void SMAAController::Shutdown()
 	{
 		safe_delete(mSMAA);
+	}
+
+	void SMAAController::SetSMAAType(eSmaaType::enum_t type)
+	{
+		if (mType != type)
+		{
+			mType = type;
+			Init();
+		}
 	}
 
 	void SMAAController::Do(RenderTarget * rt, Texture * colorTex)

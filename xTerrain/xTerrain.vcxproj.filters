@@ -66,6 +66,12 @@
     <ClCompile Include="xVegetationDlg.cpp">
       <Filter>UI</Filter>
     </ClCompile>
+    <ClCompile Include="xRenderSetting.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="xRenderSettingPane.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -131,6 +137,12 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="xVegetationDlg.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="xRenderSetting.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xRenderSettingPane.h">
       <Filter>UI</Filter>
     </ClInclude>
   </ItemGroup>

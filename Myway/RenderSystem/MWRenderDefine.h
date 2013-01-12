@@ -1,6 +1,7 @@
 #pragma once 
 
 #include "MWMath.h"
+#include "MWProperty.h"
 
 namespace Myway
 {
@@ -441,13 +442,17 @@ enum MULTI_SAMPLE
 ----------------------------------------------------------
 ----------------------------------------------------------
 */
-enum SMAA_TYPE
+struct MW_ENTRY eSmaaType : public IEnumObj
 {
-	SMAA_NONE,
-	SMAA_LOW,
-	SMAA_MEDIUM,
-	SMAA_HIGH,
-	SMAA_ULTRA
+	enum enum_t {
+		SMAA_NONE,
+		SMAA_LOW,
+		SMAA_MEDIUM,
+		SMAA_HIGH,
+		SMAA_ULTRA
+	};
+
+	DECLARE_ENUM(eSmaaType)
 };
 
 /* enum: PRIMITIVE_TYPE
@@ -502,7 +507,6 @@ struct MW_ENTRY DeviceProperty
     bool            bVSync;                 //是否垂直同步 
     int             RefreshRate;            //屏幕刷新率(窗口模式必须为0)
     bool            bNVPerfHUD;             //NVidia PerfHUD
-	SMAA_TYPE		SmaaType;				//SMAA类型
 
     DeviceProperty()
     {
@@ -515,7 +519,6 @@ struct MW_ENTRY DeviceProperty
         bVSync = FALSE;
         RefreshRate = 0;
         bNVPerfHUD = TRUE;
-		SmaaType = SMAA_HIGH;
     }
 };
 

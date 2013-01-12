@@ -121,7 +121,7 @@ D3D9RenderWindow::D3D9RenderWindow(D3D9RenderSystem * pRenderSystem)
     pDirect3D->GetDeviceCaps(mAdapter, D3DDEVTYPE_HAL, mDevCaps.GetCaps());
 
 	mSMAAController = new SMAAController();
-	mSMAAController->Init(pD3D9Device);
+	mSMAAController->Init();
 }
 
 D3D9RenderWindow::~D3D9RenderWindow()
@@ -222,7 +222,7 @@ void D3D9RenderWindow::ResetDevice()
 
 	device->CreateQuery(D3DQUERYTYPE_OCCLUSION, &mRenderSystem->mD3DQuery);
 
-	mSMAAController->Init(device);
+	mSMAAController->Init();
 }
 
 void D3D9RenderWindow::SaveScreenShot(const TString128 & sFile, IMAGE_FILE_FORMAT iff)
@@ -254,6 +254,16 @@ void D3D9RenderWindow::_acquire()
 
     device->GetBackBuffer(0, 0, D3DBACKBUFFER_TYPE_MONO, &mRenderTarget->mRenderTarget);
     device->GetDepthStencilSurface(&mDepthStencil->mDepthStencil);
+}
+
+void D3D9RenderWindow::SetSMAAType(eSmaaType::enum_t type)
+{
+	mSMAAController->SetSMAAType(type);
+}
+
+eSmaaType::enum_t D3D9RenderWindow::GetSMAAType()
+{
+	return mSMAAController->GetSMAAType();
 }
 
 void D3D9RenderWindow::DoSMAA(RenderTarget * rt, Texture * colorTex)

@@ -597,6 +597,9 @@
     <ClInclude Include="RenderSystem\MWSSAO.h">
       <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClInclude>
+    <ClInclude Include="Physics\MWPhysics.h">
+      <Filter>Myway\Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -1171,6 +1174,12 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWSSAO.cpp">
       <Filter>Myway\RenderSystem\Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="Physics\MWPhysics.cpp">
+      <Filter>Myway\Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWRenderDefine.cpp">
+      <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

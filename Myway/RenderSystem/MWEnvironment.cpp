@@ -52,12 +52,7 @@ namespace Myway {
         mWaterManager = new WaterManager();
 
         mFog = new Fog();
-        mGodRay = new GodRay();
-        mHDR = new HDRLighting();
-		mSSAO = new SSAO();
-		mShadow = new Shadow();
-		mColorSharp = new ColorSharp();
-    }
+	}
 
     void Environment::DeInitEv()
     {
@@ -76,12 +71,65 @@ namespace Myway {
 		safe_delete (mColorSharp);
     }
 
-    /*void Environment::LoadTerrain(const char * source)
-    {
-        UnloadTerrain();
+	void Environment::SetSSAOEnable(bool b)
+	{
+		if (!b && mSSAO)
+		{
+			safe_delete(mSSAO);
+		}
+		else if (b && !mSSAO)
+		{
+			mSSAO = new SSAO();
+		}
+	}
 
-        mTerrain = new Terrain(source);
-    }*/
+	void Environment::SetHDREnable(bool b)
+	{
+		if (!b && mHDR)
+		{
+			safe_delete(mHDR);
+		}
+		else if (b && !mHDR)
+		{
+			mHDR = new HDRLighting();
+		}
+	}
+
+	void Environment::SetColorSharpEnable(bool b)
+	{
+		if (!b && mColorSharp)
+		{
+			safe_delete(mColorSharp);
+		}
+		else if (b && !mColorSharp)
+		{
+			mColorSharp = new ColorSharp();
+		}
+	}
+
+	void Environment::SetShadowEnable(bool b)
+	{
+		if (!b && mShadow)
+		{
+			safe_delete(mShadow);
+		}
+		else if (b && !mShadow)
+		{
+			mShadow = new Shadow();
+		}
+	}
+
+	void Environment::SetGodRayEnable(bool b)
+	{
+		if (!b && mGodRay)
+		{
+			safe_delete(mGodRay);
+		}
+		else if (b && !mGodRay)
+		{
+			mGodRay = new GodRay();
+		}
+	}
 
 	void Environment::CreateTerrain(const Terrain::Config & config)
 	{

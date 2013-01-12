@@ -30,6 +30,8 @@ namespace Myway {
 
 		mTech_ShadowDepth = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowDepth");
 		mTech_Shadow = Environment::Instance()->GetShaderLib()->GetTechnique("Shadow");
+
+		mTex_Random = VideoBufferManager::Instance()->Load2DTexture("random2.png", "Shaders\\random.png");
 	}
 
 	Shadow::~Shadow()
@@ -397,6 +399,10 @@ namespace Myway {
 		state.Address = TEXA_BORDER;
 		state.BorderColor = Color::White;
 		render->SetTexture(1, state, mTex_Depth.c_ptr());
+
+		state.Address = TEXA_WRAP;
+		state.Filter = TEXF_DEFAULT;
+		RenderSystem::Instance()->SetTexture(2, state, mTex_Random.c_ptr());
 
 		RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_TEST, mTech_Shadow);
 	}

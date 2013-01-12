@@ -81,13 +81,40 @@ float4 main(PIn In) : COLOR
 
 		float zd = 10000.0 * max(dd, 0.0); 
 
+		/*
 		if (dd * 10000 < 20.0f)
 			occ += 1.0 / (1.0 + zd * zd);
 		else
 			occ += 1;
+			*/
+		occ += 1.0 / (1.0 + zd * zd);
 	}
 
-    occ = occ / NUM_BASE_SAMPLES;
+	for (int i = 0; i < NUM_BASE_SAMPLES; ++i)
+    {
+        float3 randomDir = reflect(RAND_SAMPLES[i], randN) + viewNorm;
+
+        #define RADIUS 0.5
+
+		float4 samplePos = float4(viewPos.xyz + randomDir * RADIUS, 1);
+        float4 nuv = mul(samplePos, ptMat);
+		nuv.xy = nuv.xy / nuv.w * float2(0.5f, -0.5f) + 0.5f;
+
+		float samplerDepth = _Tex2DLod(depthMap, nuv.xy).r;
+		float dd = depth - samplerDepth;
+
+		float zd = 10000.0 * max(dd, 0.0); 
+
+		/*
+		if (dd * 10000 < 20.0f)
+			occ += 1.0 / (1.0 + zd * zd);
+		else
+			occ += 1;
+			*/
+		occ += 1.0 / (1.0 + zd * zd);
+	}
+
+    occ = occ / NUM_BASE_SAMPLES / 2;
 
     return float4(occ, occ, occ, 1);
 }

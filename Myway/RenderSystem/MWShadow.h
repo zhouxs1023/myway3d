@@ -59,6 +59,7 @@ namespace Myway {
 
 		RenderTargetPtr mRT_Shadow;
 		TexturePtr mTex_Shadow;
+		TexturePtr mTex_Random;
 
 		VisibleCullResult mCullResult;
 		RenderQueue mRenderQueue;

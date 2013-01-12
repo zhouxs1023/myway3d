@@ -91,6 +91,8 @@
     <ClCompile Include="xEnvironmentPane.cpp" />
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xOcean.cpp" />
+    <ClCompile Include="xRenderSetting.cpp" />
+    <ClCompile Include="xRenderSettingPane.cpp" />
     <ClCompile Include="xTerrain.cpp" />
     <ClCompile Include="xTerrainCreateDlg.cpp" />
     <ClCompile Include="xTerrainHeightDlg.cpp" />
@@ -116,6 +118,8 @@
     <ClInclude Include="xEnvironmentPane.h" />
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xOcean.h" />
+    <ClInclude Include="xRenderSetting.h" />
+    <ClInclude Include="xRenderSettingPane.h" />
     <ClInclude Include="xTerrain.h" />
     <ClInclude Include="xTerrainCreateDlg.h" />
     <ClInclude Include="xTerrainHeightDlg.h" />

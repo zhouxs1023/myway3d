@@ -31,6 +31,8 @@ public:
     RenderTarget *  GetRenderTarget() { return mRenderTarget; }
     DepthStencil *  GetDepthStencil() { return mDepthStencil; }
 
+	void			SetSMAAType(eSmaaType::enum_t type);
+	eSmaaType::enum_t GetSMAAType();
 	void			DoSMAA(RenderTarget * rt, Texture * colorTex);
 
 protected:

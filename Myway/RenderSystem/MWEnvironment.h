@@ -25,7 +25,7 @@ namespace Myway {
     class MW_ENTRY Environment
     {
         DECLARE_ALLOC();
-        DECLARE_SINGLETON(Environment);
+        DECLARE_SINGLETON(Environment);		
 
     public:
         Environment();
@@ -69,6 +69,12 @@ namespace Myway {
         float GetTime() { return mCurTime; }
 
         const EvParam * GetEvParam() { return &mParam; }
+
+		void SetSSAOEnable(bool b);
+		void SetHDREnable(bool b);
+		void SetColorSharpEnable(bool b);
+		void SetShadowEnable(bool b);
+		void SetGodRayEnable(bool b);
 
     protected:
         void OnCall(Event * sender, void * data);

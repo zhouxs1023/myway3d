@@ -94,7 +94,7 @@ namespace Myway {
             Environment::Instance()->GetSky2()->Render();
 
         // ---> render sun
-        if (Environment::Instance()->GetSun())
+        if (!Environment::Instance()->GetGodRay() && Environment::Instance()->GetSun())
             Environment::Instance()->GetSun()->Render();
 
         // ---> render moons
@@ -192,16 +192,7 @@ namespace Myway {
 	{
 		RenderSystem * render = RenderSystem::Instance();
 
-		static bool btestAA = true;
-
-		if (IKeyboard::Instance()->KeyUp(KC_6))
-		{
-			btestAA = !btestAA;
-		}
-
-		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
-
-		if (dp->SmaaType != SMAA_NONE && btestAA)
+		if (render->GetSMAAType() != eSmaaType::SMAA_NONE)
 		{
 			render->DoSMAA(mRT_Color.c_ptr(), mTex_Color.c_ptr());
 			_updateColorTexture();

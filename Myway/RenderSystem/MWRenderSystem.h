@@ -100,6 +100,8 @@ public:
     virtual void            Render(Technique * efx, Renderer * obj) = 0;
     virtual void            Render(Technique * efx, RenderOp * rd) = 0;
 
+	virtual void			SetSMAAType(eSmaaType::enum_t type) = 0;
+	virtual eSmaaType::enum_t GetSMAAType() = 0;
 	virtual void			DoSMAA(RenderTarget * rt, Texture * colorTex) = 0;
 
     virtual int             GetFramePrimitiveCount() = 0;

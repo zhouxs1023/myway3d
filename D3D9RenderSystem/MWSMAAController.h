@@ -12,12 +12,16 @@ namespace Myway {
 		SMAAController();
 		~SMAAController();
 
-		void Init(IDirect3DDevice9 * device);
+		void Init();
 		void Shutdown();
 
+		void SetSMAAType(eSmaaType::enum_t type);
 		void Do(RenderTarget * rt, Texture * colorTex);
 
+		eSmaaType::enum_t GetSMAAType() { return mType; }
+
 	protected:
+		eSmaaType::enum_t mType;
 		SMAA * mSMAA;
 	};
 }

@@ -28,6 +28,7 @@ public:
 	xSerializer & operator >>(Quat & data);
 	xSerializer & operator >>(Mat3 & data);
 	xSerializer & operator >>(Mat4 & data);
+	xSerializer & operator >>(IPropertyObj * obj);
 
 	xSerializer & operator <<(bool data);
 	xSerializer & operator <<(char data);
@@ -44,6 +45,7 @@ public:
 	xSerializer & operator <<(const Quat & data);
 	xSerializer & operator <<(const Mat3 & data);
 	xSerializer & operator <<(const Mat4 & data);
+	xSerializer & operator <<(IPropertyObj * obj);
 
 protected:
 	bool mIsSave;
@@ -223,5 +225,53 @@ inline xSerializer & xSerializer::operator <<(const Mat3 & data)
 inline xSerializer & xSerializer::operator <<(const Mat4 & data)
 {
 	mFile.Write(&data, sizeof (data));
+	return *this;
+}
+
+inline xSerializer & xSerializer::operator <<(IPropertyObj * obj)
+{
+	int iPropertySize = obj->GetPropertySize();
+
+	for (int j = 0; j < iPropertySize; ++j)
+	{
+		const Property * p = obj->GetProperty(j);
+		const void * data = obj->GetPropertyData(p);
+
+		*this << p->name;
+		*this << p->size;
+		Write(data, p->size);
+	}
+
+	*this << TString128("_eof");
+
+	return *this;
+}
+
+inline xSerializer & xSerializer::operator >>(IPropertyObj * obj)
+{
+	char buffer[1024];
+
+	while (1)
+	{
+		TString128 name;
+		int size;
+
+		*this >> name;
+
+		if (name == "_eof")
+			break;
+
+		*this >> size;
+
+		d_assert (size < 1024);
+
+		Read(buffer, size);
+
+		const Property * p = obj->GetProperty(name.c_str());
+
+		if (p)
+			obj->SetPropertyData(p, buffer);
+	}
+
 	return *this;
 }

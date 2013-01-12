@@ -302,7 +302,7 @@ void xEnvironmentPane::_Create(void * param0, void * param1)
 {
 	CFrameWndEx * frame = (CFrameWndEx *)param0;
 
-	if (!Create("Environment", frame, CRect(0, 0, 200, 200), TRUE, IDD_Terrain, 
+	if (!Create("Environment", frame, CRect(0, 0, 200, 200), TRUE, IDD_Environment, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
 	{
 		TRACE0("can't create \"Environment Pane\"\n");
