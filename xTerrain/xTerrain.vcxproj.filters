@@ -45,9 +45,6 @@
     <ClCompile Include="xEnvironment.cpp">
       <Filter>Src</Filter>
     </ClCompile>
-    <ClCompile Include="xPropertyGridColorPick.cpp">
-      <Filter>UI</Filter>
-    </ClCompile>
     <ClCompile Include="xTree.cpp">
       <Filter>Src</Filter>
     </ClCompile>
@@ -117,9 +114,6 @@
     </ClInclude>
     <ClInclude Include="xEnvironment.h">
       <Filter>Src</Filter>
-    </ClInclude>
-    <ClInclude Include="xPropertyGridColorPick.h">
-      <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="xTree.h">
       <Filter>Src</Filter>

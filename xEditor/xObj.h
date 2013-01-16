@@ -27,11 +27,11 @@ public:
 
 	virtual void SetPosition(const Vec3 & p) {}
 	virtual void SetOrientation(const Quat & q) {}
-	virtual void SetScale(const Vec3 & s) {}
+	virtual void SetScale(float s) {}
 
 	virtual Vec3 GetPosition() { return Vec3::Zero; }
 	virtual Quat GetOrientation() { return Quat::Identity; }
-	virtual Vec3 GetScale() { return Vec3::Unit; }
+	virtual float GetScale() { return 1; }
 
 	virtual void Serialize(xSerializer & Serializer);
 

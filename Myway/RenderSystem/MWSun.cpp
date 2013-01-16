@@ -73,9 +73,9 @@ namespace Myway {
 			shadowTex = Environment::Instance()->GetShadow()->GetShadowMap();
 
 		state.Filter = TEXF_DEFAULT;
-        RenderSystem::Instance()->SetTexture(2, state, shadowTex.c_ptr());
+		RenderSystem::Instance()->SetTexture(2, state, shadowTex.c_ptr());
 
-        RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Lighting);
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Lighting);
     }
 
     void Sun::_geometry()

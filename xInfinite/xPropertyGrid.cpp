@@ -5,6 +5,7 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "Infinate.h"
+#include "xPropertyGridColorPick.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -275,6 +276,18 @@ void xPropertyGrid::_ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Pro
 
 		gp->AddSubItem(new CMFCPropertyGridProperty(p->name.c_str(), (_variant_t)(data), ""));
 	}
+	else if (p->type == PT_Color)
+	{
+		Color4 data = p->AsColor(obj->GetPropertyData(p));
+
+		int r = int(data.r * 255);
+		int g = int(data.g * 255);
+		int b = int(data.b * 255);
+
+		COLORREF cr = RGB(r, g, b);
+
+		gp->AddSubItem(new xPropertyGridColorPick(p->name.c_str(), cr));
+	}
 }
 
 LRESULT xPropertyGrid::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
@@ -300,6 +313,19 @@ LRESULT xPropertyGrid::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 		{
 			float value = (float)atof(cdata);
 			obj->SetPropertyData(p, &value);
+		}
+		else if (p->type == PT_Color)
+		{
+			xPropertyGridColorPick * colorPick = (xPropertyGridColorPick *)prop;
+			COLORREF color = colorPick->GetColor();
+
+			int r = GetRValue(color);
+			int g = GetGValue(color);
+			int b = GetBValue(color);
+
+			Color4 data = Color4(r / 255.0f, g / 255.0f, b / 255.0f);
+
+			obj->SetPropertyData(p, &data);
 		}
 	}
 

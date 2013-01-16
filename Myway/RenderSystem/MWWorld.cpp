@@ -308,6 +308,16 @@ bool World::HasLight(const TString128 & name)
     return iter != end;
 }
 
+bool World::RenameLight(const TString128 & name, Light * light)
+{
+	if (HasLight(name))
+		return false;
+
+	light->SetName(name);
+
+	return true;
+}
+
 Light * World::GetLight(const TString128 & name)
 {
     List<Light*>::Iterator iter;
@@ -704,14 +714,16 @@ void World::UpdateGeo(VisibleCullResult & result, Camera * cam)
     }
 }
 
-void World::ImpVisibleCull(VisibleCullResult & result, Camera * cam, bool updateGeo)
+void World::ImpVisibleCull(VisibleCullResult & result, Camera * cam, bool updateGeo, bool cullLights)
 {
     profile_code();
 
     RenderEvent::OnPreVisibleCull(cam, NULL);
 
     CullNodes(result, cam);
-    CullLights(result, cam);
+
+	if (cullLights)
+		CullLights(result, cam);
 
     if (updateGeo)
         UpdateGeo(result, cam);

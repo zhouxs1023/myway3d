@@ -1,4 +1,8 @@
 
+inline void Light::_SetName(const TString128 & name)
+{
+	mName = name;
+}
 
 inline void Light::SetType(LIGHT_TYPE type)
 {

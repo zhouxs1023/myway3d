@@ -230,7 +230,9 @@ namespace Myway {
         render->SetTexture(0, state, mTex_Layer0.c_ptr());
         render->SetTexture(1, state, mTex_Layer1.c_ptr());
 
+		mRender.rState.depthCheck = DCM_ALWAYS;
         render->Render(mTech_Lighting, &mRender);
+		mRender.rState.depthCheck = DCM_LESS_EQUAL;
 
         mRenderTarget->Stretch(mTexture.c_ptr());
     }

@@ -600,6 +600,9 @@
     <ClInclude Include="Physics\MWPhysics.h">
       <Filter>Myway\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSystem\MWBillboard.h">
+      <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -1180,6 +1183,9 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWRenderDefine.cpp">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWBillboard.cpp">
+      <Filter>Myway\RenderSystem\Entity</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

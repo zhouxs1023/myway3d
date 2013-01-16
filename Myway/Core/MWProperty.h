@@ -134,7 +134,7 @@ public:																\
 
         int AsInt(const void * data) const
         {
-            d_assert (type == PT_Bool);
+            d_assert (type == PT_Int);
             return *(const int *)data;
         }
 

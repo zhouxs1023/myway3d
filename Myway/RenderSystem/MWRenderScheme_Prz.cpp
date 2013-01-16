@@ -6,9 +6,9 @@ namespace Myway
 {
     RS_Scheme::RS_Scheme()
     {
-        mShaderPrivderMain = new ShaderProvider_Main();
+        mShaderPrivderMain = new ShaderProvider();
 
-        mRenderLoopMain = new RenderLoop_Main(this);
+        mRenderLoopMain = new RenderLoop(this);
     }
 
     RS_Scheme::~RS_Scheme()
@@ -26,7 +26,7 @@ namespace Myway
         Camera * cam = World::Instance()->MainCamera();
         mMainResult.nodes.Clear();
         mMainResult.lights.Clear();
-        World::Instance()->ImpVisibleCull(mMainResult, cam, true);
+        World::Instance()->ImpVisibleCull(mMainResult, cam, true, true);
 
         mRenderQueue.Clear();
         mRenderQueue.PushRenderer(mMainResult.nodes);

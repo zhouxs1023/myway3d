@@ -42,6 +42,9 @@
     <ClInclude Include="IDockPane.h">
       <Filter>source</Filter>
     </ClInclude>
+    <ClInclude Include="xPropertyGridColorPick.h">
+      <Filter>ui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp" />
@@ -85,10 +88,16 @@
     <ClCompile Include="IDockPane.cpp">
       <Filter>source</Filter>
     </ClCompile>
+    <ClCompile Include="xPropertyGridColorPick.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="source">
       <UniqueIdentifier>{932a3044-34e6-43be-bf46-901d08223134}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{bddb96a0-5004-4326-adf6-b62e8e6c90e0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

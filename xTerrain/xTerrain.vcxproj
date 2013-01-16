@@ -84,7 +84,6 @@
     <ClCompile Include="xEditTerrainVeg.cpp" />
     <ClCompile Include="xForest.cpp" />
     <ClCompile Include="xLight.cpp" />
-    <ClCompile Include="xPropertyGridColorPick.cpp" />
     <ClCompile Include="xEditTerrainHeight.cpp" />
     <ClCompile Include="xEditTerrainLayer.cpp" />
     <ClCompile Include="xEnvironment.cpp" />
@@ -111,7 +110,6 @@
     <ClInclude Include="xEditTerrainVeg.h" />
     <ClInclude Include="xForest.h" />
     <ClInclude Include="xLight.h" />
-    <ClInclude Include="xPropertyGridColorPick.h" />
     <ClInclude Include="xEditTerrainHeight.h" />
     <ClInclude Include="xEditTerrainLayer.h" />
     <ClInclude Include="xEnvironment.h" />

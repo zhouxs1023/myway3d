@@ -13,7 +13,7 @@ public:
 	TString128 AnimName;
 	Vec3 Position;
 	Quat Orientation;
-	Vec3 Scale;
+	float Scale;
 
 public:
 	xMesh(const TString128 & name);
@@ -30,11 +30,11 @@ public:
 
 	virtual void SetPosition(const Vec3 & p);
 	virtual void SetOrientation(const Quat & q);
-	virtual void SetScale(const Vec3 & s);
+	virtual void SetScale(float s);
 
 	virtual Vec3 GetPosition() { return Position; }
 	virtual Quat GetOrientation() { return Orientation; }
-	virtual Vec3 GetScale() { return Scale; }
+	virtual float GetScale() { return Scale; }
 
 	virtual void Serialize(xSerializer & serializer);
 

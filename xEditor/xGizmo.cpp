@@ -77,7 +77,7 @@ void xGizmo::Update(void * param0, void * param1)
 
 			Vec3 pos = obj->GetPosition();
 			Quat ort = obj->GetOrientation();
-			Vec3 scl = obj->GetScale();
+			float scl = obj->GetScale();
 
 			int op = xApp::Instance()->GetOperator();
 
@@ -1257,7 +1257,7 @@ void xGizmo::_mouseMoved_Scale()
 
 		dt = d.x * pt.x + d.y * pt.y;
 
-		Vec3 scale = obj->GetScale();
+		float scale = obj->GetScale();
 		scale *= 1 + dt;
 		obj->SetScale(scale);
 	}

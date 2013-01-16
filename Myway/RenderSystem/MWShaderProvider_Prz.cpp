@@ -3,33 +3,35 @@
 
 namespace Myway
 {
-    ShaderProvider_Main::ShaderProvider_Main()
+    ShaderProvider::ShaderProvider()
     {
         mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("main", "PZ_Main.ShaderLib");
         d_assert (mShaderLib);
 
-		mTechs[R_Base] = mShaderLib->GetTechnique("base");
-        mTechs[R_Mirror] = mShaderLib->GetTechnique("mirror");
-        mTechs[R_Shadow] = mShaderLib->GetTechnique("shadow");
+		mTechs[eRenderTechType::RTT_Base] = mShaderLib->GetTechnique("base");
+        mTechs[eRenderTechType::RTT_Mirror] = mShaderLib->GetTechnique("mirror");
+        mTechs[eRenderTechType::RTT_Shadow] = mShaderLib->GetTechnique("shadow");
 
-		mTechs_Skined[R_Base] = mShaderLib->GetTechnique("baseSkined");
-		mTechs_Skined[R_Mirror] = mShaderLib->GetTechnique("mirrorSkined");
-		mTechs_Skined[R_Shadow] = mShaderLib->GetTechnique("shadowSkined");
+		mTechs_Skined[eRenderTechType::RTT_Base] = mShaderLib->GetTechnique("baseSkined");
+		mTechs_Skined[eRenderTechType::RTT_Mirror] = mShaderLib->GetTechnique("mirrorSkined");
+		mTechs_Skined[eRenderTechType::RTT_Shadow] = mShaderLib->GetTechnique("shadowSkined");
 
         mFrushTech = mShaderLib->GetTechnique("Frush");
         mClearTech = mShaderLib->GetTechnique("Clear");
+		mTech_PointLight = mShaderLib->GetTechnique("Lighting_Point");
 
         d_assert (mFrushTech);
         d_assert (mClearTech);
+		d_assert (mTech_PointLight);
     }
 
-    ShaderProvider_Main::~ShaderProvider_Main()
+    ShaderProvider::~ShaderProvider()
     {
     }
 
-    Technique * ShaderProvider_Main::GetTechnique(int type, bool skined)
+    Technique * ShaderProvider::GetTechnique(eRenderTechType::enum_t type, bool skined)
     {
-        d_assert (type < R_MAX);
+        d_assert (type < eRenderTechType::RTT_Max);
 
 		if (!skined)
 			return mTechs[type];

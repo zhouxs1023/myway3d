@@ -12,13 +12,17 @@ class MW_ENTRY Renderer
     DECLARE_ALLOC();
 
 public:
+	static const int ClassID = 'Rnd0';
+
+public:
                             Renderer();
     virtual                 ~Renderer();
 
+	virtual int				GetClassID() const { return ClassID; }
 	virtual const Aabb &	GetWorldAabb();
     virtual void            GetWorldPosition(Vec3 * pos);
-    virtual void            GetWorldTransform(Mat4 * form);
-    virtual int				GetBlendMatrix(Mat4 * forms);
+	virtual void            GetWorldTransform(Mat4 * form);
+	virtual int				GetBlendMatrix(Mat4 * forms);
     virtual void            BeginRendering();
     virtual void            EndRendering();
 
@@ -33,6 +37,11 @@ public:
             void            SetMaterial(const Material * material);
             Material *      GetMaterial();
 
+	virtual Technique *		GetTechnique(eRenderTechType::enum_t type) { return NULL; }
+
+			void			SetUsingDefferedShading(bool b) { mUsingDefferedShading = b; }
+			bool			IsUsingDefferedShading() { return mUsingDefferedShading; }
+
 protected:
     VertexStream            mVertexStream;
     IndexStream             mIndexStream;
@@ -40,6 +49,7 @@ protected:
     PRIMITIVE_TYPE          mPrimType;
 
     Material                mMaterial;
+	bool					mUsingDefferedShading;
 };
 
 struct RenderOp

@@ -101,7 +101,7 @@ protected:
 class xUndoRedo_Scale : public xUndoRedo
 {
 public:
-	xUndoRedo_Scale(const TString128 & objName, const Vec3 & orgScale, const Vec3 & newScale);
+	xUndoRedo_Scale(const TString128 & objName, float orgScale, float newScale);
 	virtual ~xUndoRedo_Scale();
 
 	virtual void Undo();
@@ -109,6 +109,6 @@ public:
 
 protected:
 	TString128 mObjName;
-	Vec3 mOrgScale;
-	Vec3 mNewScale;
+	float mOrgScale;
+	float mNewScale;
 };

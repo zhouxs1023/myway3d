@@ -62,12 +62,12 @@ namespace Myway
         {
             LockedBox pbox;
             mDefaultNormaLTexture->Lock(0, &pbox, NULL, LOCK_NORMAL);
-            Color * color = (Color *)pbox.pData;
+            int * color = (int *)pbox.pData;
             for (int j = 0; j < 4; ++j)
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    *color++ = Color(128, 128, 255);
+                    *color++ = XRGB(128, 128, 255);
                 }
             }
             mDefaultNormaLTexture->Unlock(0);

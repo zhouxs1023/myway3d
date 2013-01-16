@@ -40,6 +40,14 @@
     <Shader name = "DebugNormalPS" language = "cg" profile = "ps30" source = "DebugNormal.ps" >
     </Shader>
 
+    <Shader name = "PointLightVS" language = "cg" profile = "vs30" source = "PointLight.vs" >
+      <param name = "matWV" type = "float4x4" btype = "matWV" />
+      <param name = "matProj" type = "float4x4" btype = "matProj" />
+    </Shader>
+
+    <Shader name = "PointLightPS" language = "cg" profile = "ps30" source = "PointLight.ps" >
+    </Shader>
+
   </Shaders>
 
 	<Techniques>
@@ -63,6 +71,10 @@
     </Technique>
 
     <Technique name = "DebugNormal" vs = "QuadVS" ps = "DebugNormalPS">
+    </Technique>
+
+    <Technique name = "PointLight" vs = "PointLightVS" ps = "PointLightPS">
+      <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
     </Technique>
     
 	</Techniques>

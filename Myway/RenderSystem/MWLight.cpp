@@ -14,7 +14,8 @@ Light::Light(const TString128 & sName)
   mAtten1(0),
   mAtten2(0),
   mInner(1),
-  mOuter(0)
+  mOuter(0),
+  mType(LT_POINT)
 {
 }
 

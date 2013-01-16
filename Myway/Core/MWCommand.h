@@ -25,24 +25,19 @@ public:
     Command();
     ~Command();
 
+	void Init();
+	void Shudown();
+
     void SetOuputTextAttribute(int flag);
     void SetInputTextAttribute(int flag);
 
     void Print(const char * fmt, ...);
-
-    void Wait();
 
     Command & operator << (const char * str);
     Command & operator << (char c);
     Command & operator << (int i);
     Command & operator << (float f);
     Command & operator << (double d);
-
-    Command & operator >> (char * str);
-    Command & operator >> (char & c);
-    Command & operator >> (int & i);
-    Command & operator >> (float & f);
-    Command & operator >> (double & d);
 };
 
 }

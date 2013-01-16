@@ -25,7 +25,11 @@
 
 		<Shader name = "ClearPS" language = "cg" profile = "ps30" source = "Clear.ps" >
 		</Shader>
-	</Shaders>
+    
+    <Shader name = "Lighting_PointPS" language = "cg" profile = "ps30" source = "Lighting_Point.ps" >
+    </Shader>
+
+  </Shaders>
 
 	<Techniques>
 		<Technique name = "base" vs = "baseVS" ps = "basePS">
@@ -41,6 +45,10 @@
 
 		<Technique name = "Clear" vs = "QuadVS" ps = "ClearPS">
 		</Technique>
+
+    <Technique name = "Lighting_Point" vs = "QuadVS" ps = "Lighting_PointPS">
+    </Technique>
+    
 	</Techniques>
 
 </ShaderLib>

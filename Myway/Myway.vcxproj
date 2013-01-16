@@ -135,6 +135,7 @@
     <ClInclude Include="Core\MWTimer.h" />
     <ClInclude Include="Physics\MWKDTree.h" />
     <ClInclude Include="Physics\MWPhysics.h" />
+    <ClInclude Include="RenderSystem\MWBillboard.h" />
     <ClInclude Include="RenderSystem\MWOcean.h" />
     <ClInclude Include="RenderSystem\MWProjectionGrid.h" />
     <ClInclude Include="RenderSystem\MWShadow.h" />
@@ -358,6 +359,7 @@
     <ClCompile Include="Core\MWTimer.cpp" />
     <ClCompile Include="Math\MWCurve.cpp" />
     <ClCompile Include="Physics\MWPhysics.cpp" />
+    <ClCompile Include="RenderSystem\MWBillboard.cpp" />
     <ClCompile Include="RenderSystem\MWOcean.cpp" />
     <ClCompile Include="RenderSystem\MWProjectionGrid.cpp" />
     <ClCompile Include="RenderSystem\MWRenderDefine.cpp" />

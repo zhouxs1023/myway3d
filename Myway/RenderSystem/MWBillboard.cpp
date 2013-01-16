@@ -1,540 +1,172 @@
 #include "MWBillboard.h"
-#include "MWSceneManager.h"
+#include "MWRenderEvent.h"
 
+namespace Myway {
 
-using namespace Myway;
-
-
-Billboard::Billboard()
-: mosition(Vec3::Zero),
-  m_texcoord0(Vec2::Zero),
-  m_texcoord1(Vec2::Unit),
-  m_color(Color4::White),
-  m_width(0),
-  m_height(0),
-  m_align(BAT_CENTER_CENTER),
-  m_bVisible(TRUE)
+Billboard::Billboard(Technique * tech)
+: Mover("Billboard")
+, mTexcoord(0, 0, 1, 1)
+, mColor(Color4::White)
+, mWidth(0)
+, mHeight(0)
 {
+	SetCastShadow(false);
+	SetUsingDefferedShading(false);
+	mNeedUpdate = true;
+	mTechnique = tech;
+
+	_initGeometry();
 }
 
 Billboard::~Billboard()
 {
 }
 
-void Billboard::SetPosition(const Vec3 & pos)
+void Billboard::_initGeometry()
 {
-    mosition = pos;
+	int iVertexCount = 4;
+	int iPrimCount = 2;
+
+	VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	decl->AddElement(0, 0, DT_FLOAT4, DU_POSITION, 0);
+	decl->AddElement(0, 16, DT_FLOAT4, DU_COLOR, 0);
+	decl->Init();
+
+	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32);
+
+	GetVertexStream()->SetDeclaration(decl);
+	GetVertexStream()->SetCount(iVertexCount);
+	GetVertexStream()->Bind(0, vb, 32);
+
+	SetPrimitiveCount(iPrimCount);
+	SetPrimitiveType(PRIM_TRIANGLESTRIP);
 }
 
-void Billboard::SetTexcoord(float left, float top, float right, float bottom)
+void Billboard::SetTexcoord(const RectF & rc)
 {
-    m_texcoord0.x = left;
-    m_texcoord0.y = top;
-
-    m_texcoord1.x = right;
-    m_texcoord1.y = bottom;
+	mTexcoord = rc;
+	mNeedUpdate = true;
 }
 
 void Billboard::SetColor(const Color4 & color)
 {
-    m_color = color;
+    mColor = color;
+	mNeedUpdate = true;
 }
 
 void Billboard::SetWidth(float width)
 {
-    m_width = width;
+    mWidth = width;
+	mNeedUpdate = true;
 }
 
 void Billboard::SetHeight(float height)
 {
-    m_height = height;
+    mHeight = height;
+	mNeedUpdate = true;
 }
 
 float Billboard::GetWidth()
 {
-    return m_width;
+    return mWidth;
 }
 
 float Billboard::GetHeight()
 {
-    return m_height;
+    return mHeight;
 }
 
-void Billboard::SetAlignType(BilloardAlignType bat)
+const RectF & Billboard::GetTexcoord()
 {
-    m_align = bat;
+	return mTexcoord;
 }
 
-BilloardAlignType Billboard::GetAlignType()
+const Aabb & Billboard::GetWorldAabb()
 {
-    return m_align;
+	d_assert (mNode);
+
+	return mNode->GetWorldAabb();
 }
 
-void Billboard::SetVisible(bool bVisible)
+void Billboard::GetWorldPosition(Vec3 * pos)
 {
-    m_bVisible = bVisible;
+	*pos = mNode->GetWorldPosition();
 }
 
-bool Billboard::GetVisible()
+void Billboard::GetWorldTransform(Mat4 * form)
 {
-    return m_bVisible;
+	*form = mNode->GetWorldMatrix();
 }
 
-void Billboard::GetVerteces(void * verteces, const Vec3 & right, const Vec3 & up, const Vec3 & dir)
+void Billboard::UpdateGeometry()
 {
-    struct _vertex
-    {
-        Vec3    position;
-        Color4  color;
-        Vec2    texcoord;
-    };
+	if (!mNeedUpdate)
+		return ;
 
-    _vertex * vert = (_vertex*)verteces;
+	VertexBufferPtr vb = GetVertexStream()->GetStream(0);
 
-    Vec3 width_x_right = m_width * right;
-    Vec3 height_x_up = m_height * up;
+	float half_w = mWidth / 2;
+	float half_h = mHeight / 2;
 
-    if (m_align == BAT_LEFT_TOP)
-    {
-        vert[0].position    = mosition - width_x_right + height_x_up;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
+	float * verts = (float *)vb->Lock(0, 0, LOCK_DISCARD);
+	{
+		*verts++ = mTexcoord.x1; *verts++ = mTexcoord.y1;
+		*verts++ = -half_w; *verts++ = half_h;
+		*verts++ = mColor.r; *verts++ = mColor.g; *verts++ = mColor.b; *verts++ = mColor.a;
 
-        vert[1].position    = vert[0].position + width_x_right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
+		*verts++ = mTexcoord.x2; *verts++ = mTexcoord.y1;
+		*verts++ = half_w; *verts++ = half_h;
+		*verts++ = mColor.r; *verts++ = mColor.g; *verts++ = mColor.b; *verts++ = mColor.a;
 
-        vert[2].position    = vert[0].position - height_x_up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
+		*verts++ = mTexcoord.x1; *verts++ = mTexcoord.y2;
+		*verts++ = -half_w; *verts++ = -half_h;
+		*verts++ = mColor.r; *verts++ = mColor.g; *verts++ = mColor.b; *verts++ = mColor.a;
 
-        vert[3].position    = vert[1].position - height_x_up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
+		*verts++ = mTexcoord.x2; *verts++ = mTexcoord.y2;
+		*verts++ = half_w; *verts++ = -half_h;
+		*verts++ = mColor.r; *verts++ = mColor.g; *verts++ = mColor.b; *verts++ = mColor.a;
+	}
+	vb->Unlock();
 
-    else if (m_align == BAT_LEFT_CENTER)
-    {
-        vert[0].position    = mosition - width_x_right + 0.5f * height_x_up;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + width_x_right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - height_x_up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - height_x_up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_LEFT_BOTTOM)
-    {
-        vert[0].position    = mosition - width_x_right;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + width_x_right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - height_x_up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - height_x_up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_CENTER_TOP)
-    {
-        vert[0].position    = mosition - 0.5f * width_x_right + height_x_up;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + width_x_right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - height_x_up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - height_x_up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_CENTER_CENTER)
-    {
-        vert[0].position    = mosition - 0.5f * width_x_right + 0.5f * height_x_up;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + width_x_right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - height_x_up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - height_x_up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_CENTER_BOTTOM)
-    {
-        vert[0].position    = mosition - 0.5f * width_x_right;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + width_x_right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - height_x_up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - height_x_up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_RIGHT_TOP)
-    {
-        vert[0].position    = mosition + height_x_up;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + m_width * right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - m_height * up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - m_height * up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_RIGHT_CENTER)
-    {
-        vert[0].position    = mosition + 0.5f * height_x_up;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + m_width * right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - m_height * up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - m_height * up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
-
-    else if (m_align == BAT_RIGHT_BOTTOM)
-    {
-        vert[0].position    = mosition;
-        vert[0].color       = m_color;
-        vert[0].texcoord.x  = m_texcoord0.x;
-        vert[0].texcoord.y  = m_texcoord0.y;
-
-        vert[1].position    = vert[0].position + m_width * right;
-        vert[1].color       = m_color;
-        vert[1].texcoord.x  = m_texcoord1.x;
-        vert[1].texcoord.y  = m_texcoord0.y;
-
-        vert[2].position    = vert[0].position - m_height * up;
-        vert[2].color       = m_color;
-        vert[2].texcoord.x  = m_texcoord0.x;
-        vert[2].texcoord.y  = m_texcoord1.y;
-
-        vert[3].position    = vert[1].position - m_height * up;
-        vert[3].color       = m_color;
-        vert[3].texcoord.x  = m_texcoord1.x;
-        vert[3].texcoord.y  = m_texcoord1.y;
-    }
+	mNeedUpdate = false;
 }
 
-
-
-
-DECLARE_GUID128_CONST(BillboardSet::Guid, 'b', 'i', 'l', 'l', 'b', 'o', 'a', 'r',
-                                          'd', 's', 'e', 't', 0, 0, 0, 0);
-
-BillboardSet::BillboardSet(const String & sName)
-: m_sName(sName)
+void Billboard::AddRenderQueue(RenderQueue * RQ)
 {
+	RQ->AddRenderer(this);
 }
 
-BillboardSet::~BillboardSet()
+Technique *	Billboard::GetTechnique(eRenderTechType::enum_t type)
 {
-    DestroyAllBillboard();
+	d_assert (mTechnique && type == eRenderTechType::RTT_Base);
+	return mTechnique;
 }
 
-const String & BillboardSet::GetName() const
+
+
+BillboardManager gBillboardManager;
+
+IMP_SLN(BillboardManager);
+
+BillboardManager::BillboardManager()
 {
-    return m_sName;
+	INIT_SLN;
 }
 
-Billboard * BillboardSet::CreateBillboard()
+BillboardManager::~BillboardManager()
 {
-    Billboard * board = new Billboard();
-
-    m_Billboards.PushBack(board);
-
-    return board;
+	SHUT_SLN;
 }
 
-Billboard * BillboardSet::CreateBillboard(float width, float height,
-                                          const Vec3 & position,
-                                          const Vec2 & uvLT, const Vec2 & uvRB,
-                                          const Color4 & color)
+Billboard * BillboardManager::Create(Technique * tech)
 {
-    Billboard * board = CreateBillboard();
-
-    board->SetWidth(width);
-    board->SetHeight(height);
-    board->SetPosition(position);
-    board->SetTexcoord(uvLT.x, uvLT.y, uvRB.x, uvRB.y);
-    board->SetColor(color);
-
-    return board;
+	return new Billboard(tech);
 }
 
-Billboard * BillboardSet::GetBillboard(int index)
+void BillboardManager::Destroy(Billboard * billboard)
 {
-    assert (index < m_Billboards.Size());
-
-    List<Billboard*>::Iterator iter;
-
-    iter = m_Billboards.Begin();
-
-    while (index--)
-    {
-        ++iter;
-    }
-
-    return *iter;
+	delete billboard;
 }
 
-void BillboardSet::DestroyBillboard(Billboard * board)
-{
-    List<Billboard*>::Iterator iter;
-    List<Billboard*>::Iterator end;
 
-    iter = m_Billboards.Begin();
-    end = m_Billboards.End();
-
-    while (iter != end && *iter != board)
-    {
-        ++iter;
-    }
-
-    assert(iter != end);
-
-    delete board;
-    m_Billboards.Erase(iter);
-}
-
-void BillboardSet::DestroyBillboard(int index)
-{
-    assert (index < m_Billboards.Size());
-
-    List<Billboard*>::Iterator iter;
-
-    iter = m_Billboards.Begin();
-
-    while (index--)
-    {
-        ++iter;
-    }
-
-    delete *iter;
-    m_Billboards.Erase(iter);
-}
-
-void BillboardSet::DestroyAllBillboard()
-{
-    List<Billboard*>::Iterator iter;
-    List<Billboard*>::Iterator end;
-
-    iter = m_Billboards.Begin();
-    end = m_Billboards.End();
-
-    while (iter != end)
-    {
-        delete *iter;
-
-        ++iter;
-    }
-
-    m_Billboards.Clear();
-}
-
-int BillboardSet::GetNumBillboard()
-{
-    return m_Billboards.Size();
-}
-
-const guid128 & BillboardSet::GetGuid()
-{
-    return Guid;
-}
-
-void BillboardSet::NotifyCamera(Camera * cam)
-{
-    int max_vcount = m_Billboards.Size() * 4;
-    int max_icount = m_Billboards.Size() * 6;
-
-    debug_assert(max_icount < 65536, "index buffer is to large.");
-
-    int active_count = 0;
-
-    VertexBufferPtr buffer = mVertexStream.GetStream(0);
-
-    if (buffer.IsNull())
-    {
-        VertexDeclarationPtr decl = VideoBufferManager::Instance().CreateVertexDeclaration();
-        decl->AddElement(0, 0, DECLTYPE_FLOAT3, DECLMETHOD_DEFAULT, DECLUSAGE_POSITION, 0);
-        decl->AddElement(0, 12, DECLTYPE_FLOAT4, DECLMETHOD_DEFAULT, DECLUSAGE_COLOR, 0);
-        decl->AddElement(0, 28, DECLTYPE_FLOAT2, DECLMETHOD_DEFAULT, DECLUSAGE_TEXCOORD, 0);
-        decl->EndDecl();
-
-        mVertexStream.SetDeclaration(decl);
-    }
-
-    if (buffer.IsNull() || buffer->GetSize() < max_vcount)
-    {
-        buffer = VideoBufferManager::Instance().CreateVertexBuffer(max_vcount * 36,
-                                                                   USAGE_WRITEONLY | USAGE_DYNAMIC,
-                                                                   POOL_DEFAULT);
-        mVertexStream.Bind(0, buffer, 36);
-    }
-
-    char * verteces;
-    buffer->Lock(0, 0, (void**)&verteces, LOCK_DISCARD | LOCK_NOOVERWRITE);
-
-    const Vec3 & right = cam->GetRight();
-    const Vec3 & up = cam->GetUp();
-    const Vec3 & dir = cam->GetDirection();
-
-    List<Billboard*>::Iterator iter;
-    List<Billboard*>::Iterator end;
-
-    iter = m_Billboards.Begin();
-    end = m_Billboards.End();
-
-    while (iter != end)
-    {
-        if ((*iter)->GetVisible())
-        {
-            (*iter)->GetVerteces(verteces, right, up, dir);
-
-            ++active_count;
-            verteces += 36 * 4;
-        }
-
-        ++iter;
-    }
-
-    buffer->Unlock();
-
-    IndexBufferPtr ibuffer = mIndexStream.GetStream();
-
-    if (ibuffer.IsNull() || ibuffer->GetSize() < max_icount)
-    {
-        ibuffer = VideoBufferManager::Instance().CreateIndexBuffer(max_icount * sizeof(short), 
-                                                                   USAGE_WRITEONLY | USAGE_DYNAMIC,
-                                                                   POOL_DEFAULT, FMT_INDEX16);
-
-        mIndexStream.Bind(ibuffer, 0);
-    }
-
-    short * indeces;
-    ibuffer->Lock(0, 0, (void**)&indeces, LOCK_DISCARD);
-
-    for (short i = 0; i < (short)(active_count * 4); i += 4)
-    {
-        *indeces++ = i;
-        *indeces++ = i + 1;
-        *indeces++ = i + 2;
-
-        *indeces++ = i + 2;
-        *indeces++ = i + 1;
-        *indeces++ = i + 3;
-    }
-
-    ibuffer->Unlock();
-
-    mVertexStream.SetCount(max_vcount);
-    mIndexStream.SetCount(max_icount);
-    mPrimCount = max_icount / 3;
-    mPrimType = PRIM_TRIANGLELIST;
-}
-
-void BillboardSet::AddRenderQueue(RenderQueue * rq)
-{
-    rq->AddRenderer(this);
-}
-
-void BillboardSet::GetWorldPosition(Vec3 * pos)
-{
-    *pos = m_node->GetWorldPosition();
-}
-
-void BillboardSet::GetWorldTransform(Mat4 * form)
-{ 
-    *form = m_node->GetWorldMatrix();
-}
-
-LightList * BillboardSet::GetLightList()
-{
-    return &m_lights;
 }

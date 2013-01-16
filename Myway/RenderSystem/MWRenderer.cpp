@@ -5,6 +5,7 @@ using namespace Myway;
 
 Renderer::Renderer()
 {
+	mUsingDefferedShading = true;
 }
 
 Renderer::~Renderer()
@@ -18,12 +19,12 @@ const Aabb & Renderer::GetWorldAabb()
 
 void Renderer::GetWorldPosition(Vec3 * pos)
 {
-    *pos = Vec3::Zero;
+	*pos = Vec3::Zero;
 }
 
 void Renderer::GetWorldTransform(Mat4 * form)
 {
-    *form = Mat4::Identity;
+	*form = Mat4::Identity;
 }
 
 int Renderer::GetBlendMatrix(Mat4 * forms)

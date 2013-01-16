@@ -145,7 +145,7 @@ void Terrain::_init()
 
 	// load default detail map
 	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault.png", "TerrainDefault.png");
-	mDefaultNormalMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault_n.dds", "TerrainDefault_n.dds");
+	mDefaultNormalMap = RenderHelper::Instance()->GetDefaultNormalTexture();
 
 	for (int i = 0; i < kMaxLayers; ++i)
 	{
@@ -466,11 +466,15 @@ void Terrain::SetLayer(int index, const Layer & layer)
 	if (oldLayer.detail != layer.detail)
 		mDetailMaps[index] = VideoBufferManager::Instance()->Load2DTexture(layer.detail, layer.detail);
 
-	if (oldLayer.normal != layer.normal)
+	if (layer.normal != "")
 		mNormalMaps[index] = VideoBufferManager::Instance()->Load2DTexture(layer.normal, layer.normal);
+	else
+		mNormalMaps[index] = mDefaultNormalMap;
 
-	if (oldLayer.specular != layer.specular)
+	if (layer.specular != "")
 		mSpecularMaps[index] = VideoBufferManager::Instance()->Load2DTexture(layer.specular, layer.specular);
+	else
+		mSpecularMaps[index] = mDefaultSpecularMap;
 
 	oldLayer = layer;
 }
@@ -639,6 +643,10 @@ void Terrain::Render()
 		TexturePtr detailMap1 = _getDetailMap(layer1);
 		TexturePtr detailMap2 = _getDetailMap(layer2);
 		TexturePtr detailMap3 = _getDetailMap(layer3);
+		TexturePtr normalMap0 = _getNormalMap(layer0);
+		TexturePtr normalMap1 = _getNormalMap(layer1);
+		TexturePtr normalMap2 = _getNormalMap(layer2);
+		TexturePtr normalMap3 = _getNormalMap(layer3);
 
 		float uvScale0 = mLayer[layer0].scale;
 		float uvScale1 = mLayer[layer1].scale;
@@ -654,6 +662,11 @@ void Terrain::Render()
 		render->SetTexture(2, state, detailMap1.c_ptr());
 		render->SetTexture(3, state, detailMap2.c_ptr());
 		render->SetTexture(4, state, detailMap3.c_ptr());
+
+		render->SetTexture(5, state, normalMap0.c_ptr());
+		render->SetTexture(6, state, normalMap1.c_ptr());
+		render->SetTexture(7, state, normalMap2.c_ptr());
+		render->SetTexture(8, state, normalMap3.c_ptr());
 
 		uTransform->SetUnifom(xOff, 0, zOff, 0);
 		uUVParam->SetUnifom(xInvSectionSize, zInvSectionSize, xInvSize, zInvSize);

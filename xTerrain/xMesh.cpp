@@ -6,18 +6,18 @@ DF_PROPERTY_BEGIN(xMesh)
     DF_PROPERTY(xMesh, AnimName, "General", "Animation", PT_TString, 128)
 	DF_PROPERTY(xMesh, Position, "Transform", "Position", PT_Vec3, 12)
 	DF_PROPERTY(xMesh, Orientation, "Transform", "Orientation", PT_Vec4, 16)
-	DF_PROPERTY(xMesh, Scale, "Transform", "Scale", PT_Vec3, 12)
+	DF_PROPERTY(xMesh, Scale, "Transform", "Scale", PT_Float, 4)
 DF_PROPERTY_END();
 
 xMesh::xMesh(const TString128 & name)
     : xObj(name)
 	, OnUpdate(&xEvent::OnUpdate, this, &xMesh::_Update)
-	, OnRenderSkel(&RenderEvent::OnAfterDeffererShading, this, &xMesh::_renderSkel)
+	, OnRenderSkel(&RenderEvent::OnAfterDefferedShading, this, &xMesh::_renderSkel)
 {
 	MeshFile = "";
 	Position = Vec3::Zero;
 	Orientation = Quat::Identity;
-	Scale = Vec3::Unit;
+	Scale = 1;
 
 	mAnimState = NULL;
 
@@ -48,7 +48,7 @@ void xMesh::Serialize(xSerializer & Serializer)
 {
 	xObj::Serialize(Serializer);
 
-	int version = 0;
+	int version = 1;
 
 	if (Serializer.IsSave())
 	{
@@ -62,6 +62,17 @@ void xMesh::Serialize(xSerializer & Serializer)
 	{
 		Serializer >> version;
 		if (version == 0)
+		{
+			Serializer >> MeshFile;
+			Serializer >> Position;
+			Serializer >> Orientation;
+
+			Vec3 scale;
+			Serializer >> scale;
+
+			Scale = scale.x;
+		}
+		else if (version == 1)
 		{
 			Serializer >> MeshFile;
 			Serializer >> Position;
@@ -175,7 +186,7 @@ void xMesh::SetOrientation(const Quat & ort)
 	mNode->SetOrientation(ort);
 }
 
-void xMesh::SetScale(const Vec3 & scale)
+void xMesh::SetScale(float scale)
 {
 	Scale = scale;
     mNode->SetScale(scale);

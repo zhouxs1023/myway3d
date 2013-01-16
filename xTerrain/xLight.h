@@ -27,6 +27,9 @@ public:
 	virtual void SetPosition(const Vec3 & p);
 	virtual Vec3 GetPosition() { return Position; }
 
+	virtual void SetScale(float s);
+	virtual float GetScale() { return GetRange(); }
+
 	virtual void SetDiffuse(const Color4 & clr);
 	virtual Color4 GetDiffuse() { return Diffuse; }
 
@@ -45,6 +48,7 @@ public:
 protected:
 	SceneNode * mNode;
 	Light * mLight;
+	Billboard * mBillboard;
 };
 
 class xPointLightFactory : public xObjFactory

@@ -7,7 +7,7 @@ xObjBound gBound;
 xObjBound::xObjBound()
 	: OnInit(&xEvent::OnInit, this, &xObjBound::Init)
 	, OnShutdown(&xEvent::OnShutdown, this, &xObjBound::Shutdown)
-	, OnRender(&RenderEvent::OnAfterDeffererShading, this, &xObjBound::Render)
+	, OnRender(&RenderEvent::OnAfterDefferedShading, this, &xObjBound::Render)
 {
 }
 

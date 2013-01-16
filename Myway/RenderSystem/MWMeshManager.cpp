@@ -64,10 +64,10 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
 
     VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 24);
 
-    float * verteces;
-    const float half_w = width * 0.5f;
-    const float half_h = height * 0.5f;
-    const float half_d = depth * 0.5f;
+	float * verteces;
+	const float half_w = width * 0.5f;
+	const float half_h = height * 0.5f;
+	const float half_d = depth * 0.5f;
     verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
     {
         Vec3 pos, normal;
@@ -148,8 +148,8 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
     }
     buffer->Unlock();
 
-    sm->GetVertexStream()->SetCount(iVertexCount);
-    sm->GetVertexStream()->Bind(0, buffer, 24);
+	sm->GetVertexStream()->SetCount(iVertexCount);
+	sm->GetVertexStream()->Bind(0, buffer, 24);
 
     IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
     short * indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);

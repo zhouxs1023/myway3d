@@ -87,6 +87,7 @@
     <ClInclude Include="xObj.h" />
     <ClInclude Include="xObjBound.h" />
     <ClInclude Include="xPlugin.h" />
+    <ClInclude Include="xPropertyGridColorPick.h" />
     <ClInclude Include="xScene.h" />
     <ClInclude Include="xSerializer.h" />
     <ClInclude Include="xToolBar.h" />
@@ -106,6 +107,7 @@
     <ClCompile Include="xGizmo.cpp" />
     <ClCompile Include="xObj.cpp" />
     <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="xPropertyGridColorPick.cpp" />
     <ClCompile Include="xPugin.cpp" />
     <ClCompile Include="xScene.cpp" />
     <ClCompile Include="xSerializer.cpp" />

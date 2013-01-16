@@ -19,6 +19,9 @@ struct VS_OUT
 	float4 tcoord12		: TEXCOORD1;
 	float4 tcoord34		: TEXCOORD2;
 	float4 normalDepth 	: TEXCOORD3;
+	float3 T			: TEXCOORD4;
+	float3 B			: TEXCOORD5;
+	float3 N			: TEXCOORD6;
 };
 
 
@@ -80,6 +83,19 @@ VS_OUT main(VS_IN In)
     
     Out.normalDepth.xyz = mul(normal, (float3x3)matView);
     Out.normalDepth.w = Out.position.w;
+
+	float3 T = float3(1, 0, 0);
+	float3 B = float3(0, 0, 1);
+	float3 N = normal;
+
+	B = cross(N, T);
+	T = cross(B, N);
+
+	float3x3 matTBN = float3x3(T, B, N);
+	matTBN = mul(matTBN, (float3x3)matView);
+	Out.T = matTBN[0];
+	Out.B = matTBN[1];
+	Out.N = matTBN[2];
     
     return Out;
 }

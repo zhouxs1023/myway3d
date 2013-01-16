@@ -23,6 +23,8 @@ public:
                     Light(const TString128 & sName);
     virtual         ~Light();
 
+	void			_SetName(const TString128 & name);
+
     void            SetType(LIGHT_TYPE type);
     LIGHT_TYPE      GetType() const;
 

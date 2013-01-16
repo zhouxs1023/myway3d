@@ -9,7 +9,7 @@
 
 namespace Myway
 {
-    class ShaderProvider_Main;
+    class ShaderProvider;
 
     class MW_ENTRY RS_Scheme : public RenderScheme
     {
@@ -19,9 +19,10 @@ namespace Myway
 
         virtual void DoRender();
 
-        ShaderProvider_Main * GetMainShaderProvider() { return mShaderPrivderMain; }
-        RenderLoop_Main * GetRenderLoopMain() { return mRenderLoopMain; }
+        ShaderProvider * GetMainShaderProvider() { return mShaderPrivderMain; }
+        RenderLoop * GetRenderLoopMain() { return mRenderLoopMain; }
         RenderQueue * GetRenderQueue() { return &mRenderQueue; }
+		VisibleCullResult * GetCullResult() { return &mMainResult; }
 
 		virtual Texture * GetDepthTexture() { return mRenderLoopMain->mTex_Depth.c_ptr(); };
 		virtual Texture * GetColorTexture() { return mRenderLoopMain->mTex_Color.c_ptr(); };
@@ -31,9 +32,9 @@ namespace Myway
     protected:
         VisibleCullResult mMainResult;
 
-        ShaderProvider_Main * mShaderPrivderMain;
+        ShaderProvider * mShaderPrivderMain;
 
-        RenderLoop_Main * mRenderLoopMain;
+        RenderLoop * mRenderLoopMain;
 
         RenderQueue mRenderQueue;
     };

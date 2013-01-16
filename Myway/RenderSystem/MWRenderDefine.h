@@ -731,4 +731,18 @@ enum PROJECTION_TYPE
     MW_ALIGN_ENUM(PROJECTION_TYPE)
 };
 
+
+struct eRenderTechType : public IEnumObj
+{
+	enum enum_t {
+		RTT_Base,
+		RTT_Mirror,
+		RTT_Shadow,
+
+		RTT_Max
+	};
+
+	DECLARE_ENUM(eRenderTechType);
+};
+
 }

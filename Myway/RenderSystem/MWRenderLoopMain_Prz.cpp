@@ -5,7 +5,7 @@
 
 namespace Myway {
 
-    RenderLoop_Main::RenderLoop_Main(RS_Scheme * sch)
+    RenderLoop::RenderLoop(RS_Scheme * sch)
     {
         mScheme = sch;
 
@@ -24,11 +24,11 @@ namespace Myway {
         mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_DepthStencil", -1, -1, FMT_D24S8,  MSAA_NONE);
     }
 
-    RenderLoop_Main::~RenderLoop_Main()
+    RenderLoop::~RenderLoop()
     {
     }
 
-    void RenderLoop_Main::DoRender()
+    void RenderLoop::DoRender()
     {
         RenderSystem * render = RenderSystem::Instance();
         RenderQueue * rq = mScheme->GetRenderQueue();
@@ -62,7 +62,7 @@ namespace Myway {
             Environment::Instance()->GetTerrain()->Render();
 
         // --->render object
-        _renderSolidObjects();
+        _renderSolidObjects(true);
 
 		RenderEvent::OnAfterRenderSolid(NULL, NULL);
 
@@ -72,13 +72,8 @@ namespace Myway {
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
 
-		// ---> shadow
-		if (Environment::Instance()->GetShadow())
-			Environment::Instance()->GetShadow()->Do(mTex_Depth.c_ptr());
-
-		// --->sun lighting
-		if (Environment::Instance()->GetSun())
-			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Normal.c_ptr());
+		// ---> lighting
+		_doLighting();
 
 		if (Environment::Instance()->GetSSAO())
 			Environment::Instance()->GetSSAO()->Render(mTex_Depth.c_ptr(), mTex_Normal.c_ptr());
@@ -150,9 +145,17 @@ namespace Myway {
 		if (Environment::Instance()->GetColorSharp())
 			Environment::Instance()->GetColorSharp()->Render(mTex_Color.c_ptr());
 
-		RenderEvent::OnAfterDeffererShading(NULL, NULL);
+		// --->render object
+		_renderSolidObjects(false);
+
+		RenderEvent::OnAfterDefferedShading(NULL, NULL);
 
 		// ---> render forward objects
+
+		// ---> render trans objects
+		_randerTransObjects();
+
+		RenderEvent::OnAfterRenderTrans(NULL, NULL);
 
 		// ---> hdr
 		_updateColorTexture();
@@ -169,7 +172,7 @@ namespace Myway {
 		_frush(finalRT);
     }
 
-    void RenderLoop_Main::_updateTexture()
+    void RenderLoop::_updateTexture()
     {
         mRT_Color->Stretch(mTex_Color.c_ptr());
         //mRT_Normal->Stretch(mTex_Normal.c_ptr());
@@ -177,18 +180,18 @@ namespace Myway {
         //mRT_Depth->Stretch(mTex_Depth.c_ptr());
     }
 
-    void RenderLoop_Main::_updateColorTexture()
+    void RenderLoop::_updateColorTexture()
     {
         mRT_Color->Stretch(mTex_Color.c_ptr());
     }
 
-    void RenderLoop_Main::_clear()
+    void RenderLoop::_clear()
     {
         Technique * clearTech = mScheme->GetMainShaderProvider()->GetClearTech();
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, clearTech);
     }
 
-    void RenderLoop_Main::_frush(RenderTarget * finalRT)
+    void RenderLoop::_frush(RenderTarget * finalRT)
 	{
 		RenderSystem * render = RenderSystem::Instance();
 
@@ -220,10 +223,12 @@ namespace Myway {
 		}
     }
 
-    void RenderLoop_Main::_renderSolidObjects()
+    void RenderLoop::_renderSolidObjects(bool deffered)
     {
         RenderSystem * render = RenderSystem::Instance();
         RenderQueue * rq = mScheme->GetRenderQueue();
+
+		render->_BeginEvent("RenderSolidObjects");
 
         const Array<Renderer *> & objs = rq->GetSolidRender();
 
@@ -231,12 +236,110 @@ namespace Myway {
         {
             Renderer * rd = objs[i];
 
-			bool skined = (rd->GetBlendMatrix(NULL) > 0);
+			if (rd->IsUsingDefferedShading() == deffered)
+			{
+				bool skined = (rd->GetBlendMatrix(NULL) > 0);
+				Technique * tech = rd->GetTechnique(eRenderTechType::RTT_Base);
 
-			Technique * tech = mScheme->GetMainShaderProvider()->GetTechnique(ShaderProvider_Main::R_Base, skined);
+				if (!tech)
+					tech = mScheme->GetMainShaderProvider()->GetTechnique(eRenderTechType::RTT_Base, skined);
 
-            render->Render(tech, rd);
+				render->Render(tech, rd);
+			}
         }
 
+		render->_EndEvent();
     }
+
+	void RenderLoop::_randerTransObjects()
+	{
+		RenderSystem * render = RenderSystem::Instance();
+		RenderQueue * rq = mScheme->GetRenderQueue();
+
+		render->_BeginEvent("RenderTransObjects");
+
+		rq->SortTransparency(World::Instance()->MainCamera());
+
+		const Array<Renderer *> & objs = rq->GetTransRender();
+
+		for (int i = 0; i < objs.Size(); ++i)
+		{
+			Renderer * rd = objs[i];
+
+			bool skined = (rd->GetBlendMatrix(NULL) > 0);
+			Technique * tech = rd->GetTechnique(eRenderTechType::RTT_Base);
+
+			if (!tech)
+				tech = mScheme->GetMainShaderProvider()->GetTechnique(eRenderTechType::RTT_Base, skined);
+
+			render->Render(tech, rd);
+		}
+
+		render->_EndEvent();
+	}
+
+	void RenderLoop::_doLighting()
+	{
+		// sun lighting
+		if (Environment::Instance()->GetShadow())
+			Environment::Instance()->GetShadow()->Do(mTex_Depth.c_ptr());
+
+		if (Environment::Instance()->GetSun())
+			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Normal.c_ptr());
+
+		VisibleCullResult * cullResult = mScheme->GetCullResult();
+
+		List<Light *>::Iterator whr = cullResult->lights.Begin();
+		List<Light *>::Iterator end = cullResult->lights.End();
+
+		Technique * tPointLight = mScheme->GetMainShaderProvider()->GetTech_PointLight();
+
+		ShaderParam * uCornerLeftTop = tPointLight->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
+		ShaderParam * uCornerRightDir = tPointLight->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
+		ShaderParam * uCornerDownDir = tPointLight->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
+		ShaderParam * uLightPos = tPointLight->GetPixelShaderParamTable()->GetParam("gLightPos");
+		ShaderParam * uLightParam = tPointLight->GetPixelShaderParamTable()->GetParam("gLightParam");
+		ShaderParam * uDiffuse = tPointLight->GetPixelShaderParamTable()->GetParam("gDiffuse");
+		ShaderParam * uSpecular = tPointLight->GetPixelShaderParamTable()->GetParam("gSpecular");
+
+		const Vec3 * corner = World::Instance()->MainCamera()->GetCorner();
+
+		Vec3 cornerLeftTop = corner[4];
+		Vec3 cornerRightDir = corner[5] - corner[4];
+		Vec3 cornerDownDir = corner[6] - corner[4];
+
+		uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
+		uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
+		uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
+
+		while (whr != end)
+		{
+			Light * light = *whr;
+
+			if (light->GetType() == LT_POINT)
+			{
+				Vec3 pos = light->GetPosition();
+				const float range = light->GetRange();
+				const Color4 & diffuse = light->GetDiffsue();
+				const Color4 & specular = light->GetSpecular();
+
+				pos *= World::Instance()->MainCamera()->GetViewMatrix();
+
+				uLightPos->SetUnifom(pos.x, pos.y, pos.z, 0);
+				uLightParam->SetUnifom(1 / range, 0, 0, 0);
+				uDiffuse->SetColor(diffuse);
+
+				SamplerState state;
+				state.Address = TEXA_CLAMP;
+				state.Filter = TEXF_POINT;
+				RenderSystem::Instance()->SetTexture(0, state, mTex_Color.c_ptr());
+				RenderSystem::Instance()->SetTexture(1, state, mTex_Normal.c_ptr());
+				RenderSystem::Instance()->SetTexture(2, state, mTex_Depth.c_ptr());
+
+				RenderHelper::Instance()->DrawScreenQuad(BM_ADD, tPointLight);
+			}
+
+			++whr;
+		}
+	}
 }

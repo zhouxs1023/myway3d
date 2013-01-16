@@ -5,35 +5,30 @@
 namespace Myway
 {
 
-    class MW_ENTRY ShaderProvider_Main
-    {
+	class MW_ENTRY ShaderProvider
+	{
 		DECLARE_ALLOC();
 
-    public:
-        enum
-        {
-            R_Base,
-            R_Mirror,
-            R_Shadow,
-            R_MAX
-        };
+    public:        
 
     public:
-        ShaderProvider_Main();
-        ~ShaderProvider_Main();
+        ShaderProvider();
+        ~ShaderProvider();
 
-        Technique * GetTechnique(int type, bool skined);
+        Technique * GetTechnique(eRenderTechType::enum_t type, bool skined);
 
         Technique * GetFrushTech() { return mFrushTech; }
         Technique * GetClearTech() { return mClearTech; }
+		Technique * GetTech_PointLight() { return mTech_PointLight; }
 
     protected:
         ShaderLib * mShaderLib;
-		Technique * mTechs[R_MAX];
-        Technique * mTechs_Skined[R_MAX];
+		Technique * mTechs[eRenderTechType::RTT_Max];
+        Technique * mTechs_Skined[eRenderTechType::RTT_Max];
 
         Technique * mFrushTech;
         Technique * mClearTech;
+		Technique * mTech_PointLight;
     };
 
 }

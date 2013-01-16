@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MWEntity.h"
+#include "MWBillboard.h"
 #include "MWCamera.h"
 #include "MWSceneNode.h"
 #include "MWLight.h"
@@ -55,6 +56,7 @@ public:
     //light
     Light *             CreateLight(const TString128 & name);
     bool                HasLight(const TString128 & name);
+	bool				RenameLight(const TString128 & name, Light * light);
     Light *             GetLight(const TString128 & name);
     void                DestroyLight(const TString128 & name);
     void                DestroyLight(Light * light);
@@ -76,7 +78,7 @@ public:
 
     void                UpdateFrame();
 
-    void                ImpVisibleCull(VisibleCullResult & result, Camera * cam, bool updateGeo);
+    void                ImpVisibleCull(VisibleCullResult & result, Camera * cam, bool updateGeo, bool cullLights = false);
 
 protected:
     void                UpdateScene();

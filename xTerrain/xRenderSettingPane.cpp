@@ -140,6 +140,8 @@ void xRenderSettingPane::_ToCtrl(CMFCPropertyGridProperty * gp, IPropertyObj * o
 		}
 
 		pProp->AllowEdit(FALSE);
+
+		gp->AddSubItem(pProp);
 	}
 }
 
@@ -162,7 +164,7 @@ LRESULT xRenderSettingPane::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 
 		if (p->type == PT_Bool)
 		{
-			bool bdata = (strValue.boolVal == TRUE);
+			bool bdata = (strValue.boolVal == -1);
 			obj->SetPropertyData(p, &bdata);
 		}
 		else if (p->type == PT_Int && p->enumObj)

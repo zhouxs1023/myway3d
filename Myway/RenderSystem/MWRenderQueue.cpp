@@ -16,30 +16,30 @@ RenderQueue::~RenderQueue()
 
 void RenderQueue::PushRenderer(const List<SceneNode *> & nodes)
 {
-    List<SceneNode *>::ConstIterator whr = nodes.Begin();
-    List<SceneNode *>::ConstIterator end = nodes.End();
+	List<SceneNode *>::ConstIterator whr = nodes.Begin();
+	List<SceneNode *>::ConstIterator end = nodes.End();
 
-    while (whr != end)
-    {
-        _pushRenderer(*whr);
+	while (whr != end)
+	{
+		_pushRenderer(*whr);
 
-        ++whr;
-    }
+		++whr;
+	}
 }
 
 void RenderQueue::_pushRenderer(SceneNode * node)
 {
-    SceneNode::MoverVisitor vr = node->GetMovers();
+	SceneNode::MoverVisitor vr = node->GetMovers();
 
-    while (!vr.Endof())
-    {
-        Mover * m = *vr.Cursor();
+	while (!vr.Endof())
+	{
+		Mover * m = *vr.Cursor();
 
-        if (m->IsVisible())
-            m->AddRenderQueue(this);
+		if (m->IsVisible())
+			m->AddRenderQueue(this);
 
-        ++vr;
-    }
+		++vr;
+	}
 }
 
 void RenderQueue::AddRenderer(Renderer * obj)

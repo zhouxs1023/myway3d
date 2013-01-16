@@ -64,7 +64,7 @@ protected:
 
 	Vec3 mOldPosition;
 	Quat mOldOrientation;
-	Vec3 mOldScale;
+	float mOldScale;
 
 	tEventListener<xGizmo> OnInit;
 	tEventListener<xGizmo> OnShutdown;

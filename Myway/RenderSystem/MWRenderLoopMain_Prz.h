@@ -8,13 +8,13 @@
 
 namespace Myway
 {
-    class MW_ENTRY RenderLoop_Main
+    class MW_ENTRY RenderLoop
     {
 		friend class RS_Scheme;
 
     public:
-        RenderLoop_Main(RS_Scheme * sch);
-        ~RenderLoop_Main();
+        RenderLoop(RS_Scheme * sch);
+        ~RenderLoop();
 
         void DoRender();
 
@@ -25,7 +25,10 @@ namespace Myway
         void _clear();
         void _frush(RenderTarget * finalRT);
 
-        void _renderSolidObjects();
+        void _renderSolidObjects(bool deffered);
+		void _randerTransObjects();
+
+		void _doLighting();
 
     protected:
         RS_Scheme * mScheme;

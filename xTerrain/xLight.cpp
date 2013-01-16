@@ -1,17 +1,24 @@
 #include "stdafx.h"
 
 #include "xLight.h"
+#include "xApp.h"
 
 DF_PROPERTY_BEGIN(xPointLight)
-	DF_PROPERTY(xPointLight, Position, "Generic", "Position", PT_Vec3, 12)
-	DF_PROPERTY(xPointLight, Diffuse, "Generic", "Diffuse", PT_Color, 16)
-	DF_PROPERTY(xPointLight, Specular, "Generic", "Specular", PT_Color, 16)
-	DF_PROPERTY(xPointLight, Range, "Generic", "Range", PT_Float, 4)
+	DF_PROPERTY(xPointLight, Position, "General", "Position", PT_Vec3, 12)
+	DF_PROPERTY(xPointLight, Diffuse, "General", "Diffuse", PT_Color, 16)
+	DF_PROPERTY(xPointLight, Specular, "General", "Specular", PT_Color, 16)
+	DF_PROPERTY(xPointLight, Range, "General", "Range", PT_Float, 4)
 DF_PROPERTY_END();
 
 xPointLight::xPointLight(const TString128 & name)
 	: xObj(name)
 {
+	Position = Vec3::Zero;
+	Diffuse = Color4::White;
+	Specular = Color4::Black;
+
+	Range = 20;
+
 	mLight = World::Instance()->CreateLight(name);
 	mNode = World::Instance()->CreateSceneNode();
 
@@ -19,18 +26,41 @@ xPointLight::xPointLight(const TString128 & name)
 
 	mNode->GetFlag().SetFlags(PICK_Flag);
 
-	mLight->SetBounds(xObj::K_DefaultBound, xObj::K_DefaultSphere);
+	mLight->SetBounds(Aabb(-1, -1, -1, 1, 1, 1), Sphere(0, 0, 0, 1));
+	mLight->SetType(LT_POINT);
+	
+	Technique * tech = xApp::Instance()->GetHelperShaderLib()->GetTechnique("PointLight");
+	mBillboard = BillboardManager::Instance()->Create(tech);
+
+	mBillboard->SetWidth(5);
+	mBillboard->SetHeight(5);
+
+	Material * mat = mBillboard->GetMaterial();
+
+	mat->SetDepthWrite(false);
+	mat->SetBlendMode(BM_ALPHA_BLEND);
+	mat->SetDiffuseMap("Editor\\PointLight.png");
+
+	mNode->Attach(mBillboard);
+
+	SetScale(Range);
+	SetDiffuse(Diffuse);
+	SetSpecular(Specular);
 }
 
 xPointLight::~xPointLight()
 {
+	BillboardManager::Instance()->Destroy(mBillboard);
+	World::Instance()->DestroyLight(mLight);
+	World::Instance()->DestroySceneNode(mNode);
 }
 
 
 void xPointLight::SetName(const TString128 & name)
 {
+	if (World::Instance()->RenameLight(name, mLight))
+		Name = name;
 }
-
 
 xObj * xPointLight::Clone()
 {
@@ -53,6 +83,12 @@ void xPointLight::SetPosition(const Vec3 & p)
 {
 	Position = p;
 	mNode->SetPosition(p);
+}
+
+void xPointLight::SetScale(float s)
+{
+	mNode->SetScale(s);
+	SetRange(s);
 }
 
 void xPointLight::SetDiffuse(const Color4 & clr)
@@ -130,7 +166,7 @@ bool xPointLight::OnPropertyChanged(const Property * p)
 	}
 	else if (p->name == "Range")
 	{
-		SetRange(Range);
+		SetScale(Range);
 	}
 
 	return true;

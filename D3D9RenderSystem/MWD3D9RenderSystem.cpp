@@ -528,8 +528,6 @@ void D3D9RenderSystem::SetPixelShaderConstI(int reg, const int * data, int vec4C
 
 void D3D9RenderSystem::SetTexture(int index, const SamplerState & state, Texture * pTexture)
 {
-    SetSamplerState(index, state);
-
     if (pTexture)
     {
         TEXTURE_TYPE type = pTexture->GetTextureType();
@@ -551,6 +549,8 @@ void D3D9RenderSystem::SetTexture(int index, const SamplerState & state, Texture
             D3D9VolumeTexture * p = (D3D9VolumeTexture *)pTexture;
             d3d9Tex = p->GetD3D9Texture();
         }
+
+		SetSamplerState(index, state);
 
         mD3DDevice->SetTexture(index, d3d9Tex);
 

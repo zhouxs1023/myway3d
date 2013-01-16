@@ -15,7 +15,7 @@ Mover::Mover(const TString128 & name)
   mSphLocal(Sphere::Zero),
   mSphWorld(Sphere::Zero),
   mVisible(true),
-  mCastShadow(false)
+  mCastShadow(true)
 {
 }
 

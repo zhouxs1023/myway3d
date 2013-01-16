@@ -4,6 +4,52 @@
 
 namespace Myway {
 
+	class ShadowRenderQueue : public RenderQueue
+	{
+		DECLARE_ALLOC();
+
+	public:
+		ShadowRenderQueue() {}
+		virtual ~ShadowRenderQueue() {}
+
+		virtual void PushRenderer(const List<SceneNode *> & nodes)
+		{
+			List<SceneNode *>::ConstIterator whr = nodes.Begin();
+			List<SceneNode *>::ConstIterator end = nodes.End();
+
+			while (whr != end)
+			{
+				_pushRenderer(*whr);
+
+				++whr;
+			}
+		}
+
+		virtual void AddRenderer(Renderer * obj)
+		{
+			if (!obj->GetMaterial()->IsTransparency())
+			{
+				mSolidEntry.PushBack(obj);
+			}
+		}
+
+	protected:
+		void _pushRenderer(SceneNode * node)
+		{
+			SceneNode::MoverVisitor vr = node->GetMovers();
+
+			while (!vr.Endof())
+			{
+				Mover * m = *vr.Cursor();
+
+				if (m->IsVisible() && m->IsCastShadow())
+					m->AddRenderQueue(this);
+
+				++vr;
+			}
+		}
+	};
+
 	class MW_ENTRY Shadow
 	{
 	public:
@@ -62,7 +108,7 @@ namespace Myway {
 		TexturePtr mTex_Random;
 
 		VisibleCullResult mCullResult;
-		RenderQueue mRenderQueue;
+		ShadowRenderQueue mRenderQueue;
 		Technique * mTech_ShadowDepth;
 		Technique * mTech_ShadowDepthSkin;
 		Technique * mTech_Shadow;

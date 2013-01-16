@@ -135,7 +135,7 @@ void xUndoRedo_Rotate::Redo()
 
 
 
-xUndoRedo_Scale::xUndoRedo_Scale(const TString128 & objName, const Vec3 & orgScale, const Vec3 & newScale)
+xUndoRedo_Scale::xUndoRedo_Scale(const TString128 & objName, float orgScale, float newScale)
 	: mObjName(objName)
 	, mOrgScale(orgScale)
 	, mNewScale(newScale)
