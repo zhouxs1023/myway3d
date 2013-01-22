@@ -13,6 +13,9 @@
   <ItemGroup>
     <ClInclude Include="MBranch.h" />
     <ClInclude Include="MForest.h" />
+    <ClInclude Include="MTree.h" />
+    <ClInclude Include="MTreeEntry.h" />
+    <ClInclude Include="MTreeInstance.h" />
     <ClInclude Include="MVegetation.h" />
     <ClInclude Include="MVegetationBlock.h" />
   </ItemGroup>
@@ -20,6 +23,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MBranch.cpp" />
     <ClCompile Include="MForest.cpp" />
+    <ClCompile Include="MTree.cpp" />
+    <ClCompile Include="MTreeInstance.cpp" />
     <ClCompile Include="MVegetation.cpp" />
     <ClCompile Include="MVegetationBlock.cpp" />
   </ItemGroup>

@@ -1,13 +1,10 @@
 #pragma once
 
 #include "MTreeEntry.h"
-#include "MWMath.h"
 #include "MWResource.h"
-#include "MTreeGlobal.h"
 #include "MWTexture.h"
 #include "MWRenderer.h"
-
-class CSpeedTreeRT;
+#include "MBranch.h"
 
 namespace Myway {
 
@@ -27,33 +24,25 @@ namespace Myway {
 
 		virtual void LoadImp(DataStreamPtr stream);
 
-		RenderOp * GetRenderOp_Branch() { return mRenderOp_Branch; }
-		RenderOp * GetRenderOp_Frond() { return mRenderOp_Frond; }
-		RenderOp * GetRenderOp_Leaf() { return mRenderOp_Leaf; }
+		void DoGenerate();
+		MTreeRes * GetTreeResource();
+
+		const Aabb & GetAabb() { return mBound; }
+		const Sphere & GetSphere() { return mSphere; }
+
+		RenderOp * _getBranchRenderOp() { return mRenderOp_Branch; }
 
 	protected:
-		void _calcuBound();
-		void _loadTexture();
-		void _setupBranchGeometry();
-		void _setupFrondGeometry();
-		void _setupLeafGeometry();
-		void _setupBillboardGeometry();
+		void _setupBranchGeometry(MTreeGeometry & geo);
+		void _calcuBound(MTreeGeometry & geo);
 
 	protected:
-		CSpeedTreeRT * mSpeedTree;
+		MTreeRes mResource;
+
 		Aabb mBound;
 		Sphere mSphere;
 
-		TexturePtr mBranchTexture[MTreeGlobal::K_NumLeafAngles];
-		
-		/*TexturePtr mFrondTexture[CSpeedTreeRT::TL_NUM_TEX_LAYERS];
-		TexturePtr mLeafTexture[CSpeedTreeRT::TL_NUM_TEX_LAYERS];
-		TexturePtr mBillboradTexture[CSpeedTreeRT::TL_NUM_TEX_LAYERS];*/
-
 		RenderOp * mRenderOp_Branch;
-		RenderOp * mRenderOp_Frond;
-		RenderOp * mRenderOp_Leaf;
-		RenderOp * mRenderOp_Billboard;
 	};
 
 	DeclareSmartPtr(MTree);

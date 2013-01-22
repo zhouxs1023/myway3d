@@ -3,7 +3,7 @@
 #include "MWRenderSystem.h"
 #include "MWBrightStarCatalogue.h"
 
-namespace Myway { namespace Env {
+namespace Myway {
 
     class MW_ENTRY Starfield
     {
@@ -40,5 +40,5 @@ namespace Myway { namespace Env {
         Technique * mTech;
     };
 
-}}
+}
 

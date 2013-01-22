@@ -137,6 +137,7 @@ protected:
 	void				_Load(const char * filename);
 	void				_init();
 	void				_calcuNormals();
+	int					_getTechId(int layer0, int layer1, int layer2, int layer3);
 
 protected:
 	tEventListener<Terrain> tOnPreVisibleCull;
@@ -150,7 +151,7 @@ protected:
 	Array<TexturePtr> mWeightMaps;
 
     TerrainLod * mLod;
-    Technique * mTech;
+    Technique * mTech[kMaxDetailLevel];
 	VertexBufferPtr mXYStream;
 
 	float * mHeights;

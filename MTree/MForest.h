@@ -1,8 +1,12 @@
 #pragma once
 
 #include "MTreeEntry.h"
+
 #include "MVegetation.h"
 #include "MVegetationBlock.h"
+
+#include "MTree.h"
+#include "MTreeInstance.h"
 
 namespace Myway {
 
@@ -17,8 +21,11 @@ namespace Myway {
 		MForest();
 		~MForest();
 
+		// Vegetation Methods.
+		//
 		void LoadVeg(const TString128 & source);
 		void SaveVeg(const TString128 & source);
+		void UnloadVeg();
 
 		void AddVegetation(const TString32 & name, MVegetation::GeomType type,
 			const TString128 & mesh, const TString128 & diffueMap,
@@ -38,9 +45,21 @@ namespace Myway {
 		int GetVegetationBlockCount();
 		void RemoveAllVegetationBlock();
 
-		void UnloadVeg();
-
 		void _AddVisibleVegetationBlock(MVegetationBlock * block);
+
+
+		// Tree Methods.
+		//
+		MTreePtr LoadTree(const TString128 & source);
+		void DeleteTree(MTree * tree);
+
+		MTreeInstance * CreateTreeInstance(const TString128 & name, const TString128 & source);
+		MTreeInstance * CreateTreeInstance(const TString128 & name);
+		MTreeInstance * GetTreeInstance(const TString128 & name);
+		bool RenameTreeInstance(const TString128 & name, MTreeInstance * inst);
+		void DestroyInstance(MTreeInstance * tree);
+
+		void _AddVisibleTreeInstance(MTreeInstance * tree);
 
 	protected:
 		void Init();
@@ -56,9 +75,12 @@ namespace Myway {
 
 		void _OnVegRemoved(MVegetation * veg);
 
+		void _drawBranch();
+
 	protected:
 		ShaderLib * mShaderLib;
 
+		// Vegetation
 		Array<MVegetation *> mVegetations;
 
 		RectF mVegBlockRect;
@@ -70,6 +92,14 @@ namespace Myway {
 		Technique * mTech_VegMesh;
 		Technique * mTech_VegBillboard;
 		Technique * mTech_VegX2;
+
+		// Tree
+		MTreePtr mDefaultTree;
+		Array<MTree *> mTrees;
+		Array<MTreeInstance *> mTreeInstances;
+		Array<MTreeInstance *> mVisbleTreeInstances;
+
+		Technique * mTech_Branch;
 	};
 
 

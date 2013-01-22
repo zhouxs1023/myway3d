@@ -2,6 +2,7 @@
 #include "Engine.h"
 #include "MWRenderEvent.h"
 #include "MWEnvironment.h"
+#include "MWRenderHelper.h"
 
 namespace Myway {
 
@@ -19,9 +20,9 @@ namespace Myway {
 
 	MForest::~MForest()
 	{
-		SHUT_SLN;
-
 		Shutdown();
+
+		SHUT_SLN;
 	}
 
 	void MForest::Init()
@@ -38,11 +39,23 @@ namespace Myway {
 		mVegBlockRect = RectF(0, 0, 0, 0);
 		mXVegBlockCount = 0;
 		mZVegBlockCount = 0;
+
+		mDefaultTree = new MTree("");
+		mTrees.PushBack(mDefaultTree.c_ptr());
+
+		mTech_Branch = mShaderLib->GetTechnique("Branch");
+
+		d_assert (mTech_Branch);
 	}
 
 	void MForest::Shutdown()
 	{
 		UnloadVeg();
+
+		mDefaultTree = NULL;
+
+		d_assert (mTreeInstances.Size() == 0);
+		d_assert (mTrees.Size() == 0);
 	}
 
 	void MForest::Update()
@@ -69,8 +82,6 @@ namespace Myway {
 	{
 		mVisibleVegetationBlocks.PushBack(block);
 	}
-
-	
 
 	void MForest::LoadVeg(const TString128 & source)
 	{
@@ -387,6 +398,7 @@ namespace Myway {
 	void MForest::_preVisibleCull()
 	{
 		mVisibleVegetationBlocks.Clear();
+		mVisbleTreeInstances.Clear();
 	}
 
 	void MForest::_render()
@@ -394,6 +406,8 @@ namespace Myway {
 		_drawMeshVeg();
 		_drawBillboardVeg();
 		_drawX2Veg();
+
+		_drawBranch();
 	}
 
 	void MForest::_drawMeshVeg()
@@ -446,17 +460,134 @@ namespace Myway {
 	}
 
 
+	MTreePtr MForest::LoadTree(const TString128 & source)
+	{
+		for (int i = 0; i < mTrees.Size(); ++i)
+		{
+			if (mTrees[i]->GetSourceName() == source)
+				return mTrees[i];
+		}
 
+		MTree * tree = new MTree(source);
 
+		tree->Load();
 
+		mTrees.PushBack(tree);
 
+		return tree;
+	}
 
+	void MForest::DeleteTree(MTree * tree)
+	{
+		for (int i = 0; i < mTrees.Size(); ++i)
+		{
+			if (mTrees[i] == tree)
+			{
+				mTrees.Erase(i);
+				delete tree;
+				return ;
+			}
+		}
 
+		d_assert (0);
+	}
 
+	MTreeInstance * MForest::CreateTreeInstance(const TString128 & name, const TString128 & source)
+	{
+		d_assert (GetTreeInstance(name) == NULL && source != "");
 
+		MTreeInstance * inst = new MTreeInstance(name);
 
+		inst->SetTree(source);
 
+		mTreeInstances.PushBack(inst);
 
+		return inst;
+	}
+
+	MTreeInstance * MForest::CreateTreeInstance(const TString128 & name)
+	{
+		d_assert (GetTreeInstance(name) == NULL);
+
+		MTreeInstance * inst = new MTreeInstance(name);
+
+		inst->SetTree(mDefaultTree);
+
+		mTreeInstances.PushBack(inst);
+
+		return inst;
+	}
+
+	MTreeInstance * MForest::GetTreeInstance(const TString128 & name)
+	{
+		for (int i = 0; i < mTreeInstances.Size(); ++i)
+		{
+			if (mTreeInstances[i]->GetName() == name)
+				return mTreeInstances[i];
+		}
+
+		return NULL;
+	}
+
+	bool MForest::RenameTreeInstance(const TString128 & name, MTreeInstance * inst)
+	{
+		if (inst->GetName() != name && GetTreeInstance(name) == NULL)
+		{
+			inst->SetName(name);
+			return true;
+		}
+
+		return false;
+	}
+
+	void MForest::DestroyInstance(MTreeInstance * tree)
+	{
+		for (int i = 0; i < mTreeInstances.Size(); ++i)
+		{
+			if (mTreeInstances[i] == tree)
+			{
+				delete tree;
+				mTreeInstances.Erase(i);
+				return ;
+			}
+		}
+
+		d_assert (0);
+	}
+
+	void MForest::_AddVisibleTreeInstance(MTreeInstance * tree)
+	{
+		mVisbleTreeInstances.PushBack(tree);
+	}
+
+	void MForest::_drawBranch()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Branch");
+
+		ShaderParam * uUVScale = mTech_Branch->GetVertexShaderParamTable()->GetParam("gUVScale");
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			RenderOp * rop = tree->_getBranchRenderOp();
+
+			const Vec2 & uvScale = tree->GetTreeResource()->GetBranch()->GetDiffuseUVScale();
+
+			uUVScale->SetUnifom(uvScale.x, uvScale.y, 0, 0);
+
+			SamplerState state;
+
+			rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+			TexturePtr diffuseTex = tree->GetTreeResource()->GetBranchTexture(MTreeRes::TT_Diffuse);
+
+			RenderSystem::Instance()->SetTexture(0, state, diffuseTex.c_ptr());
+			RenderSystem::Instance()->Render(mTech_Branch, rop);
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
 
 
 

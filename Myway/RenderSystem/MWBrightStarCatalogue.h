@@ -2,8 +2,6 @@
 
 namespace Myway {
 
-namespace Env {
-
     struct BrightStarCatalogueEntry 
     {
         signed char rasc_hour;
@@ -18,6 +16,4 @@ namespace Env {
     #define BrightStarCatalogueSize 9110
 
     extern const BrightStarCatalogueEntry BrightStarCatalogue[BrightStarCatalogueSize];
-}
-
 }

@@ -25,7 +25,7 @@ namespace Myway {
 
 		~Curve()
 		{
-			safe_delete (mPoints);
+			safe_delete_array (mPoints);
 		}
 
 		void SetPointCount(int count)
@@ -35,11 +35,9 @@ namespace Myway {
 			if (mNumPoints != count)
 			{
 				mNumPoints = count;
-				safe_delete (mPoints);
+				safe_delete_array (mPoints);
 
 				mPoints = new T[count];
-
-				mNeedCompute = true;
 			}
 		}
 
@@ -102,7 +100,7 @@ namespace Myway {
 		{
 			d_assert (this != &rk);
 
-			safe_delete (mPoints);
+			safe_delete_array (mPoints);
 
 			mPoints = new T[rk.mNumPoints];
 
@@ -166,7 +164,7 @@ namespace Myway {
 
 			for (int i = 0; i < numPoints; ++i)
 			{
-				float t = i / (float)numPoints;
+				float t = i / (float)(numPoints - 1);
 
 				T p = mControl[0] * (1 - t) * (1 - t) * (1 - t) + 
 					mControl[1] * (1 - t) * (1 - t) * t +

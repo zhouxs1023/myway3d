@@ -8,25 +8,52 @@ struct PS_IN
 	float2 uv0 : TEXCOORD0;
 };
 
-uniform sampler2D gTex_Color;
-uniform sampler2D gTex_Normal;
-uniform sampler2D gTex_Shadow;
+uniform sampler2D gTex_Color	: register (s0);
+uniform sampler2D gTex_Normal	: register (s1);
+uniform sampler2D gTex_Shadow	: register (s2);
+uniform sampler2D gTex_Specular	: register (s3);
+uniform sampler2D gTex_Depth	: register (s4);
 
 uniform float3 gLightDir;
 uniform float4 gAmbient;
 uniform float4 gDiffuse;
 uniform float4 gSpecular;
 
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+
+float3 GetViewPosition(PS_IN In)
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * In.uv0.x + gCornerDownDir * In.uv0.y;
+	float d = tex2D(gTex_Depth, In.uv0).r;
+	float3 pos = p.xyz * d;
+
+	return pos;
+}
+
 float4 main(PS_IN In) : COLOR
 {
 	float4 clr = tex2D(gTex_Color, In.uv0);
-	float3 nrm = tex2D(gTex_Normal, In.uv0).rgb;
+	float4 clrSpec = tex2D(gTex_Specular, In.uv0);
 	float shadow = tex2D(gTex_Shadow, In.uv0).r;
+
+	float3 N = tex2D(gTex_Normal, In.uv0).rgb;
+	float3 P = GetViewPosition(In);
+	float3 L = gLightDir;
+	float3 V = normalize(-P);
+	float3 H = normalize((V + L) / 2);
 	
-	float NdL = dot(nrm, gLightDir);
+	float NdL = dot(N, L);
 	NdL = saturate(NdL);
+
+	float NdH = dot(N, H);
+
+	NdH = NdL > 0 ? NdH : 0;
+
+	NdH = pow(NdH, clrSpec.w);
 	
-	clr = clr * (gAmbient + NdL * gDiffuse * shadow); 
+	clr.rgb = clr.rgb * (gAmbient.rgb + NdL * gDiffuse.rgb * shadow) + clrSpec.rgb * gSpecular.rgb * NdH * shadow; 
 	clr.a = 1;
 	
 	return clr;

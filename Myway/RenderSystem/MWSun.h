@@ -13,7 +13,7 @@ namespace Myway {
         ~Sun();
 
         void Render();
-        void Lighting(Texture * colorTex, Texture * normalTex);
+        void Lighting(Texture * colorTex, Texture * specTex, Texture * normalTex, Texture * depthTex);
 
     protected:
         void _geometry();

@@ -4,7 +4,7 @@
 #pragma warning (disable : 4305)
 
 
-namespace Myway { namespace Env {
+namespace Myway {
 
 
 // Data from http://heasarc.gsfc.nasa.gov/W3Browse/star-catalog/bsc5p.html
@@ -9125,6 +9125,6 @@ const BrightStarCatalogueEntry BrightStarCatalogue[BrightStarCatalogueSize] = {
 };
 
 
-}}
+}
 
 #pragma warning (pop)

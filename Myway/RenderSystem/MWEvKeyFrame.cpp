@@ -20,7 +20,9 @@ namespace Myway
 
         DF_PROPERTY(EvKeyFrame, MoonPhase, "Sky", "MoonPhase",    PT_Float,   4)
         DF_PROPERTY(EvKeyFrame, MoonLum, "Sky", "MoonLum",      PT_Float,   4)
-        DF_PROPERTY(EvKeyFrame, MoonSize, "Sky", "MoonSize",     PT_Float,   4)
+		DF_PROPERTY(EvKeyFrame, MoonSize, "Sky", "MoonSize",     PT_Float,   4)
+
+        DF_PROPERTY(EvKeyFrame, StarLum, "Sky", "StarLum",     PT_Float,   4)
 
         DF_PROPERTY(EvKeyFrame, FogColor, "Fog", "FogColor",     PT_Color,   16)
         DF_PROPERTY(EvKeyFrame, FogStart, "Fog", "FogStart",     PT_Float,   4)
@@ -84,6 +86,8 @@ namespace Myway
         MoonPhase = 1.4f;
         MoonLum = 1;
         MoonSize = 1000;
+
+		StarLum = 0.05f;
 
         FogStart = 500;
         FogEnd = 2000;
@@ -210,6 +214,8 @@ namespace Myway
         MoonPase = 1.4f;
         MoonLum = 1;
         MoonSize = 1000;
+
+		StarLum = 0.05f;
 
         FogStart = 100;
         FogEnd = 300;

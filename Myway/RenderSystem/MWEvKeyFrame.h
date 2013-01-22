@@ -23,6 +23,8 @@ namespace Myway
         float MoonLum;
         float MoonSize;
 
+		float StarLum;
+
         float FogStart;
         float FogEnd;
         Color4 FogColor;
@@ -157,6 +159,8 @@ namespace Myway
         float MoonPase;
         float MoonLum;
         float MoonSize;
+
+		float StarLum;
 
         float FogStart;
         float FogEnd;

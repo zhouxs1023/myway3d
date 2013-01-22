@@ -43,23 +43,39 @@ namespace Myway {
         render->Render(mTech, &mRender);
     }
 
-    void Sun::Lighting(Texture * colorTex, Texture * normalTex)
+    void Sun::Lighting(Texture * colorTex, Texture * specTex, Texture * normalTex, Texture * depthTex)
     {
         ShaderParam * uLightDir = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gLightDir");
         ShaderParam * uAmbient = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gAmbient");
         ShaderParam * uDiffuse = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gDiffuse");
         ShaderParam * uSpecular = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gSpecular");
 
+		ShaderParam * uCornerLeftTop = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
+		ShaderParam * uCornerRightDir = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
+		ShaderParam * uCornerDownDir = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
+
+		Camera * cam = World::Instance()->MainCamera();
+		const Vec3 * corner = cam->GetCorner();
+
+		Vec3 cornerLeftTop = corner[4];
+		Vec3 cornerRightDir = corner[5] - corner[4];
+		Vec3 cornerDownDir = corner[6] - corner[4];
+
         Vec3 lightDir = -Environment::Instance()->GetEvParam()->LightDir;
         Color4 ambient = Environment::Instance()->GetEvParam()->LightAmbient;
         Color4 diffuse = Environment::Instance()->GetEvParam()->LightDiffuse;
         Color4 specular = Environment::Instance()->GetEvParam()->LightSpecular;
-		
+
 		lightDir = lightDir.TransformN(World::Instance()->MainCamera()->GetViewMatrix());
 
         uLightDir->SetUnifom(lightDir.x, lightDir.y, lightDir.z, 0);
         uAmbient->SetUnifom(ambient.r, ambient.g, ambient.b, ambient.a);
         uDiffuse->SetUnifom(diffuse.r, diffuse.g, diffuse.b, diffuse.a);
+		uSpecular->SetUnifom(specular.r, specular.g, specular.b, specular.a);
+
+		uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
+		uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
+		uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
 
         SamplerState state;
         state.Address = TEXA_CLAMP;
@@ -67,6 +83,8 @@ namespace Myway {
 
         RenderSystem::Instance()->SetTexture(0, state, colorTex);
 		RenderSystem::Instance()->SetTexture(1, state, normalTex);
+		RenderSystem::Instance()->SetTexture(3, state, specTex);
+		RenderSystem::Instance()->SetTexture(4, state, depthTex);
 
 		TexturePtr shadowTex = RenderHelper::Instance()->GetWhiteTexture();
 		if (Environment::Instance()->GetShadow())

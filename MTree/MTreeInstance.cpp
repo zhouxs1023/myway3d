@@ -6,7 +6,6 @@ namespace Myway {
 	MTreeInstance::MTreeInstance(const TString128 & name)
 		: Mover(name)
 	{
-		mWindMatrixOffset = float(int(Math::RandRange(0.0f, 1.0f) * 10.0f));
 		mTree = NULL;
 	}
 
@@ -16,12 +15,42 @@ namespace Myway {
 
 	void MTreeInstance::SetTree(const TString128 & source)
 	{
+		if (mTree != NULL && mTree->GetSourceName() == source)
+			return ;
+
 		mTree = MForest::Instance()->LoadTree(source);
+
+		Compute();
+	}
+
+	void MTreeInstance::SetTree(MTreePtr tree)
+	{
+		d_assert (tree != NULL);
+
+		if (mTree != tree)
+		{
+			mTree = tree;
+
+			Compute();
+		}
 	}
 
 	MTreePtr MTreeInstance::GetTree()
 	{
 		return mTree;
+	}
+
+	void MTreeInstance::Compute()
+	{
+		if (mTree == NULL)
+			return ;
+
+		mTree->DoGenerate();
+
+		SetBounds(mTree->GetAabb(), mTree->GetSphere());
+
+		if (mNode)
+			mNode->_NotifyUpdate();
 	}
 
 	void MTreeInstance::NotifyCamera(Camera * cam)
@@ -34,7 +63,7 @@ namespace Myway {
 
 	void MTreeInstance::AddRenderQueue(RenderQueue * rq)
 	{
-		MForest::Instance()->_addVisibleTree(this);
+		MForest::Instance()->_AddVisibleTreeInstance(this);
 	}
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace Myway { namespace Env {
+namespace Myway {
    
     class Astronomy
     {
@@ -129,5 +129,5 @@ namespace Myway { namespace Env {
                 double julianDay, int &year, int &month, int &day);
     };
 
-}}
+}
 

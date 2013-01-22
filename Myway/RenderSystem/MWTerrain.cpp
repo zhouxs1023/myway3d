@@ -21,7 +21,12 @@ Terrain::Terrain(const Config & config)
 	mLockedWeightMapData = NULL;
 
 	mLod = new TerrainLod(kMaxDetailLevel);
-	mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
+
+	for (int i = 0; i < kMaxDetailLevel; ++i)
+	{
+		mTech[i] = Environment::Instance()->GetShaderLib()->GetTechnique(TString128("TerrainL") + (i + 1));
+		d_assert (mTech[i]);
+	}
 
 	_Create(config);
 }
@@ -34,7 +39,12 @@ Terrain::Terrain(const char * source)
 	mLockedWeightMapData = NULL;
 
 	mLod = new TerrainLod(kMaxDetailLevel);
-	mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Terrain");
+
+	for (int i = 0; i < kMaxDetailLevel; ++i)
+	{
+		mTech[i] = Environment::Instance()->GetShaderLib()->GetTechnique(TString128("TerrainL") + (i + 1));
+		d_assert (mTech[i]);
+	}
 
 	_Load(source);
 }
@@ -611,10 +621,18 @@ void Terrain::Render()
         mVisibleSections[i]->UpdateLod();
     }
 
-	ShaderParam * uTransform = mTech->GetVertexShaderParamTable()->GetParam("gTransform");
-	ShaderParam * uUVParam = mTech->GetVertexShaderParamTable()->GetParam("gUVParam");
-	ShaderParam * uUVScale = mTech->GetVertexShaderParamTable()->GetParam("gUVScale");
-	ShaderParam * uMorph = mTech->GetVertexShaderParamTable()->GetParam("gMorph");
+	ShaderParam * uTransform[kMaxDetailLevel];
+	ShaderParam * uUVParam[kMaxDetailLevel];
+	ShaderParam * uUVScale[kMaxDetailLevel];
+	ShaderParam * uMorph[kMaxDetailLevel];
+
+	for (int i = 0; i < kMaxDetailLevel; ++i)
+	{
+		uTransform[i] = mTech[i]->GetVertexShaderParamTable()->GetParam("gTransform");
+		uUVParam[i] = mTech[i]->GetVertexShaderParamTable()->GetParam("gUVParam");
+		uUVScale[i] = mTech[i]->GetVertexShaderParamTable()->GetParam("gUVScale");
+		uMorph[i] = mTech[i]->GetVertexShaderParamTable()->GetParam("gMorph");
+	}
 
 	float xInvSectionSize = 1 / mConfig.xSectionSize;
 	float zInvSectionSize = 1 / mConfig.zSectionSize;
@@ -632,6 +650,8 @@ void Terrain::Render()
 		int layer3 = section->GetLayer(3);
 		float xOff = section->GetOffX();
 		float zOff = section->GetOffZ();
+
+		int techId = _getTechId(layer0, layer1, layer2, layer3);
 
 		layer0 = Math::Maximum(0, layer0);
 		layer1 = Math::Maximum(0, layer1);
@@ -655,27 +675,54 @@ void Terrain::Render()
 
 		SamplerState state;
 		state.Address = TEXA_CLAMP;
-		render->SetTexture(0, state, weightMap.c_ptr());
+
+		if (techId > 0)
+			render->SetTexture(0, state, weightMap.c_ptr());
 
 		state.Address = TEXA_WRAP;
 		render->SetTexture(1, state, detailMap0.c_ptr());
-		render->SetTexture(2, state, detailMap1.c_ptr());
-		render->SetTexture(3, state, detailMap2.c_ptr());
-		render->SetTexture(4, state, detailMap3.c_ptr());
-
 		render->SetTexture(5, state, normalMap0.c_ptr());
-		render->SetTexture(6, state, normalMap1.c_ptr());
-		render->SetTexture(7, state, normalMap2.c_ptr());
-		render->SetTexture(8, state, normalMap3.c_ptr());
 
-		uTransform->SetUnifom(xOff, 0, zOff, 0);
-		uUVParam->SetUnifom(xInvSectionSize, zInvSectionSize, xInvSize, zInvSize);
-		uUVScale->SetUnifom(uvScale0, uvScale1, uvScale2, uvScale3);
+		if (techId > 0)
+		{
+			render->SetTexture(2, state, detailMap1.c_ptr());
+			render->SetTexture(6, state, normalMap1.c_ptr());
+		}
+
+		if (techId > 1)
+		{
+			render->SetTexture(3, state, detailMap2.c_ptr());
+			render->SetTexture(7, state, normalMap2.c_ptr());
+		}
+
+		if (techId > 2)
+		{
+			render->SetTexture(4, state, detailMap3.c_ptr());
+			render->SetTexture(8, state, normalMap3.c_ptr());
+		}
+
+		uTransform[techId]->SetUnifom(xOff, 0, zOff, 0);
+		uUVParam[techId]->SetUnifom(xInvSectionSize, zInvSectionSize, xInvSize, zInvSize);
+		uUVScale[techId]->SetUnifom(uvScale0, uvScale1, uvScale2, uvScale3);
 
 		section->PreRender();
 
-		render->Render(mTech, &section->mRender);
+		render->Render(mTech[techId], &section->mRender);
 	}
+}
+
+int	Terrain::_getTechId(int layer0, int layer1, int layer2, int layer3)
+{
+	int techId = kMaxDetailLevel - 1;
+
+	if (layer3 >= 0)
+		return techId;
+	else if (layer2 >= 0)
+		return techId - 1;
+	else if (layer1 >= 0)
+		return techId - 2;
+	else
+		return techId - 3;
 }
 
 void Terrain::RenderInMirror()

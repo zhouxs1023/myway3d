@@ -6,6 +6,7 @@
 #include "MWSun.h"
 #include "MWMoon.h"
 #include "MWCloud.h"
+#include "MWStarfield.h"
 #include "MWWaterManager.h"
 #include "MWTerrain.h"
 
@@ -45,6 +46,7 @@ namespace Myway {
         Sky2 * GetSky2() { return mSky2; }
         Sun * GetSun() { return mSun; }
         Moon * GetMoon() { return mMoon; }
+		Starfield * GetStarfield() { return mStarfield; }
         Cloud * GetCloud() { return mCloud; }
 		Shadow * GetShadow() { return mShadow; }
 		WaterManager * GetWaterManager() { return mWaterManager; }
@@ -98,6 +100,7 @@ namespace Myway {
         Sky2 * mSky2;
         Sun * mSun;
         Moon * mMoon;
+		Starfield * mStarfield;
         Cloud * mCloud;
 		Shadow * mShadow;
 

@@ -8,25 +8,26 @@
 #pragma warning (push)
 #pragma warning (disable : 4244)
 
-namespace Myway { namespace Env {
+namespace Myway {
 
     Starfield::Starfield()
     {
-        mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Starfield");
+        mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Star");
 
         mStars = NULL;
         mSize = 0;
         mIterator = 0;
 
         mMag0PixelSize = 16;
-        mMinPixelSize = 4;
-        mMaxPixelSize = 6;
+        mMinPixelSize = 2;
+        mMaxPixelSize = 4;
         mMagnitudeScale = Math::Pow(100, 0.2f);
         mObserverLatitude = 45;
         mObserverLongitude = 0;
 
-        Resize(BrightStarCatalogueSize);
-    }
+		//Resize(BrightStarCatalogueSize);
+		Resize(2000);
+	}
 
     Starfield::~Starfield()
     {
@@ -50,18 +51,25 @@ namespace Myway { namespace Env {
         float minSize = mMinPixelSize * pixFactor;
         float maxSize = mMaxPixelSize * pixFactor;
         float aspect = cam->GetAspect();
-        float farclip = cam->GetFarClip();
+        float farclip = cam->GetFarClip() * 0.9f;
         Vec3 pos = cam->GetPosition();
+		float starLum = Environment::Instance()->GetEvParam()->StarLum;
 
         ShaderParam * uSizeParam = mTech->GetVertexShaderParamTable()->GetParam("gSizeParam");
         ShaderParam * uTransform = mTech->GetVertexShaderParamTable()->GetParam("gTransform");
-        ShaderParam * uAspect = mTech->GetVertexShaderParamTable()->GetParam("gAspect");
+		ShaderParam * uAspect = mTech->GetVertexShaderParamTable()->GetParam("gAspect");
+        ShaderParam * uStarLum = mTech->GetVertexShaderParamTable()->GetParam("gStarLum");
 
         uSizeParam->SetUnifom(magScale, mag0Size, minSize, maxSize);
         uTransform->SetUnifom(pos.x, pos.y, pos.z, farclip);
         uAspect->SetUnifom(aspect, 0, 0, 0);
+		uStarLum->SetUnifom(starLum, 0, 0, 0);
+
+		render->_BeginEvent("Render Starfield");
 
         render->Render(mTech, &mRender);
+
+		render->_EndEvent();
     }
 
     void Starfield::Resize(int size)
@@ -87,6 +95,8 @@ namespace Myway { namespace Env {
 
         if (mSize > BrightStarCatalogueSize)
             mSize = BrightStarCatalogueSize;
+
+		mStars = new Star[mSize];
 
         if (mSize < BrightStarCatalogueSize) 
         {
@@ -116,15 +126,16 @@ namespace Myway { namespace Env {
         int iVertexCount = mSize * 4;
         int iIndexCount = mSize * 6;
         int iPrimCount = iIndexCount / 3;
+		int vstride = 28;
 
         VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-        decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
-        decl->AddElement(0, 12, DT_FLOAT3, DU_TEXCOORD, 0);
+        decl->AddElement(0, 0, DT_FLOAT4, DU_POSITION, 0);
+        decl->AddElement(0, 16, DT_FLOAT3, DU_TEXCOORD, 0);
         decl->Init();
 
         vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 24);
+        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * vstride);
         IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * 2);
 
         float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);
@@ -146,38 +157,39 @@ namespace Myway { namespace Env {
                 float x =  Math::Sin(azm) * Math::Cos(alt);
                 float y = -Math::Sin(alt);
                 float m = star.Magnitude;
+				float phase = Math::RandRange(0.0f, Math::PI_1);
 
-                *vert++ = x; *vert++ = y; *vert++ = z;
+                *vert++ = x; *vert++ = y; *vert++ = z; *vert++ = phase;
                 *vert++ = -1; *vert++ = 1; *vert++ = m;
 
-                *vert++ = x; *vert++ = y; *vert++ = z;
+                *vert++ = x; *vert++ = y; *vert++ = z; *vert++ = phase;
                 *vert++ = 1; *vert++ = 1; *vert++ = m;
 
-                *vert++ = x; *vert++ = y; *vert++ = z;
+                *vert++ = x; *vert++ = y; *vert++ = z; *vert++ = phase;
                 *vert++ = -1; *vert++ = -1; *vert++ = m;
 
-                *vert++ = x; *vert++ = y; *vert++ = z;
+                *vert++ = x; *vert++ = y; *vert++ = z; *vert++ = phase;
                 *vert++ = 1; *vert++ = -1; *vert++ = m;
             }
         }
         vb->Unlock();
 
-        vxStream->Bind(0, vb, 24);
+        vxStream->Bind(0, vb, vstride);
         vxStream->SetCount(iVertexCount);
 
-        short * idx = (short *)ib->Lock(0, 0, LOCK_DISCARD);
+        unsigned short * idx = (unsigned short *)ib->Lock(0, 0, LOCK_DISCARD);
         {
-            for (short i = 0; i < (short)mSize; ++i)
+            for (unsigned short i = 0; i < (unsigned short)mSize; ++i)
             {
-                int index = i * 4;
+                unsigned short index = i * 4;
 
-                *idx++ = i;
-                *idx++ = i + 1;
-                *idx++ = i + 2;
+                *idx++ = index + 0;
+                *idx++ = index + 1;
+                *idx++ = index + 2;
 
-                *idx++ = i + 2;
-                *idx++ = i + 1;
-                *idx++ = i + 3;
+                *idx++ = index + 2;
+                *idx++ = index + 1;
+                *idx++ = index + 3;
             }
         }
         ib->Unlock();
@@ -186,11 +198,12 @@ namespace Myway { namespace Env {
         ixStream->SetCount(iIndexCount);
 
         mRender.iPrimCount = iPrimCount;
-        mRender.ePrimType = PRIM_TRIANGLESTRIP;
+        mRender.ePrimType = PRIM_TRIANGLELIST;
 
+		mRender.rState.cullMode = CULL_NONE;
         mRender.rState.blendMode = BM_ALPHA_BLEND;
         mRender.rState.depthWrite = false;
-        mRender.rState.depthCheck = DCM_ALWAYS;
+        mRender.rState.depthCheck = DCM_LESS_EQUAL;
     }
 
     void Starfield::_add(const BrightStarCatalogueEntry & entry)
@@ -209,7 +222,7 @@ namespace Myway { namespace Env {
 
         s.Magnitude = entry.magn;
     }
-}}
+}
 
 
 #pragma warning (pop)

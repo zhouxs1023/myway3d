@@ -1,0 +1,49 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv : TEXCOORD0;
+};
+
+uniform sampler2D gTex_Color : register (s0);
+uniform sampler2D gTex_Normal : register (s1);
+uniform sampler2D gTex_Depth : register (s2);
+
+uniform float3 gLightPos;
+uniform float4 gLightParam; // x - inverse range
+uniform float4 gDiffuse;
+uniform float4 gSpecular;
+
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+
+float3 _getViewPosition(float2 uv)
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * uv.x + gCornerDownDir * uv.y;
+	float d = tex2D(gTex_Depth, uv).r;
+	return p.xyz * d;
+}
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 clr = tex2D(gTex_Color, In.uv);
+	float3 nrm = tex2D(gTex_Normal, In.uv).rgb;
+	float3 pos = _getViewPosition(In.uv);
+	
+	float3 diff = gLightPos - pos;
+	float3 L = normalize(diff);
+	float3 N = nrm;
+
+	float NdL = saturate(dot(N, L));
+	
+	float atten = pow(1 - saturate(length(diff) * gLightParam.x), 2);
+	
+	clr = clr * NdL * gDiffuse * atten; 
+	clr.a = 1;
+	
+	return clr;
+}

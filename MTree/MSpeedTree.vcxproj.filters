@@ -21,6 +21,13 @@
     <ClInclude Include="MVegetationBlock.h">
       <Filter>Tree</Filter>
     </ClInclude>
+    <ClInclude Include="MTreeEntry.h" />
+    <ClInclude Include="MTree.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="MTreeInstance.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -34,6 +41,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="MVegetationBlock.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="MTree.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="MTreeInstance.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>

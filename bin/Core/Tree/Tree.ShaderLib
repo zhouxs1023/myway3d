@@ -11,12 +11,24 @@
     <Shader name = "GrassX2PS" language = "cg" profile = "ps30" source = "GrassX2.ps" >
       <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
     </Shader>
+
+    <Shader name = "BranchVS" language = "cg" profile = "vs30" source = "Branch.vs" >
+      <param name = "matWV" type = "float4x4" btype = "matWV" />
+      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    </Shader>
+
+    <Shader name = "BranchPS" language = "cg" profile = "ps30" source = "Branch.ps" >
+      <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+    </Shader>
 	
 	</Shaders>
 
 	<Techniques>
 	
     <Technique name = "GrassX2" vs = "GrassX2VS" ps = "GrassX2PS">
+    </Technique>
+
+    <Technique name = "Branch" vs = "BranchVS" ps = "BranchPS">
     </Technique>
 
 	</Techniques>

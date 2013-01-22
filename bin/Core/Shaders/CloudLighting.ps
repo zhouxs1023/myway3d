@@ -53,10 +53,10 @@ float4 main(PS_IN In) : COLOR
 		
 		float lt = Gaussian(d * gLightingParam.x, 2) / Gaussian(0, 2);
 		
-		lighting += lt * 0.1f;
+		lighting += lt / 32;
 	};
 
-	for (int i = 4; i < 32; ++i)
+	for (int i = 4; i < 64; ++i)
 	{
 		float2 uv = In.uv0 + uvStep * i * uvRay.xy;
 		float2 uvLayer0 = uv * gUVScale.x + gUVScroll.xy;
@@ -70,7 +70,7 @@ float4 main(PS_IN In) : COLOR
 		
 		float lt = Gaussian(d * gLightingParam.x, 2) / Gaussian(0, 2);
 		
-		lighting += lt / 32.0f;
+		lighting += lt / 64.0f;
 	};
 	
 	return float4(lighting, lighting, lighting, 1);

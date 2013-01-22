@@ -1,7 +1,7 @@
 #include "MWAstronomy.h"
 #include <math.h>
 
-namespace Myway { namespace Env {
+namespace Myway {
 
     const double Astronomy::PI = 3.1415926535897932384626433832795029L;
 
@@ -278,4 +278,4 @@ namespace Myway { namespace Env {
         getGregorianDateTimeFromJulianDay(julianDay, year, month, day, hour, minute, second);
     }
 
-}}
+}

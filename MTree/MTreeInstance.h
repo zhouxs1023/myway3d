@@ -1,6 +1,5 @@
 #pragma once
 
-#include "MSpeedTreeEntry.h"
 #include "MTree.h"
 #include "MWMover.h"
 
@@ -15,17 +14,17 @@ namespace Myway {
 		virtual ~MTreeInstance();
 
 		void SetTree(const TString128 & source);
+		void SetTree(MTreePtr tree);
 		MTreePtr GetTree();
+
+		void Compute();
 
 		void NotifyCamera(Camera * cam);
 		void UpdateGeometry();
 
 		void AddRenderQueue(RenderQueue * rq);
 
-		float GetWindMatrixOffset() { return mWindMatrixOffset; }
-
 	protected:
 		MTreePtr mTree;
-		float mWindMatrixOffset;
 	};
 }

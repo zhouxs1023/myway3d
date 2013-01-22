@@ -88,6 +88,10 @@ namespace Myway {
         if (Environment::Instance()->GetSky2())
             Environment::Instance()->GetSky2()->Render();
 
+		// ---> render star
+		if (Environment::Instance()->GetStarfield())
+			Environment::Instance()->GetStarfield()->Render();
+
         // ---> render sun
         if (!Environment::Instance()->GetGodRay() && Environment::Instance()->GetSun())
             Environment::Instance()->GetSun()->Render();
@@ -285,7 +289,7 @@ namespace Myway {
 			Environment::Instance()->GetShadow()->Do(mTex_Depth.c_ptr());
 
 		if (Environment::Instance()->GetSun())
-			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Normal.c_ptr());
+			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Material.c_ptr(), mTex_Normal.c_ptr(), mTex_Depth.c_ptr());
 
 		VisibleCullResult * cullResult = mScheme->GetCullResult();
 

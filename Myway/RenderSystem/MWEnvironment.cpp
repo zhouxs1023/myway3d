@@ -48,6 +48,7 @@ namespace Myway {
         mSky = new Sky();
         mSun = new Sun();
         mMoon = new Moon();
+		mStarfield = new Starfield();
         mCloud = new Cloud();
         mWaterManager = new WaterManager();
 
@@ -61,6 +62,7 @@ namespace Myway {
         safe_delete (mSun);
         safe_delete (mMoon);
         safe_delete (mCloud);
+		safe_delete (mStarfield);
         safe_delete (mWaterManager);
 
         safe_delete (mFog);
@@ -310,6 +312,8 @@ namespace Myway {
         p.MoonPase = Math::Lerp(kf0.MoonPhase, kf1.MoonPhase, d);
         p.MoonLum = Math::Lerp(kf0.MoonLum, kf1.MoonLum, d);
         p.MoonSize = Math::Lerp(kf0.MoonSize, kf1.MoonSize, d);
+
+		p.StarLum = Math::Lerp(kf0.StarLum, kf1.StarLum, d);
 
         p.FogStart = Math::Lerp(kf0.FogStart, kf1.FogStart, d);
         p.FogEnd = Math::Lerp(kf0.FogEnd, kf1.FogEnd, d);
