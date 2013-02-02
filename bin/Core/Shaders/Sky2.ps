@@ -35,7 +35,7 @@ void main(
     //oColor = float4(rayleighPhase * iRayleighColor + miePhase * iMieColor, 1);
 	
 	// For night rendering
-	float nightmult = saturate(1 - max(oColor.x, max(oColor.y, oColor.z))*10);
-	oColor.xyz += nightmult *(float3(0.05, 0.05, 0.1)*(2-0.75*saturate(-uLightDir.y))*pow(iHeight,3));
+	//float nightmult = saturate(1 - max(oColor.x, max(oColor.y, oColor.z))*10);
+	//oColor.xyz += nightmult *(float3(0.05, 0.05, 0.1)*(2-0.75*saturate(-uLightDir.y))*pow(iHeight,3));
 	oColor.rgb = lerp(oColor.rgb, 0, (iHeight - 1) * 1);
 }

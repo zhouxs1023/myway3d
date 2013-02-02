@@ -73,11 +73,6 @@ void RenderRegister::Reset()
     // transform
     mWorldMatrix = Mat4::Identity;
 
-    for (int i = 0; i < mNumBlendMatrices; ++i)
-    {
-        mBlendMatrices[i] = Mat4::Identity;
-    }
-
     mNeedUpdateTransfrom = TRUE;
 }
 
@@ -141,7 +136,20 @@ void RenderRegister::SetTextureMatrix(int index, const Mat4 & m)
 void RenderRegister::SetBlendMatrix(const Mat4 * m, int count)
 {
     d_assert(count < MAX_BLEND_MATRIX);
-    Memcpy(mBlendMatrices, m, count * sizeof(Mat4));
+
+	for (int k = 0; k < count; ++k)
+	{
+		/*for (int j = 0; j < 3; ++j)
+		{
+			for (int i = 0; i < 4; ++i)
+			{
+				mBlendMatrices[k][j][i] = m[k][i][j];
+			}
+		}*/
+
+		mBlendMatrices[k] = m[k];
+	}
+
     mNumBlendMatrices = count;
 }
 

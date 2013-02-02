@@ -7,8 +7,9 @@ namespace Myway {
 		enum {
 			K_NumTexLayers = 8,
 
-			K_NumWindMatrices = 6,
+			K_NumWindMatrix = 4,
 			K_NumLeafAngles = 8,
+			K_MaxLeafPerTree = 4,
 		};
 	};
 

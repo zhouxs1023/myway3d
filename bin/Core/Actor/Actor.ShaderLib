@@ -1,0 +1,32 @@
+
+<ShaderLib>
+
+	<Shaders>
+		<Shader name = "ActorDeferredVS" language = "cg" profile = "vs30" source = "ActorDeferred.vs" >
+			<param name = "matWV" type = "float4x4" btype = "matWV" />
+			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+		</Shader>
+
+		<Shader name = "ActorDeferredSkinedVS" language = "cg" profile = "vs30" source = "ActorDeferredSkined.vs" >
+			<param name = "matBlend" type = "float4x4" btype = "matBlend" count = "50" />
+      <param name = "matV" type = "float4x4" btype = "matView" />
+      <param name = "matVP" type = "float4x4" btype = "matVP" />
+		</Shader>
+
+		<Shader name = "ActorDeferredPS" language = "cg" profile = "ps30" source = "ActorDeferred.ps" >
+			<param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+		</Shader>
+
+  </Shaders>
+
+	<Techniques>
+    
+		<Technique name = "ActorDeferred" vs = "ActorDeferredVS" ps = "ActorDeferredPS">
+		</Technique>
+
+		<Technique name = "ActorDeferredSkined" vs = "ActorDeferredSkinedVS" ps = "ActorDeferredPS">
+		</Technique>
+    
+	</Techniques>
+
+</ShaderLib>

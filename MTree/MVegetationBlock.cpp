@@ -321,7 +321,7 @@ namespace Myway {
 		vxStream.Bind(1, vb, 16);
 		vxStream.SetCount(sm->GetVertexStream()->GetCount());
 
-		ixStream.Bind(sm->GetIndexStream()->GetStream(), sm->GetIndexStream()->GetStartVertex());
+		ixStream.Bind(sm->GetIndexStream()->GetStream(), sm->GetIndexStream()->GetStart());
 		ixStream.SetCount(sm->GetIndexStream()->GetCount());
 
 		rop.rState.blendMode = BM_ALPHA_TEST;

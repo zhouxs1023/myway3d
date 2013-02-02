@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8D122A36-CDB5-4CE2-9154-A0A82758675F}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../Bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../Bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)EMotionFX_d.lib</OutputFile>
+      <AdditionalDependencies>$(OutDir)EMotionCore_d.lib</AdditionalDependencies>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
+      <OmitFramePointers>true</OmitFramePointers>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)EMotionFXReleaseVSNET2003.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\ActorCollisionSystem.cpp" />
+    <ClCompile Include="..\..\Source\NodeCollisionSystem.cpp" />
+    <ClCompile Include="..\..\Source\SimpleActorCollisionSystem.cpp" />
+    <ClCompile Include="..\..\Source\SimpleNodeCollisionSystem.cpp" />
+    <ClCompile Include="..\..\Source\Controller.cpp" />
+    <ClCompile Include="..\..\Source\PhysicsController.cpp" />
+    <ClCompile Include="..\..\Source\Constraint.cpp" />
+    <ClCompile Include="..\..\Source\LookAtConstraint.cpp" />
+    <ClCompile Include="..\..\Source\PositionConstraint.cpp" />
+    <ClCompile Include="..\..\Source\RotationConstraint.cpp" />
+    <ClCompile Include="..\..\Source\ScaleConstraint.cpp" />
+    <ClCompile Include="..\..\Source\TransformConstraint.cpp" />
+    <ClCompile Include="..\..\Source\ExpressionPartController.cpp" />
+    <ClCompile Include="..\..\Source\HwShaderBuffer.cpp" />
+    <ClCompile Include="..\..\Source\Mesh.cpp" />
+    <ClCompile Include="..\..\Source\SimpleMesh.cpp" />
+    <ClCompile Include="..\..\Source\SubMesh.cpp" />
+    <ClCompile Include="..\..\Source\FXMaterial.cpp" />
+    <ClCompile Include="..\..\Source\StandardMaterial.cpp" />
+    <ClCompile Include="..\..\Source\SkinningInfoVertexAttributeLayer.cpp" />
+    <ClCompile Include="..\..\Source\UVVertexAttributeLayer.cpp" />
+    <ClCompile Include="..\..\Source\VertexAttributeLayer.cpp" />
+    <ClCompile Include="..\..\Source\Importer\ChunkProcessors.cpp" />
+    <ClCompile Include="..\..\Source\Importer\Importer.cpp" />
+    <ClCompile Include="..\..\Source\MotionInstance.cpp" />
+    <ClCompile Include="..\..\Source\MotionLink.cpp" />
+    <ClCompile Include="..\..\Source\MotionPart.cpp" />
+    <ClCompile Include="..\..\Source\MotionQueue.cpp" />
+    <ClCompile Include="..\..\Source\PlayBackInfo.cpp" />
+    <ClCompile Include="..\..\Source\Motion.cpp" />
+    <ClCompile Include="..\..\Source\ExpressionPart.cpp" />
+    <ClCompile Include="..\..\Source\FacialMotion.cpp" />
+    <ClCompile Include="..\..\Source\FacialSetup.cpp" />
+    <ClCompile Include="..\..\Source\MeshExpressionPart.cpp" />
+    <ClCompile Include="..\..\Source\SkeletalMotion.cpp" />
+    <ClCompile Include="..\..\Source\MotionSystem.cpp" />
+    <ClCompile Include="..\..\Source\FacialLayerPass.cpp" />
+    <ClCompile Include="..\..\Source\MotionLayer.cpp" />
+    <ClCompile Include="..\..\Source\MotionLayerSystem.cpp" />
+    <ClCompile Include="..\..\Source\RepositioningLayerPass.cpp" />
+    <ClCompile Include="..\..\Source\PlayMode.cpp" />
+    <ClCompile Include="..\..\Source\PlayModeBackward.cpp" />
+    <ClCompile Include="..\..\Source\PlayModeForward.cpp" />
+    <ClCompile Include="..\..\Source\PlayModePingPong.cpp" />
+    <ClCompile Include="..\..\Source\EyeBlinkKeyFrameGenerator.cpp" />
+    <ClCompile Include="..\..\Source\Actor.cpp" />
+    <ClCompile Include="..\..\Source\Node.cpp" />
+    <ClCompile Include="..\..\Source\NodeDOF.cpp" />
+    <ClCompile Include="..\..\Source\NodeIDGenerator.cpp" />
+    <ClCompile Include="..\..\Source\MeshDeformer.cpp" />
+    <ClCompile Include="..\..\Source\MeshDeformerStack.cpp" />
+    <ClCompile Include="..\..\Source\SmartMeshMorphDeformer.cpp" />
+    <ClCompile Include="..\..\Source\SoftSkinDeformer.cpp" />
+    <ClCompile Include="..\..\Source\SoftSkinDeformerSSE.cpp" />
+    <ClCompile Include="..\..\Source\SoftSkinManager.cpp" />
+    <ClCompile Include="..\..\Source\BasicNormalMapGenerator.cpp" />
+    <ClCompile Include="..\..\Source\ImageResChecker.cpp" />
+    <ClCompile Include="..\..\Source\NormalMap.cpp" />
+    <ClCompile Include="..\..\Source\NormalMapGenerator.cpp" />
+    <ClCompile Include="..\..\Source\CCDIKSolver.cpp" />
+    <ClCompile Include="..\..\Source\TwoLinkIKSolver.cpp" />
+    <ClCompile Include="..\..\Source\JacobianIKActorDOF.cpp" />
+    <ClCompile Include="..\..\Source\JacobianIKController.cpp" />
+    <ClCompile Include="..\..\Source\JacobianIKData.cpp" />
+    <ClCompile Include="..\..\Source\JacobianIKFixedPoint.cpp" />
+    <ClCompile Include="..\..\Source\JacobianIKRelativePoint.cpp" />
+    <ClCompile Include="..\..\Source\JacobianIKSolver.cpp" />
+    <ClCompile Include="..\..\Source\CharacterFactory.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\ActorCollisionSystem.h" />
+    <ClInclude Include="..\..\Source\NodeCollisionSystem.h" />
+    <ClInclude Include="..\..\Source\SimpleActorCollisionSystem.h" />
+    <ClInclude Include="..\..\Source\SimpleNodeCollisionSystem.h" />
+    <ClInclude Include="..\..\Source\Controller.h" />
+    <ClInclude Include="..\..\Source\PhysicsController.h" />
+    <ClInclude Include="..\..\Source\Constraint.h" />
+    <ClInclude Include="..\..\Source\LookAtConstraint.h" />
+    <ClInclude Include="..\..\Source\PositionConstraint.h" />
+    <ClInclude Include="..\..\Source\RotationConstraint.h" />
+    <ClInclude Include="..\..\Source\ScaleConstraint.h" />
+    <ClInclude Include="..\..\Source\TransformConstraint.h" />
+    <ClInclude Include="..\..\Source\ExpressionPartController.h" />
+    <ClInclude Include="..\..\Source\HwShaderBuffer.h" />
+    <ClInclude Include="..\..\Source\Mesh.h" />
+    <ClInclude Include="..\..\Source\SimpleMesh.h" />
+    <ClInclude Include="..\..\Source\SubMesh.h" />
+    <ClInclude Include="..\..\Source\FXMaterial.h" />
+    <ClInclude Include="..\..\Source\Material.h" />
+    <ClInclude Include="..\..\Source\StandardMaterial.h" />
+    <ClInclude Include="..\..\Source\SkinningInfoVertexAttributeLayer.h" />
+    <ClInclude Include="..\..\Source\UVVertexAttributeLayer.h" />
+    <ClInclude Include="..\..\Source\VertexAttributeLayer.h" />
+    <ClInclude Include="..\..\Source\Importer\ChunkProcessors.h" />
+    <ClInclude Include="..\..\Source\Importer\Importer.h" />
+    <ClInclude Include="..\..\Source\MotionInstance.h" />
+    <ClInclude Include="..\..\Source\MotionLink.h" />
+    <ClInclude Include="..\..\Source\MotionPart.h" />
+    <ClInclude Include="..\..\Source\MotionQueue.h" />
+    <ClInclude Include="..\..\Source\PlayBackInfo.h" />
+    <ClInclude Include="..\..\Source\Motion.h" />
+    <ClInclude Include="..\..\Source\ExpressionPart.h" />
+    <ClInclude Include="..\..\Source\FacialMotion.h" />
+    <ClInclude Include="..\..\Source\FacialMotionPart.h" />
+    <ClInclude Include="..\..\Source\FacialSetup.h" />
+    <ClInclude Include="..\..\Source\MeshExpressionPart.h" />
+    <ClInclude Include="..\..\Source\SkeletalMotion.h" />
+    <ClInclude Include="..\..\Source\MotionSystem.h" />
+    <ClInclude Include="..\..\Source\FacialLayerPass.h" />
+    <ClInclude Include="..\..\Source\LayerPass.h" />
+    <ClInclude Include="..\..\Source\MotionLayer.h" />
+    <ClInclude Include="..\..\Source\MotionLayerSystem.h" />
+    <ClInclude Include="..\..\Source\RepositioningLayerPass.h" />
+    <ClInclude Include="..\..\Source\PlayMode.h" />
+    <ClInclude Include="..\..\Source\PlayModeBackward.h" />
+    <ClInclude Include="..\..\Source\PlayModeForward.h" />
+    <ClInclude Include="..\..\Source\PlayModePingPong.h" />
+    <ClInclude Include="..\..\Source\BezierInterpolators.h" />
+    <ClInclude Include="..\..\Source\HermiteInterpolators.h" />
+    <ClInclude Include="..\..\Source\Interpolator.h" />
+    <ClInclude Include="..\..\Source\LinearInterpolators.h" />
+    <ClInclude Include="..\..\Source\TCBSplineInterpolators.h" />
+    <ClInclude Include="..\..\Source\CompressedKeyFrames.h" />
+    <ClInclude Include="..\..\Source\KeyFrame.h" />
+    <ClInclude Include="..\..\Source\KeyFrameFinder.h" />
+    <ClInclude Include="..\..\Source\KeyTrack.h" />
+    <ClInclude Include="..\..\Source\EyeBlinkKeyFrameGenerator.h" />
+    <ClInclude Include="..\..\Source\KeyFrameGenerator.h" />
+    <ClInclude Include="..\..\Source\Actor.h" />
+    <ClInclude Include="..\..\Source\Node.h" />
+    <ClInclude Include="..\..\Source\NodeAttribute.h" />
+    <ClInclude Include="..\..\Source\NodeDOF.h" />
+    <ClInclude Include="..\..\Source\NodeIDGenerator.h" />
+    <ClInclude Include="..\..\Source\NodeLimitAttribute.h" />
+    <ClInclude Include="..\..\Source\NodePhysicsAttribute.h" />
+    <ClInclude Include="..\..\Source\NodeTransform.h" />
+    <ClInclude Include="..\..\Source\MeshDeformer.h" />
+    <ClInclude Include="..\..\Source\MeshDeformerStack.h" />
+    <ClInclude Include="..\..\Source\SmartMeshMorphDeformer.h" />
+    <ClInclude Include="..\..\Source\SoftSkinDeformer.h" />
+    <ClInclude Include="..\..\Source\SoftSkinDeformerSSE.h" />
+    <ClInclude Include="..\..\Source\SoftSkinManager.h" />
+    <ClInclude Include="..\..\Source\BasicNormalMapGenerator.h" />
+    <ClInclude Include="..\..\Source\ImageResChecker.h" />
+    <ClInclude Include="..\..\Source\NormalMap.h" />
+    <ClInclude Include="..\..\Source\NormalMapGenerator.h" />
+    <ClInclude Include="..\..\Source\CCDIKSolver.h" />
+    <ClInclude Include="..\..\Source\TwoLinkIKSolver.h" />
+    <ClInclude Include="..\..\Source\JacobianIKActorDOF.h" />
+    <ClInclude Include="..\..\Source\JacobianIKConstraint.h" />
+    <ClInclude Include="..\..\Source\JacobianIKController.h" />
+    <ClInclude Include="..\..\Source\JacobianIKData.h" />
+    <ClInclude Include="..\..\Source\JacobianIKFixedPoint.h" />
+    <ClInclude Include="..\..\Source\JacobianIKRelativePoint.h" />
+    <ClInclude Include="..\..\Source\JacobianIKSolver.h" />
+    <ClInclude Include="..\..\Source\MemoryCategories.h" />
+    <ClInclude Include="..\..\Source\CharacterFactory.h" />
+    <ClInclude Include="..\..\Source\EMotionFX.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\HwShaderBuffer.inl" />
+    <None Include="..\..\Source\Mesh.inl" />
+    <None Include="..\..\Source\SimpleMesh.inl" />
+    <None Include="..\..\Source\SubMesh.inl" />
+    <None Include="..\..\Source\FXMaterial.inl" />
+    <None Include="..\..\Source\StandardMaterial.inl" />
+    <None Include="..\..\Source\SkinningInfoVertexAttributeLayer.inl" />
+    <None Include="..\..\Source\Importer\FileFormatStructs.inl" />
+    <None Include="..\..\Source\MotionInstance.inl" />
+    <None Include="..\..\Source\MotionLink.inl" />
+    <None Include="..\..\Source\MotionPart.inl" />
+    <None Include="..\..\Source\MotionQueue.inl" />
+    <None Include="..\..\Source\Motion.inl" />
+    <None Include="..\..\Source\ExpressionPart.inl" />
+    <None Include="..\..\Source\FacialMotion.inl" />
+    <None Include="..\..\Source\FacialSetup.inl" />
+    <None Include="..\..\Source\SkeletalMotion.inl" />
+    <None Include="..\..\Source\MotionSystem.inl" />
+    <None Include="..\..\Source\MotionLayer.inl" />
+    <None Include="..\..\Source\MotionLayerSystem.inl" />
+    <None Include="..\..\Source\BezierInterpolators.inl" />
+    <None Include="..\..\Source\HermiteInterpolators.inl" />
+    <None Include="..\..\Source\Interpolator.inl" />
+    <None Include="..\..\Source\LinearInterpolators.inl" />
+    <None Include="..\..\Source\TCBSplineInterpolators.inl" />
+    <None Include="..\..\Source\KeyFrame.inl" />
+    <None Include="..\..\Source\KeyFrameFinder.inl" />
+    <None Include="..\..\Source\KeyTrack.inl" />
+    <None Include="..\..\Source\Actor.inl" />
+    <None Include="..\..\Source\Node.inl" />
+    <None Include="..\..\Source\NodeDOF.inl" />
+    <None Include="..\..\Source\NodeLimitAttribute.inl" />
+    <None Include="..\..\Source\NodePhysicsAttribute.inl" />
+    <None Include="..\..\Source\NormalMap.inl" />
+    <None Include="..\..\Source\JacobianIKActorDOF.inl" />
+    <None Include="..\..\Source\JacobianIKConstraint.inl" />
+    <None Include="..\..\Source\JacobianIKController.inl" />
+    <None Include="..\..\Source\JacobianIKData.inl" />
+    <None Include="..\..\Source\JacobianIKFixedPoint.inl" />
+    <None Include="..\..\Source\JacobianIKRelativePoint.inl" />
+    <None Include="..\..\Source\JacobianIKSolver.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

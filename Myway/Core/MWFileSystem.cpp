@@ -56,7 +56,7 @@ void FileSystem::_load(const TString128 & prex, const TString128 & dir)
 
 			TString128 prex = info.name + "\\";
 
-			_load(prex, dir + "\\" + info.name);
+			_load(prex, dir + "\\" + file.cFileName);
 		}
 		else if (file.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)
 		{

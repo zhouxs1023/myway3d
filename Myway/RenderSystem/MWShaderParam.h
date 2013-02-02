@@ -50,7 +50,8 @@ public:
     void                        SetColor(const Color4 & c);
 
     void                        SetVector(const Vec4 * v, int count);
-    void                        SetMatrix(const Mat4 * m, int count);
+	void                        SetMatrix(const Mat4 * m, int count);
+    void                        SetMatrix(const Mat3x4 * m, int count);
     void                        SetColor(const Color4 * c, int count);
 
 

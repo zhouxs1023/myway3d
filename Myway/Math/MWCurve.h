@@ -45,7 +45,6 @@ namespace Myway {
 		{ 
 			return mNumPoints;
 		}
-
 		
 		void SetPoint(int index, const T & p)
 		{
@@ -59,6 +58,26 @@ namespace Myway {
 			d_assert (index < mNumPoints);
 
 			return mPoints[index];
+		}
+
+		T GetPointLerp(float t)
+		{
+			if (t <= 0)
+				return GetPoint(0);
+
+			if (t >= 1)
+				return GetPoint(mNumPoints - 1);
+
+			float findex = t * (mNumPoints - 1);
+
+			int index0 = (int)findex;
+			int index1 = index0 + 1;
+			float k = findex - index0;
+
+			const T & p0 = GetPoint(index0);
+			const T & p1 = GetPoint(index1);
+
+			return p0 + (p1 - p0) * k;
 		}
 
 		void Smooth(int step)

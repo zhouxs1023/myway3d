@@ -673,12 +673,8 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
     }
 
     // draw
-    int primcount = obj->GetPrimitiveCount();
-    D3DPRIMITIVETYPE primtype = (D3DPRIMITIVETYPE)obj->GetPrimitiveType();
     VertexStream * vstream = obj->GetVertexStream();
     IndexStream * istream = obj->GetIndexStream();
-
-    int vcount = vstream->GetCount();
 
     VertexDeclarationPtr decl = vstream->GetDeclaration();
     D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
@@ -719,20 +715,25 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 
 
 	IndexBufferPtr ib = istream->GetStream();
-	int istart = istream->GetStartVertex();
+
+	int startVertex = vstream->GetStart();
+	int vertexCount = vstream->GetCount();
+	int startIndex = istream->GetStart();
+	int primCount = obj->GetPrimitiveCount();
+	D3DPRIMITIVETYPE primType = (D3DPRIMITIVETYPE)obj->GetPrimitiveType();
 
     if (ib.NotNull())
     {
         D3D9IndexBuffer * d3dib = (D3D9IndexBuffer*)(ib.c_ptr());
 
         hr = mD3DDevice->SetIndices(d3dib->GetD3DIndexBuffer());
-        hr = mD3DDevice->DrawIndexedPrimitive(primtype, istart, 0, vcount, 0, primcount);
+        hr = mD3DDevice->DrawIndexedPrimitive(primType, 0, startVertex, vertexCount, startIndex, primCount);
 
         D3DErrorExceptionFunction(DrawIndexedPrimitive, hr);
     }
     else
     {
-         hr = mD3DDevice->DrawPrimitive(primtype, 0, primcount);
+         hr = mD3DDevice->DrawPrimitive(primType, startVertex, primCount);
 
          D3DErrorExceptionFunction(DrawPrimitive, hr);
     }
@@ -740,7 +741,7 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
     RenderRegister::Instance()->End();
 
     mBatchCount += 1;
-    mPrimitivCount += primcount;
+    mPrimitivCount += primCount;
 }
 
 void D3D9RenderSystem::SetSMAAType(eSmaaType::enum_t type)
@@ -836,24 +837,30 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
         }
     }
 
-    // draw
-    int primcount = rd->iPrimCount;
-    D3DPRIMITIVETYPE primtype = (D3DPRIMITIVETYPE)rd->ePrimType;
-    VertexStream * vstream = &rd->vxStream;
-    IndexStream * istream = &rd->ixStream;
+	// draw
+	VertexStream * vstream = &rd->vxStream;
+	IndexStream * istream = &rd->ixStream;
 
-    int vcount = vstream->GetCount();
+	VertexDeclarationPtr decl = vstream->GetDeclaration();
+	D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
 
-    VertexDeclarationPtr decl = vstream->GetDeclaration(); d_assert (decl != NULL);
-    D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
+	hr = mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
 
-    hr = mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
-
-    for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
-    {
+	for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
+	{
+		int stride = vstream->GetStreamStride(i);
 		int instances = vstream->GetStreamInstance(i);
-        int stride = vstream->GetStreamStride(i);
-        VertexBufferPtr vb = vstream->GetStream(i);
+		VertexBufferPtr vb = vstream->GetStream(i);
+
+		if (stride && vb.NotNull())
+		{
+			D3D9VertexBuffer * d3dvb = (D3D9VertexBuffer*)vb.c_ptr();
+			hr = mD3DDevice->SetStreamSource(i, d3dvb->GetD3DVertexBuffer(), 0, stride);
+		}
+		else
+		{
+			hr = mD3DDevice->SetStreamSource(i, NULL, 0, 0);
+		}
 
 		if (instances > 1)
 		{
@@ -868,44 +875,38 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
 			mD3DDevice->SetStreamSourceFreq(i, 1);
 		}
 
-        if (stride && vb.NotNull())
-        {
-            D3D9VertexBuffer * d3dvb = (D3D9VertexBuffer*)vb.c_ptr();
-            hr = mD3DDevice->SetStreamSource(i, d3dvb->GetD3DVertexBuffer(), 0, stride);
-        }
-        else
-        {
-            hr = mD3DDevice->SetStreamSource(i, NULL, 0, 0);
-        }
-		
-
-        D3DErrorExceptionFunction(SetStreamSource, hr);
-    }
+		D3DErrorExceptionFunction(SetStreamSource, hr);
+	}
 
 
 	IndexBufferPtr ib = istream->GetStream();
-	int istart = istream->GetStartVertex();
 
-    if (ib.NotNull())
+	int startVertex = vstream->GetStart();
+	int vertexCount = vstream->GetCount();
+	int startIndex = istream->GetStart();
+	int primCount = rd->iPrimCount;
+	D3DPRIMITIVETYPE primType = (D3DPRIMITIVETYPE)rd->ePrimType;
+
+	if (ib.NotNull())
 	{
-        D3D9IndexBuffer * d3dib = (D3D9IndexBuffer*)(ib.c_ptr());
+		D3D9IndexBuffer * d3dib = (D3D9IndexBuffer*)(ib.c_ptr());
 
-        hr = mD3DDevice->SetIndices(d3dib->GetD3DIndexBuffer());
-        hr = mD3DDevice->DrawIndexedPrimitive(primtype, istart, 0, vcount, 0, primcount);
+		hr = mD3DDevice->SetIndices(d3dib->GetD3DIndexBuffer());
+		hr = mD3DDevice->DrawIndexedPrimitive(primType, 0, startVertex, vertexCount, startIndex, primCount);
 
-        D3DErrorExceptionFunction(DrawIndexedPrimitive, hr);
-    }
-    else
-    {
-        hr = mD3DDevice->DrawPrimitive(primtype, 0, primcount);
+		D3DErrorExceptionFunction(DrawIndexedPrimitive, hr);
+	}
+	else
+	{
+		hr = mD3DDevice->DrawPrimitive(primType, startVertex, primCount);
 
-        D3DErrorExceptionFunction(DrawPrimitive, hr);
-    }
+		D3DErrorExceptionFunction(DrawPrimitive, hr);
+	}
 
-    RenderRegister::Instance()->End();
+	RenderRegister::Instance()->End();
 
-    mBatchCount += 1;
-    mPrimitivCount += primcount;
+	mBatchCount += 1;
+	mPrimitivCount += primCount;
 }
 
 

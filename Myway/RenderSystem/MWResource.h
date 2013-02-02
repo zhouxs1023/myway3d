@@ -32,10 +32,18 @@ namespace Myway
         void SetSourceName(const TString128 & source) { mSourceName = source; }
         const TString128 & GetSourceName() const { return mSourceName; }
 
+		void SetPriority(float priority) { mPriority = priority; }
+		float GetPriority() const { return mPriority; }
+
+	public:
+		Event OnResourceLoaded;
+		Event OnResourceUnloaded;
+
     protected:
         TString128 mSourceName;
-        TString128 mGroupName;
         State mLoadState;
+		float mPriority;
+
     };
 
 

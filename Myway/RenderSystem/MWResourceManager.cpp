@@ -100,6 +100,18 @@ const Archive::FileInfo * ResourceGroup::GetFileInfo(const TString128 & name) co
     return info;
 }
 
+void ResourceGroup::GetFileInfosByFloder(Archive::FileInfoList & list, const TString128 & floder) const
+{
+	ArchiveList::ConstIterator whr = mArchives.Begin();
+	ArchiveList::ConstIterator end = mArchives.End();
+
+	while (whr != end)
+	{
+		(*whr)->GetFileInfosByFloder(list, floder);
+		++whr;
+	}
+}
+
 void ResourceGroup::GetFileInfosByKey(Archive::FileInfoList & list, const TString128 & key) const
 {
     ArchiveList::ConstIterator whr = mArchives.Begin();
@@ -230,9 +242,14 @@ Archive * ResourceManager::GetArchive(const TString128 & name)
     return mResourceGroup.GetArchive(name);
 }
 
+void ResourceManager::GetFileInfosByFloder(Archive::FileInfoList & list, const TString128 & floder) const
+{
+	mResourceGroup.GetFileInfosByFloder(list, floder.LowerR());
+}
+
 void ResourceManager::GetFileInfosByKey(Archive::FileInfoList & list, const TString128 & key) const
 {
-	mResourceGroup.GetFileInfosByKey(list, key);
+	mResourceGroup.GetFileInfosByKey(list, key.LowerR());
 }
 
 DataStreamPtr ResourceManager::OpenResource(const char * source)

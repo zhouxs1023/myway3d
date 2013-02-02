@@ -21,6 +21,10 @@ namespace Myway {
 
 	Event RenderEvent::OnBeginRender;
 
+	Event RenderEvent::OnRenderSolid1;
+	Event RenderEvent::OnRenderSolid2;
+	Event RenderEvent::OnRenderSolid3;
+
 	Event RenderEvent::OnAfterRenderSolid;
 	Event RenderEvent::OnAfterRenderTrans;
 

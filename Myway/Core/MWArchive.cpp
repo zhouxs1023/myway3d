@@ -22,6 +22,25 @@ const TString128 & Archive::GetType() const
     return mType;
 }
 
+void Archive::GetFileInfosByFloder(Archive::FileInfoList & files, const TString128 & floder) const
+{
+	FileInfoMap::ConstIterator iter;
+	FileInfoMap::ConstIterator end;
+
+	iter = mFiles.Begin();
+	end = mFiles.End();
+
+	while (iter != end)
+	{
+		if (iter->second.name.IsBegin(floder))
+		{
+			files.PushBack(iter->second);
+		}
+
+		++iter;
+	}
+}
+
 void Archive::GetFileInfosByKey(FileInfoList & files, const TString128 & key) const
 {
     FileInfoMap::ConstIterator iter;

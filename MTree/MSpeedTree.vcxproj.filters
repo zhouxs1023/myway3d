@@ -7,11 +7,26 @@
     <Filter Include="Tree">
       <UniqueIdentifier>{9b29b59d-0e23-49cd-a5aa-dc2c189ab40d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SpeedTree">
+      <UniqueIdentifier>{caa27735-5c39-4041-ba83-b8409210d59a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpeedTree\LibFilename_Source">
+      <UniqueIdentifier>{e42df137-9e79-4322-8db2-23915408481a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpeedTree\LibGlobals_Source">
+      <UniqueIdentifier>{361ab1be-be5e-48ca-b8ef-e19978cb3aba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpeedTree\LibRandom_Source">
+      <UniqueIdentifier>{0df37af9-6aed-4976-a986-98075b7189fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpeedTree\LibSpline_Source">
+      <UniqueIdentifier>{4b151014-4695-4bf7-8e70-4e135aacd560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SpeedTree\LibVector_Source">
+      <UniqueIdentifier>{f9fdf1f7-098d-40e9-9c3f-8feafbc7f056}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MBranch.h">
-      <Filter>Tree</Filter>
-    </ClInclude>
     <ClInclude Include="MVegetation.h">
       <Filter>Tree</Filter>
     </ClInclude>
@@ -22,18 +37,111 @@
       <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="MTreeEntry.h" />
+    <ClInclude Include="SpeedTree\BillboardLeaf.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\BranchGeometry.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\Debug.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\Endian.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\EvalCode.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\EvalTest.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\FileAccess.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\FrondEngine.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\IndexedGeometry.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\Instances.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LeafGeometry.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LeafLod.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LightingEngine.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\ProjectedShadow.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\Random.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\SimpleBillboard.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\SpeedTreeRT.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\StructsInfo.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\StructsSupport.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\TreeEngine.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\UpVector.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\WindEngine.h">
+      <Filter>SpeedTree</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibFilename_Source\IdvFilename.h">
+      <Filter>SpeedTree\LibFilename_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibGlobals_Source\IdvGlobals.h">
+      <Filter>SpeedTree\LibGlobals_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibRandom_Source\RobertDavies_Random.h">
+      <Filter>SpeedTree\LibRandom_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibRandom_Source\ExtendedReal.h">
+      <Filter>SpeedTree\LibRandom_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibRandom_Source\IdvRandom.h">
+      <Filter>SpeedTree\LibRandom_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibSpline_Source\IdvSpline.h">
+      <Filter>SpeedTree\LibSpline_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibVector_Source\IdvFastMath.h">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClInclude>
+    <ClInclude Include="SpeedTree\LibVector_Source\IdvVector.h">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClInclude>
     <ClInclude Include="MTree.h">
       <Filter>Tree</Filter>
     </ClInclude>
     <ClInclude Include="MTreeInstance.h">
       <Filter>Tree</Filter>
     </ClInclude>
+    <ClInclude Include="MTreeGlobal.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
+    <ClInclude Include="MBranch.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MBranch.cpp">
-      <Filter>Tree</Filter>
-    </ClCompile>
     <ClCompile Include="MVegetation.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
@@ -43,10 +151,97 @@
     <ClCompile Include="MVegetationBlock.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
+    <ClCompile Include="SpeedTree\BillboardLeaf.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\Branch.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\BranchGeometry.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\BranchInfo.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\Camera.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\FileAccess.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\FrondEngine.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\IndexedGeometry.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LeafGeometry.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LeafInfo.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LeafLod.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LightingEngine.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\ProjectedShadow.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\SimpleBillboard.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\SpeedTreeRT.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\TreeEngine.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\TreeInfo.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\WindEngine.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\WindInfo.cpp">
+      <Filter>SpeedTree</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibRandom_Source\ExtendedReal.cpp">
+      <Filter>SpeedTree\LibRandom_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibRandom_Source\IdvRandom.cpp">
+      <Filter>SpeedTree\LibRandom_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibRandom_Source\RobertDavies_Random.cpp">
+      <Filter>SpeedTree\LibRandom_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibSpline_Source\IdvSpline.cpp">
+      <Filter>SpeedTree\LibSpline_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibVector_Source\Region.cpp">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibVector_Source\RotTransform.cpp">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibVector_Source\Transform.cpp">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibVector_Source\Vec.cpp">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClCompile>
+    <ClCompile Include="SpeedTree\LibVector_Source\Vec3.cpp">
+      <Filter>SpeedTree\LibVector_Source</Filter>
+    </ClCompile>
     <ClCompile Include="MTree.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="MTreeInstance.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="MBranch.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>

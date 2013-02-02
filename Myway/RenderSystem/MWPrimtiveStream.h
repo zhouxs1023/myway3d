@@ -20,6 +20,9 @@ public:
     int GetStreamStride(int index) const;
 	int GetStreamInstance(int index) const;
 
+	void SetStart(int index) { mStart = index; }
+	int GetStart() const { return mStart; }
+
     void SetCount(int size);
     int GetCount() const;
 
@@ -27,6 +30,7 @@ public:
     VertexStream & operator =(const VertexStream & r);
 
 public:
+	int mStart;
     int mCount;
     VertexDeclarationPtr mDeclaration;
     int mStrides[MAX_VERTEX_STREAM];
@@ -41,9 +45,11 @@ public:
                     IndexStream();
                     ~IndexStream();
 
-    void            Bind(IndexBufferPtr stream, int startVertex);
+    void            Bind(IndexBufferPtr stream, int start = 0);
     IndexBufferPtr  GetStream() const;
-    int             GetStartVertex() const;
+
+	void			SetStart(int start)  { mStart = start; }
+	int				GetStart() const { return mStart; }
 
     void            SetCount(int size);
     int             GetCount() const;
@@ -53,8 +59,8 @@ public:
     IndexStream &   operator =(const IndexStream & r);
 
 protected:
+	int				mStart;
     int             mCount;
-    int             mStart;
     IndexBufferPtr  mStream;
 };
 

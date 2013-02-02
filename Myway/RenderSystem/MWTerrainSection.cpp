@@ -81,7 +81,7 @@ void TerrainSection::Init()
 			for (int j = 0; j < xSectionVertSize; ++j)
 			{
 				heights[j] = pHeights[j];
-				normals[j] = RGBA(pNormals[j].r, pNormals[j].g, pNormals[j].b, 255);
+				normals[j] = M_RGBA(pNormals[j].r, pNormals[j].g, pNormals[j].b, 255);
 			}
 
             heights += xSectionVertSize;

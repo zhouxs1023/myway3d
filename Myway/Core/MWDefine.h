@@ -75,16 +75,16 @@ namespace Myway
 #define NPOS                -1
 #endif
 
-#define ARGB(a, r, g, b)    ((int)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
-#define XRGB(r, g, b)       ARGB(0xFF, r, g, b)
-#define RGBA(r, g, b, a)    ARGB(a, r, g, b)
+#define M_ARGB(a, r, g, b)    ((int)(((a) << 24) | ((r) << 16) | ((g) << 8) | (b)))
+#define M_XRGB(r, g, b)       M_ARGB(0xFF, r, g, b)
+#define M_RGBA(r, g, b, a)    M_ARGB(a, r, g, b)
 
-#define ARGB_F(a, r, g, b)  ARGB((int)(a * 255), (int)(r * 255), (int)(g * 255), (int)(b * 255))
+#define M_ARGB_F(a, r, g, b)  M_ARGB((int)(a * 255), (int)(r * 255), (int)(g * 255), (int)(b * 255))
 
-#define ARGB_A(c)           ((unsigned int(c) & 0xFF000000) >> 24)
-#define ARGB_R(c)           ((unsigned int(c) & 0x00FF0000) >> 16)
-#define ARGB_G(c)           ((unsigned int(c) & 0x0000FF00) >> 8)
-#define ARGB_B(c)           ((unsigned int(c) & 0x000000FF) >> 0)
+#define M_ARGB_A(c)           ((unsigned int(c) & 0xFF000000) >> 24)
+#define M_ARGB_R(c)           ((unsigned int(c) & 0x00FF0000) >> 16)
+#define M_ARGB_G(c)           ((unsigned int(c) & 0x0000FF00) >> 8)
+#define M_ARGB_B(c)           ((unsigned int(c) & 0x000000FF) >> 0)
 
 #define MEMORY_IN_SYSTEM    0
 #define MEMORY_IN_POOL16    16

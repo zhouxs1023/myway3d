@@ -20,6 +20,15 @@
     <Shader name = "BranchPS" language = "cg" profile = "ps30" source = "Branch.ps" >
       <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
     </Shader>
+
+    <Shader name = "LeafVS" language = "cg" profile = "vs30" source = "Leaf.vs" >
+      <param name = "matWV" type = "float4x4" btype = "matWV" />
+      <param name = "matP" type = "float4x4" btype = "matProj" />
+    </Shader>
+
+    <Shader name = "LeafPS" language = "cg" profile = "ps30" source = "Leaf.ps" >
+      <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+    </Shader>
 	
 	</Shaders>
 
@@ -29,6 +38,9 @@
     </Technique>
 
     <Technique name = "Branch" vs = "BranchVS" ps = "BranchPS">
+    </Technique>
+
+    <Technique name = "Leaf" vs = "LeafVS" ps = "LeafPS">
     </Technique>
 
 	</Techniques>

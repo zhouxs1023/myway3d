@@ -6,7 +6,7 @@ namespace Myway
     Resource::Resource()
         : mLoadState(UNLOADED)
         , mSourceName("")
-        , mGroupName("")
+		, mPriority(0)
     {
     }
 

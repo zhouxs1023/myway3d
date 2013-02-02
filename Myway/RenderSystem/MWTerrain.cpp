@@ -144,7 +144,7 @@ void Terrain::_init()
 		for (int k = 0; k < kWeightMapSize; ++k)
 		{
 			for (int p = 0; p < kWeightMapSize; ++p)
-				dest[p] = RGBA(data[p].r, data[p].g, data[p].b, data[p].a);
+				dest[p] = M_RGBA(data[p].r, data[p].g, data[p].b, data[p].a);
 
 			dest += kWeightMapSize;
 			data += mConfig.xWeightMapSize;
@@ -1076,7 +1076,7 @@ void Terrain::UnlockWeightMap(int layer)
 		for (int k = 0; k < kWeightMapSize; ++k)
 		{
 			for (int p = 0; p < kWeightMapSize; ++p)
-				dest[p] = RGBA(data[p].r, data[p].g, data[p].b, data[p].a);
+				dest[p] = M_RGBA(data[p].r, data[p].g, data[p].b, data[p].a);
 
 			dest += kWeightMapSize;
 			data += mConfig.xWeightMapSize;

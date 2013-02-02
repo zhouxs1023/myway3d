@@ -48,8 +48,8 @@ public:
     const Mat4 &    GetWorldViewMatrix();
     const Mat4 &    GetViewProjMatrix();
     const Mat4 &    GetWorldViewProjMatrix();
-    const Mat4 &    GetBlendMatrix(int index);
-    const Mat4 *    GetBlendMatrices();
+    const Mat4 &	GetBlendMatrix(int index);
+    const Mat4 *	GetBlendMatrices();
     int             GetNumBlendMatrices();
 
     void            SetFogParam(const Vec4 & param);
@@ -99,7 +99,7 @@ protected:
     bool            mNeedUpdateLight;
 
     int             mNumBlendMatrices;
-    Mat4            mBlendMatrices[MAX_BLEND_MATRIX];
+    Mat4			mBlendMatrices[MAX_BLEND_MATRIX];
 
     //texture
     Vec4            mTextureSize[MAX_SAMPLER_STATE];

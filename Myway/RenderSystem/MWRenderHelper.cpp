@@ -67,7 +67,7 @@ namespace Myway
             {
                 for (int i = 0; i < 4; ++i)
                 {
-                    *color++ = XRGB(128, 128, 255);
+                    *color++ = M_XRGB(128, 128, 255);
                 }
             }
             mDefaultNormaLTexture->Unlock(0);

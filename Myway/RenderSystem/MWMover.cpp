@@ -71,10 +71,7 @@ void Mover::SetBounds(const Aabb & aabb, const Sphere & sph)
 
     if (mNode)
     {
-        const Mat4 & form = mNode->GetWorldMatrix();
-
-        Math::AABBTransform(mAabbWorld, mAabbLocal, form);
-        Math::SphereTransform(mSphWorld, mSphLocal, form);
+		mNode->_NotifyUpdate();
     }
     else
     {

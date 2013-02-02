@@ -27,6 +27,10 @@ namespace Myway {
 
 		static Event OnBeginRender;
 
+		static Event OnRenderSolid1;
+		static Event OnRenderSolid2;
+		static Event OnRenderSolid3;
+
 		static Event OnAfterRenderSolid;
 		static Event OnAfterRenderTrans;
 		static Event OnAfterDefferedShading;

@@ -1,0 +1,25 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EMotionFX", "EMotionFX.vcxproj", "{8D122A36-CDB5-4CE2-9154-A0A82758675F}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Core", "..\..\Core\ProjectFiles\VisualStudioNET2003\Core.vcxproj", "{1AB05585-9CCA-429D-AD09-76B464C7975A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8D122A36-CDB5-4CE2-9154-A0A82758675F}.Debug|Win32.ActiveCfg = Debug|Win32
+		{8D122A36-CDB5-4CE2-9154-A0A82758675F}.Debug|Win32.Build.0 = Debug|Win32
+		{8D122A36-CDB5-4CE2-9154-A0A82758675F}.Release|Win32.ActiveCfg = Release|Win32
+		{8D122A36-CDB5-4CE2-9154-A0A82758675F}.Release|Win32.Build.0 = Release|Win32
+		{1AB05585-9CCA-429D-AD09-76B464C7975A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{1AB05585-9CCA-429D-AD09-76B464C7975A}.Debug|Win32.Build.0 = Debug|Win32
+		{1AB05585-9CCA-429D-AD09-76B464C7975A}.Release|Win32.ActiveCfg = Release|Win32
+		{1AB05585-9CCA-429D-AD09-76B464C7975A}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

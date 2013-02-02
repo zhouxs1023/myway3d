@@ -64,6 +64,10 @@ namespace Myway {
         // --->render object
         _renderSolidObjects(true);
 
+		RenderEvent::OnRenderSolid1(NULL, NULL);
+		RenderEvent::OnRenderSolid2(NULL, NULL);
+		RenderEvent::OnRenderSolid3(NULL, NULL);
+
 		RenderEvent::OnAfterRenderSolid(NULL, NULL);
 
         _updateTexture();

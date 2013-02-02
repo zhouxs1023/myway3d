@@ -450,7 +450,6 @@ TexturePtr D3D9VideoBufferManager::Load2DTexture(const TString128 & name, const 
     p->mFormat = FMT_UNKNOWN;
     p->mType = TEXTYPE_2D;
     p->mSourceName = source;
-    p->mGroupName = "";
 
     mTextures.Insert(name, p);
 
@@ -477,7 +476,6 @@ TexturePtr D3D9VideoBufferManager::Load3DTexture(const TString128 & name, const 
     p->mFormat = FMT_UNKNOWN;
     p->mType = TEXTYPE_3D;
     p->mSourceName = source;
-    p->mGroupName = "";
 
     mVolumeTextures.Insert(name, p);
 
@@ -504,7 +502,6 @@ TexturePtr D3D9VideoBufferManager::LoadCubeTexture(const TString128 & name, cons
     p->mFormat = FMT_UNKNOWN;
     p->mType = TEXTYPE_CUBE;
     p->mSourceName = source;
-    p->mGroupName = "";
 
     mCubeTextures.Insert(name, p);
 

@@ -39,6 +39,7 @@ public:
     const TString128 & GetName() const;
     const TString128 & GetType() const;
 
+	void GetFileInfosByFloder(Archive::FileInfoList & list, const TString128 & floder) const;
     void GetFileInfosByKey(FileInfoList & files, const TString128 & key) const;
     bool Exist(const TString128 & name) const;
     const FileInfo * GetFileInfo(const TString128 & name) const; 

@@ -262,18 +262,16 @@ bool Aabb::Inside(const Aabb & rk) const
     return Math::AABBInside(*this, rk);
 }
 
-Aabb Aabb::Merge(const Aabb & rk) const
+Aabb & Aabb::Merge(const Aabb & rk)
 {
-    Aabb aabb;
-    Math::AABBMerge(aabb, *this, rk);
-    return aabb;
+    Math::AABBMerge(*this, *this, rk);
+    return *this;
 }
 
-Aabb Aabb::Merge(const Vec3 & rk) const
+Aabb & Aabb::Merge(const Vec3 & rk)
 {
-    Aabb aabb;
-    Math::AABBMerge(aabb, *this, rk);
-    return aabb;
+    Math::AABBMerge(*this, *this, rk);
+    return *this;
 }
 
 Aabb Aabb::Transform(const Mat4 & maximumt) const

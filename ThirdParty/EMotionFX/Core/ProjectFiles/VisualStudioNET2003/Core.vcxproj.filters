@@ -1,0 +1,336 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="File System">
+      <UniqueIdentifier>{51694075-9fca-4fb9-b938-014872b49ddc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Templates">
+      <UniqueIdentifier>{36302e56-acb4-492a-8b8a-3257284daea8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Templates\Data Structures">
+      <UniqueIdentifier>{b48c886b-3a7f-40e9-9bb6-58ae3e68d11c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Templates\Patterns">
+      <UniqueIdentifier>{204cc9a3-25ff-47bb-a378-3d60a5c0cb73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{b540d598-2216-4928-a4d1-3dedca136472}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Native">
+      <UniqueIdentifier>{6c05d893-2c6b-4c48-a2ff-5bb5f3a62c26}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Native\Win32">
+      <UniqueIdentifier>{76f16d3c-7570-463a-801f-df3ccf02ddc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Native\Linux">
+      <UniqueIdentifier>{f7baa5fc-6608-4501-a5f8-cb4f2396fe7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{4616fb61-7ad2-46cd-926e-cd1543fe5f63}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Base">
+      <UniqueIdentifier>{de1cec9c-658c-45dd-90e7-d86aba38d770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log System">
+      <UniqueIdentifier>{2feb24fb-82a3-44c7-9958-bd2d615881ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network">
+      <UniqueIdentifier>{ac8301ed-ff85-4c6f-a293-2c31c7a9b4a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Windows">
+      <UniqueIdentifier>{ca13fa0f-71dc-4e05-a145-b3af70f8f7a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Network\Clients and Servers">
+      <UniqueIdentifier>{3d1af97a-ece5-4996-bbaa-3359d60c53b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{dc96ee0a-1f7b-4e0b-91f0-a463eae50f17}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\DiskFile.cpp">
+      <Filter>File System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FileSystem.cpp">
+      <Filter>File System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MemoryFile.cpp">
+      <Filter>File System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Singleton.cpp">
+      <Filter>Templates\Patterns</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FastMath.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Random.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\RootSolver.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SwingAndTwist.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Time.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Directory.cpp">
+      <Filter>Native\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Timer.cpp">
+      <Filter>Native\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Exception.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\String.cpp">
+      <Filter>Base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LogFile.cpp">
+      <Filter>Log System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LogManager.cpp">
+      <Filter>Log System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\WinNetwork.cpp">
+      <Filter>Network\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\WinNetworkAddress.cpp">
+      <Filter>Network\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\WinSocket.cpp">
+      <Filter>Network\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\POP3Client.cpp">
+      <Filter>Network\Clients and Servers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MemoryManager.cpp">
+      <Filter>Memory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\DiskFile.h">
+      <Filter>File System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\File.h">
+      <Filter>File System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FileSystem.h">
+      <Filter>File System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MemoryFile.h">
+      <Filter>File System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Stream.h">
+      <Filter>File System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Algorithms.h">
+      <Filter>Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmartPointer.h">
+      <Filter>Templates</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Array.h">
+      <Filter>Templates\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HashFunctions.h">
+      <Filter>Templates\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HashTable.h">
+      <Filter>Templates\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LinkedList.h">
+      <Filter>Templates\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Stack.h">
+      <Filter>Templates\Data Structures</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Observer.h">
+      <Filter>Templates\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Pair.h">
+      <Filter>Templates\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Singleton.h">
+      <Filter>Templates\Patterns</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\AABB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\BoundingSphere.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Color.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CompressedFloat.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CompressedQuaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CompressedVector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FastMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Frustum.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Matrix4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NMatrix.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\OBB.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PlaneEq.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Random.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Ray.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\RootSolver.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SwingAndTwist.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Time.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Vector.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Directory.h">
+      <Filter>Native\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Timer.h">
+      <Filter>Native\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Config.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Macros.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Platform.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SourceDeclaration.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\StandardHeaders.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Exception.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Serializable.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\String.h">
+      <Filter>Base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LogFile.h">
+      <Filter>Log System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LogManager.h">
+      <Filter>Log System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NetworkHeaders.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NetworkSystem.h">
+      <Filter>Network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WinNetwork.h">
+      <Filter>Network\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WinNetworkAddress.h">
+      <Filter>Network\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\WinSocket.h">
+      <Filter>Network\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\POP3Client.h">
+      <Filter>Network\Clients and Servers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MemoryManager.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MCore.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Algorithms.inl">
+      <Filter>Templates</Filter>
+    </None>
+    <None Include="..\..\Source\SmartPointer.inl">
+      <Filter>Templates</Filter>
+    </None>
+    <None Include="..\..\Source\HashTable.inl">
+      <Filter>Templates\Data Structures</Filter>
+    </None>
+    <None Include="..\..\Source\LinkedList.inl">
+      <Filter>Templates\Data Structures</Filter>
+    </None>
+    <None Include="..\..\Source\Observer.inl">
+      <Filter>Templates\Patterns</Filter>
+    </None>
+    <None Include="..\..\Source\Pair.inl">
+      <Filter>Templates\Patterns</Filter>
+    </None>
+    <None Include="..\..\Source\Singleton.inl">
+      <Filter>Templates\Patterns</Filter>
+    </None>
+    <None Include="..\..\Source\BoundingSphere.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\CompressedFloat.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\CompressedQuaternion.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\CompressedVector.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\FastMath.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\Frustum.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\Matrix4.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\NMatrix.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\OBB.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\PlaneEq.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\Quaternion.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\Ray.inl">
+      <Filter>Math</Filter>
+    </None>
+    <None Include="..\..\Source\Timer.inl">
+      <Filter>Native\Win32</Filter>
+    </None>
+  </ItemGroup>
+</Project>

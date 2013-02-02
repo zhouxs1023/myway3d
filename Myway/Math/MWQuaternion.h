@@ -74,7 +74,7 @@ public:
     void ToAxis(Vec3 & axis, float & rads) const;
     Mat4 ToMatrix() const;
 
-    Vec3 Rotation(const Vec3 & v) const;
+    Vec3 Rotate(const Vec3 & v) const;
 
     Vec3 AxisX() const;
     Vec3 AxisY() const;

@@ -13,7 +13,7 @@ namespace Myway {
 		MTreeInstance(const TString128 & name);
 		virtual ~MTreeInstance();
 
-		void SetTree(const TString128 & source);
+		void SetTree(const TString128 & treeSource);
 		void SetTree(MTreePtr tree);
 		MTreePtr GetTree();
 
@@ -22,9 +22,13 @@ namespace Myway {
 		void NotifyCamera(Camera * cam);
 		void UpdateGeometry();
 
+		void UpdateLod();
+		int GetLod();
+
 		void AddRenderQueue(RenderQueue * rq);
 
 	protected:
 		MTreePtr mTree;
+		int mLod;
 	};
 }

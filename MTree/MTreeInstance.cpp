@@ -7,6 +7,7 @@ namespace Myway {
 		: Mover(name)
 	{
 		mTree = NULL;
+		mLod = 0;
 	}
 
 	MTreeInstance::~MTreeInstance()
@@ -15,23 +16,29 @@ namespace Myway {
 
 	void MTreeInstance::SetTree(const TString128 & source)
 	{
-		if (mTree != NULL && mTree->GetSourceName() == source)
-			return ;
+		MTreePtr tree = MForest::Instance()->LoadTree(source);
 
-		mTree = MForest::Instance()->LoadTree(source);
-
-		Compute();
+		SetTree(tree);
 	}
 
 	void MTreeInstance::SetTree(MTreePtr tree)
 	{
-		d_assert (tree != NULL);
+		if (mTree == tree)
+			return ;
 
-		if (mTree != tree)
+		mTree = tree;
+
+		if (mTree != NULL)
 		{
-			mTree = tree;
+			const float * bound = tree->GetBoundingBox();
+			mAabbLocal.minimum = Vec3(bound[0], bound[1], bound[2]);
+			mAabbLocal.maximum = Vec3(bound[3], bound[4], bound[5]);
 
-			Compute();
+			mSphLocal.center = mAabbLocal.GetCenter();
+			mSphLocal.radius = mSphLocal.center.Distance(mAabbLocal.minimum);
+
+			if (mNode)
+				mNode->_NotifyUpdate();
 		}
 	}
 
@@ -40,25 +47,22 @@ namespace Myway {
 		return mTree;
 	}
 
-	void MTreeInstance::Compute()
-	{
-		if (mTree == NULL)
-			return ;
-
-		mTree->DoGenerate();
-
-		SetBounds(mTree->GetAabb(), mTree->GetSphere());
-
-		if (mNode)
-			mNode->_NotifyUpdate();
-	}
-
 	void MTreeInstance::NotifyCamera(Camera * cam)
 	{
 	}
 
 	void MTreeInstance::UpdateGeometry()
 	{
+	}
+
+	void MTreeInstance::UpdateLod()
+	{
+		mLod = 0;
+	}
+
+	int MTreeInstance::GetLod()
+	{
+		return mLod;
 	}
 
 	void MTreeInstance::AddRenderQueue(RenderQueue * rq)

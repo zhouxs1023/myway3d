@@ -22,6 +22,9 @@ public:
         float m12[12];
     };
 
+	static const Mat3x4 Identity;
+	static const Mat3x4 Zero;
+
 public:
     Mat3x4();
     ~Mat3x4();

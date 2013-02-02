@@ -84,6 +84,14 @@ void ShaderParam::SetMatrix(const Mat4 * m, int count)
     mParent->SetData(mPosition, m, 64 * count);
 }
 
+void ShaderParam::SetMatrix(const Mat3x4 * m, int count)
+{
+	d_assert (mType == SPT_MATRIX3x4);
+
+	mParent->SetData(mPosition, m, 48 * count);
+}
+
+
 void ShaderParam::SetColor(const Color4 * c, int count)
 {
     d_assert (mType == SPT_FLOAT4 && count <= mCount);

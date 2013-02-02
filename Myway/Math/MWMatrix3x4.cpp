@@ -3,6 +3,13 @@
 namespace Myway
 {
 
+const Mat3x4 Mat3x4::Identity = Mat3x4(1, 0, 0, 0,
+	                                   0, 1, 0, 0,
+									   0, 0, 1, 0);
+
+const Mat3x4 Mat3x4::Zero =  Mat3x4(0, 0, 0, 0,
+	                                0, 0, 0, 0,
+									0, 0, 0, 0);
 
 inline Mat3x4::Mat3x4()
 {

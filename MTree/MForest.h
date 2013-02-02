@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MTreeEntry.h"
+#include "MTreeGlobal.h"
 
 #include "MVegetation.h"
 #include "MVegetationBlock.h"
@@ -61,6 +62,10 @@ namespace Myway {
 
 		void _AddVisibleTreeInstance(MTreeInstance * tree);
 
+
+		float GetWindStrength(void) const { return mWindStrength; }
+		void SetWindStrength(float fStrength);
+
 	protected:
 		void Init();
 		void Update();
@@ -76,6 +81,9 @@ namespace Myway {
 		void _OnVegRemoved(MVegetation * veg);
 
 		void _drawBranch();
+		void _drawLeaf();
+
+		void _setupWindMatrix(float accTime);
 
 	protected:
 		ShaderLib * mShaderLib;
@@ -100,6 +108,11 @@ namespace Myway {
 		Array<MTreeInstance *> mVisbleTreeInstances;
 
 		Technique * mTech_Branch;
+		Technique * mTech_Leaf;
+
+		// wind
+		float mWindStrength;
+		Mat4 mWindMatrix[MTreeGlobal::K_NumWindMatrix];
 	};
 
 

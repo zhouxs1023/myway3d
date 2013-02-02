@@ -450,6 +450,25 @@ public:
         }
     }
 
+	bool IsBegin(const TString & rk) const
+	{
+		const char * dst = c_str();
+		const char * src = rk.c_str();
+
+		while (*dst && *src)
+		{
+			if (*dst != *src)
+				return false;
+
+			++dst, ++src;
+		}
+
+		if (*src == 0)
+			return true;
+
+		return false;
+	}
+
     int Find(const TString & rk, int pos = 0) const
     {
         const char * dst = c_str();

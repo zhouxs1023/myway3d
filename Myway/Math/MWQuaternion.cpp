@@ -239,7 +239,7 @@ Mat4 Quat::ToMatrix() const
     return mat;
 }
 
-Vec3 Quat::Rotation(const Vec3 & v) const
+Vec3 Quat::Rotate(const Vec3 & v) const
 {
     Vec3 vOut;
     Math::QuatRotation(vOut, *this, v);

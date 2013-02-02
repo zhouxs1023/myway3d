@@ -1,0 +1,675 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Collision Detection">
+      <UniqueIdentifier>{1fa1ca09-30d9-4a9b-a5e3-fb077fa5d3a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controllers">
+      <UniqueIdentifier>{7ea577d2-b47f-4705-944d-ab3b5e2d9001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controllers\Constraints">
+      <UniqueIdentifier>{47f2f37b-3041-4aa1-9fb1-39b4fffad1ef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controllers\ExpressionPart Controllers">
+      <UniqueIdentifier>{14852db2-ba80-4b2d-aafa-dcaeaad780d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry">
+      <UniqueIdentifier>{ac28dc74-bd68-48d6-be3c-147be4ed8529}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\Materials">
+      <UniqueIdentifier>{321625a7-73b4-46f5-b8f2-3fb1b5f13e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Geometry\Vertex Attributes">
+      <UniqueIdentifier>{a83f753c-835f-4d74-aab6-4deadb1158bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Importers">
+      <UniqueIdentifier>{1e151a97-5eba-4f9f-af6e-38615e1861f7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System">
+      <UniqueIdentifier>{dab0ab73-b931-4218-a399-70ecde988746}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System\Motion Types">
+      <UniqueIdentifier>{d8f35178-23ff-4125-9a8d-ee69c23b11de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System\Motion Types\Facial Motions">
+      <UniqueIdentifier>{b37fa761-672e-409a-9a26-d5635c0cf37d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System\Motion Types\Skeletal Motions">
+      <UniqueIdentifier>{986a2ee5-7d86-46a5-9c39-6de80a064557}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System\Base Motion System">
+      <UniqueIdentifier>{fac173bf-0d08-4b61-a476-1b339994d0b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System\Layer Motion System">
+      <UniqueIdentifier>{e98a0992-ca04-4776-9485-467f03b44b3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Motion System\Play Modes">
+      <UniqueIdentifier>{659dfe2c-d465-4a95-a558-177bb00dd69a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Interpolators">
+      <UniqueIdentifier>{33e82bca-e87e-4157-9cff-92f1d51eb344}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Keyframing">
+      <UniqueIdentifier>{8e779f3a-600f-4c59-9693-f69a53ca4881}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Keyframing\KeyFrame Generators">
+      <UniqueIdentifier>{2062cfa2-4c3e-4d21-bcee-04d8c7d6d206}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Nodes">
+      <UniqueIdentifier>{fdddf861-1f2d-433f-b8d0-70290aa56844}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh Deformers">
+      <UniqueIdentifier>{9dbc70be-860e-44ba-a7a4-921491733808}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="NormalMap Generation">
+      <UniqueIdentifier>{d54cc1f5-02b2-4bcc-ba31-2089ad642661}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inverse Kinematics">
+      <UniqueIdentifier>{da08467b-7561-4694-a0dc-dceace411839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Inverse Kinematics\Jacobian Pseudo Inverse">
+      <UniqueIdentifier>{fe01252d-97bc-4beb-9d71-a7a4c9c07957}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Memory">
+      <UniqueIdentifier>{13641cc6-4002-41cc-9fa5-e9d5787a361e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character Factory">
+      <UniqueIdentifier>{3fde7011-fc8b-4a38-9971-b3410a129805}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\ActorCollisionSystem.cpp">
+      <Filter>Collision Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\NodeCollisionSystem.cpp">
+      <Filter>Collision Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SimpleActorCollisionSystem.cpp">
+      <Filter>Collision Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SimpleNodeCollisionSystem.cpp">
+      <Filter>Collision Detection</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Controller.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PhysicsController.cpp">
+      <Filter>Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Constraint.cpp">
+      <Filter>Controllers\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\LookAtConstraint.cpp">
+      <Filter>Controllers\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PositionConstraint.cpp">
+      <Filter>Controllers\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\RotationConstraint.cpp">
+      <Filter>Controllers\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ScaleConstraint.cpp">
+      <Filter>Controllers\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\TransformConstraint.cpp">
+      <Filter>Controllers\Constraints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ExpressionPartController.cpp">
+      <Filter>Controllers\ExpressionPart Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\HwShaderBuffer.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Mesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SimpleMesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SubMesh.cpp">
+      <Filter>Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FXMaterial.cpp">
+      <Filter>Geometry\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StandardMaterial.cpp">
+      <Filter>Geometry\Materials</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SkinningInfoVertexAttributeLayer.cpp">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\UVVertexAttributeLayer.cpp">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\VertexAttributeLayer.cpp">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Importer\ChunkProcessors.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Importer\Importer.cpp">
+      <Filter>Importers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionInstance.cpp">
+      <Filter>Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionLink.cpp">
+      <Filter>Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionPart.cpp">
+      <Filter>Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionQueue.cpp">
+      <Filter>Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PlayBackInfo.cpp">
+      <Filter>Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Motion.cpp">
+      <Filter>Motion System\Motion Types</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ExpressionPart.cpp">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FacialMotion.cpp">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FacialSetup.cpp">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MeshExpressionPart.cpp">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SkeletalMotion.cpp">
+      <Filter>Motion System\Motion Types\Skeletal Motions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionSystem.cpp">
+      <Filter>Motion System\Base Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\FacialLayerPass.cpp">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionLayer.cpp">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MotionLayerSystem.cpp">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\RepositioningLayerPass.cpp">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PlayMode.cpp">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PlayModeBackward.cpp">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PlayModeForward.cpp">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\PlayModePingPong.cpp">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\EyeBlinkKeyFrameGenerator.cpp">
+      <Filter>Keyframing\KeyFrame Generators</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Actor.cpp">
+      <Filter>Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\Node.cpp">
+      <Filter>Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\NodeDOF.cpp">
+      <Filter>Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\NodeIDGenerator.cpp">
+      <Filter>Nodes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MeshDeformer.cpp">
+      <Filter>Mesh Deformers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\MeshDeformerStack.cpp">
+      <Filter>Mesh Deformers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SmartMeshMorphDeformer.cpp">
+      <Filter>Mesh Deformers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SoftSkinDeformer.cpp">
+      <Filter>Mesh Deformers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SoftSkinDeformerSSE.cpp">
+      <Filter>Mesh Deformers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\SoftSkinManager.cpp">
+      <Filter>Mesh Deformers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\BasicNormalMapGenerator.cpp">
+      <Filter>NormalMap Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\ImageResChecker.cpp">
+      <Filter>NormalMap Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\NormalMap.cpp">
+      <Filter>NormalMap Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\NormalMapGenerator.cpp">
+      <Filter>NormalMap Generation</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CCDIKSolver.cpp">
+      <Filter>Inverse Kinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\TwoLinkIKSolver.cpp">
+      <Filter>Inverse Kinematics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\JacobianIKActorDOF.cpp">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\JacobianIKController.cpp">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\JacobianIKData.cpp">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\JacobianIKFixedPoint.cpp">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\JacobianIKRelativePoint.cpp">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\JacobianIKSolver.cpp">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\CharacterFactory.cpp">
+      <Filter>Character Factory</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\ActorCollisionSystem.h">
+      <Filter>Collision Detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodeCollisionSystem.h">
+      <Filter>Collision Detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SimpleActorCollisionSystem.h">
+      <Filter>Collision Detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SimpleNodeCollisionSystem.h">
+      <Filter>Collision Detection</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Controller.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PhysicsController.h">
+      <Filter>Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Constraint.h">
+      <Filter>Controllers\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LookAtConstraint.h">
+      <Filter>Controllers\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PositionConstraint.h">
+      <Filter>Controllers\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\RotationConstraint.h">
+      <Filter>Controllers\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ScaleConstraint.h">
+      <Filter>Controllers\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TransformConstraint.h">
+      <Filter>Controllers\Constraints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ExpressionPartController.h">
+      <Filter>Controllers\ExpressionPart Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HwShaderBuffer.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Mesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SimpleMesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SubMesh.h">
+      <Filter>Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FXMaterial.h">
+      <Filter>Geometry\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Material.h">
+      <Filter>Geometry\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\StandardMaterial.h">
+      <Filter>Geometry\Materials</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SkinningInfoVertexAttributeLayer.h">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\UVVertexAttributeLayer.h">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\VertexAttributeLayer.h">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Importer\ChunkProcessors.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Importer\Importer.h">
+      <Filter>Importers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionInstance.h">
+      <Filter>Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionLink.h">
+      <Filter>Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionPart.h">
+      <Filter>Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionQueue.h">
+      <Filter>Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PlayBackInfo.h">
+      <Filter>Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Motion.h">
+      <Filter>Motion System\Motion Types</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ExpressionPart.h">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FacialMotion.h">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FacialMotionPart.h">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FacialSetup.h">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MeshExpressionPart.h">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SkeletalMotion.h">
+      <Filter>Motion System\Motion Types\Skeletal Motions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionSystem.h">
+      <Filter>Motion System\Base Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\FacialLayerPass.h">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LayerPass.h">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionLayer.h">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MotionLayerSystem.h">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\RepositioningLayerPass.h">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PlayMode.h">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PlayModeBackward.h">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PlayModeForward.h">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\PlayModePingPong.h">
+      <Filter>Motion System\Play Modes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\BezierInterpolators.h">
+      <Filter>Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\HermiteInterpolators.h">
+      <Filter>Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Interpolator.h">
+      <Filter>Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\LinearInterpolators.h">
+      <Filter>Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TCBSplineInterpolators.h">
+      <Filter>Interpolators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CompressedKeyFrames.h">
+      <Filter>Keyframing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KeyFrame.h">
+      <Filter>Keyframing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KeyFrameFinder.h">
+      <Filter>Keyframing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KeyTrack.h">
+      <Filter>Keyframing</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\EyeBlinkKeyFrameGenerator.h">
+      <Filter>Keyframing\KeyFrame Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\KeyFrameGenerator.h">
+      <Filter>Keyframing\KeyFrame Generators</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Actor.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\Node.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodeAttribute.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodeDOF.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodeIDGenerator.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodeLimitAttribute.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodePhysicsAttribute.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NodeTransform.h">
+      <Filter>Nodes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MeshDeformer.h">
+      <Filter>Mesh Deformers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MeshDeformerStack.h">
+      <Filter>Mesh Deformers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SmartMeshMorphDeformer.h">
+      <Filter>Mesh Deformers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SoftSkinDeformer.h">
+      <Filter>Mesh Deformers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SoftSkinDeformerSSE.h">
+      <Filter>Mesh Deformers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\SoftSkinManager.h">
+      <Filter>Mesh Deformers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\BasicNormalMapGenerator.h">
+      <Filter>NormalMap Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\ImageResChecker.h">
+      <Filter>NormalMap Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NormalMap.h">
+      <Filter>NormalMap Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\NormalMapGenerator.h">
+      <Filter>NormalMap Generation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CCDIKSolver.h">
+      <Filter>Inverse Kinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\TwoLinkIKSolver.h">
+      <Filter>Inverse Kinematics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKActorDOF.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKConstraint.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKController.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKData.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKFixedPoint.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKRelativePoint.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\JacobianIKSolver.h">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\MemoryCategories.h">
+      <Filter>Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\CharacterFactory.h">
+      <Filter>Character Factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Source\EMotionFX.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\HwShaderBuffer.inl">
+      <Filter>Geometry</Filter>
+    </None>
+    <None Include="..\..\Source\Mesh.inl">
+      <Filter>Geometry</Filter>
+    </None>
+    <None Include="..\..\Source\SimpleMesh.inl">
+      <Filter>Geometry</Filter>
+    </None>
+    <None Include="..\..\Source\SubMesh.inl">
+      <Filter>Geometry</Filter>
+    </None>
+    <None Include="..\..\Source\FXMaterial.inl">
+      <Filter>Geometry\Materials</Filter>
+    </None>
+    <None Include="..\..\Source\StandardMaterial.inl">
+      <Filter>Geometry\Materials</Filter>
+    </None>
+    <None Include="..\..\Source\SkinningInfoVertexAttributeLayer.inl">
+      <Filter>Geometry\Vertex Attributes</Filter>
+    </None>
+    <None Include="..\..\Source\Importer\FileFormatStructs.inl">
+      <Filter>Importers</Filter>
+    </None>
+    <None Include="..\..\Source\MotionInstance.inl">
+      <Filter>Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\MotionLink.inl">
+      <Filter>Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\MotionPart.inl">
+      <Filter>Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\MotionQueue.inl">
+      <Filter>Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\Motion.inl">
+      <Filter>Motion System\Motion Types</Filter>
+    </None>
+    <None Include="..\..\Source\ExpressionPart.inl">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </None>
+    <None Include="..\..\Source\FacialMotion.inl">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </None>
+    <None Include="..\..\Source\FacialSetup.inl">
+      <Filter>Motion System\Motion Types\Facial Motions</Filter>
+    </None>
+    <None Include="..\..\Source\SkeletalMotion.inl">
+      <Filter>Motion System\Motion Types\Skeletal Motions</Filter>
+    </None>
+    <None Include="..\..\Source\MotionSystem.inl">
+      <Filter>Motion System\Base Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\MotionLayer.inl">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\MotionLayerSystem.inl">
+      <Filter>Motion System\Layer Motion System</Filter>
+    </None>
+    <None Include="..\..\Source\BezierInterpolators.inl">
+      <Filter>Interpolators</Filter>
+    </None>
+    <None Include="..\..\Source\HermiteInterpolators.inl">
+      <Filter>Interpolators</Filter>
+    </None>
+    <None Include="..\..\Source\Interpolator.inl">
+      <Filter>Interpolators</Filter>
+    </None>
+    <None Include="..\..\Source\LinearInterpolators.inl">
+      <Filter>Interpolators</Filter>
+    </None>
+    <None Include="..\..\Source\TCBSplineInterpolators.inl">
+      <Filter>Interpolators</Filter>
+    </None>
+    <None Include="..\..\Source\KeyFrame.inl">
+      <Filter>Keyframing</Filter>
+    </None>
+    <None Include="..\..\Source\KeyFrameFinder.inl">
+      <Filter>Keyframing</Filter>
+    </None>
+    <None Include="..\..\Source\KeyTrack.inl">
+      <Filter>Keyframing</Filter>
+    </None>
+    <None Include="..\..\Source\Actor.inl">
+      <Filter>Nodes</Filter>
+    </None>
+    <None Include="..\..\Source\Node.inl">
+      <Filter>Nodes</Filter>
+    </None>
+    <None Include="..\..\Source\NodeDOF.inl">
+      <Filter>Nodes</Filter>
+    </None>
+    <None Include="..\..\Source\NodeLimitAttribute.inl">
+      <Filter>Nodes</Filter>
+    </None>
+    <None Include="..\..\Source\NodePhysicsAttribute.inl">
+      <Filter>Nodes</Filter>
+    </None>
+    <None Include="..\..\Source\NormalMap.inl">
+      <Filter>NormalMap Generation</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKActorDOF.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKConstraint.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKController.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKData.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKFixedPoint.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKRelativePoint.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+    <None Include="..\..\Source\JacobianIKSolver.inl">
+      <Filter>Inverse Kinematics\Jacobian Pseudo Inverse</Filter>
+    </None>
+  </ItemGroup>
+</Project>

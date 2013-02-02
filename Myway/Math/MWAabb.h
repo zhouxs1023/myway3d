@@ -72,8 +72,8 @@ public:
 public:
     float   Volume() const;
     bool    Inside(const Aabb & rk) const;
-    Aabb    Merge(const Aabb & rk) const;
-    Aabb    Merge(const Vec3 & rk) const;
+    Aabb &  Merge(const Aabb & rk);
+    Aabb &  Merge(const Vec3 & rk);
     Aabb    Transform(const Mat4 & mat) const;
     Aabb    IntersectionEx(const Aabb & rk) const;
     int     Intersection(const Aabb & rk) const;

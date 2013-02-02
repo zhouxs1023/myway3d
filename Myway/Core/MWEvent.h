@@ -44,14 +44,42 @@ class tEventListener : public EventListener
 {
 	typedef void (T::*F)(void * param0, void * param1);
 public:
-	tEventListener(Event * e, T * p, F f) : listener(p), evt(e), func(f)
-	{ 
-		(*evt) += this;
+	tEventListener(T * p, F f) : listener(p), func(f)
+	{
+		evt = NULL;
+	}
+
+	tEventListener(Event * e, T * p, F f) : listener(p), func(f)
+	{
+		evt = NULL;
+		Attach(e);
 	}
 
 	~tEventListener()
 	{
-		(*evt) -= this;
+		Detach();
+	}
+
+	void Attach(Event * e)
+	{
+		d_assert (e != NULL);
+
+		if (evt == e)
+			return ;
+
+		Detach();
+
+		evt = e;
+
+		(*evt) += this;
+	}
+
+	void Detach()
+	{
+		if (evt)
+			(*evt) -= this;
+
+		evt = NULL;
 	}
 
 	virtual void OnCall(Event * sender, void * param0, void * param1)

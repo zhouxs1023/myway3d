@@ -15,9 +15,40 @@
     <ClInclude Include="MForest.h" />
     <ClInclude Include="MTree.h" />
     <ClInclude Include="MTreeEntry.h" />
+    <ClInclude Include="MTreeGlobal.h" />
     <ClInclude Include="MTreeInstance.h" />
     <ClInclude Include="MVegetation.h" />
     <ClInclude Include="MVegetationBlock.h" />
+    <ClInclude Include="SpeedTree\BillboardLeaf.h" />
+    <ClInclude Include="SpeedTree\BranchGeometry.h" />
+    <ClInclude Include="SpeedTree\Debug.h" />
+    <ClInclude Include="SpeedTree\Endian.h" />
+    <ClInclude Include="SpeedTree\EvalCode.h" />
+    <ClInclude Include="SpeedTree\EvalTest.h" />
+    <ClInclude Include="SpeedTree\FileAccess.h" />
+    <ClInclude Include="SpeedTree\FrondEngine.h" />
+    <ClInclude Include="SpeedTree\IndexedGeometry.h" />
+    <ClInclude Include="SpeedTree\Instances.h" />
+    <ClInclude Include="SpeedTree\LeafGeometry.h" />
+    <ClInclude Include="SpeedTree\LeafLod.h" />
+    <ClInclude Include="SpeedTree\LibFilename_Source\IdvFilename.h" />
+    <ClInclude Include="SpeedTree\LibGlobals_Source\IdvGlobals.h" />
+    <ClInclude Include="SpeedTree\LibRandom_Source\ExtendedReal.h" />
+    <ClInclude Include="SpeedTree\LibRandom_Source\IdvRandom.h" />
+    <ClInclude Include="SpeedTree\LibRandom_Source\RobertDavies_Random.h" />
+    <ClInclude Include="SpeedTree\LibSpline_Source\IdvSpline.h" />
+    <ClInclude Include="SpeedTree\LibVector_Source\IdvFastMath.h" />
+    <ClInclude Include="SpeedTree\LibVector_Source\IdvVector.h" />
+    <ClInclude Include="SpeedTree\LightingEngine.h" />
+    <ClInclude Include="SpeedTree\ProjectedShadow.h" />
+    <ClInclude Include="SpeedTree\Random.h" />
+    <ClInclude Include="SpeedTree\SimpleBillboard.h" />
+    <ClInclude Include="SpeedTree\SpeedTreeRT.h" />
+    <ClInclude Include="SpeedTree\StructsInfo.h" />
+    <ClInclude Include="SpeedTree\StructsSupport.h" />
+    <ClInclude Include="SpeedTree\TreeEngine.h" />
+    <ClInclude Include="SpeedTree\UpVector.h" />
+    <ClInclude Include="SpeedTree\WindEngine.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -27,6 +58,34 @@
     <ClCompile Include="MTreeInstance.cpp" />
     <ClCompile Include="MVegetation.cpp" />
     <ClCompile Include="MVegetationBlock.cpp" />
+    <ClCompile Include="SpeedTree\BillboardLeaf.cpp" />
+    <ClCompile Include="SpeedTree\Branch.cpp" />
+    <ClCompile Include="SpeedTree\BranchGeometry.cpp" />
+    <ClCompile Include="SpeedTree\BranchInfo.cpp" />
+    <ClCompile Include="SpeedTree\Camera.cpp" />
+    <ClCompile Include="SpeedTree\FileAccess.cpp" />
+    <ClCompile Include="SpeedTree\FrondEngine.cpp" />
+    <ClCompile Include="SpeedTree\IndexedGeometry.cpp" />
+    <ClCompile Include="SpeedTree\LeafGeometry.cpp" />
+    <ClCompile Include="SpeedTree\LeafInfo.cpp" />
+    <ClCompile Include="SpeedTree\LeafLod.cpp" />
+    <ClCompile Include="SpeedTree\LibRandom_Source\ExtendedReal.cpp" />
+    <ClCompile Include="SpeedTree\LibRandom_Source\IdvRandom.cpp" />
+    <ClCompile Include="SpeedTree\LibRandom_Source\RobertDavies_Random.cpp" />
+    <ClCompile Include="SpeedTree\LibSpline_Source\IdvSpline.cpp" />
+    <ClCompile Include="SpeedTree\LibVector_Source\Region.cpp" />
+    <ClCompile Include="SpeedTree\LibVector_Source\RotTransform.cpp" />
+    <ClCompile Include="SpeedTree\LibVector_Source\Transform.cpp" />
+    <ClCompile Include="SpeedTree\LibVector_Source\Vec.cpp" />
+    <ClCompile Include="SpeedTree\LibVector_Source\Vec3.cpp" />
+    <ClCompile Include="SpeedTree\LightingEngine.cpp" />
+    <ClCompile Include="SpeedTree\ProjectedShadow.cpp" />
+    <ClCompile Include="SpeedTree\SimpleBillboard.cpp" />
+    <ClCompile Include="SpeedTree\SpeedTreeRT.cpp" />
+    <ClCompile Include="SpeedTree\TreeEngine.cpp" />
+    <ClCompile Include="SpeedTree\TreeInfo.cpp" />
+    <ClCompile Include="SpeedTree\WindEngine.cpp" />
+    <ClCompile Include="SpeedTree\WindInfo.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{5BB20FA9-256F-48FF-899E-CC648315552B}</ProjectGuid>
@@ -62,6 +121,7 @@
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MTREE_EXPORT;MW_IMPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4996;4355</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

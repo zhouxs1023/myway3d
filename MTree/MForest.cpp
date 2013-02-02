@@ -12,6 +12,7 @@ namespace Myway {
 	IMP_SLN (MForest);
 
 	MForest::MForest()
+		: mWindStrength(0.3f)
 	{
 		INIT_SLN;
 
@@ -40,12 +41,14 @@ namespace Myway {
 		mXVegBlockCount = 0;
 		mZVegBlockCount = 0;
 
-		mDefaultTree = new MTree("");
-		mTrees.PushBack(mDefaultTree.c_ptr());
+		mDefaultTree = LoadTree("Tree\\GreenAsh.spt");
 
 		mTech_Branch = mShaderLib->GetTechnique("Branch");
+		mTech_Leaf = mShaderLib->GetTechnique("Leaf");
 
-		d_assert (mTech_Branch);
+		d_assert (mTech_Branch && mTech_Leaf);
+
+		CSpeedTreeRT::SetNumWindMatrices(MTreeGlobal::K_NumWindMatrix);
 	}
 
 	void MForest::Shutdown()
@@ -60,9 +63,85 @@ namespace Myway {
 
 	void MForest::Update()
 	{
+		float time = Engine::Instance()->GetTime();
+		// advance wind
+		CSpeedTreeRT::SetTime(time);
+		_setupWindMatrix(time);
+
 		for (int i = 0; i < mVegetationBlocks.Size(); ++i)
 		{
 			mVegetationBlocks[i]->_UpdateGeometry();
+		}
+	}
+
+	void MForest::_setupWindMatrix(float fTimeInSecs)
+	{
+		// matrix computational data
+		static float afMatrixTimes[MTreeGlobal::K_NumWindMatrix] = { 0.0f };
+		static float afFrequencies[MTreeGlobal::K_NumWindMatrix][2] = 
+		{
+			{ 0.15f, 0.17f },
+			{ 0.25f, 0.15f },
+			{ 0.19f, 0.05f },
+			{ 0.15f, 0.22f }
+		};
+
+		// compute time since last call
+		static float fTimeOfLastCall = 0.0f;
+		float fTimeSinceLastCall = fTimeInSecs - fTimeOfLastCall;
+		fTimeOfLastCall = fTimeInSecs;
+
+		// wind strength
+		static float fOldStrength = mWindStrength;
+
+		// increment matrix times
+		for (int i = 0; i < MTreeGlobal::K_NumWindMatrix; ++i)
+			afMatrixTimes[i] += fTimeSinceLastCall;
+
+		// compute maximum branch throw
+		float fBaseAngle = mWindStrength * 35.0f;
+
+		// build rotation matrices
+		for (int i = 0; i < MTreeGlobal::K_NumWindMatrix; ++i)
+		{
+			// adjust time to prevent "jumping"
+			if (mWindStrength != 0.0f)
+				afMatrixTimes[i] = (afMatrixTimes[i] * fOldStrength) / mWindStrength;
+
+			// compute percentages for each axis
+			float fBaseFreq = mWindStrength * 20.0f;
+			float fXPercent = sinf(fBaseFreq * afFrequencies[i % MTreeGlobal::K_NumWindMatrix][0] * afMatrixTimes[i]);
+			float fYPercent = cosf(fBaseFreq * afFrequencies[i % MTreeGlobal::K_NumWindMatrix][1] * afMatrixTimes[i]);
+
+			// build compound rotation matrix (rotate on 'x' then on 'y')
+			const float c_fDeg2Rad = 57.2957795f;
+			float fSinX = sinf(fBaseAngle * fXPercent / c_fDeg2Rad);
+			float fSinY = sinf(fBaseAngle * fYPercent / c_fDeg2Rad);
+			float fCosX = cosf(fBaseAngle * fXPercent / c_fDeg2Rad);
+			float fCosY = cosf(fBaseAngle * fYPercent / c_fDeg2Rad);
+
+			float afMatrix[16] = { 0.0f };
+			afMatrix[0] = fCosY;
+			afMatrix[2] = -fSinY;
+			afMatrix[4] = fSinX * fSinY;
+			afMatrix[5] = fCosX;
+			afMatrix[6] = fSinX * fCosY;
+			afMatrix[8] = fSinY * fCosX;
+			afMatrix[9] = -fSinX;
+			afMatrix[10] = fCosX * fCosY;
+			afMatrix[15] = 1.0f;
+
+			Memcpy(&mWindMatrix[i], afMatrix, sizeof(Mat4));
+		}
+
+		fOldStrength = mWindStrength;
+	}
+
+	void MForest::SetWindStrength(float fStrength)
+	{
+		for (int i = 0; i < mTrees.Size(); ++i)
+		{
+			mTrees[i]->_getSpeedTree()->SetWindStrength(fStrength);
 		}
 	}
 
@@ -408,6 +487,7 @@ namespace Myway {
 		_drawX2Veg();
 
 		_drawBranch();
+		_drawLeaf();
 	}
 
 	void MForest::_drawMeshVeg()
@@ -470,6 +550,8 @@ namespace Myway {
 
 		MTree * tree = new MTree(source);
 
+		tree ->_getSpeedTree()->SetWindStrength(mWindStrength);
+
 		tree->Load();
 
 		mTrees.PushBack(tree);
@@ -498,7 +580,9 @@ namespace Myway {
 
 		MTreeInstance * inst = new MTreeInstance(name);
 
-		inst->SetTree(source);
+		MTreePtr tree = LoadTree(source);
+
+		inst->SetTree(tree);
 
 		mTreeInstances.PushBack(inst);
 
@@ -564,32 +648,68 @@ namespace Myway {
 	{
 		RenderSystem::Instance()->_BeginEvent("Draw Branch");
 
-		ShaderParam * uUVScale = mTech_Branch->GetVertexShaderParamTable()->GetParam("gUVScale");
+		ShaderParam * uWindMatrixOffset = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+
+		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
 		{
 			MTreeInstance * inst = mVisbleTreeInstances[i];
 			MTree * tree = inst->GetTree().c_ptr();
-			RenderOp * rop = tree->_getBranchRenderOp();
 
-			const Vec2 & uvScale = tree->GetTreeResource()->GetBranch()->GetDiffuseUVScale();
+			if (tree)
+			{
+				MTree::Material * mtl = tree->_getBranchMaterial();
+				RenderOp * rop = tree->_getBranchRenderOp(0);
 
-			uUVScale->SetUnifom(uvScale.x, uvScale.y, 0, 0);
+				rop->xform = inst->GetAttachNode()->GetWorldMatrix();
 
-			SamplerState state;
+				SamplerState state;
+				RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
 
-			rop->xform = inst->GetAttachNode()->GetWorldMatrix();
-
-			TexturePtr diffuseTex = tree->GetTreeResource()->GetBranchTexture(MTreeRes::TT_Diffuse);
-
-			RenderSystem::Instance()->SetTexture(0, state, diffuseTex.c_ptr());
-			RenderSystem::Instance()->Render(mTech_Branch, rop);
+				RenderSystem::Instance()->Render(mTech_Branch, rop);
+			}
 		}
 
 		RenderSystem::Instance()->_EndEvent();
 	}
 
+	void MForest::_drawLeaf()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Leaf");
 
+		ShaderParam * uWindMatrixOffset = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+		ShaderParam * uBillboardTable = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gBillboardTable");
+
+		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+
+			if (tree)
+			{
+				MTree::Material * mtl = tree->_getLeafMaterial(0);
+				RenderOp * rop = tree->_getLeafRenderOp(0);
+
+				rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+				SamplerState state;
+				RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+				tree->PrepareRenderLeaf(uBillboardTable);
+
+				RenderSystem::Instance()->Render(mTech_Leaf, rop);
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
 
 
 

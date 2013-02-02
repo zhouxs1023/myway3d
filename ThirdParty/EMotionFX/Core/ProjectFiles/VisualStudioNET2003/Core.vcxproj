@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{1AB05585-9CCA-429D-AD09-76B464C7975A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(VCTargetsPath)Microsoft.CPP.UpgradeFromVC71.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">../../Bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Debug\</IntDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">../../Bin\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>Disabled</Optimization>
+      <InlineFunctionExpansion>Default</InlineFunctionExpansion>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>../../../Bin/EMotionCore_d.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <Optimization>MaxSpeed</Optimization>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <OmitFramePointers>true</OmitFramePointers>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <StringPooling>true</StringPooling>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <DisableLanguageExtensions>false</DisableLanguageExtensions>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+    </ClCompile>
+    <Lib>
+      <AdditionalOptions>%(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>../../Bin/CoreReleaseVSNET2005.lib</OutputFile>
+    </Lib>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\DiskFile.cpp" />
+    <ClCompile Include="..\..\Source\FileSystem.cpp" />
+    <ClCompile Include="..\..\Source\MemoryFile.cpp" />
+    <ClCompile Include="..\..\Source\Singleton.cpp" />
+    <ClCompile Include="..\..\Source\FastMath.cpp" />
+    <ClCompile Include="..\..\Source\Random.cpp" />
+    <ClCompile Include="..\..\Source\RootSolver.cpp" />
+    <ClCompile Include="..\..\Source\SwingAndTwist.cpp" />
+    <ClCompile Include="..\..\Source\Time.cpp" />
+    <ClCompile Include="..\..\Source\Directory.cpp" />
+    <ClCompile Include="..\..\Source\Timer.cpp" />
+    <ClCompile Include="..\..\Source\Exception.cpp" />
+    <ClCompile Include="..\..\Source\String.cpp" />
+    <ClCompile Include="..\..\Source\LogFile.cpp" />
+    <ClCompile Include="..\..\Source\LogManager.cpp" />
+    <ClCompile Include="..\..\Source\WinNetwork.cpp" />
+    <ClCompile Include="..\..\Source\WinNetworkAddress.cpp" />
+    <ClCompile Include="..\..\Source\WinSocket.cpp" />
+    <ClCompile Include="..\..\Source\POP3Client.cpp" />
+    <ClCompile Include="..\..\Source\MemoryManager.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\DiskFile.h" />
+    <ClInclude Include="..\..\Source\File.h" />
+    <ClInclude Include="..\..\Source\FileSystem.h" />
+    <ClInclude Include="..\..\Source\MemoryFile.h" />
+    <ClInclude Include="..\..\Source\Stream.h" />
+    <ClInclude Include="..\..\Source\Algorithms.h" />
+    <ClInclude Include="..\..\Source\SmartPointer.h" />
+    <ClInclude Include="..\..\Source\Array.h" />
+    <ClInclude Include="..\..\Source\HashFunctions.h" />
+    <ClInclude Include="..\..\Source\HashTable.h" />
+    <ClInclude Include="..\..\Source\LinkedList.h" />
+    <ClInclude Include="..\..\Source\Stack.h" />
+    <ClInclude Include="..\..\Source\Observer.h" />
+    <ClInclude Include="..\..\Source\Pair.h" />
+    <ClInclude Include="..\..\Source\Singleton.h" />
+    <ClInclude Include="..\..\Source\AABB.h" />
+    <ClInclude Include="..\..\Source\BoundingSphere.h" />
+    <ClInclude Include="..\..\Source\Color.h" />
+    <ClInclude Include="..\..\Source\CompressedFloat.h" />
+    <ClInclude Include="..\..\Source\CompressedQuaternion.h" />
+    <ClInclude Include="..\..\Source\CompressedVector.h" />
+    <ClInclude Include="..\..\Source\FastMath.h" />
+    <ClInclude Include="..\..\Source\Frustum.h" />
+    <ClInclude Include="..\..\Source\Matrix4.h" />
+    <ClInclude Include="..\..\Source\NMatrix.h" />
+    <ClInclude Include="..\..\Source\OBB.h" />
+    <ClInclude Include="..\..\Source\PlaneEq.h" />
+    <ClInclude Include="..\..\Source\Quaternion.h" />
+    <ClInclude Include="..\..\Source\Random.h" />
+    <ClInclude Include="..\..\Source\Ray.h" />
+    <ClInclude Include="..\..\Source\RootSolver.h" />
+    <ClInclude Include="..\..\Source\SwingAndTwist.h" />
+    <ClInclude Include="..\..\Source\Time.h" />
+    <ClInclude Include="..\..\Source\Vector.h" />
+    <ClInclude Include="..\..\Source\Directory.h" />
+    <ClInclude Include="..\..\Source\Timer.h" />
+    <ClInclude Include="..\..\Source\Config.h" />
+    <ClInclude Include="..\..\Source\Macros.h" />
+    <ClInclude Include="..\..\Source\Platform.h" />
+    <ClInclude Include="..\..\Source\SourceDeclaration.h" />
+    <ClInclude Include="..\..\Source\StandardHeaders.h" />
+    <ClInclude Include="..\..\Source\Exception.h" />
+    <ClInclude Include="..\..\Source\Serializable.h" />
+    <ClInclude Include="..\..\Source\String.h" />
+    <ClInclude Include="..\..\Source\LogFile.h" />
+    <ClInclude Include="..\..\Source\LogManager.h" />
+    <ClInclude Include="..\..\Source\NetworkHeaders.h" />
+    <ClInclude Include="..\..\Source\NetworkSystem.h" />
+    <ClInclude Include="..\..\Source\WinNetwork.h" />
+    <ClInclude Include="..\..\Source\WinNetworkAddress.h" />
+    <ClInclude Include="..\..\Source\WinSocket.h" />
+    <ClInclude Include="..\..\Source\POP3Client.h" />
+    <ClInclude Include="..\..\Source\MemoryManager.h" />
+    <ClInclude Include="..\..\Source\MCore.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Source\Algorithms.inl" />
+    <None Include="..\..\Source\SmartPointer.inl" />
+    <None Include="..\..\Source\HashTable.inl" />
+    <None Include="..\..\Source\LinkedList.inl" />
+    <None Include="..\..\Source\Observer.inl" />
+    <None Include="..\..\Source\Pair.inl" />
+    <None Include="..\..\Source\Singleton.inl" />
+    <None Include="..\..\Source\BoundingSphere.inl" />
+    <None Include="..\..\Source\CompressedFloat.inl" />
+    <None Include="..\..\Source\CompressedQuaternion.inl" />
+    <None Include="..\..\Source\CompressedVector.inl" />
+    <None Include="..\..\Source\FastMath.inl" />
+    <None Include="..\..\Source\Frustum.inl" />
+    <None Include="..\..\Source\Matrix4.inl" />
+    <None Include="..\..\Source\NMatrix.inl" />
+    <None Include="..\..\Source\OBB.inl" />
+    <None Include="..\..\Source\PlaneEq.inl" />
+    <None Include="..\..\Source\Quaternion.inl" />
+    <None Include="..\..\Source\Ray.inl" />
+    <None Include="..\..\Source\Timer.inl" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

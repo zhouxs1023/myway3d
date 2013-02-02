@@ -103,6 +103,8 @@ namespace MaxPlugin {
 
 		obj->InitializeData();
 
+		const char * nodeName = node->GetName();
+
 		IGameMesh::ObjectTypes type = obj->GetIGameType();
 
 		if (type == IGameMesh::IGAME_MESH)
@@ -137,23 +139,23 @@ namespace MaxPlugin {
 			}
 
 			// u v
-			for (int i = 0;  expTexcoord && texMaps.Count() && i < mesh->GetNumberOfMapVerts(texMaps[0]); ++i)
+			for (int i = 0;  expTexcoord && texMaps.Count() > 1 && i < mesh->GetNumberOfMapVerts(texMaps[1]); ++i)
 			{
-				Point3 tv = mesh->GetMapVertex(texMaps[0], i);
+				Point3 tv = mesh->GetMapVertex(texMaps[1], i);
 
-				mMaxMesh.UV.PushBack(Vec2(tv.x, tv.y));
+				mMaxMesh.UV.PushBack(Vec2(tv.x, 1 - tv.y));
 
 				mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
 			}
 
 			// light map u v
-			for (int i = 0;  expTexcoord && texMaps.Count() > 1 && i < mesh->GetNumberOfMapVerts(texMaps[1]); ++i)
+			for (int i = 0;  expLightmapUV && texMaps.Count() > 2 && i < mesh->GetNumberOfMapVerts(texMaps[2]); ++i)
 			{
-				Point3 tv = mesh->GetMapVertex(texMaps[1], i);
+				Point3 tv = mesh->GetMapVertex(texMaps[2], i);
 
-				mMaxMesh.LUV.PushBack(Vec2(tv.x, tv.y));
+				mMaxMesh.LUV.PushBack(Vec2(tv.x, 1 - tv.y));
 
-				mVertexElems |= MeshLoader_v1::VE_TEXCOORD;
+				mVertexElems |= MeshLoader_v1::VE_LIGHTMAPUV;
 			}
 
 			_extractSkinInfo(obj);
@@ -239,7 +241,7 @@ namespace MaxPlugin {
 			{
 				Point3 nrm = mMaxMesh.N[face->norm[j]];
 
-				v.SetNormal(Vec3(nrm.x, nrm.y, nrm.z));
+				v.SetNormal(-Vec3(nrm.x, nrm.y, nrm.z));
 			}
 
 			// vertex color
@@ -282,6 +284,7 @@ namespace MaxPlugin {
 			xface.p[j] = subMesh->mVertexList.Add(v);
 		}
 
+		Math::Swap(xface.p[1], xface.p[2]);
 		subMesh->mFaces.PushBack(xface);
 	}
 
@@ -377,6 +380,13 @@ namespace MaxPlugin {
 		mMaterial.SetEmissive(Color4(val3.x, val3.y, val3.z, 1));
 		}
 		}*/
+
+		Mtl * maxMtl = mtl->GetMaxMaterial();
+
+		ULONG flag = maxMtl->Requirements(0);
+
+		if (flag & MTLREQ_2SIDE)
+			subMesh->mMaterial.SetDoubleSide(TRUE);
 
 		d_assert (!mtl->IsMultiType());
 

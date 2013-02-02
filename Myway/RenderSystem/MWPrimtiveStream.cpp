@@ -6,6 +6,9 @@ VertexStream::VertexStream()
 {
 	Memzero(mStrides, sizeof(int) * MAX_VERTEX_STREAM);
     Memzero(mInstances, sizeof(int) * MAX_VERTEX_STREAM);
+
+	mStart = 0;
+	mCount = 0;
 }
 
 VertexStream::~VertexStream()
@@ -63,6 +66,7 @@ VertexStream::VertexStream(const VertexStream & r)
 
 VertexStream & VertexStream::operator =(const VertexStream & r)
 {
+	mStart = r.GetStart();
     mCount = r.GetCount();
     mDeclaration = r.GetDeclaration();
 
@@ -84,8 +88,8 @@ VertexStream & VertexStream::operator =(const VertexStream & r)
 
 
 IndexStream::IndexStream()
-: mStart(0),
-  mCount(0)
+: mCount(0)
+, mStart(0)
 {
 }
 
@@ -93,20 +97,15 @@ IndexStream::~IndexStream()
 {
 }
 
-void IndexStream::Bind(IndexBufferPtr stream, int startVertex)
+void IndexStream::Bind(IndexBufferPtr stream, int start)
 {
     mStream = stream;
-    mStart = startVertex;
+	mStart = start;
 }
 
 IndexBufferPtr IndexStream::GetStream() const
 {
     return mStream;
-}
-
-int IndexStream::GetStartVertex() const
-{
-    return mStart;
 }
 
 void IndexStream::SetCount(int size)
@@ -128,8 +127,9 @@ IndexStream & IndexStream::operator =(const IndexStream & r)
 {
     assert (this != &r);
 
-    mStart = r.GetStartVertex();
     mStream = r.GetStream();
+	mCount = r.GetCount();
+	mStart = r.GetStart();
 
     return *this;
 }
