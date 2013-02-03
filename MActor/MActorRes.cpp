@@ -1,5 +1,6 @@
 #include "MActorRes.h"
 #include "MWDeviceCaps.h"
+#include "MWRenderHelper.h"
 #include "MWResourceManager.h"
 #include "MActorManager.h"
 #include <EMotionFX.h> 
@@ -43,17 +44,23 @@ namespace Myway {
 
 			ResourceManager::Instance()->GetFileInfosByFloder(motionList, motionPath);
 
-			Archive::FileInfoList::Iterator whr = motionList.Begin();
-			Archive::FileInfoList::Iterator end = motionList.End();
+			mMotionCount = motionList.Size();
 
-			while (whr != end)
+			if (mMotionCount != 0)
 			{
-				if (File::GetExternName(whr->name) == "lma")
-				{
-					LoadMotion(whr->name);
-				}
+				mMotionSet = new MMotion[mMotionCount];
 
-				++whr;
+				Archive::FileInfoList::Iterator whr = motionList.Begin();
+				Archive::FileInfoList::Iterator end = motionList.End();
+
+				int index = 0;
+
+				while (whr != end)
+				{
+					mMotionSet[index++]._Load(whr->name);
+
+					++whr;
+				}
 			}
 		}
 
@@ -140,22 +147,10 @@ namespace Myway {
 
 			int infl = 0;
 
-			/*static std::ofstream os;
-			static bool bbb = false;
-			static int index = 0;
-
-			if (!bbb)
-			{
-				bbb = true;
-				os.open("dumpSkin.txt");
-			}*/
-
 			while (infl < 4 && infl < vtx.GetNumInfluences())
 			{
 				int bi = vtx.GetInfluence(infl).GetBoneNumber();
 				float bw = vtx.GetInfluence(infl).GetWeight();
-
-				//os << index++ << ": " << bi << ", " << bw << std::endl;
 
 				vert->BIndices[infl] = bi;
 				vert->BWeights[infl] = bw;
@@ -258,8 +253,87 @@ namespace Myway {
 		}
 	}
 
+	void MActorRes::_initMat()
+	{
+		mMaterialCount = mActor->GetNumMaterials(0);
+
+		mMaterials = new SMtl[mMaterialCount];
+
+		TString128 sSourceDir = File::GetFileDir(mSourceName) + "texture\\";
+
+		for (int i = 0; i < mMaterialCount; ++i)
+		{
+			EMotionFX::Material * mtl = mActor->GetMaterial(0, i).GetPointer();
+			SMtl & mmtl = mMaterials[i];
+
+			if (mtl->GetType() == EMotionFX::StandardMaterial::TYPE_ID)	// convert a standard material
+			{
+				EMotionFX::StandardMaterial * smtl = (EMotionFX::StandardMaterial *)mtl;
+
+				mmtl.DoubleSide = smtl->GetDoubleSided();
+				mmtl.Opacity = smtl->GetOpacity();
+
+				int layerNr = smtl->FindLayer(EMotionFX::StandardMaterialLayer::LAYERTYPE_DIFFUSE);
+
+				if (layerNr != -1)
+				{
+					TString128 textureFile = smtl->GetLayer(layerNr)->GetFilename().AsChar();
+
+					if (textureFile == "")
+					{
+						mmtl.DiffuseMap = RenderHelper::Instance()->GetWhiteTexture();
+						continue;
+					}
+
+					TString128 tFile = File::GetBaseName(textureFile);
+					tFile = sSourceDir + tFile + ".dds";
+
+					mmtl.DiffuseMap = VideoBufferManager::Instance()->Load2DTexture(tFile, tFile);
+				}
+
+				layerNr = smtl->FindLayer(EMotionFX::StandardMaterialLayer::LAYERTYPE_BUMP);
+
+				if (layerNr != -1)
+				{
+					TString128 textureFile = smtl->GetLayer(layerNr)->GetFilename().AsChar();
+
+					if (textureFile == "")
+					{
+						mmtl.NormalMap = RenderHelper::Instance()->GetDefaultNormalTexture();
+						continue;
+					}
+
+					TString128 tFile = File::GetBaseName(textureFile);
+					tFile = sSourceDir + tFile + ".dds";
+
+					mmtl.NormalMap = VideoBufferManager::Instance()->Load2DTexture(tFile, tFile);
+				}
+
+				layerNr = smtl->FindLayer(EMotionFX::StandardMaterialLayer::LAYERTYPE_SPECULAR);
+
+				if (layerNr != -1)
+				{
+					TString128 textureFile = smtl->GetLayer(layerNr)->GetFilename().AsChar();
+
+					if (textureFile == "")
+					{
+						mmtl.SpecularMap = RenderHelper::Instance()->GetBlackTexture();
+						continue;
+					}
+
+					TString128 tFile = File::GetBaseName(textureFile);
+					tFile = sSourceDir + tFile + ".dds";
+
+					mmtl.SpecularMap = VideoBufferManager::Instance()->Load2DTexture(tFile, tFile);
+				}
+			}
+		}
+	}
+
 	void MActorRes::_init()
 	{
+		_initMat();
+
 		int iVertexCount = 0, iIndexCount = 0;
 		mAabb = Aabb::Zero;
 
@@ -267,11 +341,12 @@ namespace Myway {
 		int numBoneForPrim = 50;
 
 		MCore::Array<EMotionFX::HwShaderBuffer> hwShaderBufferArray;
-		mActor->GenerateHardwareShaderBuffers(hwShaderBufferArray, 0, numBoneForPrim);	
+		mActor->GenerateHardwareShaderBuffers(hwShaderBufferArray, 0, numBoneForPrim);
 
-		// create hardware buffer
-		//
-		for (int i = 0; i < hwShaderBufferArray.Size(); ++i)
+		mMeshCount = hwShaderBufferArray.Size();
+		mMeshes = new SMesh[mMeshCount];
+
+		for (int i = 0; i < mMeshCount; ++i)
 		{
 			EMotionFX::HwShaderBuffer & buffer = hwShaderBufferArray[i];
 
@@ -303,9 +378,7 @@ namespace Myway {
 
 			ib->Unlock();
 
-			SMesh * smesh = new SMesh();
-
-			mMeshes.PushBack(smesh);
+			SMesh * smesh = &mMeshes[i];
 
 			for (int b = 0; b < buffer.GetNumBones(); ++b)
 			{
@@ -352,6 +425,11 @@ namespace Myway {
 
 				prim.Rop.iPrimCount = NumTriangles;
 				prim.Rop.ePrimType = PRIM_TRIANGLELIST;
+
+				SMtl * mtl = GetMaterial(prim.MaterialId);
+
+				if (mtl->DoubleSide)
+					prim.Rop.rState.cullMode = CULL_NONE;
 			}
 		}
 
@@ -361,47 +439,26 @@ namespace Myway {
 
 	void MActorRes::_shutdown()
 	{
-		for (int i = 0; i < mMotionSet.Size(); ++i)
-		{
-			delete mMotionSet[i];
-		}
+		safe_delete_array(mMaterials);
+		safe_delete_array(mMeshes);
+		safe_delete_array (mMotionSet);
 
-		mMotionSet.Clear();
-
-		for (int i = 0; i < mMeshes.Size(); ++i)
-		{
-			delete mMeshes[i];
-		}
-
-		mMeshes.Clear();
+		mMaterialCount = 0;
+		mMeshCount = 0;
+		mMotionCount = 0;
 
 		safe_delete (mActor);
 	}
 
-	MMotion * MActorRes::LoadMotion(const TString128 & motionSource)
-	{
-		MMotion * motion = GetMotion(motionSource);
-
-		if (motion)
-			return motion;
-
-		motion = new MMotion(motionSource);
-
-		mMotionSet.PushBack(motion);
-
-		motion->Load();
-
-		return motion;
-	}
 
 	MMotion * MActorRes::GetMotion(const TString128 & motionName)
 	{
 		TString128 lname = motionName.LowerR();
 
-		for (int i = 0; i < mMotionSet.Size(); ++i)
+		for (int i = 0; i < mMotionCount; ++i)
 		{
-			if (mMotionSet[i]->GetName() == lname)
-				return mMotionSet[i];
+			if (mMotionSet[i].GetName() == lname)
+				return &mMotionSet[i];
 		}
 
 		return NULL;

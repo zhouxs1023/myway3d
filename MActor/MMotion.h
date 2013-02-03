@@ -35,11 +35,13 @@ namespace Myway {
 		};
 
 	public:
-		MMotion(const TString128 & source);
+		MMotion();
 		virtual ~MMotion();
 
 		const TString128 & GetName();
 		float GetLength();
+
+		void _Load(const TString128 & source);
 
 		// override Resource
 		virtual void Load();

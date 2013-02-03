@@ -4,19 +4,25 @@
 
 namespace Myway {
 
-	MMotion::MMotion(const TString128 & source)
+	MMotion::MMotion()
 	{
-		SetSourceName(source);
 		mMotion = NULL;
-
-		mName = File::GetBaseName(source);
-		mName = File::RemoveExternName(mName);
-		mName.Lower();
 	}
 
 	MMotion::~MMotion()
 	{
 		safe_delete (mMotion);
+	}
+
+	void MMotion::_Load(const TString128 & source)
+	{
+		d_assert (File::GetExternName(source) == "lma");
+
+		SetSourceName(source);
+		mName = File::GetBaseName(source);
+		mName = File::RemoveExternName(mName);
+		mName.Lower();
+		Load();
 	}
 
 	const TString128 & MMotion::GetName()

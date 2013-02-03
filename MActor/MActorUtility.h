@@ -22,5 +22,10 @@ namespace Myway {
 				}
 			}
 		}
+
+		static void ToColor4(Color4 & o, const MCore::RGBAColor & i)
+		{
+			o.r = i.r, o.g = i.g, o.b = i.b, o.a = i.a;
+		}
 	};
 }

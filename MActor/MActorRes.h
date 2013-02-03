@@ -34,7 +34,7 @@ namespace Myway {
 			Vec3 Normal;
 			Vec2 Texcoord;
 			Vec4 Tangent;
-			float BIndices[4];
+			unsigned char BIndices[4];
 			float BWeights[4];
 		};
 
@@ -66,6 +66,22 @@ namespace Myway {
 			}
 		};
 
+		struct SMtl
+		{
+			bool DoubleSide;
+			float Opacity;
+
+			TexturePtr DiffuseMap;
+			TexturePtr NormalMap;
+			TexturePtr SpecularMap;
+
+			SMtl()
+			{
+				DoubleSide = false;
+				Opacity = 1;
+			}
+		};
+
 
 	public:
 		MActorRes(const TString128 & source);
@@ -79,28 +95,42 @@ namespace Myway {
 
 		virtual void DeleteSelf();
 
-		int GetMeshCount() const { return mMeshes.Size(); }
-		SMesh * GetMesh(int i) const { return mMeshes[i]; }
+		int GetMeshCount() const { return mMeshCount; }
+		SMesh * GetMesh(int i) const { d_assert (i < mMeshCount); return &mMeshes[i]; }
+
+		int GetMaterialCount() const { return mMaterialCount; }
+		SMtl * GetMaterial(int i) const { d_assert (i < mMaterialCount); return &mMaterials[i]; }
+
+		int GetMotionCount() const { return mMotionCount; }
+		MMotion * GetMotion(int i) const { d_assert (i < mMotionCount); return &mMotionSet[i]; }
+		MMotion * GetMotion(const TString128 & motionName);
+
 		const Aabb & GetAabb() const { return mAabb; }
 		const Sphere & GetSphere() const { return mSphere; }
-
-		MMotion * LoadMotion(const TString128 & motionSource);
-		MMotion * GetMotion(const TString128 & motionName);
 
 		EMotionFX::Actor * GetEMotionActor() { return mActor; }
 
 	protected:
 		void _init();
 		void _shutdown();
+		void _initMat();
+
+		MMotion * _loadMotion(const TString128 & motionSource);
 
 	protected:
 		EMotionFX::Actor * mActor;
 
-		Array<SMesh*> mMeshes;
+		int mMeshCount;
+		SMesh* mMeshes;
+
+		int mMaterialCount;
+		SMtl * mMaterials;
+
+		int mMotionCount;
+		MMotion * mMotionSet;
+
 		Aabb mAabb;
 		Sphere mSphere;
-
-		Array<MMotion *> mMotionSet;
 	};
 
 	DeclareSmartPtr(MActorRes);

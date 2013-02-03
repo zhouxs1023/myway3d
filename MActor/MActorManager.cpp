@@ -71,8 +71,8 @@ namespace Myway {
 			mVertexDeclSkined->AddElement(0, 12, DT_FLOAT3, DU_NORMAL, 0);
 			mVertexDeclSkined->AddElement(0, 24, DT_FLOAT2, DU_TEXCOORD, 0);
 			mVertexDeclSkined->AddElement(0, 32, DT_FLOAT4, DU_TEXCOORD, 1);
-			mVertexDeclSkined->AddElement(0, 48, DT_FLOAT4, DU_TEXCOORD, 2);
-			mVertexDeclSkined->AddElement(0, 64, DT_FLOAT4, DU_TEXCOORD, 3);
+			mVertexDeclSkined->AddElement(0, 48, DT_UBYTE4, DU_TEXCOORD, 2);
+			mVertexDeclSkined->AddElement(0, 52, DT_FLOAT4, DU_TEXCOORD, 3);
 			mVertexDeclSkined->Init();
 		}
 
@@ -228,6 +228,7 @@ namespace Myway {
 				{
 					MActorRes::SPrim & prim = mesh->Primitives[p];
 					EMotionFX::Node * enode = eactor->GetNodeByID(prim.NodeId);
+					MActorRes::SMtl * mtl = res->GetMaterial(prim.MaterialId);
 
 					Mat4 worldTM;
 
@@ -237,7 +238,7 @@ namespace Myway {
 
 					SamplerState state;
 
-					render->SetTexture(0, state, RenderHelper::Instance()->GetWhiteTexture().c_ptr());
+					render->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
 
 					render->Render(boneCount > 0 ? mSkinedTech_Deferred : mTech_Deferred, &prim.Rop);
 
