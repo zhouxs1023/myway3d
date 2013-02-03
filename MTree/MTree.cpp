@@ -138,7 +138,7 @@ namespace Myway {
 		// leaf texture
 		for (unsigned int i = 0; i < mTextureInfo->m_uiLeafTextureCount && i < MTreeGlobal::K_MaxLeafPerTree; ++i)
 		{
-			TString128 leafTex = sourceDir + File::GetBaseName(mTextureInfo->m_pLeafTextureFilenames[i]);
+			TString128 leafTex = sourceDir + "Texture\\" + File::GetBaseName(mTextureInfo->m_pLeafTextureFilenames[i]);
 			
 			mLeafMaterial[i].DiffuseMap = VideoBufferManager::Instance()->Load2DTexture(leafTex, leafTex);
 		}

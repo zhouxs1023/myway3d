@@ -41,7 +41,7 @@ namespace Myway {
 		mXVegBlockCount = 0;
 		mZVegBlockCount = 0;
 
-		mDefaultTree = LoadTree("Tree\\GreenAsh.spt");
+		mDefaultTree = LoadTree("Tree\\default.spt");
 
 		mTech_Branch = mShaderLib->GetTechnique("Branch");
 		mTech_Leaf = mShaderLib->GetTechnique("Leaf");
@@ -646,6 +646,9 @@ namespace Myway {
 
 	void MForest::_drawBranch()
 	{
+		if (mVisbleTreeInstances.Size() == 0)
+			return ;
+
 		RenderSystem::Instance()->_BeginEvent("Draw Branch");
 
 		ShaderParam * uWindMatrixOffset = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
@@ -678,6 +681,9 @@ namespace Myway {
 
 	void MForest::_drawLeaf()
 	{
+		if (mVisbleTreeInstances.Size() == 0)
+			return ;
+
 		RenderSystem::Instance()->_BeginEvent("Draw Leaf");
 
 		ShaderParam * uWindMatrixOffset = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
