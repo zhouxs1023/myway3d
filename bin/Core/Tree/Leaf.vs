@@ -33,7 +33,7 @@ VS_OUT main(VS_IN In)
 	WindEffect_Normal(In.Position.xyz, In.Normal, vWindParams);
 
 	In.Position.xyz = mul(float4(In.Position.xyz, 1), matWV);
-	In.Position.xyz += gBillboardTable[PlacementIndex] * ScalarValue;
+	In.Position.xy += gBillboardTable[PlacementIndex].xy * ScalarValue;
 
 	Out.Position = mul(In.Position, matP);
 	Out.NormalDepth.xyz = mul(-In.Normal, (float3x3)matWV);
