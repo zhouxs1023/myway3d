@@ -388,6 +388,20 @@ void SceneNode::_UpdateTransform()
         mSphWorld.radius = 0;
     }
 
+	{
+		SceneNodeList::Iterator whr = mChildren.Begin();
+		SceneNodeList::Iterator end = mChildren.End();
+
+		while (whr != end)
+		{
+			Node * child = (*whr);
+			mAabbWorld.Merge(child->GetWorldAabb());
+			mSphWorld.radius = Math::VecDistance(mAabbWorld.maximum, mSphWorld.center);
+
+			++whr;
+		}
+	}
+
     if (mScene)
         mScene->UpdateSceneNode(this);
 }
@@ -541,8 +555,11 @@ void SceneNode::AddChildNode(SceneNode * node)
     if (node->GetParentNode())
         node->GetParentNode()->RemoveChildNode(node);
 
+	_NotifyUpdate();
+
     node->_NotifyAdded(this);
     mChildren.PushBack(node);
+
 }
 
 void SceneNode::RemoveChildNode(SceneNode * node)

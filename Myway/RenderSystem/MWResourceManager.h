@@ -65,7 +65,7 @@ public:
     bool Exist(const TString128 & name) const;
     Archive * GetArchive(const TString128 & name);
 
-    const Archive::FileInfo * GetFileInfo(const TString128 & name) const;
+	const Archive::FileInfo * GetFileInfo(const TString128 & name) const;
 
 	void GetFileInfosByFloder(Archive::FileInfoList & list, const TString128 & floder) const;
     void GetFileInfosByKey(Archive::FileInfoList & list, const TString128 & key) const;
