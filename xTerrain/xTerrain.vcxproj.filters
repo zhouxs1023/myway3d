@@ -72,6 +72,9 @@
     <ClCompile Include="xActor.cpp">
       <Filter>Src</Filter>
     </ClCompile>
+    <ClCompile Include="xPrefab.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xTerrainCreateDlg.h">
@@ -143,6 +146,9 @@
       <Filter>UI</Filter>
     </ClInclude>
     <ClInclude Include="xActor.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="xPrefab.h">
       <Filter>Src</Filter>
     </ClInclude>
   </ItemGroup>
