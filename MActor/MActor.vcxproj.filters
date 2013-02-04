@@ -6,6 +6,7 @@
     <ClCompile Include="MActorManager.cpp" />
     <ClCompile Include="MActorRes.cpp" />
     <ClCompile Include="MMotion.cpp" />
+    <ClCompile Include="MPrefab.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MActor.h" />
@@ -15,5 +16,6 @@
     <ClInclude Include="MActorRes.h" />
     <ClInclude Include="MMotion.h" />
     <ClInclude Include="MActorUtility.h" />
+    <ClInclude Include="MPrefab.h" />
   </ItemGroup>
 </Project>

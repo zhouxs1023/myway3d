@@ -18,6 +18,7 @@ namespace Myway {
 
 		MActor * CreateActor(const TString128 & name);
 		MActor * CreateActor(const TString128 & name, const TString128 & source, float priority = 0);
+		MActor * CreateActorU(const TString128 & source, float priority = 0);
 		void DestroyActor(MActor * actor);
 		MActor * GetActor(const TString128 & name);
 
@@ -55,6 +56,7 @@ namespace Myway {
 		ShaderLib * mShaderLib;
 		Technique * mTech_Deferred;
 		Technique * mSkinedTech_Deferred;
+		int mUId;
 	};
 
 }

@@ -16,6 +16,7 @@ namespace Myway {
 		, OnShutdown(&RenderEvent::OnEngineShutdown, this, &MActorManager::_Shutdown)
 		, OnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &MActorManager::_PreVisibleCull)
 		, OnRender(&RenderEvent::OnRenderSolid2, this, &MActorManager::_Render)
+		, mUId(0)
 	{
 		INIT_SLN;
 	}
@@ -104,6 +105,19 @@ namespace Myway {
 		MActorResPtr res = _LoadActorRes(source, priority);
 
 		MActor * actor = new MActor(name);
+
+		actor->SetPart(0, res);
+
+		mActors.PushBack(actor);
+
+		return actor;
+	}
+
+	MActor * MActorManager::CreateActorU(const TString128 & source, float priority)
+	{
+		MActorResPtr res = _LoadActorRes(source, priority);
+
+		MActor * actor = new MActor(TString128("UId") + mUId++);
 
 		actor->SetPart(0, res);
 

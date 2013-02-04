@@ -24,14 +24,14 @@ namespace Myway {
 		if (mActorParts[part] == pActor)
 			return ;
 
+		OnActorLoaded.Detach();
+
 		mActorParts[part] = pActor;
 
 		if (part != 0)
 			return;
 
 		safe_delete (mMainActor);
-
-		OnActorLoaded.Detach();
 
 		if (pActor == NULL)
 			return ;
