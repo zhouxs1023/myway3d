@@ -18,8 +18,10 @@ struct VS_OUT
 	float4 NormalDepth : TEXCOORD1;
 };
 
-uniform float4x4 matWV;
-uniform float4x4 matP;
+uniform float4 gTranslateScale;
+uniform float4x4 gRotationMatrix;
+uniform float4x4 matView;
+uniform float4x4 matProj;
 uniform float4 gBillboardTable[200];
 
 VS_OUT main(VS_IN In)
@@ -27,16 +29,20 @@ VS_OUT main(VS_IN In)
 	VS_OUT Out;
 
 	float2 vWindParams = float2(In.UV.zw);
-	float PlacementIndex = In.UV1.x;
-	float ScalarValue = In.UV1.y;
+	float2 vSize = In.UV1.xy;
+	float2 xyInc = (In.UV.xy - 0.5f) * float2(1, -1) ;
+
+	In.Position = mul(In.Position, gRotationMatrix);
+	In.Normal = mul(In.Normal, (float3x3)gRotationMatrix);
 
 	WindEffect_Normal(In.Position.xyz, In.Normal, vWindParams);
 
-	In.Position.xyz = mul(float4(In.Position.xyz, 1), matWV);
-	In.Position.xy += gBillboardTable[PlacementIndex].xy * ScalarValue;
+	In.Position.xyz = In.Position.xyz * gTranslateScale.w + gTranslateScale.xyz;
+	In.Position.xyz = mul(float4(In.Position.xyz, 1), matView).xyz;
+	In.Position.xy += xyInc * vSize;
 
-	Out.Position = mul(In.Position, matP);
-	Out.NormalDepth.xyz = mul(-In.Normal, (float3x3)matWV);
+	Out.Position = mul(In.Position, matProj);
+	Out.NormalDepth.xyz = mul(In.Normal, (float3x3)matView);
 	Out.UV = In.UV.xy;
 	Out.NormalDepth.w = Out.Position.w;
 

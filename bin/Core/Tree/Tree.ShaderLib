@@ -13,8 +13,8 @@
     </Shader>
 
     <Shader name = "BranchVS" language = "cg" profile = "vs30" source = "Branch.vs" >
-      <param name = "matWV" type = "float4x4" btype = "matWV" />
-      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+      <param name = "matView" type = "float4x4" btype = "matView" />
+      <param name = "matVP" type = "float4x4" btype = "matVP" />
     </Shader>
 
     <Shader name = "BranchPS" language = "cg" profile = "ps30" source = "Branch.ps" >
@@ -22,8 +22,8 @@
     </Shader>
 
     <Shader name = "LeafVS" language = "cg" profile = "vs30" source = "Leaf.vs" >
-      <param name = "matWV" type = "float4x4" btype = "matWV" />
-      <param name = "matP" type = "float4x4" btype = "matProj" />
+      <param name = "matView" type = "float4x4" btype = "matView" />
+      <param name = "matProj" type = "float4x4" btype = "matProj" />
     </Shader>
 
     <Shader name = "LeafPS" language = "cg" profile = "ps30" source = "Leaf.ps" >
