@@ -5,7 +5,7 @@ namespace Myway
 {
 
 const Sphere Sphere::Zero     = Sphere(0, 0, 0, 0);
-const Sphere Sphere::Infinite = Sphere(0, 0, 0, MAX_FLOAT);
+const Sphere Sphere::Infinite = Sphere(0, 0, 0, FLT_MAX);
 
 /* :) Sphere
 ---------------------------------------------------------------------------------------

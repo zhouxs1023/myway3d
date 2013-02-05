@@ -121,8 +121,8 @@ void Image::GenericPerlinNoiseHightMap(float frequency)
 
     int index = 0;
     float fMin, fMax, noise;
-    fMin = MAX_FLOAT;
-    fMax = MIN_FLOAT;
+    fMin = FLT_MAX;
+    fMax = FLT_MIN;
 
     for (int j = 0; j < mHeight; ++j)
     {

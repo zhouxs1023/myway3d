@@ -66,7 +66,7 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Sp
         if (delta < 0)
         {
             info.iterscetion = FALSE;
-            info.distance = MAX_FLOAT;
+            info.distance = FLT_MAX;
         }
         else
         {
@@ -259,7 +259,7 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Tr
     if (det < Math::EPSILON_E4)
     {
         info.iterscetion = FALSE;
-        info.distance = MAX_FLOAT;
+        info.distance = FLT_MAX;
         return;
     }
 
@@ -271,7 +271,7 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Tr
     if (q < 0.0f || q > det)
     {
         info.iterscetion = FALSE;
-        info.distance = MAX_FLOAT;
+        info.distance = FLT_MAX;
         return;
     }
 
@@ -282,7 +282,7 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray, const Tr
     if (r < 0.0f || r + q > det)
     {
         info.iterscetion = FALSE;
-        info.distance = MAX_FLOAT;
+        info.distance = FLT_MAX;
         return;
     }
 
@@ -299,7 +299,7 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray,
 						   int numTris, const Mat4 & form)
 {
 	info.iterscetion = false;
-	info.distance = MAX_FLOAT;
+	info.distance = FLT_MAX;
 
 	for (int i = 0; i < numTris; ++i)
 	{
@@ -322,7 +322,7 @@ void Math::RayIntersection(RayIntersectionInfo & info, const Ray & ray,
 	                       const Vec3 & v0, const Vec3 & v1, const Vec3 & v2)
 {
 	info.iterscetion = false;
-	info.distance = MAX_FLOAT;
+	info.distance = FLT_MAX;
 
 	// E1
 	Vec3 E1 = v1 - v0;

@@ -9,7 +9,7 @@ CodeTimer::CodeTimer(const char * func)
   mCurrentTime(0),
   mTotalCalls(0),
   mMaxTime(0),
-  mMinTime(MAX_FLOAT),
+  mMinTime(FLT_MAX),
   mAveTime(0),
   mNext(NULL)
 {
@@ -54,7 +54,7 @@ void CodeTimer::Reset()
     mTotalTime = 0.0f;
     mTotalCalls = 0;
     mMaxTime = 0.0f;
-    mMinTime = MAX_FLOAT;
+    mMinTime = FLT_MAX;
     mAveTime = 0.0f;
 }
 

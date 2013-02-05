@@ -419,7 +419,7 @@ void D3D9RenderSystem::SetLight(int index, Light * light)
     {
         position = Vec4(0, 0, 0, 0);
         direction = Vec4(light->GetDirection(), 1);
-        attenuation = Vec4(MAX_FLOAT, 1, 0, 0);
+        attenuation = Vec4(FLT_MAX, 1, 0, 0);
         spot = Vec4(1, -2, 0, 1);
     }
     else if (type == LT_POINT)

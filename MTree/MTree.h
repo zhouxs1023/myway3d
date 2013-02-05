@@ -73,8 +73,8 @@ namespace Myway {
 			float TexCoords[2];
 			float WindIndex;
 			float WindWeight;
-			float PlacementIndex;
-			float ScalarValue;
+			float Width;
+			float Height;
 		};
 
 
@@ -94,21 +94,21 @@ namespace Myway {
 
 		Material * _getBranchMaterial() { return &mBranchMaterial; }
 		Material * _getFrondMaterial()  { return &mFrondMaterial; }
-		Material * _getLeafMaterial(int i)  { d_assert (i < mNumLeafs); return &mLeafMaterial[i]; }
+		Material * _getLeafMaterial(int i)  { d_assert (i < 2); return &mLeafMaterial[i]; }
 
 		RenderOp * _getBranchRenderOp(int lod);
-		RenderOp * _getLeafRenderOp(int lod);
+		RenderOp * _getLeafRenderOp0(int lod);
+		RenderOp * _getLeafRenderOp1(int lod);
 
 		CSpeedTreeRT * _getSpeedTree() { return mSpeedTree; }
-
-		void PrepareRenderLeaf(ShaderParam * bdTabel);
 
 	protected:
 		void _setupGeometry();
 		void _setupTexture();
 
 		void _setupBranchGeometry();
-		void _setupLeafGeometry();
+		void _setupLeafGeometry0();
+		void _setupLeafGeometry1();
 
 	protected:
 		CSpeedTreeRT * mSpeedTree;
@@ -125,10 +125,9 @@ namespace Myway {
 		unsigned short * mBranchIndexCounts;
 		RenderOp * mRenderOp_Branch;
 
-		int mNumLeafs;
 		int mNumLeafLods;
-		VertexBufferPtr * mLeafBuffers;
-		RenderOp * mRenderOp_Leaf;
+		RenderOp * mRenderOp_Leaf0;
+		RenderOp * mRenderOp_Leaf1;
 
 	};
 

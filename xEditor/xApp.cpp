@@ -188,7 +188,7 @@ void xApp::_input()
 			 List<SceneNode *>::Iterator whr = list.Begin();
 			 List<SceneNode *>::Iterator end = list.End();
 
-			 float dist = MAX_FLOAT;
+			 float dist = FLT_MAX;
 			 SceneNode * node = NULL;
 			 Vec3 camPos = World::Instance()->MainCamera()->GetPosition();
 

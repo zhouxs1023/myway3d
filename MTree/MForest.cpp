@@ -653,6 +653,8 @@ namespace Myway {
 
 		ShaderParam * uWindMatrixOffset = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
 		ShaderParam * uWindMatrix = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+		ShaderParam * uTranslateScale = mTech_Branch->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_Branch->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
 
 		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
@@ -661,6 +663,14 @@ namespace Myway {
 		{
 			MTreeInstance * inst = mVisbleTreeInstances[i];
 			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
 			if (tree)
 			{
@@ -688,7 +698,9 @@ namespace Myway {
 
 		ShaderParam * uWindMatrixOffset = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
 		ShaderParam * uWindMatrix = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gWindMatrices");
-		ShaderParam * uBillboardTable = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gBillboardTable");
+
+		ShaderParam * uTranslateScale = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
 
 		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
@@ -697,20 +709,45 @@ namespace Myway {
 		{
 			MTreeInstance * inst = mVisbleTreeInstances[i];
 			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
 			if (tree)
 			{
-				MTree::Material * mtl = tree->_getLeafMaterial(0);
-				RenderOp * rop = tree->_getLeafRenderOp(0);
+				RenderOp * rop = tree->_getLeafRenderOp0(0);
 
-				rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+				if (rop)
+				{
+					MTree::Material * mtl = tree->_getLeafMaterial(0);
 
-				SamplerState state;
-				RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
 
-				tree->PrepareRenderLeaf(uBillboardTable);
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
 
-				RenderSystem::Instance()->Render(mTech_Leaf, rop);
+					RenderSystem::Instance()->Render(mTech_Leaf, rop);
+				}
+				
+				rop = tree->_getLeafRenderOp1(1);
+
+				if (rop)
+				{
+					MTree::Material * mtl = tree->_getLeafMaterial(1);
+
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_Leaf, rop);
+				}
+
 			}
 		}
 

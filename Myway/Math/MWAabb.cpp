@@ -10,8 +10,8 @@ namespace Myway
 ---------------------------------------------------------------------------------------
 */
 
-const Aabb Aabb::Invalid   = Aabb(MAX_FLOAT, MAX_FLOAT, MAX_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);
-const Aabb Aabb::Infinite  = Aabb(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT, MAX_FLOAT, MAX_FLOAT, MAX_FLOAT);
+const Aabb Aabb::Invalid   = Aabb(FLT_MAX, FLT_MAX, FLT_MAX, FLT_MIN, FLT_MIN, FLT_MIN);
+const Aabb Aabb::Infinite  = Aabb(FLT_MIN, FLT_MIN, FLT_MIN, FLT_MAX, FLT_MAX, FLT_MAX);
 const Aabb Aabb::Zero      = Aabb(0, 0, 0, 0, 0, 0);
 const Aabb Aabb::Identiy   = Aabb(-0.5f, -0.5f, -0.5f, 0.5f, 0.5f, 0.5f);
 

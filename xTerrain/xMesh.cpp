@@ -225,18 +225,41 @@ xMeshFactoryListener gListener;
 void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
 {
 	Point2f pt = *(Point2f*)param0;
-	TString128 meshFile = (const char *)param1;
-	TString128 base, path;
+	TString128 ActorFile = (const char *)param1;
 
-	meshFile.Lower();
-	meshFile.SplitFileNameR(base, path); 
+	ActorFile.Lower();
+	ActorFile.Replace('/', '\\');
 
 	TString128 externName;
 
-	externName = File::GetExternName(base);
+	externName = File::GetExternName(ActorFile);
 
 	if (externName != "mesh")
 		return ;
+
+	const char * testFile = ActorFile.c_str();
+	int length = ActorFile.Length();
+
+	bool exist = false;
+
+	while (length > 0)
+	{
+		if (testFile[length - 1] == '\\')
+		{
+			const char * tfile = testFile + length;
+			exist = ResourceManager::Instance()->Exist(tfile);
+
+			if (exist)
+				break;
+		}
+
+		--length;
+	}
+
+	if (!exist)
+		return ;
+
+	testFile += length;
 
 	xMesh * obj = (xMesh *)xObjManager::Instance()->Create("Mesh");
 
@@ -245,7 +268,7 @@ void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
 	Vec3 pos = xApp::Instance()->GetHitPosition(pt.x, pt.y);
 
 	obj->SetPosition(pos);
-	obj->SetMeshFile(base);
+	obj->SetMeshFile(testFile);
 
 	xApp::Instance()->SetSelectedObj(obj);
 }

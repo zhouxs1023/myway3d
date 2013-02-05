@@ -47,23 +47,6 @@ namespace Myway
 
 #endif
     
-
-#ifndef MAX_FLOAT
-#define MAX_FLOAT           1.7e38f
-#endif
-
-#ifndef MIN_FLOAT
-#define MIN_FLOAT           -3.4e38f
-#endif
-
-#ifndef MAX_DOUBLE
-#define MAX_DOUBLE          1.7E308
-#endif
-
-#ifndef MIN_DOUBLE
-#define MIN_DOUBLE          -1.7E308
-#endif
-
 #define DEFAULT_INCREASE_SIZE 10
 
 //command script
@@ -100,8 +83,6 @@ namespace Myway
 #define MEMORY_ALIGN_32		32
 
 #define MW_ALIGN_ENUM(enumerate) __force_dword_##enumerate = 0x7FFFFFFF
-
-#define _private
 
 typedef __int64 int64;
 typedef unsigned __int64 uint64;

@@ -13,7 +13,7 @@ Bone::Bone(const TString128 & sName, short handle)
   mPos(Vec3::Zero),
   mOrientation(Quat::Identity),
   mScale(Vec3::Unit),
-  mAABB(MAX_FLOAT, MAX_FLOAT, MAX_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT),
+  mAABB(Aabb::Zero),
   mSphere(0, 0, 0, 0),
   mNeedUpdate(TRUE),
   mParent(NULL),
@@ -430,7 +430,7 @@ short Bone::GetHandle()
 //: mPos(Vec3::Zero),
 //  mOrientation(Quat::Identity),
 //  mScale(Vec3::Unit),
-//  mAABB(MAX_FLOAT, MAX_FLOAT, MAX_FLOAT, MIN_FLOAT, MIN_FLOAT, MIN_FLOAT),
+//  mAABB(FLT_MAX, FLT_MAX, FLT_MAX, FLT_MIN, FLT_MIN, FLT_MIN),
 //  mSphere(0, 0, 0, 0),
 //  mNeedUpdate(TRUE),
 //  mParent(NULL)

@@ -4,6 +4,7 @@
 #include "MWMaterial.h"
 #include "MWSkeleton.h"
 #include "MWResource.h"
+#include "MWColMesh.h"
 
 namespace Myway
 {

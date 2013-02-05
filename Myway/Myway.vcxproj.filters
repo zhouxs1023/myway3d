@@ -603,6 +603,9 @@
     <ClInclude Include="RenderSystem\MWBillboard.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSystem\MWColMesh.h">
+      <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -1185,6 +1188,9 @@
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWBillboard.cpp">
+      <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWColMesh.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClCompile>
   </ItemGroup>
