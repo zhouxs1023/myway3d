@@ -95,8 +95,36 @@ float xTree::GetScale()
 	return Scale;
 }
 
-void xTree::Serialize(xSerializer & serializer)
+void xTree::Serialize(xSerializer & Serializer)
 {
+	xObj::Serialize(Serializer);
+
+	int version = 0;
+
+	if (Serializer.IsSave())
+	{
+		Serializer << version;
+		Serializer << TreeFile;
+		Serializer << Position;
+		Serializer << Orientation;
+		Serializer << Scale;
+	}
+	else
+	{
+		Serializer >> version;
+		if (version == 0)
+		{
+			Serializer >> TreeFile;
+			Serializer >> Position;
+			Serializer >> Orientation;
+			Serializer >> Scale;
+		}
+
+		SetPosition(Position);
+		SetOrientation(Orientation);
+		SetScale(Scale);
+		SetTreeFile(TreeFile);
+	}
 }
 
 Aabb xTree::GetBound()
