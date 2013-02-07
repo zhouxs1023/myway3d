@@ -1,0 +1,26 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RT_StaticLib", "RT_StaticLib\RT_StaticLib.vcxproj", "{B8DF9432-69DA-5C60-9B79-25E3F86D76FD}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectX9", "Sample DirectX9\DirectX9.vcxproj", "{553BE1F3-45E5-C11F-0511-FD283604A09B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B8DF9432-69DA-5C60-9B79-25E3F86D76FD}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B8DF9432-69DA-5C60-9B79-25E3F86D76FD}.Release|Win32.ActiveCfg = Release|Win32
+		{553BE1F3-45E5-C11F-0511-FD283604A09B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{553BE1F3-45E5-C11F-0511-FD283604A09B}.Debug|Win32.Build.0 = Debug|Win32
+		{553BE1F3-45E5-C11F-0511-FD283604A09B}.Release|Win32.ActiveCfg = Release|Win32
+		{553BE1F3-45E5-C11F-0511-FD283604A09B}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(DPCodeReviewSolutionGUID) = preSolution
+		DPCodeReviewSolutionGUID = {00000000-0000-0000-0000-000000000000}
+	EndGlobalSection
+EndGlobal
