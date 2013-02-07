@@ -81,6 +81,7 @@ namespace Myway {
 		void _OnVegRemoved(MVegetation * veg);
 
 		void _drawBranch();
+		void _drawFrond();
 		void _drawLeaf();
 
 		void _setupWindMatrix(float accTime);
@@ -102,12 +103,12 @@ namespace Myway {
 		Technique * mTech_VegX2;
 
 		// Tree
-		MTreePtr mDefaultTree;
 		Array<MTree *> mTrees;
 		Array<MTreeInstance *> mTreeInstances;
 		Array<MTreeInstance *> mVisbleTreeInstances;
 
 		Technique * mTech_Branch;
+		Technique * mTech_Frond;
 		Technique * mTech_Leaf;
 
 		// wind

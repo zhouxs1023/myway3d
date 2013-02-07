@@ -423,6 +423,12 @@ unsigned short** CIndexedGeometry::GetStripsPointer(unsigned short nLodLevel) co
 {
     st_assert(nLodLevel < m_nNumLodLevels);
 
+	if (m_vStrips.size() == 0)
+		return NULL;
+
+	if (m_vStrips[nLodLevel].size() == 0)
+		return NULL;
+
     return const_cast<unsigned short**>(&(m_vStrips[nLodLevel][0]));
 }
 

@@ -52,8 +52,6 @@ namespace Myway {
 
 				Power = pMaterialArray[12];
 			}
-
-
 		};
 
 		struct BranchVertex
@@ -66,6 +64,15 @@ namespace Myway {
 			float WindWeight;			
 		};
 
+		struct FrondVertex
+		{
+			Vec3 Position;
+			Vec3 Normal;
+			float TexCoords[2];
+			float WindIndex;
+			float WindWeight;
+		};
+
 		struct LeafVertex
 		{
 			Vec3 Position;
@@ -73,8 +80,8 @@ namespace Myway {
 			float TexCoords[2];
 			float WindIndex;
 			float WindWeight;
-			float Width;
-			float Height;
+			float PlacementIndex;
+			float ScalarValue;
 		};
 
 
@@ -94,21 +101,23 @@ namespace Myway {
 
 		Material * _getBranchMaterial() { return &mBranchMaterial; }
 		Material * _getFrondMaterial()  { return &mFrondMaterial; }
-		Material * _getLeafMaterial(int i)  { d_assert (i < 2); return &mLeafMaterial[i]; }
+		Material * _getLeafMaterial()  { return &mLeafMaterial; }
 
 		RenderOp * _getBranchRenderOp(int lod);
-		RenderOp * _getLeafRenderOp0(int lod);
-		RenderOp * _getLeafRenderOp1(int lod);
+		RenderOp * _getFrondRenderOp(int lod);
+		RenderOp * _getLeafRenderOp(int lod);
 
 		CSpeedTreeRT * _getSpeedTree() { return mSpeedTree; }
+
+		void SetupLeafBillboard(ShaderParam * param);
 
 	protected:
 		void _setupGeometry();
 		void _setupTexture();
 
 		void _setupBranchGeometry();
-		void _setupLeafGeometry0();
-		void _setupLeafGeometry1();
+		void _setupFrondGeometry();
+		void _setupLeafGeometry();
 
 	protected:
 		CSpeedTreeRT * mSpeedTree;
@@ -118,16 +127,17 @@ namespace Myway {
 		float mBoundingBox[6];
 
 		Material mBranchMaterial;
-		Material mLeafMaterial[MTreeGlobal::K_MaxLeafPerTree];
+		Material mLeafMaterial;
 		Material mFrondMaterial;
 
 		int mNumBranchLods;
-		unsigned short * mBranchIndexCounts;
+		unsigned short mBranchIndexCounts[MTreeGlobal::K_MaxLods];
 		RenderOp * mRenderOp_Branch;
 
+		RenderOp * mRenderOp_Frond;
+
 		int mNumLeafLods;
-		RenderOp * mRenderOp_Leaf0;
-		RenderOp * mRenderOp_Leaf1;
+		RenderOp * mRenderOp_Leaf;
 
 	};
 

@@ -96,14 +96,14 @@ public:
 
         // tables
         const unsigned long*    GetVertexColors(void) const                         { if (m_vColors.size() == 0) return NULL; return &(m_vColors[0]); }
-        const float*            GetVertexCoords(void) const                         { return &(m_vCoords[0]); }
-        const float*            GetVertexNormals(void) const                        { return &(m_vNormals[0]); }
-        const float*            GetVertexBinormals(void) const                      { return &(m_vBinormals[0]); }
-        const float*            GetVertexTangents(void) const                       { return &(m_vTangents[0]); }
-        const float*            GetVertexTexCoords0(void) const                     { return &(m_vTexCoords0[0]); }
-        const float*            GetVertexTexCoords1(void) const                     { return &(m_vTexCoords1[0]); }
-        const float*            GetVertexWindWeights(void) const                    { return &(m_vWindWeights[0]); }
-        const unsigned char*    GetVertexWindMatrixIndices(void) const              { return &(m_vWindMatrixIndices[0]); }
+        const float*            GetVertexCoords(void) const                         { if (m_vCoords.size() == 0) return NULL; return &(m_vCoords[0]); }
+        const float*            GetVertexNormals(void) const                        { if (m_vNormals.size() == 0) return NULL; return &(m_vNormals[0]); }
+        const float*            GetVertexBinormals(void) const                      { if (m_vBinormals.size() == 0) return NULL; return &(m_vBinormals[0]); }
+        const float*            GetVertexTangents(void) const                       { if (m_vTangents.size() == 0) return NULL; return &(m_vTangents[0]); }
+        const float*            GetVertexTexCoords0(void) const                     { if (m_vTexCoords0.size() == 0) return NULL; return &(m_vTexCoords0[0]); }
+        const float*            GetVertexTexCoords1(void) const                     { if (m_vTexCoords1.size() == 0) return NULL; return &(m_vTexCoords1[0]); }
+        const float*            GetVertexWindWeights(void) const                    { if (m_vWindWeights.size() == 0) return NULL; return &(m_vWindWeights[0]); }
+        const unsigned char*    GetVertexWindMatrixIndices(void) const              { if (m_vWindMatrixIndices.size() == 0) return NULL; return &(m_vWindMatrixIndices[0]); }
 
         // vertex utility functions
         unsigned int            GetTriangleCount(unsigned short nLodLevel) const;
@@ -179,5 +179,12 @@ inline unsigned short CIndexedGeometry::GetNumStrips(short sLodLevel) const
 inline const unsigned short* CIndexedGeometry::GetStripLengthsPointer(unsigned short nLodLevel) const
 {
     st_assert(nLodLevel < m_nNumLodLevels);
+
+	if (m_vStripLengths.size() == 0)
+		return NULL;
+
+	if (m_vStripLengths[nLodLevel].size() == 0)
+		return NULL;
+
     return &(m_vStripLengths[nLodLevel][0]);
 }

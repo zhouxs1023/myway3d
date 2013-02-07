@@ -2,6 +2,7 @@
 
 #include "MOpcodeEntry.h"
 #include "MWMath.h"
+#include "MWColMesh.h"
 
 namespace Opcode {
 	class Model;

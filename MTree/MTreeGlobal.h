@@ -9,7 +9,7 @@ namespace Myway {
 
 			K_NumWindMatrix = 4,
 			K_NumLeafAngles = 8,
-			K_MaxLeafPerTree = 4,
+			K_MaxLods = 4,
 		};
 	};
 

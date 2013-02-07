@@ -12,7 +12,11 @@ namespace Myway {
 	{
 		mSourceName = source;
 
+		mNumBranchLods = 0;
 		mRenderOp_Branch = NULL;
+		mRenderOp_Frond = NULL;
+		mRenderOp_Leaf = NULL;
+
 		mSpeedTree = new CSpeedTreeRT();
 
 		mTextureInfo = NULL;
@@ -23,11 +27,7 @@ namespace Myway {
 
 	MTree::~MTree()
 	{
-		safe_delete (mSpeedTree);
-		safe_delete (mRenderOp_Branch);
-
-		safe_delete (mRenderOp_Leaf0);
-		safe_delete (mRenderOp_Leaf1);
+		Unload();
 	}
 
 	void MTree::DeleteSelf()
@@ -57,13 +57,21 @@ namespace Myway {
 		if (mLoadState == Resource::LOADED)
 			Unload();
 
-		ResourceManager::Instance()->GetResourceLoader()->ForceLoad(this);
+		Load();
 	}
 
 	void MTree::Unload()
 	{
 		if (!CanLoad())
 			return ;
+
+		safe_delete (mGeometryCache);
+		safe_delete (mTextureInfo);
+
+		safe_delete (mSpeedTree);
+		safe_delete (mRenderOp_Branch);
+		safe_delete (mRenderOp_Frond);
+		safe_delete (mRenderOp_Leaf);
 	}
 
 	void MTree::LoadImp(DataStreamPtr stream)
@@ -72,6 +80,8 @@ namespace Myway {
 
 		if (mSpeedTree->LoadTree((const unsigned char *)stream->GetData(), stream->Size()))
 		{
+			mSpeedTree->SetTextureFlip(true);
+
 			mSpeedTree->SetBranchLightingMethod(CSpeedTreeRT::LIGHT_DYNAMIC);
 			mSpeedTree->SetLeafLightingMethod(CSpeedTreeRT::LIGHT_DYNAMIC);
 			mSpeedTree->SetFrondLightingMethod(CSpeedTreeRT::LIGHT_DYNAMIC);
@@ -82,9 +92,7 @@ namespace Myway {
 
 			mSpeedTree->SetNumWindMatrices(MTreeGlobal::K_NumWindMatrix);
 
-			//mSpeedTree->SetLeafRockingState(false);
-			mSpeedTree->SetNumLeafRockingGroups(2);
-			CSpeedTreeRT::SetDropToBillboard(true);
+			mSpeedTree->SetNumLeafRockingGroups(1);
 
 			if (mSpeedTree->Compute(NULL))
 			{
@@ -92,22 +100,17 @@ namespace Myway {
 
 				mSpeedTree->GetBoundingBox(mBoundingBox);
 
+				CSpeedTreeRT::SetDropToBillboard(true);
+
 				mBranchMaterial.Set(mSpeedTree->GetBranchMaterial( ));
 				mFrondMaterial.Set(mSpeedTree->GetFrondMaterial( ));
-
-				for (int i = 0; i < MTreeGlobal::K_MaxLeafPerTree; ++i)
-				{
-					mLeafMaterial[i].Set(mSpeedTree->GetLeafMaterial());
-				}
-
+				mLeafMaterial.Set(mSpeedTree->GetLeafMaterial());
+				
 				float fHeight = mBoundingBox[5] - mBoundingBox[2];
 				mSpeedTree->SetLodLimits(fHeight * c_fNearLodFactor, fHeight * c_fFarLodFactor);
 
-				_setupGeometry();
 				_setupTexture();
-
-				safe_delete (mTextureInfo);
-				safe_delete (mGeometryCache);
+				_setupGeometry();
 			}
 		}
 
@@ -123,8 +126,8 @@ namespace Myway {
 		mSpeedTree->GetGeometry(*mGeometryCache);
 
 		_setupBranchGeometry();
-		_setupLeafGeometry0();
-		_setupLeafGeometry1();
+		_setupLeafGeometry();
+		_setupFrondGeometry();
 	}
 
 	void MTree::_setupTexture()
@@ -139,13 +142,11 @@ namespace Myway {
 
 		mBranchMaterial.DiffuseMap = VideoBufferManager::Instance()->Load2DTexture(branchTex, branchTex);
 
-		// leaf texture
-		for (unsigned int i = 0; i < mTextureInfo->m_uiLeafTextureCount && i < MTreeGlobal::K_MaxLeafPerTree; ++i)
-		{
-			TString128 leafTex = sourceDir + "Texture\\" + File::RemoveExternName(File::GetBaseName(mTextureInfo->m_pLeafTextureFilenames[i])) + ".dds";
-			
-			mLeafMaterial[i].DiffuseMap = VideoBufferManager::Instance()->Load2DTexture(leafTex, leafTex);
-		}
+		TString128 compositeTex = sourceDir + "Texture\\" + File::RemoveExternName(File::GetBaseName(mTextureInfo->m_pCompositeFilename)) + ".dds";
+		
+		TexturePtr comTex = VideoBufferManager::Instance()->Load2DTexture(compositeTex, compositeTex);
+		mFrondMaterial.DiffuseMap = comTex;
+		mLeafMaterial.DiffuseMap = comTex;
 	}
 
 	void MTree::_setupBranchGeometry()
@@ -153,6 +154,9 @@ namespace Myway {
 		CSpeedTreeRT::SGeometry::SIndexed* pBranches = &(mGeometryCache->m_sBranches);
 
 		unsigned short iVertexCount = pBranches->m_usVertexCount;
+
+		if (iVertexCount == 0)
+			return ;
 
 		mRenderOp_Branch = new RenderOp();
 
@@ -183,9 +187,10 @@ namespace Myway {
 		}
 		vb->Unlock();
 
-
 		mNumBranchLods = mSpeedTree->GetNumBranchLodLevels();
-		mBranchIndexCounts = new unsigned short[mNumBranchLods];
+
+		if (mNumBranchLods > MTreeGlobal::K_MaxLods)
+			mNumBranchLods = MTreeGlobal::K_MaxLods;
 
 		mSpeedTree->GetGeometry(*mGeometryCache, SpeedTree_BranchGeometry, 0);
 
@@ -211,7 +216,10 @@ namespace Myway {
 		ixStream.SetCount(mBranchIndexCounts[0]);
 
 		mRenderOp_Branch->rState.cullMode = CULL_CW;
+		mRenderOp_Branch->rState.alphaTestRef = mGeometryCache->m_fBranchAlphaTestValue / 255.0f;
+		mRenderOp_Branch->rState.blendMode = BM_ALPHA_TEST;
 		//mRenderOp_Branch->rState.fillMode = FILL_FRAME;
+
 		mRenderOp_Branch->iPrimCount = mBranchIndexCounts[0] - 2;
 		mRenderOp_Branch->ePrimType = PRIM_TRIANGLESTRIP;
 
@@ -228,7 +236,70 @@ namespace Myway {
 		}
 	}
 
-	void MTree::_setupLeafGeometry0()
+	void  MTree::_setupFrondGeometry()
+	{
+		CSpeedTreeRT::SGeometry::SIndexed* pFronds = &(mGeometryCache->m_sFronds);
+
+		unsigned short iVertexCount = pFronds->m_usVertexCount;
+
+		if (iVertexCount == 0)
+			return ;
+
+		mRenderOp_Frond = new RenderOp();
+
+		VertexStream & vxStream = mRenderOp_Frond->vxStream;
+		IndexStream & ixStream = mRenderOp_Frond->ixStream;
+
+		VertexDeclarationPtr vdecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+		vdecl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
+		vdecl->AddElement(0, 12, DT_FLOAT3, DU_NORMAL, 0);
+		vdecl->AddElement(0, 24, DT_FLOAT4, DU_TEXCOORD, 0);
+		vdecl->Init();
+
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(FrondVertex) * iVertexCount);
+
+		FrondVertex * verts = (FrondVertex *)vb->Lock(0, 0, LOCK_NORMAL);
+		for (int i = 0; i < iVertexCount; ++i)
+		{
+			memcpy(&verts[i].Position, &pFronds->m_pCoords[i * 3], sizeof(Vec3));
+			memcpy(&verts[i].Normal, &pFronds->m_pNormals[i * 3], sizeof(Vec3));
+
+			verts[i].TexCoords[0] = pFronds->m_pTexCoords0[i * 2];
+			verts[i].TexCoords[1] = pFronds->m_pTexCoords0[i * 2 + 1];
+
+			verts[i].WindIndex = 4.0f * pFronds->m_pWindMatrixIndices[i];
+			verts[i].WindWeight = (float)pFronds->m_pWindWeights[i];
+		}
+		vb->Unlock();
+
+		int iIndexCount = pFronds->m_pStripLengths[0];
+
+		IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(sizeof(short) * iIndexCount);
+
+		short * idx = (short *)ib->Lock(0, 0, LOCK_NORMAL);
+		{
+			memcpy(idx, pFronds->m_pStrips[0], iIndexCount * sizeof(unsigned short));
+		}
+
+		ib->Unlock();
+
+		vxStream.SetDeclaration(vdecl);
+		vxStream.Bind(0, vb, sizeof(FrondVertex));
+		vxStream.SetCount(iVertexCount);
+
+		ixStream.Bind(ib, 0);
+		ixStream.SetCount(iIndexCount);
+
+		mRenderOp_Frond->rState.cullMode = CULL_NONE;
+		mRenderOp_Frond->rState.alphaTestRef = mGeometryCache->m_fFrondAlphaTestValue / 255.0f;
+		mRenderOp_Frond->rState.blendMode = BM_ALPHA_TEST;
+		//mRenderOp_Frond->rState.fillMode = FILL_FRAME;
+
+		mRenderOp_Frond->iPrimCount = iIndexCount - 2;
+		mRenderOp_Frond->ePrimType = PRIM_TRIANGLESTRIP;
+	}
+
+	void MTree::_setupLeafGeometry()
 	{
 		const int c_nVertexShader_LeafTables = 4;
 
@@ -264,33 +335,15 @@ namespace Myway {
 				{
 					memcpy(&vert[v].Position, &leaf->m_pCenterCoords[i * 3], sizeof(Vec3));
 					memcpy(&vert[v].Normal, &leaf->m_pNormals[i * 3], sizeof(Vec3));
-					//memcpy(&vert->TexCoords, &leaf->m_pLeafMapTexCoords[i][vIndices[v] * 2], 2 * sizeof(float));
-					vert[v].TexCoords[0] = vTexcoord[vIndices[v]].x;
-					vert[v].TexCoords[1] = vTexcoord[vIndices[v]].y;
+					memcpy(&vert[v].TexCoords, &leaf->m_pLeafMapTexCoords[i][vIndices[v] * 2], 2 * sizeof(float));
+					/*vert[v].TexCoords[0] = vTexcoord[vIndices[v]].x;
+					vert[v].TexCoords[1] = vTexcoord[vIndices[v]].y;*/
 
 					vert[v].WindIndex = 4.0f * leaf->m_pWindMatrixIndices[i];
 					vert[v].WindWeight = leaf->m_pWindWeights[i];
 
-					int PlacementIndex = c_nVertexShader_LeafTables + leaf->m_pLeafClusterIndices[i] * 4 + vIndices[v];
-					float ScalarValue = mSpeedTree->GetLeafLodSizeAdjustments()[lod];
-
-					float w = table[PlacementIndex].x * ScalarValue;
-					float h = table[PlacementIndex].y * ScalarValue;
-
-					vMin.x = Math::Minimum(vMin.x, w);
-					vMin.y = Math::Minimum(vMin.x, h);
-					vMax.x = Math::Maximum(vMax.x, w);
-					vMax.y = Math::Maximum(vMax.y, h);
-				}
-
-				Vec2 vHalfSize = (vMax - vMin);
-
-				d_assert (vHalfSize.x > 0.1f && vHalfSize.y > 0.1f);
-
-				for (int v = 0; v < 6; ++v)
-				{
-					vert[v].Width = vHalfSize.x;
-					vert[v].Height = vHalfSize.y;
+					vert[v].PlacementIndex = float(c_nVertexShader_LeafTables + leaf->m_pLeafClusterIndices[i] * 4 + vIndices[v]);
+					vert[v].ScalarValue = mSpeedTree->GetLeafLodSizeAdjustments()[lod];
 				}
 
 				vert += 6;
@@ -298,10 +351,10 @@ namespace Myway {
 			vb->Unlock();
 		}
 
-		mRenderOp_Leaf0 = new RenderOp();
+		mRenderOp_Leaf = new RenderOp();
 
-		VertexStream & vxStream = mRenderOp_Leaf0->vxStream;
-		IndexStream & ixStream = mRenderOp_Leaf0->ixStream;
+		VertexStream & vxStream = mRenderOp_Leaf->vxStream;
+		IndexStream & ixStream = mRenderOp_Leaf->ixStream;
 
 		VertexDeclarationPtr vdecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
 		vdecl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
@@ -314,104 +367,12 @@ namespace Myway {
 		vxStream.Bind(0, vb, sizeof(LeafVertex));
 		vxStream.SetCount(vb->GetSize() / sizeof(LeafVertex));
 
-		mRenderOp_Leaf0->rState.cullMode = CULL_NONE;
-		mRenderOp_Leaf0->rState.alphaTestRef = 0.1f;
-		mRenderOp_Leaf0->rState.blendMode = BM_ALPHA_TEST;
+		mRenderOp_Leaf->rState.cullMode = CULL_NONE;
+		mRenderOp_Leaf->rState.alphaTestRef = mGeometryCache->m_sLeaves0.m_fAlphaTestValue / 255.0f;
+		mRenderOp_Leaf->rState.blendMode = BM_ALPHA_TEST;
 		//mRenderOp_Leaf->rState.fillMode = FILL_FRAME;
-		mRenderOp_Leaf0->iPrimCount = vxStream.GetCount() / 3;
-		mRenderOp_Leaf0->ePrimType = PRIM_TRIANGLELIST;
-	}
-
-	void MTree::_setupLeafGeometry1()
-	{
-		const int c_nVertexShader_LeafTables = 4;
-
-		const short vIndices[6] = { 0, 1, 2, 0, 2, 3 };
-		mNumLeafLods = mSpeedTree->GetNumLeafLodLevels();
-
-		const Vec2 vTexcoord[4] = { Vec2(0, 0), Vec2(1, 0), Vec2(1, 1), Vec2(0, 1) };
-
-		unsigned short leafCount = mGeometryCache->m_sLeaves1.m_usLeafCount;
-
-		if (leafCount < 1)
-			return ;
-
-		int iVertexCount = leafCount * 6;
-
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(LeafVertex) * iVertexCount);
-
-		for (int lod = 0; lod < 1/*mNumLeafLods*/; ++lod)
-		{
-			unsigned int count = 0;
-			const Vec4 * table = (const Vec4 *)mSpeedTree->GetLeafBillboardTable(count);
-
-			LeafVertex * vert = (LeafVertex *)vb->Lock(0, 0, LOCK_DISCARD);
-			for (int i = 0; i < leafCount; ++i)
-			{
-				const CSpeedTreeRT::SGeometry::SLeaf * leaf = &mGeometryCache->m_sLeaves1;
-
-				Vec2 vMin = Vec2::Zero, vMax = Vec2::Zero;
-
-				for (int v = 0; v < 6; ++v)
-				{
-					memcpy(&vert[v].Position, &leaf->m_pCenterCoords[i * 3], sizeof(Vec3));
-					memcpy(&vert[v].Normal, &leaf->m_pNormals[i * 3], sizeof(Vec3));
-					//memcpy(&vert->TexCoords, &leaf->m_pLeafMapTexCoords[i][vIndices[v] * 2], 2 * sizeof(float));
-					vert[v].TexCoords[0] = vTexcoord[vIndices[v]].x;
-					vert[v].TexCoords[1] = vTexcoord[vIndices[v]].y;
-
-					vert[v].WindIndex = 4.0f * leaf->m_pWindMatrixIndices[i];
-					vert[v].WindWeight = leaf->m_pWindWeights[i];
-
-					int PlacementIndex = c_nVertexShader_LeafTables + leaf->m_pLeafClusterIndices[i] * 4 + vIndices[v];
-					float ScalarValue = mSpeedTree->GetLeafLodSizeAdjustments()[lod];
-
-					float w = table[PlacementIndex].x * ScalarValue;
-					float h = table[PlacementIndex].y * ScalarValue;
-
-					vMin.x = Math::Minimum(vMin.x, w);
-					vMin.y = Math::Minimum(vMin.x, h);
-					vMax.x = Math::Maximum(vMax.x, w);
-					vMax.y = Math::Maximum(vMax.y, h);
-				}
-
-				Vec2 vHalfSize = (vMax - vMin) * 0.5f;
-
-				d_assert (vHalfSize.x > 0.1f && vHalfSize.y > 0.1f);
-
-				for (int v = 0; v < 6; ++v)
-				{
-					vert[v].Width = vHalfSize.x;
-					vert[v].Height = vHalfSize.y;
-				}
-
-				vert += 6;
-			}
-			vb->Unlock();
-		}
-
-		mRenderOp_Leaf1 = new RenderOp();
-
-		VertexStream & vxStream = mRenderOp_Leaf1->vxStream;
-		IndexStream & ixStream = mRenderOp_Leaf1->ixStream;
-
-		VertexDeclarationPtr vdecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-		vdecl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
-		vdecl->AddElement(0, 12, DT_FLOAT3, DU_NORMAL, 0);
-		vdecl->AddElement(0, 24, DT_FLOAT4, DU_TEXCOORD, 0);
-		vdecl->AddElement(0, 40, DT_FLOAT2, DU_TEXCOORD, 1);
-		vdecl->Init();
-
-		vxStream.SetDeclaration(vdecl);
-		vxStream.Bind(0, vb, sizeof(LeafVertex));
-		vxStream.SetCount(vb->GetSize() / sizeof(LeafVertex));
-
-		mRenderOp_Leaf1->rState.cullMode = CULL_NONE;
-		mRenderOp_Leaf1->rState.alphaTestRef = 0.1f;
-		mRenderOp_Leaf1->rState.blendMode = BM_ALPHA_TEST;
-		//mRenderOp_Leaf->rState.fillMode = FILL_FRAME;
-		mRenderOp_Leaf1->iPrimCount = vxStream.GetCount() / 3;
-		mRenderOp_Leaf1->ePrimType = PRIM_TRIANGLELIST;
+		mRenderOp_Leaf->iPrimCount = vxStream.GetCount() / 3;
+		mRenderOp_Leaf->ePrimType = PRIM_TRIANGLELIST;
 	}
 
 	RenderOp * MTree::_getBranchRenderOp(int lod)
@@ -427,20 +388,29 @@ namespace Myway {
 		return mRenderOp_Branch;
 	}
 
-	RenderOp * MTree::_getLeafRenderOp0(int lod)
+	RenderOp *  MTree::_getFrondRenderOp(int lod)
 	{
-		if (!mRenderOp_Leaf0)
-			return NULL;
+		if (lod == 0)
+			return mRenderOp_Frond;
 
-		return mRenderOp_Leaf0;
+		return NULL;
 	}
 
-	RenderOp * MTree::_getLeafRenderOp1(int lod)
+	RenderOp * MTree::_getLeafRenderOp(int lod)
 	{
-		if (!mRenderOp_Leaf1)
+		if (!mRenderOp_Leaf)
 			return NULL;
 
-		return mRenderOp_Leaf1;
+		return mRenderOp_Leaf;
 	}
 
+	void MTree::SetupLeafBillboard(ShaderParam * param)
+	{
+		mSpeedTree->GetGeometry(*mGeometryCache, SpeedTree_LeafGeometry, -1, -1, 0);
+
+		unsigned int uiEntryCount = 0;
+		const float * pTable = mSpeedTree->GetLeafBillboardTable(uiEntryCount);
+
+		param->SetVector((const Vec4 *)pTable, uiEntryCount / 4);
+	}
 }
