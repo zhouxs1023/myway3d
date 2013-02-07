@@ -21,9 +21,18 @@
       <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
     </Shader>
 
+    <Shader name = "FrondVS" language = "cg" profile = "vs30" source = "Frond.vs" >
+      <param name = "matView" type = "float4x4" btype = "matView" />
+      <param name = "matVP" type = "float4x4" btype = "matVP" />
+    </Shader>
+
+    <Shader name = "FrondPS" language = "cg" profile = "ps30" source = "Frond.ps" >
+      <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+    </Shader>
+
     <Shader name = "LeafVS" language = "cg" profile = "vs30" source = "Leaf.vs" >
       <param name = "matView" type = "float4x4" btype = "matView" />
-      <param name = "matProj" type = "float4x4" btype = "matProj" />
+      <param name = "matVP" type = "float4x4" btype = "matVP" />
     </Shader>
 
     <Shader name = "LeafPS" language = "cg" profile = "ps30" source = "Leaf.ps" >
@@ -38,6 +47,9 @@
     </Technique>
 
     <Technique name = "Branch" vs = "BranchVS" ps = "BranchPS">
+    </Technique>
+
+    <Technique name = "Frond" vs = "FrondVS" ps = "FrondPS">
     </Technique>
 
     <Technique name = "Leaf" vs = "LeafVS" ps = "LeafPS">
