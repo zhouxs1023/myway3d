@@ -47,6 +47,10 @@ namespace Myway {
 
 		d_assert (mTech_Branch && mTech_Frond && mTech_Leaf);
 
+		mTech_BranchDepth = mShaderLib->GetTechnique("BranchDepth");
+		mTech_FrondDepth = mTech_BranchDepth;
+		mTech_LeafDepth = mShaderLib->GetTechnique("LeafDepth");
+
 		CSpeedTreeRT::SetNumWindMatrices(MTreeGlobal::K_NumWindMatrix);
 	}
 
@@ -493,9 +497,59 @@ namespace Myway {
 		_drawBillboardVeg();
 		_drawX2Veg();
 
+		if (mVisbleTreeInstances.Size() == 0)
+			return ;
+
 		_drawBranch();
 		_drawFrond();
 		_drawLeaf();
+	}
+
+	void MForest::_renderDepthForShadow(int layer)
+	{
+		const Shadow::CascadedMatrixs & forms = Environment::Instance()->GetShadow()->GetCascadedMatrix(layer);
+
+		Camera * cam = World::Instance()->MainCamera();
+		const Mat4 & matVP = forms.mViewProj;
+		const Mat4 & matView = forms.mView;
+		
+		float afPosition[3];
+		afPosition[0] = -forms.mView._41;
+		afPosition[1] = -forms.mView._42;
+		afPosition[2] = -forms.mView._43;
+
+		/*afPosition[0] = cam->GetPosition().x;
+		afPosition[1] = cam->GetPosition().y;
+		afPosition[2] = cam->GetPosition().z;*/
+
+		float afDirection[3];
+		afDirection[0] = matVP.m[0][2];
+		afDirection[1] = matVP.m[1][2];
+		afDirection[2] = matVP.m[2][2];
+
+		CSpeedTreeRT::SetCamera(afPosition, afDirection);
+
+		if (mVisbleTreeInstances.Size() == 0)
+			return ;
+
+		mVisbleMask.Resize(mVisbleTreeInstances.Size());
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			const Aabb & bound = mVisbleTreeInstances[i]->GetWorldAabb();
+
+			mVisbleMask[i] = Shadow::IsVisible(bound, matVP);
+		}
+
+		ShaderParam * uMatViewProj_B = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("matVP");
+		ShaderParam * uMatViewProj_L = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("matVP");
+
+		uMatViewProj_B->SetMatrix(matVP);
+		uMatViewProj_L->SetMatrix(matVP);
+
+		_drawBranchDepth();
+		_drawFrondDepth();
+		_drawLeafDepth();
 	}
 
 	void MForest::_drawMeshVeg()
@@ -652,9 +706,6 @@ namespace Myway {
 
 	void MForest::_drawBranch()
 	{
-		if (mVisbleTreeInstances.Size() == 0)
-			return ;
-
 		RenderSystem::Instance()->_BeginEvent("Draw Branch");
 
 		ShaderParam * uWindMatrixOffset = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
@@ -700,9 +751,6 @@ namespace Myway {
 
 	void MForest::_drawFrond()
 	{
-		if (mVisbleTreeInstances.Size() == 0)
-			return ;
-
 		RenderSystem::Instance()->_BeginEvent("Draw Frond");
 
 		ShaderParam * uWindMatrixOffset = mTech_Frond->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
@@ -748,9 +796,6 @@ namespace Myway {
 
 	void MForest::_drawLeaf()
 	{
-		if (mVisbleTreeInstances.Size() == 0)
-			return ;
-
 		RenderSystem::Instance()->_BeginEvent("Draw Leaf");
 
 		ShaderParam * uWindMatrixOffset = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
@@ -801,6 +846,156 @@ namespace Myway {
 		RenderSystem::Instance()->_EndEvent();
 	}
 
+	void MForest::_drawBranchDepth()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Branch Depth");
+
+		ShaderParam * uWindMatrixOffset = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+		ShaderParam * uTranslateScale = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+
+		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			if (!mVisbleMask[i])
+				continue;
+
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
+
+			if (tree)
+			{
+				MTree::Material * mtl = tree->_getBranchMaterial();
+				RenderOp * rop = tree->_getBranchRenderOp(0);
+
+				if (rop)
+				{
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_BranchDepth, rop);
+				}
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
+
+	void MForest::_drawFrondDepth()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Frond Depth");
+
+		ShaderParam * uWindMatrixOffset = mTech_FrondDepth->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_FrondDepth->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+		ShaderParam * uTranslateScale = mTech_FrondDepth->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_FrondDepth->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+
+		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			if (!mVisbleMask[i])
+				continue;
+
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
+
+			if (tree)
+			{
+				MTree::Material * mtl = tree->_getFrondMaterial();
+				RenderOp * rop = tree->_getFrondRenderOp(0);
+
+				if (rop != NULL)
+				{
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_FrondDepth, rop);
+				}
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
+
+	void MForest::_drawLeafDepth()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Leaf Depth");
+
+		ShaderParam * uWindMatrixOffset = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+
+		ShaderParam * uTranslateScale = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+
+		ShaderParam * uBillboardTable = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("gBillboardTable");
+
+		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			if (!mVisbleMask[i])
+				continue;
+
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
+
+			if (tree)
+			{
+				RenderOp * rop = tree->_getLeafRenderOp(0);
+
+				if (rop)
+				{
+					MTree::Material * mtl = tree->_getLeafMaterial();
+
+					tree->SetupLeafBillboard(uBillboardTable);
+
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_LeafDepth, rop);
+				}
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
+
 
 
 
@@ -818,6 +1013,7 @@ namespace Myway {
 		, OnUpdate(&RenderEvent::OnPostUpdateScene, this, &MForestListener::_update)
 		, OnRender(&RenderEvent::OnAfterRenderSolid, this, &MForestListener::_render)
 		, OnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &MForestListener::_preVisibleCull)
+		, OnRenderDepth(&Shadow::OnRenderDepth, this, &MForestListener::_renderDepth)
 	{
 	}
 
@@ -848,6 +1044,12 @@ namespace Myway {
 	void MForestListener::_preVisibleCull(void * param0, void * param1)
 	{
 		mForest->_preVisibleCull();
+	}
+
+	void MForestListener::_renderDepth(void * param0, void * param1)
+	{
+		int layer = *(int *)param1;
+		mForest->_renderDepthForShadow(layer);
 	}
 }
 

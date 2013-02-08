@@ -298,7 +298,7 @@ namespace Myway {
 
         p.SunDir = _makeSunDir(lightYaw, lightPicth, sunRoll);
         p.MoonDir = _makeMoonDir(lightYaw, lightPicth, moonRoll);
-		p.LightDir = _makeSunDir(lightYaw, lightPicth, lightRoll);
+		p.LightDir = _makeLightDir(p.SunDir, p.MoonDir);
 
         p.SunColor = Math::Lerp(kf0.SunColor, kf1.SunColor, d);
         p.SunLum = Math::Lerp(kf0.SunLum, kf1.SunLum, d);
@@ -407,4 +407,37 @@ namespace Myway {
 
         return dir * matR;
     }
+
+	Vec3 Environment::_makeLightDir(const Vec3 & sunDir, const Vec3 & moonDir)
+	{
+		Vec3 dir;
+
+		if (sunDir.y <= 0 )
+			dir = sunDir;
+
+		if (moonDir.y <= 0)
+			dir = moonDir;
+
+		d_assert(fabs(dir.y) < 1.0f && "not support!");
+
+		Vec3 xzDir = Vec3(-dir.x, 0, -dir.z);
+
+		xzDir.NormalizeL();
+
+		if ( xzDir.Dot(-dir) > Math::Cos(Math::PI_1_3) )
+		{
+			Vec3 right = Vec3::UnitY.CrossN(dir);
+
+			Quat q;
+
+			q.FromAxis(right, Math::PI_1_3);
+
+			xzDir = q.Rotate(xzDir);
+
+			dir = -xzDir;
+		}
+
+		return dir;
+	}
+
 }

@@ -76,6 +76,13 @@ namespace Myway {
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
 
+		// sun lighting
+		if (Environment::Instance()->GetShadow())
+			Environment::Instance()->GetShadow()->Do(mTex_Depth.c_ptr());
+
+		if (Environment::Instance()->GetSun())
+			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Material.c_ptr(), mTex_Normal.c_ptr(), mTex_Depth.c_ptr());
+
 		// ---> lighting
 		_doLighting();
 
@@ -288,13 +295,6 @@ namespace Myway {
 
 	void RenderLoop::_doLighting()
 	{
-		// sun lighting
-		if (Environment::Instance()->GetShadow())
-			Environment::Instance()->GetShadow()->Do(mTex_Depth.c_ptr());
-
-		if (Environment::Instance()->GetSun())
-			Environment::Instance()->GetSun()->Lighting(mTex_Color.c_ptr(), mTex_Material.c_ptr(), mTex_Normal.c_ptr(), mTex_Depth.c_ptr());
-
 		VisibleCullResult * cullResult = mScheme->GetCullResult();
 
 		List<Light *>::Iterator whr = cullResult->lights.Begin();

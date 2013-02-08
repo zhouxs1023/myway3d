@@ -195,7 +195,9 @@ namespace Myway {
 		matView.MakeViewLH(lightPos, qOrient);
 		matProj.MakeOrthoLH(width, height, nearClip, mOffset + depth);
 
-		mCascadedViewProjMatrix[layer] = matView * matProj;
+		mCascadedMatrix[layer].mView = matView;
+		mCascadedMatrix[layer].mProj = matProj;
+		mCascadedMatrix[layer].mViewProj = matView * matProj;
 	}
 
 	void Shadow::_updateCamera()
@@ -282,7 +284,14 @@ namespace Myway {
 		mRenderQueue.PushRenderer(mCullResult.nodes);
 	}
 
-	bool Shadow::_isVisible(const Aabb & bound, const Mat4 & matViewPorj)
+	const Shadow::CascadedMatrixs & Shadow::GetCascadedMatrix(int layer)
+	{
+		d_assert (layer < K_NumShadowLayers);
+		
+		return mCascadedMatrix[layer];
+	}
+
+	bool Shadow::IsVisible(const Aabb & bound, const Mat4 & matViewPorj)
 	{
 		Vec3 point[8];
 
@@ -326,7 +335,7 @@ namespace Myway {
 		{
 			Renderer * rd = objs[j];
 
-			if (!_isVisible(rd->GetWorldAabb(), mCascadedViewProjMatrix[layer]))
+			if (!IsVisible(rd->GetWorldAabb(), mCascadedMatrix[layer].mViewProj))
 				continue;
 
 			bool skined = (rd->GetBlendMatrix(NULL) > 0);
@@ -335,7 +344,7 @@ namespace Myway {
 
 			rd->GetWorldTransform(&form);
 
-			form *= mCascadedViewProjMatrix[layer];
+			form *= mCascadedMatrix[layer].mViewProj;
 
 			uMatWVP->SetMatrix(form);
 
@@ -388,7 +397,7 @@ namespace Myway {
 		uCornerDownDir->SetUnifom(cornerDownDir.x, cornerDownDir.y, cornerDownDir.z, 0);
 
 		uShadowInfo->SetUnifom(shadowInfo.x, shadowInfo.y, shadowInfo.z, 0);
-		uMatShadow->SetMatrix(matInverseView * mCascadedViewProjMatrix[layer]);
+		uMatShadow->SetMatrix(matInverseView * mCascadedMatrix[layer].mViewProj);
 			
 		SamplerState state;
 		state.Address = TEXA_CLAMP;

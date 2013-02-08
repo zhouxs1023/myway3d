@@ -58,6 +58,13 @@ namespace Myway {
 		static Event OnVisibleCull;
 		static Event OnRenderDepth;
 
+		struct CascadedMatrixs
+		{
+			Mat4 mView;
+			Mat4 mProj;
+			Mat4 mViewProj;
+		};
+
 	public:
 		Shadow();
 		~Shadow();
@@ -75,6 +82,10 @@ namespace Myway {
 
 		TexturePtr GetShadowMap() { return mTex_Shadow; }
 
+		const CascadedMatrixs & GetCascadedMatrix(int layer);
+
+		static bool IsVisible(const Aabb & bound, const Mat4 & matViewPorj);
+
 	protected:
 		void _initRT();
 
@@ -86,9 +97,6 @@ namespace Myway {
 		void _renderDepth(int layer);
 		void _genShadowMap(int layer, Texture * depthTex);
 
-		bool _isVisible(const Aabb & bound, const Mat4 & matViewPorj);
-
-
 	protected:
 		float mDist[K_NumShadowLayers];
 		float mBias[K_NumShadowLayers];
@@ -97,7 +105,7 @@ namespace Myway {
 		Camera * mLightCamera;
 		SceneNode * mLightCameraNode;
 		Mat4 mInverseWorldCameraVP;
-		Mat4 mCascadedViewProjMatrix[K_NumShadowLayers];
+		CascadedMatrixs mCascadedMatrix[K_NumShadowLayers];
 
 		RenderTargetPtr mRT_Depth;
 		DepthStencilPtr mDepthStencil;

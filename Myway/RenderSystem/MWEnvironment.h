@@ -92,6 +92,7 @@ namespace Myway {
 
         Vec3 _makeSunDir(float y, float p, float r);
         Vec3 _makeMoonDir(float y, float p, float r);
+		Vec3 _makeLightDir(const Vec3 & sunDir, const Vec3 & moonDir);
 
     protected:
         ShaderLib * mShaderLib;

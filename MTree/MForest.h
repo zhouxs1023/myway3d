@@ -62,7 +62,6 @@ namespace Myway {
 
 		void _AddVisibleTreeInstance(MTreeInstance * tree);
 
-
 		float GetWindStrength(void) const { return mWindStrength; }
 		void SetWindStrength(float fStrength);
 
@@ -72,6 +71,7 @@ namespace Myway {
 		void Shutdown();
 
 		void _render();
+		void _renderDepthForShadow(int layer);
 		void _preVisibleCull();
 
 		void _drawMeshVeg();
@@ -83,6 +83,10 @@ namespace Myway {
 		void _drawBranch();
 		void _drawFrond();
 		void _drawLeaf();
+
+		void _drawBranchDepth();
+		void _drawFrondDepth();
+		void _drawLeafDepth();
 
 		void _setupWindMatrix(float accTime);
 
@@ -106,10 +110,15 @@ namespace Myway {
 		Array<MTree *> mTrees;
 		Array<MTreeInstance *> mTreeInstances;
 		Array<MTreeInstance *> mVisbleTreeInstances;
+		Array<bool> mVisbleMask;
 
 		Technique * mTech_Branch;
 		Technique * mTech_Frond;
 		Technique * mTech_Leaf;
+
+		Technique * mTech_BranchDepth;
+		Technique * mTech_FrondDepth;
+		Technique * mTech_LeafDepth;
 
 		// wind
 		float mWindStrength;
@@ -126,7 +135,10 @@ namespace Myway {
 		void _init(void * param0, void * param1);
 		void _shutdown(void * param0, void * param1);
 		void _update(void * param0, void * param1);
+
 		void _render(void * param0, void * param1);
+		void _renderDepth(void * param0, void * param1);
+
 		void _preVisibleCull(void * param0, void * param1);
 
 	protected:
@@ -135,6 +147,7 @@ namespace Myway {
 		tEventListener<MForestListener> OnUpdate;
 		tEventListener<MForestListener> OnPreVisibleCull;
 		tEventListener<MForestListener> OnRender;
+		tEventListener<MForestListener> OnRenderDepth;
 
 		MForest * mForest;
 	};

@@ -37,12 +37,14 @@ float4 main(PS_IN In) : COLOR
 	float4 clr = tex2D(gTex_Color, In.uv0);
 	float4 clrSpec = tex2D(gTex_Specular, In.uv0);
 	float shadow = tex2D(gTex_Shadow, In.uv0).r;
+	float4 normal = tex2D(gTex_Normal, In.uv0);
 
-	float3 N = tex2D(gTex_Normal, In.uv0).rgb;
+	float3 N = normal.rgb;
 	float3 P = GetViewPosition(In);
 	float3 L = gLightDir;
 	float3 V = normalize(-P);
 	float3 H = normalize((V + L) / 2);
+	float mtlId = normal.a;
 	
 	float NdL = dot(N, L);
 	NdL = saturate(NdL);
@@ -52,6 +54,9 @@ float4 main(PS_IN In) : COLOR
 	NdH = NdL > 0 ? NdH : 0;
 
 	NdH = pow(NdH, clrSpec.w);
+
+	if (mtlId == 0)
+		shadow = 1;
 	
 	clr.rgb = clr.rgb * (gAmbient.rgb + NdL * gDiffuse.rgb * shadow) + clrSpec.rgb * gSpecular.rgb * NdH * shadow; 
 	clr.a = 1;

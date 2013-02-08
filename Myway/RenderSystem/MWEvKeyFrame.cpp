@@ -188,7 +188,7 @@ namespace Myway
         SkyVOffset = 0;
         SkyTexture = DEFAULT_SKY_TEXTURE;
 
-        SunPicth = 0;
+        SunPicth = 45;
         SunYaw = 0;
 
         MoonTexture = DEFAULT_MOON_TEXTURE;

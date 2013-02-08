@@ -38,6 +38,15 @@
     <Shader name = "LeafPS" language = "cg" profile = "ps30" source = "Leaf.ps" >
       <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
     </Shader>
+
+    <Shader name = "BranchDepthVS" language = "cg" profile = "vs30" source = "BranchDepth.vs" >
+    </Shader>
+
+    <Shader name = "LeafDepthVS" language = "cg" profile = "vs30" source = "LeafDepth.vs" >
+    </Shader>
+
+    <Shader name = "TreeDepthPS" language = "cg" profile = "ps30" source = "TreeDepth.ps" >
+    </Shader>
 	
 	</Shaders>
 
@@ -55,6 +64,13 @@
     <Technique name = "Leaf" vs = "LeafVS" ps = "LeafPS">
     </Technique>
 
-	</Techniques>
+    <Technique name = "BranchDepth" vs = "BranchDepthVS" ps = "TreeDepthPS">
+    </Technique>
+    
+    <Technique name = "LeafDepth" vs = "LeafDepthVS" ps = "TreeDepthPS">
+    </Technique>
+
+
+  </Techniques>
 
 </ShaderLib>
