@@ -8,17 +8,16 @@ namespace Myway {
 
     class ProjectedGrid
     {
-        struct Vertex
-        {
-            float x, y, z;
-            float nx, ny, nz;
-        };
+		struct Vertex {
+			Vec3 Position;
+			Vec3 Normal;
+		};
 
     public:
         struct Options
         {
            /// Projected grid complexity (N*N)
-			int Complexity;
+			int ComplexityU, ComplexityV;
 			/// Strength
 			float Strength;
 			/// Elevation 
@@ -35,7 +34,8 @@ namespace Myway {
 			/** Default constructor
 			 */
 			Options()
-				: Complexity(128)
+				: ComplexityU(64)
+				, ComplexityV(128)
 				, Strength(5.0f)
 				, Elevation(5.0f)
 				, Smooth(false)
@@ -69,13 +69,11 @@ namespace Myway {
         void _renderGeometry(const Mat4& m, const Vec3& WorldPos);
 
         void _calculeNormals();
-        void _performChoppyWaves();
 
     protected:
         Options mOptions;
 
 		Vertex *mVertices;
-		Vertex * mVerticesChoppyBuffer;
 
         Vec3 mPos, mNormal;
 		Vec4 t_corners0,t_corners1,t_corners2,t_corners3;

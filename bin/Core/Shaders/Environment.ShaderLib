@@ -183,9 +183,14 @@
     <Shader name = "ShadowDepthPS" language = "cg" profile = "ps30" source = "ShadowDepth.ps" >
     </Shader>
 
-    <Shader name = "ShadowPS" language = "cg" profile = "ps30" source = "Shadow.ps" >
+    <Shader name = "ShadowL0PS" language = "cg" profile = "ps30" source = "ShadowL0.ps" >
     </Shader>
 
+    <Shader name = "ShadowL1PS" language = "cg" profile = "ps30" source = "ShadowL1.ps" >
+    </Shader>
+
+    <Shader name = "ShadowL2PS" language = "cg" profile = "ps30" source = "ShadowL2.ps" >
+    </Shader>
 
   </Shaders>
 
@@ -306,7 +311,13 @@
       <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
     </Technique>
 
-    <Technique name = "Shadow" vs = "QuadVS" ps = "ShadowPS">
+    <Technique name = "ShadowL0" vs = "QuadVS" ps = "ShadowL0PS">
+    </Technique>
+
+    <Technique name = "ShadowL1" vs = "QuadVS" ps = "ShadowL1PS">
+    </Technique>
+
+    <Technique name = "ShadowL2" vs = "QuadVS" ps = "ShadowL2PS">
     </Technique>
 
 	</Techniques>

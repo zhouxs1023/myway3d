@@ -61,9 +61,6 @@
     <Filter Include="Myway\RenderSystem\Primitive">
       <UniqueIdentifier>{0804c624-be4d-45d8-af23-5bbd72168315}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\AudioSystem">
-      <UniqueIdentifier>{6c415a54-c836-424e-8dcb-94f2fa6c7c9e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Myway\AI">
       <UniqueIdentifier>{54c55b91-8cc5-4e37-9608-fe8eafe90ae5}</UniqueIdentifier>
     </Filter>
@@ -102,6 +99,9 @@
     </Filter>
     <Filter Include="Myway\RenderSystem\Environment\Effect">
       <UniqueIdentifier>{82586316-f423-4982-a9e8-635d5dc5552b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Myway\Core\AudioSystem">
+      <UniqueIdentifier>{6c415a54-c836-424e-8dcb-94f2fa6c7c9e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -538,13 +538,13 @@
       <Filter>Myway\RenderSystem\Primitive</Filter>
     </ClInclude>
     <ClInclude Include="AudioSystem\MWAudioSystem.h">
-      <Filter>Myway\AudioSystem</Filter>
+      <Filter>Myway\Core\AudioSystem</Filter>
     </ClInclude>
     <ClInclude Include="AudioSystem\MWMusic.h">
-      <Filter>Myway\AudioSystem</Filter>
+      <Filter>Myway\Core\AudioSystem</Filter>
     </ClInclude>
     <ClInclude Include="AudioSystem\MWSound.h">
-      <Filter>Myway\AudioSystem</Filter>
+      <Filter>Myway\Core\AudioSystem</Filter>
     </ClInclude>
     <ClInclude Include="AI\MWPath.h">
       <Filter>Myway\AI</Filter>
@@ -1136,13 +1136,13 @@
       <Filter>Myway\RenderSystem\Primitive</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystem\MWAudioSystem.cpp">
-      <Filter>Myway\AudioSystem</Filter>
+      <Filter>Myway\Core\AudioSystem</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystem\MWMusic.cpp">
-      <Filter>Myway\AudioSystem</Filter>
+      <Filter>Myway\Core\AudioSystem</Filter>
     </ClCompile>
     <ClCompile Include="AudioSystem\MWSound.cpp">
-      <Filter>Myway\AudioSystem</Filter>
+      <Filter>Myway\Core\AudioSystem</Filter>
     </ClCompile>
     <ClCompile Include="AI\MWPath.cpp">
       <Filter>Myway\AI</Filter>

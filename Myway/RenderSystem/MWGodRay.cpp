@@ -113,8 +113,8 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
-        mRenderTarget = video->CreateRenderTarget("Core_GodRay_RT", width, height, FMT_A16B16G16R16F, MSAA_NONE);
-        mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height, FMT_A16B16G16R16F);
+        mRenderTarget = video->CreateRenderTarget("Core_GodRay_RT", width, height, FMT_R16F, MSAA_NONE);
+        mTexture = video->CreateTextureRT("Core_GodRay_Texture", width, height, FMT_R16F);
     }
 
 	void GodRay::_occlusion()

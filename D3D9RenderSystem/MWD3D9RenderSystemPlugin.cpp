@@ -3,6 +3,8 @@
 
 namespace Myway
 {
+	D3D9RenderSystem * gD3D9RenderSystem = NULL;
+
     D3D9RenderSystemPlugin::D3D9RenderSystemPlugin()
         : Plugin("D3D9RenderSystem")
     {
@@ -14,15 +16,17 @@ namespace Myway
 
     void D3D9RenderSystemPlugin::Install()
     {
-        D3D9RenderSystem * render = new D3D9RenderSystem();
+		d_assert (gD3D9RenderSystem == NULL);
 
-        render->Init();
+		gD3D9RenderSystem = new D3D9RenderSystem();
 
-        Engine::Instance()->SetRenderSystem(render);
+        gD3D9RenderSystem->Init();
+
+        Engine::Instance()->SetRenderSystem(gD3D9RenderSystem);
     }
 
     void D3D9RenderSystemPlugin::Uninstall()
     {
+		safe_delete (gD3D9RenderSystem);
     }
-
 }

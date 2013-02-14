@@ -11,8 +11,12 @@ public:
 	void Render(void * param0, void * param1);
 
 protected:
+	void RenderColMesh();
+	
+protected:
 	Technique * mTech;
-	RenderOp * mRender;
+	RenderOp * mRenderAABB;
+	RenderOp * mRenderColMesh;
 
 	tEventListener<xObjBound> OnInit;
 	tEventListener<xObjBound> OnShutdown;

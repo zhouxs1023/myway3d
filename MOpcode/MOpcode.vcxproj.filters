@@ -3,9 +3,13 @@
   <ItemGroup>
     <ClInclude Include="MOpcodeScene.h" />
     <ClInclude Include="MOpcodeEntry.h" />
+    <ClInclude Include="MOpcodeNode.h" />
+    <ClInclude Include="MOpcodePlugin.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MOpcodeScene.cpp" />
+    <ClCompile Include="MOpcodeNode.cpp" />
+    <ClCompile Include="MOpcodePlugin.cpp" />
   </ItemGroup>
 </Project>

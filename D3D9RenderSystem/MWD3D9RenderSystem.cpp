@@ -180,6 +180,9 @@ void D3D9RenderSystem::BeginScene()
     mPrimitivCount = 0;
     mBatchCount = 0;
 
+	mVertexShader = NULL;
+	mPixelShader = NULL;
+
     hr = mD3DDevice->BeginScene();
 
     EXCEPTION_DEBUG(hr == D3D_OK, "Begin scene failed.");
@@ -476,6 +479,9 @@ void D3D9RenderSystem::SetVertexShader(ShaderProgram * pVertexShader)
 {
     assert (pVertexShader && ShaderProgram::IsVertexShader(pVertexShader->GetProfile()));
 
+	if (pVertexShader == mVertexShader)
+		return ;
+
     HRESULT hr = D3D_OK;
     D3D9VertexShader * shader = static_cast<D3D9VertexShader*>(pVertexShader);
     hr = mD3DDevice->SetVertexShader(shader->GetShader());
@@ -487,6 +493,9 @@ void D3D9RenderSystem::SetVertexShader(ShaderProgram * pVertexShader)
 void D3D9RenderSystem::SetPixelShader(ShaderProgram * pPixelShader)
 {
     assert (pPixelShader && ShaderProgram::IsPixelShader(pPixelShader->GetProfile()));
+
+	if (pPixelShader == mPixelShader)
+		return ;
 
     HRESULT hr = D3D_OK;
     D3D9PixelShader * shader = static_cast<D3D9PixelShader*>(pPixelShader);
@@ -569,13 +578,13 @@ void D3D9RenderSystem::SetTexture(int index, const SamplerState & state, Texture
 
         Vec4 size;
 
-        size.x = 1.0f;
-        size.y = 1.0f;
-        size.z = 1.0f;
-        size.w = 1.0f;
+		size.x = 1.0f;
+		size.y = 1.0f;
+		size.z = 1.0f;
+		size.w = 1.0f;
 
-        RenderRegister::Instance()->SetTextureSize(index, size);
-    }
+		RenderRegister::Instance()->SetTextureSize(index, size);
+	}
 }
 
 void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
@@ -710,8 +719,8 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 			mD3DDevice->SetStreamSourceFreq(i, 1);
 		}
 
-        D3DErrorExceptionFunction(SetStreamSource, hr);
-    }
+		D3DErrorExceptionFunction(SetStreamSource, hr);
+	}
 
 
 	IndexBufferPtr ib = istream->GetStream();
@@ -722,15 +731,15 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 	int primCount = obj->GetPrimitiveCount();
 	D3DPRIMITIVETYPE primType = (D3DPRIMITIVETYPE)obj->GetPrimitiveType();
 
-    if (ib.NotNull())
-    {
-        D3D9IndexBuffer * d3dib = (D3D9IndexBuffer*)(ib.c_ptr());
+	if (ib.NotNull())
+	{
+		D3D9IndexBuffer * d3dib = (D3D9IndexBuffer*)(ib.c_ptr());
 
-        hr = mD3DDevice->SetIndices(d3dib->GetD3DIndexBuffer());
-        hr = mD3DDevice->DrawIndexedPrimitive(primType, 0, startVertex, vertexCount, startIndex, primCount);
+		hr = mD3DDevice->SetIndices(d3dib->GetD3DIndexBuffer());
+		hr = mD3DDevice->DrawIndexedPrimitive(primType, 0, startVertex, vertexCount, startIndex, primCount);
 
-        D3DErrorExceptionFunction(DrawIndexedPrimitive, hr);
-    }
+		D3DErrorExceptionFunction(DrawIndexedPrimitive, hr);
+	}
     else
     {
          hr = mD3DDevice->DrawPrimitive(primType, startVertex, primCount);
@@ -742,6 +751,116 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
 
     mBatchCount += 1;
     mPrimitivCount += primCount;
+}
+
+void D3D9RenderSystem::RenderUp(Technique * tech, RenderOp * rop, const void * vertices, int stride, int numVerts, const void * indices, bool bIndex32)
+{
+	RenderRegister::Instance()->Reset();
+
+	// world transform
+	mMatWorld = rop->xform;
+	mNumBlends = 0;
+
+	SetWorldTransform(mMatWorld);
+	SetBlendTransform(mMatBlend, mNumBlends);
+
+	SetRenderState(rop->rState);
+
+	SetVertexShader(tech->GetVertexShader());
+	SetPixelShader(tech->GetPixelShader());
+
+	ShaderParamTable * pVertexShaderParam = tech->GetVertexShaderParamTable();
+	ShaderParamTable * pPixelShaderParam = tech->GetPixelShaderParamTable();
+	SetVertexShaderParam(pVertexShaderParam);
+	SetPixelShaderParam(pPixelShaderParam);
+
+	HRESULT hr = D3D_OK;
+
+	RenderRegister::Instance()->Begin();
+
+	mVertexShaderParams->Update();
+	mPixelShaderParams->Update();
+
+	//set shader register
+	if (mVertexShaderParams)
+	{
+		int count = mVertexShaderParams->GetNumParam();
+		ShaderParam * param = NULL;
+
+		for (int i = 0; i < count; ++i)
+		{
+			param = mVertexShaderParams->GetParam(i);
+			DWORD idx = param->GetRegister();
+			DWORD v4c = param->GetVec4Count();
+
+			if (param->IsInt())
+			{
+				hr = mD3DDevice->SetVertexShaderConstantI(idx, (const int *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetVertexShaderConstantI error.");
+			}
+			else
+			{
+				hr = mD3DDevice->SetVertexShaderConstantF(idx, (const float *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetVertexShaderConstantF error");
+			}
+
+		}
+	}
+
+	if (mPixelShaderParams)
+	{
+		int count = mPixelShaderParams->GetNumParam();
+		ShaderParam * param = NULL;
+
+		for (int i = 0; i < count; ++i)
+		{
+			param = mPixelShaderParams->GetParam(i);
+			DWORD idx = param->GetRegister();
+			DWORD v4c = param->GetVec4Count();
+
+			if (param->IsInt())
+			{
+				hr = mD3DDevice->SetPixelShaderConstantI(idx, (const int *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetPixelShaderConstantI error.");
+			}
+			else
+			{
+				hr = mD3DDevice->SetPixelShaderConstantF(idx, (const float *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetPixelShaderConstantF error");
+			}
+		}
+	}
+
+	for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
+	{
+		mD3DDevice->SetStreamSource(i, NULL, 0, 0);
+		mD3DDevice->SetStreamSourceFreq(i, 1);
+	}
+
+	mD3DDevice->SetIndices(NULL);
+
+	// draw
+	VertexStream * vstream = &rop->vxStream;
+	IndexStream * istream = &rop->ixStream;
+
+	VertexDeclarationPtr decl = vstream->GetDeclaration();
+
+	D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
+
+	mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
+	
+	int primCount = rop->iPrimCount;
+	D3DPRIMITIVETYPE primType = (D3DPRIMITIVETYPE)rop->ePrimType;
+	D3DFORMAT indexFmt = bIndex32 ? D3DFMT_INDEX32 : D3DFMT_INDEX16;
+
+	hr = mD3DDevice->DrawIndexedPrimitiveUP(primType, 0, numVerts, primCount, indices, indexFmt, vertices, stride);
+
+	EXCEPTION_DEBUG(SUCCEEDED(hr), "DrawIndexedPrimitiveUP error");
+
+	RenderRegister::Instance()->End();
+
+	mBatchCount += 1;
+	mPrimitivCount += primCount;
 }
 
 void D3D9RenderSystem::SetSMAAType(eSmaaType::enum_t type)

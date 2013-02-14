@@ -9,6 +9,7 @@ struct PS_IN
 };
 
 uniform sampler2D gTex;
+uniform sampler2D gTex_Depth;
 
 uniform float4 gSharpParam;
 uniform float4 gInvTexSize;
@@ -35,8 +36,12 @@ float4 main(PS_IN In) : COLOR
 	}
 	
 	c_blured /= 8;
+
+	float depth = tex2D(gTex_Depth, In.uv0).r * 10000;
+
+	float blurWeight = gSharpParam.x * (1 - saturate((depth - gSharpParam.y) * gSharpParam.z));
 	
-	float4 clr = c_orig + (c_orig - c_blured) * gSharpParam.x;
+	float4 clr = c_orig + (c_orig - c_blured) * blurWeight;
 	clr = saturate(clr);
 	clr.a = c_orig.a;
 	

@@ -192,6 +192,9 @@ namespace Myway
         SunYaw = 0;
 
         MoonTexture = DEFAULT_MOON_TEXTURE;
+
+		ColorSharpFadeStart = 50;
+		ColorSharpFadeEnd = 150;
     }
 
 

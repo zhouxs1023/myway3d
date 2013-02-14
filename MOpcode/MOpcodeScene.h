@@ -1,8 +1,8 @@
 #pragma once
 
 #include "MOpcodeEntry.h"
-#include "MWMath.h"
-#include "MWColMesh.h"
+#include "MOpcodeNode.h"
+#include "MWPhysics.h"
 
 namespace Opcode {
 	class Model;
@@ -10,29 +10,32 @@ namespace Opcode {
 	class CollisionFaces;
 }
 
+
 namespace Myway {
 
-	class MOpcodeScene
+	class MOpcodeScene : public IPhyWorld
 	{
+		static Opcode::CollisionFaces * mQueryResult;
+
+	public:
+		static Opcode::CollisionFaces * _getCollisionFaces() { return mQueryResult; }
+
 	public:
 		MOpcodeScene();
 		~MOpcodeScene();
 
-		void AddMesh(ColMesh * mesh, const Mat4 & form);
+		virtual IColObjPtr AddColMesh(void * uId, ColMesh * colMesh, float scale);
+		virtual IColObjPtr GetColMesh(void * uId, float scale);
+		virtual void RemoveColMesh(IColObj * obj);
 
-		void Build();
-		void Clear();
+		virtual void AddNode(SceneNode * sceneNode, IColObjPtr colObj);
+		virtual void RemoveNode(SceneNode * sceneNode);
+		virtual void OnNodeScaleChanged(SceneNode * sceneNode);
 
-		bool RayTrace(const Ray & ray, float * dist, unsigned int * cache, int * mtlId = 0, Vec3 * colPos = 0, Vec3 * colNml = 0);
+		virtual PhyHitInfo RayTrace(const Ray & ray, float dist, int flag, bool ifNoPhyData);
 
 	protected:
-		Array<Vec3> mVertices;
-		Array<int> mTriangles;
-		Array<int> mMateirals;
-
-		Opcode::CollisionFaces *	mQueryResult;
-		Opcode::Model *				mCollisionModel;
-		Opcode::MeshInterface *		mMeshInterface;
+		Array<IColObj *> mColObjs;
 	};
 
 }

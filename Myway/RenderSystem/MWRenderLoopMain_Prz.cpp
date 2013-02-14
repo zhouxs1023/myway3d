@@ -13,12 +13,12 @@ namespace Myway {
 
 		mTex_Color = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Color", -1, -1, FMT_A16B16G16R16F);
 		mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", -1, -1, FMT_A16B16G16R16F);
-		mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16B16G16R16F);
+		//mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16B16G16R16F);
 		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", -1, -1, FMT_G32R32F);
 
         mRT_Color = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Color", -1, -1, FMT_A16B16G16R16F,  MSAA_NONE);
         mRT_Normal = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Normal);
-        mRT_Material = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Material);
+        //mRT_Material = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Material);
         mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);
 
         mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_DepthStencil", -1, -1, FMT_D24S8,  MSAA_NONE);
@@ -75,6 +75,12 @@ namespace Myway {
 		render->SetRenderTarget(1, NULL);
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
+
+		if (Environment::Instance()->GetColorSharp())
+		{
+			Environment::Instance()->GetColorSharp()->Render(mTex_Color.c_ptr(), mTex_Depth.c_ptr());
+			_updateColorTexture();
+		}
 
 		// sun lighting
 		if (Environment::Instance()->GetShadow())
@@ -156,9 +162,6 @@ namespace Myway {
 			Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 			_updateColorTexture();
 		}
-
-		if (Environment::Instance()->GetColorSharp())
-			Environment::Instance()->GetColorSharp()->Render(mTex_Color.c_ptr());
 
 		// --->render object
 		_renderSolidObjects(false);

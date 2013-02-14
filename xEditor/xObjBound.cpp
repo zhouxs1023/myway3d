@@ -17,10 +17,10 @@ xObjBound::~xObjBound()
 
 void xObjBound::Init(void * param0, void * param1)
 {
-	mRender = new RenderOp();
+	mRenderAABB = new RenderOp();
 
-	VertexStream * vxStream = &mRender->vxStream;
-	IndexStream * ixStream = &mRender->ixStream;
+	VertexStream * vxStream = &mRenderAABB->vxStream;
+	IndexStream * ixStream = &mRenderAABB->ixStream;
 
 	int iVertexCount = 8;
 	int iIndexCount = 12 * 2;
@@ -111,26 +111,68 @@ void xObjBound::Init(void * param0, void * param1)
 	ixStream->SetCount(iIndexCount);
 	ixStream->Bind(ibuffer, 0);
 
-	mRender->iPrimCount = iPrimCount;
-	mRender->ePrimType = PRIM_LINELIST;
+	mRenderAABB->iPrimCount = iPrimCount;
+	mRenderAABB->ePrimType = PRIM_LINELIST;
 
-	mRender->rState.cullMode = CULL_NONE;
-	mRender->rState.blendMode = BM_OPATICY;
+	mRenderAABB->rState.cullMode = CULL_NONE;
+	mRenderAABB->rState.blendMode = BM_OPATICY;
 
 	mTech = xApp::Instance()->GetHelperShaderLib()->GetTechnique("Color");
 
 	d_assert (mTech);
+
+	mRenderColMesh = new RenderOp();
+	mRenderColMesh->vxStream.SetDeclaration(decl);
+	mRenderColMesh->ePrimType = PRIM_TRIANGLELIST;
+	mRenderColMesh->rState.cullMode = CULL_NONE;
+	mRenderColMesh->rState.fillMode = FILL_FRAME;
+	mRenderColMesh->rState.blendMode = BM_OPATICY;
 }
 
 void xObjBound::Shutdown(void * param0, void * param1)
 {
-	delete mRender;
+	safe_delete (mRenderAABB);
+	safe_delete (mRenderColMesh);
+}
+
+void xObjBound::RenderColMesh()
+{
+	RS_RenderEvent(Render_ColMesh);
+
+	xObj * obj = xApp::Instance()->GetSelectedObj(0);
+	ColMesh * colMesh = obj->GetColMesh();
+
+	Vec3 pos = obj->GetPosition();
+	Quat ort = obj->GetOrientation();
+	Vec3 scale = obj->GetScale() * 1.02f;
+
+	RenderSystem * render = RenderSystem::Instance();
+
+	ShaderParam * uColor = mTech->GetPixelShaderParamTable()->GetParam("gColor");
+
+	uColor->SetUnifom(1, 1, 0, 1);
+
+	mRenderColMesh->xform.MakeTransform(pos, ort, scale);
+	mRenderColMesh->iPrimCount = colMesh->GetIndices().Size() / 3;
+
+	render->RenderUp(mTech, mRenderColMesh,
+		             &(colMesh->GetPositions()[0]), sizeof(Vec3), colMesh->GetPositions().Size(),
+					 &(colMesh->GetIndices()[0]));
 }
 
 void xObjBound::Render(void * param0, void * param1)
 {
 	if (xApp::Instance()->GetSelectedObjSize() == 0)
 		return ;
+
+	if (xApp::Instance()->GetSelectedObjSize() == 1 &&
+		xApp::Instance()->GetSelectedObj(0)->GetColMesh() != NULL &&
+		xApp::Instance()->GetSelectedObj(0)->GetColMesh()->GetPositions().Size() > 0 &&
+		xApp::Instance()->GetSelectedObj(0)->GetColMesh()->GetIndices().Size() > 0)
+	{
+		RenderColMesh();
+		return ;
+	}
 
 	Aabb box = Aabb::Invalid;
 
@@ -149,11 +191,8 @@ void xObjBound::Render(void * param0, void * param1)
 
 	uColor->SetUnifom(1, 1, 0, 1);
 
-	mRender->xform.MakeTransform(pos, Quat::Identity, scale);
+	mRenderAABB->xform.MakeTransform(pos, Quat::Identity, scale);
 
-	SamplerState state;
-	state.Address = TEXA_CLAMP;
-
-	render->Render(mTech, mRender);
+	render->Render(mTech, mRenderAABB);
 }
 

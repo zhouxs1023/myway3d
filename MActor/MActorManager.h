@@ -44,6 +44,7 @@ namespace Myway {
 		tEventListener<MActorManager> OnShutdown;
 		tEventListener<MActorManager> OnPreVisibleCull;
 		tEventListener<MActorManager> OnRender;
+		tEventListener<MActorManager> OnRenderDepth;
 
 		VertexDeclarationPtr mVertexDecl;
 		VertexDeclarationPtr mVertexDeclSkined;
@@ -56,6 +57,9 @@ namespace Myway {
 		ShaderLib * mShaderLib;
 		Technique * mTech_Deferred;
 		Technique * mSkinedTech_Deferred;
+
+		Technique * mTech_Depth;
+		Technique * mSkinedTech_Depth;
 		int mUId;
 	};
 

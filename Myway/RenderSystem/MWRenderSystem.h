@@ -12,9 +12,7 @@
 
 namespace Myway
 {
-
-#define  RS_BeginEvent(name) Myway::RenderSystem::Instance()->_BeginEvent(name)
-#define  RS_EndEvent() Myway::RenderSystem::Instance()->_EndEvent()
+	
 
 /* Interface: RenderSystem
 --------------------------------------------------------------
@@ -99,6 +97,10 @@ public:
 
     virtual void            Render(Technique * efx, Renderer * obj) = 0;
     virtual void            Render(Technique * efx, RenderOp * rd) = 0;
+	virtual void			RenderUp(Technique * efx, RenderOp * rop,
+									 const void * vertices, int stride, int numVerts,
+		                             const void * indices, bool bIndex32 = true) = 0;
+
 
 	virtual void			SetSMAAType(eSmaaType::enum_t type) = 0;
 	virtual eSmaaType::enum_t GetSMAAType() = 0;
@@ -110,5 +112,30 @@ public:
     virtual int             GetAdapterCount() = 0;
     virtual TString128      GetAdapterName(int adapter) = 0;
 };
+
+
+struct MW_ENTRY __RenderEventHelpr
+{
+	__RenderEventHelpr(const char * str)
+	{
+		RenderSystem::Instance()->_BeginEvent(str);
+	}
+
+	~__RenderEventHelpr()
+	{
+		RenderSystem::Instance()->_EndEvent();
+	}
+};
+
+
+#ifdef _DEBUG
+
+#define RS_RenderEvent(name) __RenderEventHelpr __re_##name(#name)
+
+#else
+
+#define RS_RenderEvent(name)
+
+#endif
 
 }

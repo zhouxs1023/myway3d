@@ -181,9 +181,9 @@ void xApp::_input()
 		 {
 			 Ray ray = World::Instance()->MainCamera()->GetViewportRay(pt.x, pt.y);
 
-			 List<SceneNode*> list;
+			/* List<SceneNode*> list;
 
-			 World::Instance()->RayTracing(ray, list, PICK_Flag);
+			 World::Instance()->RayTracing(ray, 1000.0f, list, PICK_Flag);
 
 			 List<SceneNode *>::Iterator whr = list.Begin();
 			 List<SceneNode *>::Iterator end = list.End();
@@ -205,11 +205,14 @@ void xApp::_input()
 				 }
 
 				 ++whr;
-			 }
+			 }*/
 
-			 if (node)
+			 PhyHitInfo result = IPhyWorld::Instance()->RayTrace(ray, 1000.0f, PICK_Flag, true);
+
+			 if (result.node)
 			 {
-				 xObj * obj = mObjMgr.Get(node);
+				 xObj * obj = mObjMgr.Get(result.node);
+
 				 if (obj)
 				 {
 					 SetSelectedObj(obj);

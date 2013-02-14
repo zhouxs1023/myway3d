@@ -14,8 +14,8 @@ uniform sampler2D gTex_Blured;
 
 float4 main(PS_IN In) : COLOR
 {
-	float4 clr = tex2D(gTex_Blured, In.uv0);
-	clr.a *= gBlendWeight.x;
+	float w = tex2D(gTex_Blured, In.uv0).r;
+	w *= gBlendWeight.x;
 
-	return float4(gSunColor.rgb, clr.a);
+	return float4(gSunColor.rgb, w);
 }

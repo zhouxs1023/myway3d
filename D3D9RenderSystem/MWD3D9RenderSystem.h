@@ -85,6 +85,9 @@ public:
 
     virtual void                        Render(Technique * efx, Renderer * obj);
     virtual void                        Render(Technique * efx, RenderOp * rd);
+	virtual void						RenderUp(Technique * efx, RenderOp * rop,
+		                                         const void * vertices, int stride, int numVerts,
+												 const void * indices, bool bIndex32);
 
 	virtual void						SetSMAAType(eSmaaType::enum_t type);
 	virtual eSmaaType::enum_t			GetSMAAType();
@@ -124,7 +127,7 @@ protected:
     ShaderProgram *                     mPixelShader;
     ShaderParamTable *                  mVertexShaderParams;
     ShaderParamTable *                  mPixelShaderParams;
-    
+
     RenderTarget *                      mRenderTarget[MAX_RENDER_TARGET];
     DepthStencil *                      mDepthStencil;
 

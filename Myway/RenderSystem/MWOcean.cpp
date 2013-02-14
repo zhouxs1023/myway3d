@@ -134,7 +134,7 @@ namespace Myway {
         uRefractionDist->SetUnifom(40, 0, 0, 0);
 
         uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, 0);
-        uSunDir->SetUnifom(-sunDir.x, -sunDir.y, sunDir.z, 0);
+        uSunDir->SetUnifom(-sunDir.x, -sunDir.y, -sunDir.z, 0);
         uSunLightParam->SetUnifom(0.8f, 200, 0, 0);
 
         float uvNoiseScroll = time * 0.02f;
@@ -238,16 +238,16 @@ namespace Myway {
         Vec3 p1 = p0 + Vec3(1, 0, 0);
         Vec3 p2 = p0 + Vec3(0, 0, 1);
 
-        mCullResult.lights.Clear();
-        mCullResult.nodes.Clear();
+		/*mCullResult.lights.Clear();
+		mCullResult.nodes.Clear();
 
-        World::Instance()->ImpVisibleCull(mCullResult, mainCam, false);
+		World::Instance()->ImpVisibleCull(mCullResult, mainCam, false);
 
-        mRenderQueue.Clear();
-        mRenderQueue.PushRenderer(mCullResult.nodes);
+		mRenderQueue.Clear();
+		mRenderQueue.PushRenderer(mCullResult.nodes);*/
 
         RenderSystem * render = RenderSystem::Instance();
-        RenderQueue * rq = &mRenderQueue;
+        //RenderQueue * rq = &mRenderQueue;
 
         RenderTarget * oldRT = render->GetRenderTarget(0);
         DepthStencil * oldDS = render->GetDepthStencil();
@@ -277,8 +277,8 @@ namespace Myway {
             Environment::Instance()->GetSky2()->RenderReflection(mirrorPlane);
 
         // ---> render sun
-        if (Environment::Instance()->GetSun())
-            Environment::Instance()->GetSun()->Render();
+        /*if (Environment::Instance()->GetSun())
+            Environment::Instance()->GetSun()->Render();*/
 
         // ---> render moons
         if (Environment::Instance()->GetMoon())

@@ -84,6 +84,9 @@ namespace Myway
 
         TString128 MoonTexture;
 
+		float ColorSharpFadeStart;
+		float ColorSharpFadeEnd;
+
         EvGlobalParam();
     };
 

@@ -1,7 +1,7 @@
-#include "MWProjectionGrid.h"
 #include "MWEnvironment.h"
 #include "MWKeyboard.h"
 #include "MWWaterManager.h"
+#include "MWProjectionGrid.h"
 
 namespace Myway {
 
@@ -9,7 +9,6 @@ namespace Myway {
 
     ProjectedGrid::ProjectedGrid()
         : mVertices(0)
-		, mVerticesChoppyBuffer(0)
 		, mNormal(0, 1, 0)
 		, mPos(0, 0, 0)
 	{
@@ -21,7 +20,6 @@ namespace Myway {
 
 	ProjectedGrid::ProjectedGrid(const Options &Options)
         : mVertices(0)
-		, mVerticesChoppyBuffer(0)
 		, mNormal(0, 1, 0)
 		, mPos(0, 0, 0)
 	{
@@ -39,18 +37,14 @@ namespace Myway {
     {
         mNoise = new Perlin();
 
-        mVertices = new Vertex[mOptions.Complexity*mOptions.Complexity];	
+        mVertices = new Vertex[mOptions.ComplexityU * mOptions.ComplexityV];	
 
         Vertex* Vertices = static_cast<Vertex*>(mVertices);
 
-        for (int i = 0; i < mOptions.Complexity*mOptions.Complexity; i++)
+        for (int i = 0; i < mOptions.ComplexityU * mOptions.ComplexityV; i++)
         {
-            Vertices[i].nx = 0;
-            Vertices[i].ny = -1;
-            Vertices[i].nz = 0;
+			Vertices[i].Normal = Vec3::NegUnitY;
         }
-
-        mVerticesChoppyBuffer = new Vertex[mOptions.Complexity*mOptions.Complexity];
 
         mRenderCamera = World::Instance()->MainCamera();
     }
@@ -60,8 +54,8 @@ namespace Myway {
         VertexStream * vxStream = &mRender.vxStream;
         IndexStream * ixStream = &mRender.ixStream;
 
-        int iVertexCount = mOptions.Complexity * mOptions.Complexity;
-        int iIndexCount = 6 * (mOptions.Complexity - 1) * (mOptions.Complexity - 1);
+        int iVertexCount = mOptions.ComplexityU * mOptions.ComplexityV;
+        int iIndexCount = 6 * (mOptions.ComplexityU - 1) * (mOptions.ComplexityV - 1);
         int iPrimCount = iIndexCount / 3;
         int iStride = 24;
 
@@ -72,7 +66,7 @@ namespace Myway {
 
         vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * iStride, USAGE_STATIC);
+        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * iStride, USAGE_DYNAMIC);
 
         vxStream->Bind(0, vb, iStride);
         vxStream->SetCount(iVertexCount);
@@ -83,18 +77,17 @@ namespace Myway {
 
         {
             int i = 0;
-            int Complexity = mOptions.Complexity;
-            for(int v=0; v<Complexity-1; v++){
-                for(int u=0; u<Complexity-1; u++){
+            for(int v=0; v<mOptions.ComplexityV-1; v++){
+                for(int u=0; u<mOptions.ComplexityU-1; u++){
                     // face 1 |/
-                    indexbuffer[i++] = v*Complexity + u;
-                    indexbuffer[i++] = v*Complexity + u + 1;
-                    indexbuffer[i++] = (v+1)*Complexity + u;
+                    indexbuffer[i++] = v * mOptions.ComplexityU + u;
+                    indexbuffer[i++] = v * mOptions.ComplexityU + u + 1;
+                    indexbuffer[i++] = (v+1) * mOptions.ComplexityU + u;
 
                     // face 2 /|
-                    indexbuffer[i++] = (v+1)*Complexity + u;
-                    indexbuffer[i++] = v*Complexity + u + 1;
-                    indexbuffer[i++] = (v+1)*Complexity + u + 1;
+                    indexbuffer[i++] = (v+1) * mOptions.ComplexityU + u;
+                    indexbuffer[i++] = v * mOptions.ComplexityU + u + 1;
+                    indexbuffer[i++] = (v+1) * mOptions.ComplexityU + u + 1;
                 }
             }
 
@@ -118,7 +111,6 @@ namespace Myway {
     void ProjectedGrid::_deinit()
     {
         delete[] mVertices;
-        delete[] mVerticesChoppyBuffer;
 
         delete mNoise;
     }
@@ -132,10 +124,10 @@ namespace Myway {
 
     void ProjectedGrid::Update(float elapsedTime)
     {
-        if (IKeyboard::Instance()->KeyPressed(KC_1))
+        /*if (IKeyboard::Instance()->KeyPressed(KC_1))
             mRender.rState.fillMode = FILL_FRAME;
         else if (IKeyboard::Instance()->KeyPressed(KC_2))
-            mRender.rState.fillMode = FILL_SOLID;
+            mRender.rState.fillMode = FILL_SOLID;*/
 
         mNoise->update(elapsedTime);
 
@@ -155,7 +147,7 @@ namespace Myway {
             VertexBufferPtr vb = mRender.vxStream.GetStream(0);
 
             Vertex * vx = (Vertex *)vb->Lock(0, 0, LOCK_DISCARD);
-            memcpy(vx, mVertices, mOptions.Complexity * mOptions.Complexity * sizeof(Vertex));
+            memcpy(vx, mVertices, mOptions.ComplexityU * mOptions.ComplexityV * sizeof(Vertex));
             vb->Unlock();
         }
     }
@@ -311,8 +303,8 @@ namespace Myway {
         t_corners[3] = _calculeWorldPosition(Vec2(1, 1), m);
 
 
-        float du  = 1.0f/(mOptions.Complexity-1),
-            dv  = 1.0f/(mOptions.Complexity-1),
+        float du  = 1.0f/(mOptions.ComplexityU-1),
+            dv  = 1.0f/(mOptions.ComplexityV-1),
             u,v = 0.0f,
             // _1_u = (1.0f-u)
             _1_u, _1_v = 1.0f,
@@ -324,11 +316,11 @@ namespace Myway {
 
         Vertex * Vertices = static_cast<Vertex*>(mVertices);
 
-        for(iv=0; iv<mOptions.Complexity; iv++)
+        for(iv=0; iv<mOptions.ComplexityV; iv++)
         {
             u = 0.0f;	
             _1_u = 1.0f;
-            for(iu=0; iu<mOptions.Complexity; iu++)
+            for(iu=0; iu<mOptions.ComplexityU; iu++)
             {				
                 x = _1_v*(_1_u*t_corners[0].x + u*t_corners[1].x) + v*(_1_u*t_corners[2].x + u*t_corners[3].x);				
                 z = _1_v*(_1_u*t_corners[0].z + u*t_corners[1].z) + v*(_1_u*t_corners[2].z + u*t_corners[3].z);
@@ -337,13 +329,9 @@ namespace Myway {
                 divide = 1 / w;				
                 x *= divide;
                 z *= divide;
-
-                Vertices[i].x = x;
-                Vertices[i].z = z;
-
                 noise = mNoise->getValue(x * 5, z * 5);
 
-                Vertices[i].y = -mPlane.d + noise*mOptions.Strength * 1.2f;
+				Vertices[i].Position = Vec3(x, -mPlane.d + noise*mOptions.Strength * 1.2f, z);
 
                 i++;
                 u += du;
@@ -353,17 +341,7 @@ namespace Myway {
             _1_v = 1.0f-v;
         }
 
-		/*if (mOptions.ChoppyWaves)
-		{
-			for(int i = 0; i < mOptions.Complexity*mOptions.Complexity; i++)
-			{
-				mVerticesChoppyBuffer[i] = Vertices[i];
-			}
-		}*/
-
 		_calculeNormals();
-
-		//_performChoppyWaves();
     }
 
     void ProjectedGrid::_calculeNormals()
@@ -373,90 +351,70 @@ namespace Myway {
 
         Vertex * Vertices = static_cast<Vertex*>(mVertices);
 
-        for (int i = 0; i < mOptions.Complexity * mOptions.Complexity; ++i)
+        for (int i = 0; i < mOptions.ComplexityU * mOptions.ComplexityV; ++i)
         {
-            Vertices[i].nx = 0;
-            Vertices[i].ny = 0;
-            Vertices[i].nz = 0;
+            Vertices[i].Normal = Vec3::Zero;
         }
 
-        for(v=1; v<(mOptions.Complexity-1); v++)
-        {
-            for(u=1; u<(mOptions.Complexity-1); u++)
-            {
-                vec1 = Vec3(
-                    Vertices[v*mOptions.Complexity + u + 1].x-Vertices[v*mOptions.Complexity + u - 1].x,
-                    Vertices[v*mOptions.Complexity + u + 1].y-Vertices[v*mOptions.Complexity + u - 1].y, 
-                    Vertices[v*mOptions.Complexity + u + 1].z-Vertices[v*mOptions.Complexity + u - 1].z);
+		int pr = 0, r = mOptions.ComplexityU, nr = r + mOptions.ComplexityU;
 
-                vec2 = Vec3(
-                    Vertices[(v+1)*mOptions.Complexity + u].x - Vertices[(v-1)*mOptions.Complexity + u].x,
-                    Vertices[(v+1)*mOptions.Complexity + u].y - Vertices[(v-1)*mOptions.Complexity + u].y,
-                    Vertices[(v+1)*mOptions.Complexity + u].z - Vertices[(v-1)*mOptions.Complexity + u].z);
+		for(v=1; v<(mOptions.ComplexityV-1); v++)
+		{
+			for(u=1; u<(mOptions.ComplexityU-1); u++)
+			{
+				vec1 = Vertices[r + u + 1].Position - Vertices[r + u - 1].Position;
+				vec2 = Vertices[nr + u].Position - Vertices[pr + u].Position;
 
-                normal = vec2.Cross(vec1);
+				Math::VecCross(normal, vec2, vec1);
 
-                Vertices[v*mOptions.Complexity + u].nx += normal.x;
-                Vertices[v*mOptions.Complexity + u].ny += normal.y;
-                Vertices[v*mOptions.Complexity + u].nz += normal.z;
+                Vertices[r + u].Normal += normal;
             }
+
+			r += mOptions.ComplexityU;
+			pr = r - mOptions.ComplexityU;
+			nr = r + mOptions.ComplexityU;
         }
-    }
 
-    void ProjectedGrid::_performChoppyWaves()
-    {
-        int v, u,
-		    Underwater = 1;
-
-        if (WaterManager::Instance()->IsUnderWater())
+		int last_r = (mOptions.ComplexityV - 1) * mOptions.ComplexityU;
+		for (int u = 0; u < mOptions.ComplexityU; ++u)
 		{
-			Underwater = -1;
+			Vertices[0 + u].Normal.y = 1;
+			Vertices[last_r + u].Normal.y = 1;
 		}
 
-		float Dis1,  Dis2;//, 
-		   // Dis1_, Dis2_;
-
-		Vec3 CameraDir, Norm;
-		Vec2 Dir, Perp, Norm2;
-
-		CameraDir = mRenderCamera->GetDirection();
-		Dir       = Vec2(CameraDir.x, CameraDir.z).Normalize();
-		Perp      = Dir.Perpendicular();
-
-		if (Dir.x < 0 ) Dir.x = -Dir.x;
-		if (Dir.y < 0 ) Dir.y = -Dir.y;
-
-		if (Perp.x < 0 ) Perp.x = -Perp.x;
-		if (Perp.y < 0 ) Perp.y = -Perp.y;
-
-		Vertex* Vertices = static_cast<Vertex*>(mVertices);
-
-		for(v=1; v<(mOptions.Complexity-1); v++)
+		r = 0;
+		for (int v = 0; v < mOptions.ComplexityV; ++v)
 		{
-			Dis1 =  (Vec2(mVerticesChoppyBuffer[v*mOptions.Complexity + 1].x,
-					               mVerticesChoppyBuffer[v*mOptions.Complexity + 1].z) -
-					 Vec2(mVerticesChoppyBuffer[(v+1)*mOptions.Complexity + 1].x,
-				                   mVerticesChoppyBuffer[(v+1)*mOptions.Complexity + 1].z)).Length();
+			Vertices[r + 0].Normal.y = 1;
+			Vertices[r + (mOptions.ComplexityU - 1)].Normal.y = 1;
 
-			for(u=1; u<(mOptions.Complexity-1); u++)
-			{   
-				Dis2 = (Vec2(mVerticesChoppyBuffer[v*mOptions.Complexity + u].x,
-					                  mVerticesChoppyBuffer[v*mOptions.Complexity + u].z) -
-					    Vec2(mVerticesChoppyBuffer[v*mOptions.Complexity + u+1].x,
-					                  mVerticesChoppyBuffer[v*mOptions.Complexity + u+1].z)).Length();
+			r += mOptions.ComplexityU;
+		}
 
-				Norm = Vec3(Vertices[v*mOptions.Complexity + u].nx,
-					                 Vertices[v*mOptions.Complexity + u].ny,
-								     Vertices[v*mOptions.Complexity + u].nz).Normalize();
+		/*for(v=1; v<(mOptions.ComplexityV-1); v++)
+		{
+			for(u=1; u<(mOptions.ComplexityU-1); u++)
+			{
+				int cr = v * mOptions.ComplexityU;
+				int pr = (v - 1) * mOptions.ComplexityU;
+				int nr = (v + 1) * mOptions.ComplexityU;
 
-				Norm2 = Vec2(Norm.x, Norm.z)  * 
-					                 ( (Dir  * Dis1)   +
-					                   (Perp * Dis2))  *
-				 				      mOptions.ChoppyStrength;
+				const Vec3 & p = Vertices[cr + u].Position;
+				const Vec3 & a = Vertices[cr + u - 1].Position;
+				const Vec3 & b = Vertices[pr + u].Position;
+				const Vec3 & c = Vertices[cr + u + 1].Position;
+				const Vec3 & d = Vertices[nr + u].Position;
 
-				Vertices[v*mOptions.Complexity + u].x = mVerticesChoppyBuffer[v*mOptions.Complexity + u].x + Norm2.x * Underwater;
-				Vertices[v*mOptions.Complexity + u].z = mVerticesChoppyBuffer[v*mOptions.Complexity + u].z + Norm2.y * Underwater;
+				Vec3 L = a - p, T = b - p, R = c - p, B = d - p;
+
+				Vec3 N = Vec3::Zero;
+				N += T.CrossN(L);
+				N += L.CrossN(B);
+				N += B.CrossN(R);
+				N += R.CrossN(T);
+
+				Vertices[cr + u].Normal = N;
 			}
-		}
+		}*/
     }
 }

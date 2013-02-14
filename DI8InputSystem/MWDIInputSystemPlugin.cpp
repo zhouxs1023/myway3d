@@ -5,24 +5,31 @@
 namespace Myway
 {
 
-DIInputSystemPlugin::DIInputSystemPlugin()
-: Plugin("DI8InputSystem")
-{
-}
+	DIInputSystem * gInputSystem = NULL;
 
-DIInputSystemPlugin::~DIInputSystemPlugin()
-{
-}
+	DIInputSystemPlugin::DIInputSystemPlugin()
+		: Plugin("DI8InputSystem")
+	{
+	}
 
-void DIInputSystemPlugin::Install()
-{
-    const DeviceProperty * device = Engine::Instance()->GetDeviceProperty();
-    DIInputSystem * pInputSystem = new DIInputSystem(device->hInst, device->hWnd);
-    Engine::Instance()->SetInputSystem(pInputSystem);
-}
+	DIInputSystemPlugin::~DIInputSystemPlugin()
+	{
+	}
 
-void DIInputSystemPlugin::Uninstall()
-{
-}
+	void DIInputSystemPlugin::Install()
+	{
+		d_assert (gInputSystem == NULL);
+
+		const DeviceProperty * device = Engine::Instance()->GetDeviceProperty();
+
+		gInputSystem = new DIInputSystem(device->hInst, device->hWnd);
+
+		Engine::Instance()->SetInputSystem(gInputSystem);
+	}
+
+	void DIInputSystemPlugin::Uninstall()
+	{
+		safe_delete (gInputSystem);
+	}
 
 }

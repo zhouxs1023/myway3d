@@ -1,0 +1,83 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+struct _IN
+{
+    float2 uv  : TEXCOORD0;
+};
+
+uniform sampler2D depthTex : register(s0);
+uniform sampler2D shadowTex : register(s1);
+uniform sampler2D randMap  : register (s2);
+uniform float4 gShadowInfo;
+uniform float4x4 matShadow;
+
+
+uniform float4 gCornerLeftTop;
+uniform float4 gCornerRightDir;
+uniform float4 gCornerDownDir;
+
+float4 getPosition(float d, float2 uv)
+{
+	float4 p = gCornerLeftTop + gCornerRightDir * uv.x + gCornerDownDir * uv.y;
+	return float4(p.xyz * d, 1);
+}
+
+float4 _Tex2DLod(sampler2D map, float2 uv)
+{
+    return tex2Dlod(map, float4(uv.xy, 0, 0));
+}
+
+float4 main(_IN In) : COLOR
+{
+	float depth = tex2D(depthTex, In.uv).r;
+
+	clip (0.9999 - depth);
+
+	float4 pos = getPosition(depth, In.uv);
+
+	//clip(pos.z - gShadowInfo.x);
+	//clip(gShadowInfo.y - pos.z);
+
+	bool OutOf = true;
+	if (pos.z >= gShadowInfo.x && pos.z < gShadowInfo.y)
+		OutOf = false;
+
+	pos = mul(pos, matShadow);
+
+	float2 shadowUV = pos.xy * float2(0.5f, -0.5f) + 0.5f;
+
+	float InvTexSize = 1 / 2048.f;
+
+	float shadow = 0;
+	float adjDepth = pos.z - gShadowInfo.z;
+
+    float3 randN = _Tex2DLod(randMap, In.uv * 24).xyz * 2.0 - 1.0;
+
+	for (int j = -2; j <= 2; ++j)
+	{
+		for (int i = -2; i <= 2; ++i)
+		{
+			float2 uv = float2(i, j) * InvTexSize;
+
+			//float3 randomDir = reflect(float3(uv.x, 0, uv.y), randN);
+
+			//uv = randomDir.xz + shadowUV;
+			uv += shadowUV;
+
+			float d = tex2Dlod(shadowTex, float4(uv, 0, 0)).r;
+
+			shadow += adjDepth > d ? 0 : 1;
+		}
+	}
+
+	shadow /= 25;
+
+	float a = 1;
+
+	if (OutOf)
+		a = 0;
+
+	return float4(shadow, shadow, shadow, a);
+}

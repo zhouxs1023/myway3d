@@ -13,6 +13,7 @@ Engine::Engine()
 , mDllManager(NULL)
 , mResourceManager(NULL)
 , mLogSystem(NULL)
+, mPhyWorld(NULL)
 , mLastFrameTime(0)
 , mFrameTime(0)
 , mTime2PI(0)
@@ -73,9 +74,10 @@ void Engine::Shutdown()
 
     safe_delete(mShaderLibManager);
 
-	safe_delete(mInputSystem);
-    safe_delete(mAudioSystem);
-    safe_delete(mRenderSystem);
+	mPhyWorld = NULL;
+	mInputSystem = NULL;
+	mAudioSystem = NULL;
+	mRenderSystem = NULL;
 
     PluginManager::Instance()->UninstallAll();
 

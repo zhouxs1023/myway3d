@@ -56,7 +56,6 @@ public:
             void                    SetCastShadow(bool cast);
             bool                    IsCastShadow() const;
 
-
 protected:
     TString128                      mName;
     Node *                          mNode;

@@ -516,16 +516,10 @@ void World::GetVisibleLights(Node * node, List<Light*> & lights)
 
 
 
-void World::RayTracing(const Ray & ray, List<SceneNode *> & nodes, int flags)
+void World::RayTracing(const Ray & ray, float dist, Array<Scene::TraceInfo> & nodes, int flags)
 {
-    mSceneManager->RayTracing(ray, nodes, flags);
+    mSceneManager->RayTracing(ray, dist, nodes, flags);
 }
-
-void World::RayTracing(const Ray & ray, List<Mover *> & geoms, int flags)
-{
-    mSceneManager->RayTracing(ray, geoms, flags);
-}
-
 
 
 SceneNode * World::CreateSceneNode(const TString128 & name)

@@ -223,6 +223,8 @@ namespace Myway {
 		mRenderOp_Branch->iPrimCount = mBranchIndexCounts[0] - 2;
 		mRenderOp_Branch->ePrimType = PRIM_TRIANGLESTRIP;
 
+		_setupColMesh();
+
 		for (int i = 1; i < mNumBranchLods; ++i)
 		{
 			// force geometry update for this LOD
@@ -373,6 +375,49 @@ namespace Myway {
 		//mRenderOp_Leaf->rState.fillMode = FILL_FRAME;
 		mRenderOp_Leaf->iPrimCount = vxStream.GetCount() / 3;
 		mRenderOp_Leaf->ePrimType = PRIM_TRIANGLELIST;
+	}
+
+	void MTree::_setupColMesh()
+	{
+		CSpeedTreeRT::SGeometry::SIndexed* pBranches = &(mGeometryCache->m_sBranches);
+
+		unsigned short iVertexCount = pBranches->m_usVertexCount;
+		int iTriCount = mBranchIndexCounts[0] - 2;
+
+		if (iVertexCount == 0)
+			return ;
+
+		mColMesh.Alloc(iVertexCount, iTriCount);
+
+		int indexV = 0, indexI = 0;
+
+		Array<Vec3> & colVert = mColMesh.GetPositions();
+		Array<int> & colIndex = mColMesh.GetIndices();
+
+		for (int i = 0; i < iVertexCount; ++i)
+		{
+			Vec3 v = *(Vec3 *)&pBranches->m_pCoords[i * 3];
+
+			colVert[indexV++] = v;
+		}
+
+		for (int i = 0; i < (mBranchIndexCounts[0] - 2) / 2; ++i)
+		{
+			int i0 = pBranches->m_pStrips[0][i * 2 + 0];
+			int i1 = pBranches->m_pStrips[0][i * 2 + 1];
+			int i2 = pBranches->m_pStrips[0][i * 2 + 2];
+			int i3 = pBranches->m_pStrips[0][i * 2 + 3];
+
+			d_assert (i0 < indexV && i1 < indexV && i2 < indexV && i3 < indexV);
+
+			colIndex[indexI++] = i2;
+			colIndex[indexI++] = i1;
+			colIndex[indexI++] = i0;
+
+			colIndex[indexI++] = i3;
+			colIndex[indexI++] = i1;
+			colIndex[indexI++] = i2;
+		}
 	}
 
 	RenderOp * MTree::_getBranchRenderOp(int lod)

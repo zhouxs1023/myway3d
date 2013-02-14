@@ -12,7 +12,7 @@ namespace Myway {
         ColorSharp();
         ~ColorSharp();
 
-        void Render(Texture * tex);
+        void Render(Texture * texColor, Texture * texDepth);
 
     protected:
         Technique * mTech;

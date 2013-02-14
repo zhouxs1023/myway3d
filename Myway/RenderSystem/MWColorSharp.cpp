@@ -15,7 +15,7 @@ namespace Myway {
     {
     }
 
-    void ColorSharp::Render(Texture * tex)
+    void ColorSharp::Render(Texture * tex, Texture * texDepth)
     {
 		static bool btest = true;
 
@@ -27,11 +27,13 @@ namespace Myway {
 
 		RenderSystem::Instance()->_BeginEvent("ColorSharp");
 
-        float colorSharpScale = Environment::Instance()->GetEvParam()->ColorSharpScale;
+		float colorSharpScale = Environment::Instance()->GetEvParam()->ColorSharpScale;
+		float colorSharpFadeStart = Environment::Instance()->GetGlobalParam()->ColorSharpFadeStart;
+        float colorSharpFadeEnd = Environment::Instance()->GetGlobalParam()->ColorSharpFadeEnd;
 
         ShaderParam * uSharpParam = mTech->GetPixelShaderParamTable()->GetParam("gSharpParam");
 
-        uSharpParam->SetUnifom(colorSharpScale, 0, 0, 0);
+        uSharpParam->SetUnifom(colorSharpScale, colorSharpFadeStart, 1 / (colorSharpFadeEnd - colorSharpFadeStart), 0);
 
         SamplerState state;
         state.Address = TEXA_CLAMP;

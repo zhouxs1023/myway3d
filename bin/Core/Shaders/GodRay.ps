@@ -27,7 +27,7 @@ float4 main(PS_IN In) : COLOR
 		float2 uv = In.uv0 + dir * uvStep * i;
 		
 		float depth = tex2D(gTex_Depth, uv);
-		float4 sunColor = tex2D(gTex_Sun, uv);
+		float sunColor = tex2D(gTex_Sun, uv).r;
 		
 		if (depth > 0.999f)
 			color += sunColor;

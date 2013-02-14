@@ -13,12 +13,12 @@ namespace Myway {
 	void ColMesh::Alloc(int numVerts, int numTris)
 	{
 		mPositions.Resize(numVerts);
-		mTrangles.Resize(numTris);
+		mIndices.Resize(numTris * 3);
 	}
 
 	void ColMesh::Clear()
 	{
 		mPositions.Clear();
-		mTrangles.Clear();
+		mIndices.Clear();
 	}
 }

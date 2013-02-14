@@ -264,7 +264,7 @@ void QuickSort(T * arr, int count)
 template <class T, class Func>
 void QuickSort(T * arr, int count, const Func & func)
 {
-    assert (arr && count < MAX_int);
+    assert (arr);
 
     __QSort(arr, 0, count - 1, func);
 }
@@ -308,7 +308,7 @@ void Sort(T * arr, int count)
 template <class T, class Func>
 void Sort(T * arr, int count, const Func & func)
 {
-    assert (arr && count < MAX_int);
+    assert (arr);
 
     __Sort(arr, 0, count - 1, func);
 }

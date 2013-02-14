@@ -424,13 +424,13 @@ namespace Myway {
 
 		xzDir.NormalizeL();
 
-		if ( xzDir.Dot(-dir) > Math::Cos(Math::PI_1_3) )
+		if ( xzDir.Dot(-dir) > Math::Cos(Math::PI_1_6) )
 		{
 			Vec3 right = Vec3::UnitY.CrossN(dir);
 
 			Quat q;
 
-			q.FromAxis(right, Math::PI_1_3);
+			q.FromAxis(right, Math::PI_1_6);
 
 			xzDir = q.Rotate(xzDir);
 

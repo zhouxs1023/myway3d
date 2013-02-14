@@ -1,12 +1,13 @@
 #pragma once
 
 #include "MWNode.h"
+#include "MWColMesh.h"
 #include "MWAABBRenderer.h"
 
 namespace Myway
 {
 
-#define MAX_DIRT_DATA   256
+#define MAX_DIRT_DATA 256
 
 class Scene;
 
@@ -108,6 +109,9 @@ public:
     virtual Scene *                  _GetScene() const;
     virtual const void *            _GetSceneDirtData() const;
 
+			void					SetPhyData(void * phyData) { mPhyData = phyData; }
+			void *					GetPhyData() { return mPhyData; }
+
 protected:
             void                    _NotifyAdded(SceneNode * node);   // when parent node add me.
             void                    _NotifyRemoved(); // when parent node removed me.
@@ -142,6 +146,8 @@ protected:
 
     Scene *                         mScene;
     char                            mDirt[MAX_DIRT_DATA];
+
+	void *							mPhyData;
 };
 
 }

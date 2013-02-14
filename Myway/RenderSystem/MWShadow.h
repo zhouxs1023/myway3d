@@ -53,7 +53,7 @@ namespace Myway {
 	class MW_ENTRY Shadow
 	{
 	public:
-		static const int K_NumShadowLayers = 4;
+		static const int K_NumShadowLayers = 3;
 
 		static Event OnVisibleCull;
 		static Event OnRenderDepth;
@@ -119,7 +119,7 @@ namespace Myway {
 		ShadowRenderQueue mRenderQueue;
 		Technique * mTech_ShadowDepth;
 		Technique * mTech_ShadowDepthSkin;
-		Technique * mTech_Shadow;
+		Technique * mTech_Shadow[K_NumShadowLayers];
 	};
 
 }

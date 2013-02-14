@@ -38,6 +38,8 @@ public:
 
 	virtual Aabb GetBound();
 
+	virtual ColMesh * GetColMesh();
+
 	virtual bool OnPropertyChanged(const Property * p);
 
 protected:

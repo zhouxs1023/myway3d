@@ -19,7 +19,8 @@ SceneNode::SceneNode(const TString128 & name)
   mShowBound(false),
   mVisible(true),
   mParent(NULL),
-  mScene(NULL)
+  mScene(NULL),
+  mPhyData(NULL)
 {
     ZeroMemory(mDirt, MAX_DIRT_DATA);
 }
@@ -35,6 +36,8 @@ SceneNode::~SceneNode()
     ClearChildNode();
 
     DetachAll();
+
+	d_assert (mPhyData == NULL);
 }
 
 const TString128 & SceneNode::GetName() const
@@ -624,8 +627,8 @@ int SceneNode::GetChildrenSize()
 
 SceneNode * SceneNode::GetChild(const TString128 & name)
 {
-    SceneNodeList::Iterator whr = mChildren.Begin();
-    SceneNodeList::Iterator end = mChildren.End();
+	SceneNodeList::Iterator whr = mChildren.Begin();
+	SceneNodeList::Iterator end = mChildren.End();
 
     while (whr != end && (*whr)->GetName() != name)
     {
@@ -709,3 +712,4 @@ const void * SceneNode::_GetSceneDirtData() const
 {
     return mDirt;
 }
+

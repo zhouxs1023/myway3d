@@ -33,6 +33,8 @@ public:
 	virtual Quat GetOrientation() { return Quat::Identity; }
 	virtual float GetScale() { return 1; }
 
+	virtual ColMesh * GetColMesh() { return NULL; }
+
 	virtual void Serialize(xSerializer & Serializer);
 
 	virtual Aabb GetBound() { return Aabb::Identiy; }

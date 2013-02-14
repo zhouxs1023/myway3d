@@ -27,8 +27,11 @@ namespace Myway {
 
 		void AddRenderQueue(RenderQueue * rq);
 
+		inline float GetWindMatrixOffset() const { return mWindMatrixOffset; }
+
 	protected:
 		MTreePtr mTree;
 		int mLod;
+		float mWindMatrixOffset;
 	};
 }

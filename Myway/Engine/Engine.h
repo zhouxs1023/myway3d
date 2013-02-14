@@ -18,6 +18,7 @@
 #include "MWAudioSystem.h"
 #include "MWRenderSystem.h"
 #include "MWRenderEvent.h"
+#include "MWPhysics.h"
 
 #include "MWEnvironment.h"
 
@@ -54,6 +55,9 @@ public:
     void SetInputSystem(InputSystem * pInputSystem);
     void SetAudioSystem(AudioSystem * pAudioSystem);
 
+	void SetPhyWorld(IPhyWorld * phyWorld) { mPhyWorld = phyWorld; }
+	IPhyWorld * GetPhyWorld() { return mPhyWorld; }
+
     void Run();
     float GetFrameTime();
     float GetTime2PI();
@@ -76,6 +80,7 @@ protected:
     AudioSystem *           mAudioSystem;
 	InputSystem *			mInputSystem;
     RenderSystem *          mRenderSystem;
+	IPhyWorld *				mPhyWorld;
 
     World *                 mWorld;
     MeshManager *           mMeshManager;

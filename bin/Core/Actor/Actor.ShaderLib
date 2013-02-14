@@ -17,6 +17,17 @@
 			<param name = "gClipPlane" type = "float4" btype = "clipPlane" />
 		</Shader>
 
+
+    <Shader name = "ActorDepthVS" language = "cg" profile = "vs30" source = "ActorDepth.vs" >
+    </Shader>
+
+    <Shader name = "ActorDepthSkinedVS" language = "cg" profile = "vs30" source = "ActorDepthSkined.vs" >
+      <param name = "matBlend" type = "float4x4" btype = "matBlend" count = "50" />
+    </Shader>
+
+    <Shader name = "ActorDepthPS" language = "cg" profile = "ps30" source = "ActorDepth.ps" >
+    </Shader>
+
   </Shaders>
 
 	<Techniques>
@@ -26,6 +37,12 @@
 
 		<Technique name = "ActorDeferredSkined" vs = "ActorDeferredSkinedVS" ps = "ActorDeferredPS">
 		</Technique>
+
+    <Technique name = "ActorDepth" vs = "ActorDepthVS" ps = "ActorDepthPS">
+    </Technique>
+
+    <Technique name = "ActorDepthSkined" vs = "ActorDepthSkinedVS" ps = "ActorDepthPS">
+    </Technique>
     
 	</Techniques>
 

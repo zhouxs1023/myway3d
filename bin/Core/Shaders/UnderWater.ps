@@ -31,15 +31,13 @@ float CalcuFresnel(float3 normal, float3 eyeDir)
 float4 main(PS_IN In) : COLOR
 {
 	float2 projUV = In.projPos.xy / In.projPos.w * float2(0.5, -0.5) + 0.5;
-	float3 normal = normalize(In.normal);
+	float3 normal = -normalize(In.normal);
 
 	float3 noise = gNoiseScale * (tex2D(gTex_Normal, In.uv).xyz - 0.5);
 	projUV += noise.xy * 0.0000001 + normal.xz * 0.05f;
 
 	float3 eyeDir = normalize(gCameraPos - In.pos.xyz);
-	float fresnel = CalcuFresnel(-normal, eyeDir);
-
-	//fresnel = pow(fresnel, 2);
+	float fresnel = CalcuFresnel(normal, eyeDir);
 
 	float4 refrColor = tex2D(gTex_Refr, projUV);
 

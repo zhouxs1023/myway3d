@@ -1,144 +1,169 @@
 #include "MOpcodeScene.h"
+#include "MWWorld.h"
 #include "Opcode.h"
 
 namespace Myway {
 
+	Opcode::CollisionFaces * MOpcodeScene::mQueryResult = NULL;
+
 	MOpcodeScene::MOpcodeScene()
 	{
 		mQueryResult = new Opcode::CollisionFaces;
-		mMeshInterface = new Opcode::MeshInterface;
-		mCollisionModel = 0;
 	}
 
 	MOpcodeScene::~MOpcodeScene()
 	{
 		safe_delete (mQueryResult);
-		safe_delete (mMeshInterface);
-		safe_delete (mCollisionModel);
+
+		d_assert (mColObjs.Size() == 0);
 	}
 
-	void MOpcodeScene::AddMesh(ColMesh * mesh, const Mat4 & form)
+	IColObjPtr MOpcodeScene::AddColMesh(void * uId, ColMesh * colMesh, float scale)
 	{
-		Array<Vec3> & Verts = mesh->GetPositions();
+		MOpcodeMesh * mesh = new MOpcodeMesh(uId, scale);
 
-		int startVertex = mVertices.Size();
+		mesh->Build(colMesh);
 
-		for (int i = 0; i < Verts.Size(); ++i)
-			mVertices.PushBack(Verts[i]);
+		mColObjs.PushBack(mesh);
 
+		return mesh;
+	}
 
-		Array<ColMesh::STri> & Tris = mesh->GetTrangles();
-
-		for (int i = 0; i < Tris.Size(); ++i)
+	IColObjPtr MOpcodeScene::GetColMesh(void * uId, float scale)
+	{
+		for (int i = 0; i < mColObjs.Size(); ++i)
 		{
+			float colScale = mColObjs[i]->GetScale();
 
-			mTriangles.PushBack(Tris[i].i0);
-			mTriangles.PushBack(Tris[i].i1);
-			mTriangles.PushBack(Tris[i].i2);
+			if (mColObjs[i]->GetUId() == uId && Math::Abs(colScale - scale) < Math::EPSILON_E4)
+			{
+				return mColObjs[i];
+			}
+		}
 
-			mMateirals.PushBack(Tris[i].mtlId);
+		return NULL;
+	}
+
+	void MOpcodeScene::RemoveColMesh(IColObj * obj)
+	{
+		for (int i = 0; i < mColObjs.Size(); ++i)
+		{
+			if (mColObjs[i] == obj)
+			{
+				delete obj;
+				mColObjs.Erase(i);
+				return ;
+			}
+		}
+
+		d_assert (0);
+	}
+
+	void MOpcodeScene::AddNode(SceneNode * sceneNode, IColObjPtr colObj)
+	{
+		d_assert (sceneNode->GetPhyData() == NULL);
+
+		MOpcodeNode * opNode = new MOpcodeNode(sceneNode);
+
+		opNode->SetColObj(colObj);
+
+		sceneNode->SetPhyData(opNode);
+	}
+
+	void MOpcodeScene::RemoveNode(SceneNode * sceneNode)
+	{
+		if (sceneNode->GetPhyData() == NULL)
+			return ;
+
+		MOpcodeNode * opNode = (MOpcodeNode *)sceneNode->GetPhyData();
+
+		delete opNode;
+
+		sceneNode->SetPhyData(NULL);
+	}
+
+	void MOpcodeScene::OnNodeScaleChanged(SceneNode * sceneNode)
+	{
+		if (sceneNode->GetPhyData() == NULL)
+			 return ;
+
+		MOpcodeNode * opNode = (MOpcodeNode *)sceneNode->GetPhyData();
+		
+		IColObjPtr colObj = opNode->GetColObj();
+
+		float scale = sceneNode->GetScale().x;
+
+		if (colObj->GetType() == CT_Mesh && !colObj->IsSameScale(scale))
+		{
+			IColObjPtr obj = GetColMesh(colObj->GetUId(), scale);
+
+			if (obj == NULL)
+			{
+				obj = ((MOpcodeMesh *)colObj.c_ptr())->Clone(scale);
+
+				mColObjs.PushBack(obj.c_ptr());
+
+				opNode->SetColObj(obj);
+			}
+
 		}
 	}
 
-	void MOpcodeScene::Build()
+	
+
+	PhyHitInfo MOpcodeScene::RayTrace(const Ray & ray, float dist, int flag, bool ifNoPhyData)
 	{
-		safe_delete(mCollisionModel);
+		PhyHitInfo result;
 
-		if(mTriangles.Size() > 0 && mVertices.Size() > 0) {
-			mCollisionModel = new Opcode::Model;
-			mMeshInterface->SetNbVertices(mVertices.Size());
-			mMeshInterface->SetNbTriangles(mTriangles.Size() / 3);
-			mMeshInterface->SetPointers((IceMaths::IndexedTriangle*)&mTriangles[0], (IceMaths::Point*)&mVertices[0]);
+		Array<Scene::TraceInfo> traceArray;
 
-			Opcode::OPCODECREATE info;
-			info.mIMesh = mMeshInterface;
-			info.mCanRemap = true;
-			mCollisionModel->Build(info);
-		}	
-	}
+		Scene::TraceInfo::SortOp op;
 
-	void MOpcodeScene::Clear()
-	{
-		safe_delete (mCollisionModel);
-		mVertices.Clear();
-		mTriangles.Clear();
-		mMateirals.Clear();
-	}
+		World::Instance()->RayTracing(ray, dist, traceArray, flag);
 
-	bool MOpcodeScene::RayTrace(const Ray & ray, float * dist, unsigned int * cache, int * mtlId, Vec3 * colPos, Vec3 * colNml)
-	{
-		if (!mCollisionModel)
-			return false;
+		if (traceArray.Size() == 0)
+			return result;
 
-		Opcode::RayCollider collider;
-
-		IceMaths::Ray _ray;
-		_ray.mDir.x = ray.direction.x;
-		_ray.mDir.y = ray.direction.y;
-		_ray.mDir.z = ray.direction.z;
-
-		_ray.mOrig.x = ray.origin.x;
-		_ray.mOrig.y = ray.origin.y;
-		_ray.mOrig.z = ray.origin.z;
-
-		collider.SetClosestHit(true);
-		collider.SetCulling(true);
-		collider.SetDestination(mQueryResult);
-
-		if (collider.Collide(_ray, *mCollisionModel, 0, cache))
+		Sort(&traceArray[0], traceArray.Size(), op);
+		
 		{
+			Array<Scene::TraceInfo>::Iterator whr = traceArray.Begin();
+			Array<Scene::TraceInfo>::Iterator end = traceArray.End();
 
-			int bnFaces = mQueryResult->GetNbFaces();
-			if( bnFaces == 0 )
-				return false;
-
-			Opcode::VertexPointers vp;
-
-			mMeshInterface->GetTriangle(vp, mQueryResult->GetFaces()->mFaceID);
-
-			if (dist)
+			while (whr != end)
 			{
-				*dist = mQueryResult->GetFaces()->mDistance;
+				if (result.node && result.Distance < whr->dist)
+					break;
+
+				SceneNode * node = whr->node;
+
+				if (node->GetPhyData())
+				{
+					PhyHitInfo hitInfo;
+					MOpcodeNode * opNode = (MOpcodeNode *)node->GetPhyData();
+
+					if (opNode->RayTrace(hitInfo, ray) && (!result.node || hitInfo.Distance < result.Distance))
+					{
+						result = hitInfo;
+						result.node = opNode->GetSceneNode();
+					}
+				}
+				else if (ifNoPhyData)
+				{
+					if (!result.node || whr->dist < result.Distance)
+					{
+						result.node = node;
+						result.Distance = whr->dist;
+						result.Position = ray.origin + ray.direction * result.Distance;
+						result.Normal = Vec3::Zero;
+						result.MaterialId = -1;
+					}
+				}
+
+				++whr;
 			}
-
-			if (mtlId)
-			{
-				*mtlId = mMateirals[mQueryResult->GetFaces()->mFaceID];
-			}
-
-			if(colPos)
-			{
-				// calculates Barycentric coordinates.  V1 + f(V2-V1) + g(V3-V1)
-				const Opcode::CollisionFace * pColFace = mQueryResult->GetFaces();
-
-				const IceMaths::Point& p0 = *vp.Vertex[0];
-				const IceMaths::Point& p1 = *vp.Vertex[1];
-				const IceMaths::Point& p2 = *vp.Vertex[2];
-
-				IceMaths::Point pt = p0 + pColFace->mU * (p1-p0) +	pColFace->mV * (p2-p0);
-
-				colPos->x = pt.x;
-				colPos->y = pt.y;
-				colPos->z = pt.z;
-			}
-
-			if (colNml)
-			{			
-				const IceMaths::Point& p0 = *vp.Vertex[0];
-				const IceMaths::Point& p1 = *vp.Vertex[1];
-				const IceMaths::Point& p2 = *vp.Vertex[2];
-
-				// Compute normal direction
-				IceMaths::Point Normal = (p2 - p1)^(p0 - p1);
-				colNml->x = Normal.x;
-				colNml->y = Normal.y;
-				colNml->z = Normal.z;
-				colNml->NormalizeL();
-			}
-
-			return true;
 		}
 
-		return false;
+		return result;
 	}
 }

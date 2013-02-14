@@ -8,6 +8,7 @@ namespace Myway {
 	{
 		mTree = NULL;
 		mLod = 0;
+		mWindMatrixOffset = (float)Math::RandRange(0, int(MTreeGlobal::K_NumWindMatrix));
 	}
 
 	MTreeInstance::~MTreeInstance()

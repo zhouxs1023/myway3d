@@ -141,6 +141,85 @@ Skeleton * Mesh::GetSkeleton()
 	return &mSkeleton;
 }
 
+ColMesh * Mesh::GetColMesh()
+{
+	return &mColMesh;
+}
+
+void Mesh::GenColMeshFromRenderMesh()
+{
+	if (!CanLoad()) // only for load from file
+		return ;
+
+	mColMesh.Clear();
+
+	int numVerts = 0, numIndices = 0;
+
+	for (int i = 0; i < mMeshes.Size(); ++i)
+	{
+		numVerts += mMeshes[i]->GetVertexStream()->GetCount();
+		numIndices += mMeshes[i]->GetIndexStream()->GetCount();
+	}
+
+	if (numVerts == 0 || numIndices == 0)
+		return ;
+
+	mColMesh.Alloc(numVerts, numIndices);
+
+	Array<Vec3> & colVert = mColMesh.GetPositions();
+	Array<int> & colIdx = mColMesh.GetIndices();
+
+	int indexV = 0, indexI = 0;
+	int startVertex = 0;
+
+	for (int i = 0; i < mMeshes.Size(); ++i)
+	{
+		SubMesh * subMesh = mMeshes[i];
+
+		VertexDeclarationPtr decl = subMesh->GetVertexStream()->GetDeclaration();
+
+		const VertexElement * vep = decl->GetElementByUsage(DU_POSITION);
+
+		d_assert (vep && vep->Type == DT_FLOAT3);
+
+		VertexBufferPtr vb = subMesh->GetVertexStream()->GetStream(vep->Stream);
+		int stride = subMesh->GetVertexStream()->GetStreamStride(vep->Stream);
+
+		char * vertData = (char *)vb->Lock(0, 0, LOCK_READONLY);
+		{
+			for (int v = 0; v < subMesh->GetVertexStream()->GetCount(); ++v)
+			{
+				Vec3 * pos = (Vec3 *)(vertData[vep->Offset]);
+				colVert[indexV++] = *pos;
+			}
+		}
+		vb->Unlock();
+
+		IndexBufferPtr ib = subMesh->GetIndexStream()->GetStream();
+		stride = (ib->GetFormat() == FMT_INDEX16 ? sizeof(short) : sizeof(int));
+
+		char * idxData = (char *)ib->Lock(0, 0, LOCK_READONLY);
+		{
+			for (int ii = 0; ii < subMesh->GetIndexStream()->GetCount(); ++ii)
+			{
+				int index = 0;
+
+				if (ib->GetFormat() == FMT_INDEX16)
+					index = *((unsigned short *)idxData);
+				else
+					index = *((int *)idxData);
+
+				colIdx[indexI++] = index + startVertex;
+
+				idxData += stride;
+			}
+		}
+		ib->Unlock();
+
+		startVertex += subMesh->GetVertexStream()->GetCount();
+	}
+}
+
 void Mesh::CalcuBounds()
 {
     Array<SubMesh*>::Iterator whr = mMeshes.Begin();

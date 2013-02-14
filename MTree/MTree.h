@@ -6,6 +6,7 @@
 #include "MWTexture.h"
 #include "MWRenderer.h"
 #include "MWVertexBuffer.h"
+#include "MWColMesh.h"
 #include "SpeedTree\\SpeedTreeRT.h"
 
 namespace Myway {
@@ -111,6 +112,8 @@ namespace Myway {
 
 		void SetupLeafBillboard(ShaderParam * param);
 
+		ColMesh * GetColMesh() { return &mColMesh; }
+
 	protected:
 		void _setupGeometry();
 		void _setupTexture();
@@ -118,6 +121,8 @@ namespace Myway {
 		void _setupBranchGeometry();
 		void _setupFrondGeometry();
 		void _setupLeafGeometry();
+
+		void _setupColMesh();
 
 	protected:
 		CSpeedTreeRT * mSpeedTree;
@@ -138,6 +143,7 @@ namespace Myway {
 
 		int mNumLeafLods;
 		RenderOp * mRenderOp_Leaf;
+		ColMesh mColMesh;
 
 	};
 

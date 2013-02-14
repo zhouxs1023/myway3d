@@ -14,22 +14,22 @@ namespace Myway {
 
 		mLightCameraNode->Attach(mLightCamera);
 
-		mDist[0] = 100;
-		mDist[1] = 400;
-		mDist[2] = 1200;
-		mDist[3] = 2000;
+		mDist[0] = 150;
+		mDist[1] = 600;
+		mDist[2] = 1500;
 
-		mBias[0] = 0.0005f;
-		mBias[1] = 0.0015f;
+		mBias[0] = 0.001f;
+		mBias[1] = 0.002f;
 		mBias[2] = 0.003f;
-		mBias[3] = 0.008f;
 
 		mOffset = 5000;
 
 		_initRT();
 
 		mTech_ShadowDepth = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowDepth");
-		mTech_Shadow = Environment::Instance()->GetShaderLib()->GetTechnique("Shadow");
+		mTech_Shadow[0] = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowL0");
+		mTech_Shadow[1] = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowL1");
+		mTech_Shadow[2] = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowL2");
 
 		mTex_Random = VideoBufferManager::Instance()->Load2DTexture("random2.png", "Shaders\\random.png");
 	}
@@ -42,12 +42,12 @@ namespace Myway {
 
 	void Shadow::_initRT()
 	{
-		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_DepthTex", 2048, 2048, FMT_R32F);
+		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_DepthTex", 2048, 2048, FMT_R16F);
 		mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);
 
 		mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_Shadow_DepthStencil", 2048, 2048, FMT_D24S8, MSAA_NONE);
 
-		mTex_Shadow = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_Tex", -1, -1, FMT_X8R8G8B8);
+		mTex_Shadow = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_Tex", -1, -1, FMT_R16F);
 		mRT_Shadow = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Shadow);
 	}
 
@@ -68,17 +68,16 @@ namespace Myway {
 
 		_impVisibleCull();
 
-		RS_BeginEvent("ShadowMap");
-
-
-		for (int i = 0; i < K_NumShadowLayers; ++i)
 		{
-			_calcuCascadedMatrix(i);
-			_renderDepth(i);
-			_genShadowMap(i, depthTex);
-		}
+			RS_RenderEvent(ShadowMap);
 
-		RS_EndEvent();
+			for (int i = 0; i < K_NumShadowLayers; ++i)
+			{
+				_calcuCascadedMatrix(i);
+				_renderDepth(i);
+				_genShadowMap(i, depthTex);
+			}
+		}
 
 		render->SetRenderTarget(0, oldRt);
 		render->SetDepthStencil(oldDs);
@@ -207,7 +206,7 @@ namespace Myway {
 		mInverseWorldCameraVP = World::Instance()->MainCamera()->GetViewProjMatrix().Inverse();
 
 		float nearClip = worldCam->GetNearClip();
-		float farClip = mDist[3];
+		float farClip = mDist[K_NumShadowLayers - 1];
 
 		Vec3 xAixs = worldCam->GetDirection();
 		Vec3 yAixs = worldCam->GetUp();
@@ -386,11 +385,11 @@ namespace Myway {
 		shadowInfo.y = mDist[layer];
 		shadowInfo.z = mBias[layer];
 
-		ShaderParam * uShadowInfo = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gShadowInfo");
-		ShaderParam * uMatShadow = mTech_Shadow->GetPixelShaderParamTable()->GetParam("matShadow");
-		ShaderParam * uCornerLeftTop = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
-		ShaderParam * uCornerRightDir = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
-		ShaderParam * uCornerDownDir = mTech_Shadow->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
+		ShaderParam * uShadowInfo = mTech_Shadow[layer]->GetPixelShaderParamTable()->GetParam("gShadowInfo");
+		ShaderParam * uMatShadow = mTech_Shadow[layer]->GetPixelShaderParamTable()->GetParam("matShadow");
+		ShaderParam * uCornerLeftTop = mTech_Shadow[layer]->GetPixelShaderParamTable()->GetParam("gCornerLeftTop");
+		ShaderParam * uCornerRightDir = mTech_Shadow[layer]->GetPixelShaderParamTable()->GetParam("gCornerRightDir");
+		ShaderParam * uCornerDownDir = mTech_Shadow[layer]->GetPixelShaderParamTable()->GetParam("gCornerDownDir");
 
 		uCornerLeftTop->SetUnifom(cornerLeftTop.x, cornerLeftTop.y, cornerLeftTop.z, 0);
 		uCornerRightDir->SetUnifom(cornerRightDir.x, cornerRightDir.y, cornerRightDir.z, 0);
@@ -413,6 +412,6 @@ namespace Myway {
 		state.Filter = TEXF_DEFAULT;
 		RenderSystem::Instance()->SetTexture(2, state, mTex_Random.c_ptr());
 
-		RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_TEST, mTech_Shadow);
+		RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_TEST, mTech_Shadow[layer]);
 	}
 }

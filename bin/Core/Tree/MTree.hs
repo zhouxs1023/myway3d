@@ -13,44 +13,35 @@ void WindMatrixLerp(inout float3 vCoord, int nIndex, float fWeight)
 
 void WindEffect_Normal_Tangent(inout float3 vPosition, inout float3 vNormal, inout float3 vTangent, float2 vWindInfo)
 {
-    float2 vWeights = frac(vWindInfo.xy);
-    float2 vIndices = vWindInfo.xy - vWeights;
+    float index = vWindInfo.x;
+	float weight = vWindInfo.y;
 
-    vIndices = fmod(vIndices + gWindMatrixOffset.xx, SPEEDTREE_NUM_WIND_MATRICES);
+    index = fmod(index + gWindMatrixOffset.x, SPEEDTREE_NUM_WIND_MATRICES);
     
-    WindMatrixLerp(vPosition, int(vIndices.x), vWeights.x);
-    WindMatrixLerp(vNormal, int(vIndices.x), vWeights.x);
-    WindMatrixLerp(vTangent, int(vIndices.x), vWeights.x);
-    
-    WindMatrixLerp(vPosition, int(vIndices.y), vWeights.y);
-    WindMatrixLerp(vNormal, int(vIndices.y), vWeights.y);
-    WindMatrixLerp(vTangent, int(vIndices.y), vWeights.y);
+    WindMatrixLerp(vPosition, int(index), weight);
+    WindMatrixLerp(vNormal, int(index), weight);
+    WindMatrixLerp(vTangent, int(index), weight);
 }
 
 
 void WindEffect_Normal(inout float3 vPosition, inout float3 vNormal, float2 vWindInfo)
 {
-    float2 vWeights = frac(vWindInfo.xy);
-    float2 vIndices = vWindInfo.xy - vWeights;
+	float index = vWindInfo.x;
+	float weight = vWindInfo.y;
 
-    vIndices = fmod(vIndices + gWindMatrixOffset.xx, SPEEDTREE_NUM_WIND_MATRICES);
-    
-    WindMatrixLerp(vPosition, int(vIndices.x), vWeights.x);
-    WindMatrixLerp(vNormal, int(vIndices.x), vWeights.x);
-    
-    WindMatrixLerp(vPosition, int(vIndices.y), vWeights.y);
-    WindMatrixLerp(vNormal, int(vIndices.y), vWeights.y);
+    index = fmod(index + gWindMatrixOffset.x, SPEEDTREE_NUM_WIND_MATRICES);
+
+    WindMatrixLerp(vPosition, int(index), weight);
+    WindMatrixLerp(vNormal, int(index), weight);
 }
 
 
 void WindEffect(inout float3 vPosition, float2 vWindInfo)
 {
-    float2 vWeights = frac(vWindInfo.xy);
-    float2 vIndices = vWindInfo.xy - vWeights;
+    float index = vWindInfo.x;
+	float weight = vWindInfo.y;
 
-    vIndices = fmod(vIndices + gWindMatrixOffset.xx, SPEEDTREE_NUM_WIND_MATRICES);
+    index = fmod(index + gWindMatrixOffset.x, SPEEDTREE_NUM_WIND_MATRICES);
     
-    WindMatrixLerp(vPosition, int(vIndices.x), vWeights.x);
-
-    WindMatrixLerp(vPosition, int(vIndices.y), vWeights.y);
+    WindMatrixLerp(vPosition, int(index), weight);
 }

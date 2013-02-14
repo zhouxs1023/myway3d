@@ -2,14 +2,14 @@
 
 namespace Myway {
 
-	IMP_SLN(PhysicsSystem);
+	IMP_SLN(IPhyWorld);
 
-	PhysicsSystem::PhysicsSystem()
+	IPhyWorld::IPhyWorld()
 	{
 		INIT_SLN;
 	}
 
-	PhysicsSystem::~PhysicsSystem()
+	IPhyWorld::~IPhyWorld()
 	{
 		SHUT_SLN;
 	}

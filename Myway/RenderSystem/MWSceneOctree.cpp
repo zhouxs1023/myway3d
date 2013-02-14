@@ -206,7 +206,7 @@ void OctreeNode::GetSceneNodesInSphere(SceneNodeList & list, const Sphere & sph)
     }
 }
 
-void OctreeNode::RayTracing(const Ray & ray, List<SceneNode *> & nodes, int flag)
+void OctreeNode::RayTracing(const Ray & ray, float dist, Array<Scene::TraceInfo> & nodes, int flag)
 {
     _node * head = m_head;
 
@@ -220,44 +220,10 @@ void OctreeNode::RayTracing(const Ray & ray, List<SceneNode *> & nodes, int flag
 
             const Aabb & aabb = node->GetWorldAabb();
             Math::RayIntersection(info, ray, aabb);
-            if (info.iterscetion == TRUE && info.distance >= 0.0f)
+            if (info.iterscetion == TRUE && info.distance >= 0 && info.distance <= dist)
             {
-                nodes.PushBack(node);
-            }
-        }
-
-        head = head->next;
-    }
-}
-
-void OctreeNode::RayTracing(const Ray & ray, List<Mover *> & geoms, int flag)
-{
-    _node * head = m_head;
-
-    while (head)
-    {
-        SceneNode * node = head->node;
-        RayIntersectionInfo info;
-        Math::RayIntersection(info, ray, node->GetWorldAabb());
-
-        if (info.iterscetion == TRUE && info.distance >= 0.0f)
-        {
-            SceneNode::MoverVisitor v = node->GetMovers();
-
-            while (!v.Endof())
-            {
-                Mover * geo = *v.Cursor();
-
-                if (geo->GetFlag().TestAny(flag))
-                {
-                    Math::RayIntersection(info, ray, geo->GetWorldAabb());
-                    if (info.iterscetion == TRUE && info.distance >= 0)
-                    {
-                        geoms.PushBack(geo);
-                    }
-                }
-
-                ++v;
+				Scene::TraceInfo tinfo = { node, info.distance };
+                nodes.PushBack(tinfo);
             }
         }
 
@@ -504,65 +470,34 @@ void OctreeScene::GetSceneNodesInSphere(SceneNodeList & list, const Sphere & sph
 }
 
 
-void OctreeScene::RayTracing(const Ray & ray, 
-                              List<SceneNode *> & nodes,
+void OctreeScene::RayTracing(const Ray & ray, float dist,
+                              Array<Scene::TraceInfo> & nodes,
                               int mark)
 {
-    _RayTracing(m_root, ray, nodes, mark);
+    _RayTracing(m_root, ray, dist, nodes, mark);
 }
 
-void OctreeScene::RayTracing(const Ray & ray,
-                              List<Mover *> & geoms,
-                              int mark)
-{
-    _RayTracing(m_root, ray, geoms, mark);
-}
-
-void OctreeScene::_RayTracing(OctreeNode * node, const Ray & ray, 
-                              List<SceneNode *> & nodes, int mark)
+void OctreeScene::_RayTracing(OctreeNode * node, const Ray & ray, float dist,
+                              Array<Scene::TraceInfo> & nodes, int mark)
 {
     const Aabb & bound = node->GetBound();
 
     RayIntersectionInfo info;
     Math::RayIntersection(info, ray, bound);
-    if (info.iterscetion == TRUE && info.distance >= -Math::EPSILON_E4)
+    if (info.iterscetion == TRUE && info.distance >= -Math::EPSILON_E4 && info.distance <= dist)
     {
-        node->RayTracing(ray, nodes, mark);
+        node->RayTracing(ray, dist, nodes, mark);
 
         for (int i = 0; i < 8; ++i)
         {
             OctreeNode * child = node->_GetChild(i);
             if (child)
             {
-                _RayTracing(child, ray, nodes, mark);
+                _RayTracing(child, ray, dist, nodes, mark);
             }
         }
     }
 }
-
-void OctreeScene::_RayTracing(OctreeNode * node, const Ray & ray,
-                              List<Mover *> & geoms,
-                              int flag)
-{
-    const Aabb & bound = node->GetBound();
-
-    RayIntersectionInfo info;
-    Math::RayIntersection(info, ray, bound);
-    if (info.iterscetion == TRUE && info.distance > 0)
-    {
-        node->RayTracing(ray, geoms, flag);
-
-        for (int i = 0; i < 8; ++i)
-        {
-            OctreeNode * child = node->_GetChild(i);
-            if (child)
-            {
-                _RayTracing(child, ray, geoms, flag);
-            }
-        }
-    }
-}
-
 
 OctreeNode * OctreeScene::AllocOctNode()
 {

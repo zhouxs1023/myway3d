@@ -142,8 +142,8 @@ namespace Myway {
 
         VideoBufferManager * vm = VideoBufferManager::Instance();
 
-        mRenderTarget = vm->CreateRenderTarget("Core_UnderWaterGodRayRT", -1, -1, FMT_R16F, MSAA_NONE);
-        mTexture = vm->CreateTextureRT("Core_UnderWaterGodRayRT", -1, -1, FMT_R16F);
+		mTexture = vm->CreateTextureRT("Core_UnderWaterGodRayRT", -1, -1, FMT_R16F);
+        mRenderTarget = vm->CreateRenderTarget(mTexture);
 
         mTech_Ray = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWaterGodRay");
         mTech_Blend = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWaterGodRayBlend");

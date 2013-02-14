@@ -73,8 +73,7 @@ public:
     const List<SceneNode *> & GetSceneNodes() { return mSceneNodes; }
 
     //ray trace
-    void                RayTracing(const Ray & ray, List<SceneNode *> & nodes, int flags);
-    void                RayTracing(const Ray & ray, List<Mover *> & geoms, int flags);
+    void                RayTracing(const Ray & ray, float dist, Array<Scene::TraceInfo> & nodes, int flags);
 
     void                UpdateFrame();
 

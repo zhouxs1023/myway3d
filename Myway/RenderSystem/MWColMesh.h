@@ -4,19 +4,15 @@
 
 namespace Myway {
 
+	enum MColType
+	{
+		CT_Unknown,
+		CT_Mesh,
+	};
+
 	class MW_ENTRY ColMesh
 	{
 		DECLARE_ALLOC();
-
-	public:
-		struct STri
-		{
-			unsigned short i0;
-			unsigned short i1;
-			unsigned short i2;
-
-			unsigned short mtlId;
-		};
 
 	public:
 		ColMesh();
@@ -26,11 +22,11 @@ namespace Myway {
 		void Clear();
 
 		Array<Vec3> & GetPositions() { return mPositions; }
-		Array<STri> & GetTrangles() { return mTrangles; } 
+		Array<int> & GetIndices() { return mIndices; } 
 
 	protected:
 		Array<Vec3> mPositions;
-		Array<STri> mTrangles;
+		Array<int> mIndices;
 	};
 
 }

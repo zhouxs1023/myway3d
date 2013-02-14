@@ -155,8 +155,8 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
-        mRenderTarget = video->CreateRenderTarget("Core_Cloud_RT", width, height, FMT_X8R8G8B8, MSAA_NONE);
-        mTexture = video->CreateTextureRT("Core_Cloud_Texture", width, height);
+        mRenderTarget = video->CreateRenderTarget("Core_Cloud_RT", width, height, FMT_R16F, MSAA_NONE);
+        mTexture = video->CreateTextureRT("Core_Cloud_Texture", width, height, FMT_R16F);
     }
 
     void Cloud::_initLayer()
@@ -247,7 +247,7 @@ namespace Myway {
 
         render->SetTexture(0, state, mTexture.c_ptr());
 
-        for (int i = 0; i < 3; ++i)
+        for (int i = 0; i < 2; ++i)
         {
             RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurH);
 

@@ -28,10 +28,10 @@ namespace Myway {
 
 		VideoBufferManager * video = VideoBufferManager::Instance();
 
-		mRT_Quad = video->CreateRenderTarget("Env_SSAO_RT_Quad", width / 2, height / 2, FMT_X8R8G8B8, MSAA_NONE);
-		mTex_Quad = video->CreateTextureRT("Env_SSAO_Tex_Quad0", width / 2, height / 2, FMT_X8R8G8B8);
+		mRT_Quad = video->CreateRenderTarget("Env_SSAO_RT_Quad", width / 2, height / 2, FMT_R16F, MSAA_NONE);
+		mTex_Quad = video->CreateTextureRT("Env_SSAO_Tex_Quad0", width / 2, height / 2, FMT_R16F);
 
-		mTex_Ao = video->CreateTextureRT("Env_SSAO_Tex", width, height, FMT_X8R8G8B8);
+		mTex_Ao = video->CreateTextureRT("Env_SSAO_Tex", width, height, FMT_R16F);
 		mRT_Ao = video->CreateRenderTarget(mTex_Ao);
 
 		mTech_Ao = Environment::Instance()->GetShaderLib()->GetTechnique("SSAO");

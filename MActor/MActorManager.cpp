@@ -3,6 +3,7 @@
 #include "MWRenderSystem.h"
 #include "MWRenderHelper.h"
 #include "MActorUtility.h"
+#include "MWEnvironment.h"
 #include <EMotionFX.h>
 
 namespace Myway {
@@ -16,6 +17,7 @@ namespace Myway {
 		, OnShutdown(&RenderEvent::OnEngineShutdown, this, &MActorManager::_Shutdown)
 		, OnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &MActorManager::_PreVisibleCull)
 		, OnRender(&RenderEvent::OnRenderSolid2, this, &MActorManager::_Render)
+		, OnRenderDepth(&Shadow::OnRenderDepth, this, &MActorManager::_RenderDepth)
 		, mUId(0)
 	{
 		INIT_SLN;
@@ -36,6 +38,11 @@ namespace Myway {
 		mSkinedTech_Deferred = mShaderLib->GetTechnique("ActorDeferredSkined");
 
 		d_assert (mTech_Deferred != NULL && mSkinedTech_Deferred != NULL);
+
+		mTech_Depth = mShaderLib->GetTechnique("ActorDepth");
+		mSkinedTech_Depth = mShaderLib->GetTechnique("ActorDepthSkined");
+
+		d_assert (mTech_Depth != NULL && mSkinedTech_Depth != NULL);
 	}
 
 	void MActorManager::_Shutdown(void *, void *)
@@ -265,7 +272,81 @@ namespace Myway {
 		render->_EndEvent();
 	}
 
-	void MActorManager::_RenderDepth(void *, void *)
+	void MActorManager::_RenderDepth(void * param0, void * param1)
 	{
+		int layer = *(int *)param1;
+
+		const Shadow::CascadedMatrixs & forms = Environment::Instance()->GetShadow()->GetCascadedMatrix(layer);
+
+		Camera * cam = World::Instance()->MainCamera();
+		const Mat4 & matVP = forms.mViewProj;
+
+		ShaderParam * uMatWVP = mTech_Depth->GetVertexShaderParamTable()->GetParam("matWVP");
+		ShaderParam * uMatViewProj = mSkinedTech_Depth->GetVertexShaderParamTable()->GetParam("matVP");
+
+		uMatViewProj->SetMatrix(matVP);
+
+		RenderSystem * render = RenderSystem::Instance();
+
+		render->_BeginEvent("Render Actor");
+
+		MCore::Matrix matBlend[255];
+
+		for (int i = 0; i < mVisibleActors.Size(); ++i)
+		{
+			MActor * actor = mVisibleActors[i];
+			Node * node = actor->GetAttachNode();
+			MActorResPtr res = actor->GetPart(0);
+			EMotionFX::Actor * eactor = actor->_GetMainActor();
+
+			if (res == NULL)
+				continue;
+
+			for (int j = 0; j < res->GetMeshCount(); ++j)
+			{
+				MActorRes::SMesh * mesh = res->GetMesh(j);
+
+				int boneCount = mesh->BoneArray.Size();
+
+				for (int b = 0; b < boneCount; ++b)
+				{
+					EMotionFX::Node * bone = eactor->GetNodeByID(mesh->BoneArray[b]->GetID());
+
+					d_assert (bone != NULL);
+
+					matBlend[b] = bone->GetInvBoneTM() * bone->GetWorldTM();
+				}
+
+				RenderRegister::Instance()->SetBlendMatrix((const Mat4 *)matBlend, boneCount);
+
+				for (int p = 0; p < mesh->PrimCount; ++p)
+				{
+					MActorRes::SPrim & prim = mesh->Primitives[p];
+					EMotionFX::Node * enode = eactor->GetNodeByID(prim.NodeId);
+					MActorRes::SMtl * mtl = res->GetMaterial(prim.MaterialId);
+
+					Mat4 worldTM;
+
+					MActorUtility::ToMat4(worldTM, enode->GetWorldTM());
+
+					prim.Rop.xform = worldTM;
+
+					Mat4 matWVP = worldTM * matVP;
+
+					uMatWVP->SetMatrix(matWVP);
+
+					SamplerState state;
+
+					render->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					render->Render(boneCount > 0 ? mSkinedTech_Depth : mTech_Depth, &prim.Rop);
+
+				} // end of p
+
+			} // end of for j
+
+		} // end of for i
+
+		render->_EndEvent();
 	}
 }

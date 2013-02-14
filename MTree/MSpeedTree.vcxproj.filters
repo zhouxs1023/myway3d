@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="src">
-      <UniqueIdentifier>{81c73a90-6035-445f-afe3-d0194b6e1628}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Tree">
       <UniqueIdentifier>{9b29b59d-0e23-49cd-a5aa-dc2c189ab40d}</UniqueIdentifier>
     </Filter>
@@ -29,9 +26,6 @@
   <ItemGroup>
     <ClInclude Include="MVegetation.h">
       <Filter>Tree</Filter>
-    </ClInclude>
-    <ClInclude Include="MForest.h">
-      <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="MVegetationBlock.h">
       <Filter>Tree</Filter>
@@ -139,14 +133,14 @@
     <ClInclude Include="MBranch.h">
       <Filter>Tree</Filter>
     </ClInclude>
+    <ClInclude Include="MForest.h">
+      <Filter>Tree</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MVegetation.cpp">
       <Filter>Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="MForest.cpp">
-      <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="MVegetationBlock.cpp">
       <Filter>Tree</Filter>
@@ -242,6 +236,9 @@
       <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="MBranch.cpp">
+      <Filter>Tree</Filter>
+    </ClCompile>
+    <ClCompile Include="MForest.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>

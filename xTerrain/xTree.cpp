@@ -26,6 +26,7 @@ xTree::xTree(const TString128 & name)
 
 xTree::~xTree()
 {
+	IPhyWorld::Instance()->RemoveNode(mNode);
 	MForest::Instance()->DestroyInstance(mTree);
 	World::Instance()->DestroySceneNode(mNode);
 }
@@ -43,6 +44,21 @@ void xTree::SetTreeFile(const TString128 & meshFile)
 	if (mTree->GetTree() == NULL || mTree->GetTree()->GetSourceName() != meshFile)
 	{
 		mTree->SetTree(meshFile);
+
+		IPhyWorld::Instance()->RemoveNode(mNode);
+
+		if (mTree->GetTree() == NULL)
+			return ;
+
+		if (mTree->GetTree()->GetColMesh()->GetPositions().Size() == 0)
+			return ;
+
+		IColObjPtr colObj = IPhyWorld::Instance()->GetColMesh(mTree->GetTree().c_ptr(), Scale);
+
+		if (colObj == NULL)
+			colObj = IPhyWorld::Instance()->AddColMesh(mTree->GetTree().c_ptr(), mTree->GetTree()->GetColMesh(), Scale);
+
+		IPhyWorld::Instance()->AddNode(mNode, colObj);
 	}
 }
 
@@ -78,6 +94,8 @@ void xTree::SetScale(float s)
 {
 	Scale = s;
 	mNode->SetScale(Scale);
+
+	IPhyWorld::Instance()->OnNodeScaleChanged(mNode);
 }
 
 Vec3 xTree::GetPosition()
@@ -131,6 +149,17 @@ Aabb xTree::GetBound()
 {
 	return mNode->GetWorldAabb();
 }
+
+ColMesh * xTree::GetColMesh()
+{
+	if (mTree && mTree->GetTree() != NULL)
+	{
+		return mTree->GetTree()->GetColMesh();
+	}
+
+	return NULL;
+}
+
 
 bool xTree::OnPropertyChanged(const Property * p)
 {

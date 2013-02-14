@@ -74,6 +74,9 @@ public:
 
 	Skeleton *					GetSkeleton();
 
+	ColMesh *					GetColMesh();
+	void						GenColMeshFromRenderMesh();
+
     void                        CalcuBounds();
 
     virtual void                Load();
@@ -87,6 +90,7 @@ protected:
     Sphere                  mSphere;
     Array<SubMesh*>         mMeshes;
 	Skeleton				mSkeleton;
+	ColMesh					mColMesh;
 };
 
 DeclareSmartPtr(Mesh);

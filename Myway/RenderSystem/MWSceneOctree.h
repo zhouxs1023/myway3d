@@ -41,8 +41,7 @@ public:
     void GetSceneNodesInBound(SceneNodeList & list, const Aabb & bound);
     void GetSceneNodesInSphere(SceneNodeList & list, const Sphere & sph);
 
-    void RayTracing(const Ray & ray, List<SceneNode *> & nodes, int flags);
-    void RayTracing(const Ray & ray, List<Mover *> & geoms, int flags);
+    void RayTracing(const Ray & ray, float dist, Array<Scene::TraceInfo> & nodes, int flags);
 
 protected:
     void _Create(OctreeScene * creator);
@@ -88,12 +87,8 @@ public:
     virtual void GetSceneNodesInBound(SceneNodeList & list, const Aabb & bound);
     virtual void GetSceneNodesInSphere(SceneNodeList & list, const Sphere & sph);
 
-    virtual void RayTracing(const Ray & ray, 
-                            List<SceneNode *> & nodes,
-                            int flag);
-
-    virtual void RayTracing(const Ray & ray,
-                            List<Mover *> & geoms,
+    virtual void RayTracing(const Ray & ray, float dist,
+                            Array<Scene::TraceInfo> & nodes,
                             int flag);
 
     virtual SceneType GetType() const;
@@ -104,11 +99,8 @@ protected:
 
     void _GetVisibleSceneNodes(OctreeNode * ocnode, SceneNodeList & list, Camera * cam);
 
-    void _RayTracing(OctreeNode * node, const Ray & ray, 
-                     List<SceneNode *> & nodes, int mark);
-    void _RayTracing(OctreeNode * node, const Ray & ray,
-                     List<Mover *> & geoms,
-                     int mark);
+    void _RayTracing(OctreeNode * node, const Ray & ray, float dist,
+                     Array<Scene::TraceInfo> & nodes, int mark);
 
     OctreeNode * AllocOctNode();
     void FreeOctNode(OctreeNode * node);

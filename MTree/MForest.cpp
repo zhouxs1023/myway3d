@@ -713,7 +713,6 @@ namespace Myway {
 		ShaderParam * uTranslateScale = mTech_Branch->GetVertexShaderParamTable()->GetParam("gTranslateScale");
 		ShaderParam * uRotationMatrix = mTech_Branch->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
 
-		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -726,6 +725,7 @@ namespace Myway {
 			Quat Orientation = pNode->GetWorldOrientation();
 			Vec3 Scale = pNode->GetWorldScale();
 
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
 			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
 			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
@@ -758,7 +758,6 @@ namespace Myway {
 		ShaderParam * uTranslateScale = mTech_Frond->GetVertexShaderParamTable()->GetParam("gTranslateScale");
 		ShaderParam * uRotationMatrix = mTech_Frond->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
 
-		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -771,6 +770,7 @@ namespace Myway {
 			Quat Orientation = pNode->GetWorldOrientation();
 			Vec3 Scale = pNode->GetWorldScale();
 
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
 			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
 			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
@@ -806,7 +806,6 @@ namespace Myway {
 
 		ShaderParam * uBillboardTable = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gBillboardTable");
 
-		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -819,6 +818,7 @@ namespace Myway {
 			Quat Orientation = pNode->GetWorldOrientation();
 			Vec3 Scale = pNode->GetWorldScale();
 
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
 			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
 			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
@@ -855,7 +855,6 @@ namespace Myway {
 		ShaderParam * uTranslateScale = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("gTranslateScale");
 		ShaderParam * uRotationMatrix = mTech_BranchDepth->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
 
-		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -871,6 +870,7 @@ namespace Myway {
 			Quat Orientation = pNode->GetWorldOrientation();
 			Vec3 Scale = pNode->GetWorldScale();
 
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
 			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
 			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
@@ -903,7 +903,6 @@ namespace Myway {
 		ShaderParam * uTranslateScale = mTech_FrondDepth->GetVertexShaderParamTable()->GetParam("gTranslateScale");
 		ShaderParam * uRotationMatrix = mTech_FrondDepth->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
 
-		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -919,6 +918,7 @@ namespace Myway {
 			Quat Orientation = pNode->GetWorldOrientation();
 			Vec3 Scale = pNode->GetWorldScale();
 
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
 			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
 			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
@@ -954,7 +954,6 @@ namespace Myway {
 
 		ShaderParam * uBillboardTable = mTech_LeafDepth->GetVertexShaderParamTable()->GetParam("gBillboardTable");
 
-		uWindMatrixOffset->SetUnifom(0, 0, 0, 0);
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -970,6 +969,7 @@ namespace Myway {
 			Quat Orientation = pNode->GetWorldOrientation();
 			Vec3 Scale = pNode->GetWorldScale();
 
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
 			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
 			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
 
