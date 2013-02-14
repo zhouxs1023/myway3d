@@ -100,14 +100,12 @@
 		</Shader>
 
 		<Shader name = "CloudShadingVS" language = "cg" profile = "vs30" source = "CloudShading.vs" >
-			  <param name = "matWVP" type = "float4x4" btype = "matWVP" />
 		</Shader>
 
 		<Shader name = "CloudShadingPS" language = "cg" profile = "ps30" source = "CloudShading.ps" >
 		</Shader>
 
     <Shader name = "CloudLightingVS" language = "cg" profile = "vs30" source = "CloudLighting.vs" >
-      	<param name = "matWVP" type = "float4x4" btype = "matWVP" />
     </Shader>
 
     <Shader name = "CloudLightingPS" language = "cg" profile = "ps30" source = "CloudLighting.ps" >

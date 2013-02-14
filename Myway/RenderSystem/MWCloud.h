@@ -37,6 +37,9 @@ namespace Myway {
         TexturePtr mTex_Layer0;
         TexturePtr mTex_Layer1;
 
+		Mat4 mMatProj;
+		float mFarClip;
+
 		tEventListener<Cloud> OnResize;
     };
 }

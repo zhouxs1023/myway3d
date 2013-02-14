@@ -12,6 +12,8 @@ namespace Myway {
         _initTechnique();
         _initRenderTarget();
         _initLayer();
+
+		mFarClip = 10000.0f;
     }
 
     Cloud::~Cloud()
@@ -19,7 +21,11 @@ namespace Myway {
     }
 
     void Cloud::Render(bool lighting)
-    {
+	{
+		Camera * cam = World::Instance()->MainCamera();
+
+		mMatProj.MakePerspectiveFovLH(cam->GetFov(), cam->GetAspect(), cam->GetNearClip(), mFarClip);
+
         if (lighting)
         {
             RenderSystem * render = RenderSystem::Instance();
@@ -161,11 +167,13 @@ namespace Myway {
 
     void Cloud::_initLayer()
     {
-        const char * layer0 = "CloudLayer1.dds";
-        const char * layer1 = "CloudLayer2.dds";
+        const char * layer0 = "Sky\\CloudLayer1.dds";
+        const char * layer1 = "Sky\\CloudLayer2.dds";
 
         mTex_Layer0 = VideoBufferManager::Instance()->Load2DTexture(layer0, layer0);
         mTex_Layer1 = VideoBufferManager::Instance()->Load2DTexture(layer1, layer1);
+
+		d_assert (mTex_Layer0 != NULL && mTex_Layer1 != NULL);
     }
 
     void Cloud::_lighting()
@@ -179,6 +187,7 @@ namespace Myway {
 
         ShaderParam * uTranslate = mTech_Lighting->GetVertexShaderParamTable()->GetParam("gTranslate");
         ShaderParam * uScale = mTech_Lighting->GetVertexShaderParamTable()->GetParam("gScale");
+		ShaderParam * uMatWVP = mTech_Lighting->GetVertexShaderParamTable()->GetParam("matWVP");
 
         ShaderParam * uMass = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gMass");
         ShaderParam * uWeight = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gWeight");
@@ -215,7 +224,8 @@ namespace Myway {
         uvScroll1 *= time;
 
         uTranslate->SetUnifom(pos.x, pos.y + farclip * height, pos.z, 1);
-        uScale->SetUnifom(farclip, farclip * curved, farclip, 1);
+        uScale->SetUnifom(mFarClip, farclip * curved, mFarClip, 1);
+		uMatWVP->SetMatrix(cam->GetViewMatrix() * mMatProj);
 
         uMass->SetUnifom(mass, 0, 0, 0);
         uWeight->SetUnifom(wieght0, wieght1, 0, 0);
@@ -247,7 +257,7 @@ namespace Myway {
 
         render->SetTexture(0, state, mTexture.c_ptr());
 
-        for (int i = 0; i < 2; ++i)
+        for (int i = 0; i < 1; ++i)
         {
             RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurH);
 
@@ -270,6 +280,7 @@ namespace Myway {
 
         ShaderParam * uTranslate = mTech_Shading->GetVertexShaderParamTable()->GetParam("gTranslate");
         ShaderParam * uScale = mTech_Shading->GetVertexShaderParamTable()->GetParam("gScale");
+		ShaderParam * uMatWVP = mTech_Shading->GetVertexShaderParamTable()->GetParam("matWVP");
         ShaderParam * uUVScale = mTech_Shading->GetVertexShaderParamTable()->GetParam("gUVScale");
         ShaderParam * uUVScroll = mTech_Shading->GetVertexShaderParamTable()->GetParam("gUVScroll");
 
@@ -308,7 +319,8 @@ namespace Myway {
 
         //uTranslate->SetUnifom(pos.x, pos.y + farclip * 0.1f, pos.z, 1);
         uTranslate->SetUnifom(pos.x, pos.y + farclip * height, pos.z, 1);
-        uScale->SetUnifom(farclip, farclip * curved, farclip, 1);
+		uScale->SetUnifom(mFarClip, farclip * curved, mFarClip, 1);
+		uMatWVP->SetMatrix(cam->GetViewMatrix() * mMatProj);
 
         uMass->SetUnifom(mass, 0, 0, 0);
         uWeight->SetUnifom(wieght0, wieght1, 0, 0);
