@@ -6,7 +6,7 @@ namespace Myway {
 
     Fog::Fog()
     {
-        mTech = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWaterFog");
+        mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Fog");
         d_assert (mTech);
     }
 
@@ -44,8 +44,7 @@ namespace Myway {
         state.Filter = TEXF_POINT;
 
         RenderSystem::Instance()->SetTexture(0, state, depthTex);
-        RenderSystem::Instance()->SetTexture(1, state, sceneTex);
 
-        RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech);
+        RenderHelper::Instance()->DrawScreenQuad(BM_ALPHA_BLEND, mTech);
     }
 }

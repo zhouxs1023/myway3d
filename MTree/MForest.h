@@ -65,6 +65,8 @@ namespace Myway {
 		float GetWindStrength(void) const { return mWindStrength; }
 		void SetWindStrength(float fStrength);
 
+		ShaderLib * GetShaderLib() const { return mShaderLib; }
+
 	protected:
 		void Init();
 		void Update();

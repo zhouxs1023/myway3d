@@ -26,7 +26,7 @@ PS_OUT main(PS_IN In)
     Out.color = tex2D(tex_diffuse, In.UV.xy);
 	Out.normal = float4(In.NormalDepth.xyz, 0); // no shadow
 	Out.material = float4(1, 1, 1, 1);
-    Out.depth = float4(In.NormalDepth.w * gClipPlane.w, 0, 0, 0);
+    Out.depth = float4(In.NormalDepth.w * gClipPlane.w, 1, 0, 0);
 
 	Out.color.rgb *= 0.8f;
     

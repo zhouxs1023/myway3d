@@ -9,7 +9,6 @@ struct PS_IN
 };
 
 uniform sampler2D gTex_Depth;
-uniform sampler2D gTex_Color;
 
 uniform float4 gFogParam; // x: start, y: end, z: 1 / (end - start)
 uniform float4 gFogColor;
@@ -21,17 +20,13 @@ float4 main(PS_IN In) : COLOR
 {
 	float4 p = gCornerLeftTop + gCornerRightDir * In.uv0.x + gCornerDownDir * In.uv0.y;
 	float d = tex2D(gTex_Depth, In.uv0).r;
-	float3 pos = p * d;
+	float3 pos = p.xyz * d;
 	float len = length(pos);
 	
 	float fog = (len - gFogParam.x) * gFogParam.z;
 	fog = saturate(fog) * (d < 1);
-	fog = lerp(gFogParam.w, 1, fog);
 	
-	float4 sceneColor = tex2D(gTex_Color, In.uv0);
-	
-	float4 clr = sceneColor * (1 - fog) + gFogColor * fog;
-	clr.a = 1;
+	float4 clr = float4(gFogColor.rgb, fog);
 	
 	return clr;
 }

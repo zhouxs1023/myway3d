@@ -95,8 +95,6 @@ namespace Myway {
 		if (Environment::Instance()->GetSSAO())
 			Environment::Instance()->GetSSAO()->Render(mTex_Depth.c_ptr(), mTex_Normal.c_ptr());
 
-        _updateColorTexture();
-
         // --->render fog
         if (Environment::Instance()->GetFog())
             Environment::Instance()->GetFog()->Render(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
@@ -125,13 +123,11 @@ namespace Myway {
         if (Environment::Instance()->GetGodRay() && WaterManager::Instance()->IsUnderWater())
             Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 
-		_updateColorTexture();
-
 		if (Environment::Instance()->GetWaterManager())
 		{
 			// ---> render caustics
-			if (WaterManager::Instance()->IsUnderWater())
-				WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());
+			/*if (WaterManager::Instance()->IsUnderWater())
+				WaterManager::Instance()->RenderUnderCaustics(mTex_Depth.c_ptr(), mTex_Color.c_ptr());*/
 
 			_updateColorTexture();
 
@@ -160,7 +156,6 @@ namespace Myway {
 		if (Environment::Instance()->GetGodRay() && !WaterManager::Instance()->IsUnderWater())
 		{
 			Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
-			_updateColorTexture();
 		}
 
 		// --->render object
