@@ -28,7 +28,5 @@ PS_OUT main(PS_IN In)
 	Out.material = float4(1, 1, 1, 1);
     Out.depth = float4(In.NormalDepth.w * gClipPlane.w, 1, 0, 0);
 
-	Out.color.rgb *= 0.8f;
-    
     return Out;
 }
