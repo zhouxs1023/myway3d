@@ -1,0 +1,26 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv : TEXCOORD0;
+};
+
+uniform float4 gInvTexSize;
+uniform sampler2D gTex;
+uniform sampler2D gTex_Depth;
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 color = float4(0, 0, 0, 0);
+	float a = 0;
+	
+	color = tex2Dlod(gTex, float4(In.uv, 0, 0));
+	a = 1 - tex2Dlod(gTex_Depth, float4(In.uv, 0, 0)).g;
+
+	color.a *= max(0, a);
+    
+	return color;
+}

@@ -140,6 +140,7 @@
     <ClInclude Include="RenderSystem\MWOcean.h" />
     <ClInclude Include="RenderSystem\MWProjectionGrid.h" />
     <ClInclude Include="RenderSystem\MWShadow.h" />
+    <ClInclude Include="RenderSystem\MWSoftLeaf.h" />
     <ClInclude Include="RenderSystem\MWSSAO.h" />
     <ClInclude Include="RenderSystem\MWTrigger.h" />
     <ClInclude Include="Core\MWAllocator.h" />
@@ -366,6 +367,7 @@
     <ClCompile Include="RenderSystem\MWProjectionGrid.cpp" />
     <ClCompile Include="RenderSystem\MWRenderDefine.cpp" />
     <ClCompile Include="RenderSystem\MWShadow.cpp" />
+    <ClCompile Include="RenderSystem\MWSoftLeaf.cpp" />
     <ClCompile Include="RenderSystem\MWSSAO.cpp" />
     <ClCompile Include="RenderSystem\MWTrigger.cpp" />
     <ClCompile Include="Core\MWXml.cpp" />

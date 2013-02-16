@@ -606,6 +606,9 @@
     <ClInclude Include="RenderSystem\MWColMesh.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSystem\MWSoftLeaf.h">
+      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -1192,6 +1195,9 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWColMesh.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWSoftLeaf.cpp">
+      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

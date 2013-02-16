@@ -181,6 +181,9 @@ namespace Myway
 
 
     DF_PROPERTY_BEGIN(EvGlobalParam)
+		DF_PROPERTY(EvGlobalParam, SunPicth, "Generic", "SunPicth", PT_Float, 4)
+		DF_PROPERTY(EvGlobalParam, ColorSharpFadeStart, "Generic", "SharpStart", PT_Float, 4)
+		DF_PROPERTY(EvGlobalParam, ColorSharpFadeEnd, "Generic", "SharpEnd", PT_Float, 4)
     DF_PROPERTY_END()
 
     EvGlobalParam::EvGlobalParam()
@@ -189,12 +192,11 @@ namespace Myway
         SkyTexture = DEFAULT_SKY_TEXTURE;
 
         SunPicth = 45;
-        SunYaw = 0;
 
         MoonTexture = DEFAULT_MOON_TEXTURE;
 
-		ColorSharpFadeStart = 50;
-		ColorSharpFadeEnd = 150;
+		ColorSharpFadeStart = 100;
+		ColorSharpFadeEnd = 200;
     }
 
 

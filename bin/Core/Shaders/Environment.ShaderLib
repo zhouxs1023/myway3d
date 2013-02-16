@@ -190,6 +190,13 @@
     <Shader name = "ShadowL2PS" language = "cg" profile = "ps30" source = "ShadowL2.ps" >
     </Shader>
 
+    <Shader name = "SoftLeaf_DownSamplePS" language = "cg" profile = "ps30" source = "SoftLeaf_DownSample.ps" >
+    </Shader>
+
+    <Shader name = "SoftLeaf_BlendPS" language = "cg" profile = "ps30" source = "SoftLeaf_Blend.ps" >
+      <param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
+    </Shader>
+
   </Shaders>
 
 	<Techniques>
@@ -316,6 +323,12 @@
     </Technique>
 
     <Technique name = "ShadowL2" vs = "QuadVS" ps = "ShadowL2PS">
+    </Technique>
+
+    <Technique name = "SoftLeaf_DownSample" vs = "QuadVS" ps = "SoftLeaf_DownSamplePS">
+    </Technique>
+
+    <Technique name = "SoftLeaf_Blend" vs = "QuadVS" ps = "SoftLeaf_BlendPS">
     </Technique>
 
 	</Techniques>

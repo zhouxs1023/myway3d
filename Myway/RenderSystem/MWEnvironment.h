@@ -16,6 +16,7 @@
 #include "MWSSAO.h"
 #include "MWShadow.h"
 #include "MWColorSharp.h"
+#include "MWSoftLeaf.h"
 
 #include "MWEvKeyFrame.h"
 
@@ -56,6 +57,7 @@ namespace Myway {
         HDRLighting * GetHDR() { return mHDR; }
 		SSAO * GetSSAO() { return mSSAO; }
 		ColorSharp * GetColorSharp() { return mColorSharp; }
+		SoftLeaf * GetSoftLeaf() { return mSoftLeaf; }
 
         EvKeyFrame * GetKeyFrame(int type) { return &mKeyFrames[type]; }
         EvGlobalParam * GetGlobalParam() { return &mGlobalParam; }
@@ -77,6 +79,7 @@ namespace Myway {
 		void SetColorSharpEnable(bool b);
 		void SetShadowEnable(bool b);
 		void SetGodRayEnable(bool b);
+		void SetSoftLeafEnable(bool b);
 
     protected:
         void OnCall(Event * sender, void * data);
@@ -113,6 +116,7 @@ namespace Myway {
         HDRLighting * mHDR;
 		SSAO * mSSAO;
 		ColorSharp * mColorSharp;
+		SoftLeaf * mSoftLeaf;
 
         EvKeyFrame mKeyFrames[EVKT_Max];
         EvGlobalParam mGlobalParam;

@@ -15,6 +15,7 @@ DF_PROPERTY_BEGIN(xRenderSetting)
 	DF_PROPERTY(xRenderSetting, ShadowEnable, "Generic", "Shadow", PT_Bool, sizeof(bool))
 	DF_PROPERTY(xRenderSetting, HDREnable, "Generic", "HDR", PT_Bool, sizeof(bool))
 	DF_PROPERTY(xRenderSetting, ColorSharpEnable, "Generic", "ColorSharp", PT_Bool, sizeof(bool))
+	DF_PROPERTY(xRenderSetting, SoftLeafEnable, "Generic", "SoftLeaf", PT_Bool, sizeof(bool))
 	DF_PROPERTY_ENUM(xRenderSetting, SMAAType, "Generic", "SMAA", PT_Int, sizeof(int), eSmaaType::Instance())
 DF_PROPERTY_END()
 
@@ -25,6 +26,7 @@ xRenderSetting::xRenderSetting()
 	, ShadowEnable(false)
 	, ColorSharpEnable(false)
 	, HDREnable(false)
+	, SoftLeafEnable(false)
 	, SMAAType(eSmaaType::SMAA_NONE)
 {
 	INIT_SLN;
@@ -45,6 +47,7 @@ bool xRenderSetting::OnPropertyChanged(const Property * p)
 	Environment::Instance()->SetShadowEnable(ShadowEnable);
 	Environment::Instance()->SetColorSharpEnable(ColorSharpEnable);
 	Environment::Instance()->SetHDREnable(HDREnable);
+	Environment::Instance()->SetSoftLeafEnable(SoftLeafEnable);
 	RenderSystem::Instance()->SetSMAAType((eSmaaType::enum_t)SMAAType);
 
 	return true;

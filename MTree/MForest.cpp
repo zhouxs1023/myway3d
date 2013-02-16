@@ -1005,6 +1005,8 @@ namespace Myway {
 
 
 
+
+
 	MForestListener gForestListener;
 
 	MForestListener::MForestListener()
@@ -1051,5 +1053,6 @@ namespace Myway {
 		int layer = *(int *)param1;
 		mForest->_renderDepthForShadow(layer);
 	}
+
 }
 

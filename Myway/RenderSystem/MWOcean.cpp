@@ -110,6 +110,9 @@ namespace Myway {
         ShaderParam * uNormalUVParam = mTech->GetPixelShaderParamTable()->GetParam("gNormalUVParam");
         ShaderParam * uNormalWeight = mTech->GetPixelShaderParamTable()->GetParam("gNormalWeight");
 
+		ShaderParam * uInvScreenSize = mTech->GetPixelShaderParamTable()->GetParam("gInvScreenSize");
+		ShaderParam * uFarClip = mTech->GetPixelShaderParamTable()->GetParam("gFarClip");
+
         Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
         Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor;
         Color4 deepColor = Environment::Instance()->GetEvParam()->WaterParam.deepColor;
@@ -151,6 +154,12 @@ namespace Myway {
 
         uNormalUVParam->SetVector(uvNormalParam, 4);
         uNormalWeight->SetUnifom(0.08f, 0.1f, 0.06f, 0.1f);
+
+		float screenW = (float)Engine::Instance()->GetDeviceProperty()->Width;
+		float screenH = (float)Engine::Instance()->GetDeviceProperty()->Height;
+
+		uInvScreenSize->SetUnifom(1 / screenW, 1 / screenW, 0, 0);
+		uFarClip->SetUnifom(cam->GetFarClip(), 0, 0, 0);
 
         SamplerState state;
         render->SetTexture(0, state, mTex_Wave.c_ptr());

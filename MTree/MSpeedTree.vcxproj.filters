@@ -136,9 +136,6 @@
     <ClInclude Include="MForest.h">
       <Filter>Tree</Filter>
     </ClInclude>
-    <ClInclude Include="MSoftLeaf.h">
-      <Filter>Tree</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
@@ -242,9 +239,6 @@
       <Filter>Tree</Filter>
     </ClCompile>
     <ClCompile Include="MForest.cpp">
-      <Filter>Tree</Filter>
-    </ClCompile>
-    <ClCompile Include="MSoftLeaf.cpp">
       <Filter>Tree</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,7 @@ public:
 	bool ShadowEnable;
 	bool ColorSharpEnable;
 	bool HDREnable;
+	bool SoftLeafEnable;
 	int  SMAAType;
 
 public:

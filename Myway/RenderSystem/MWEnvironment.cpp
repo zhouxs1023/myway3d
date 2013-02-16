@@ -26,6 +26,7 @@ namespace Myway {
         mGodRay = NULL;
         mHDR = NULL;
 		mColorSharp = NULL;
+		mSoftLeaf = NULL;
 
         mMode = EVPM_KeyFrame;
         mCurKey = EVKT_Morning;
@@ -71,6 +72,7 @@ namespace Myway {
         safe_delete (mSSAO);
 		safe_delete (mShadow);
 		safe_delete (mColorSharp);
+		safe_delete (mSoftLeaf);
     }
 
 	void Environment::SetSSAOEnable(bool b)
@@ -130,6 +132,18 @@ namespace Myway {
 		else if (b && !mGodRay)
 		{
 			mGodRay = new GodRay();
+		}
+	}
+
+	void Environment::SetSoftLeafEnable(bool b)
+	{
+		if (!b && mSoftLeaf)
+		{
+			safe_delete(mSoftLeaf);
+		}
+		else if (b && !mSoftLeaf)
+		{
+			mSoftLeaf = new SoftLeaf();
 		}
 	}
 
@@ -291,8 +305,13 @@ namespace Myway {
         float sunRoll = _getSunRoll(mCurTime);
         float moonRoll = _getMoonRoll(mCurTime);
 		float lightRoll = _getLightRoll(mCurTime);
-        float lightYaw = mGlobalParam.SunYaw;
+        float lightYaw = 0;
         float lightPicth = mGlobalParam.SunPicth;
+
+		if (lightPicth >= 0)
+			lightPicth = Math::Clamp(lightPicth, 1.0f, 89.0f);
+		else
+			lightPicth = Math::Clamp(lightPicth, -89.0f, -1.0f);
 
         p.SkyU = _getSkyU(mCurTime);
 

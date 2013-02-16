@@ -159,7 +159,7 @@ void xEnvironmentPane::_Frush()
 	_Frush(mMorning, kMorning);
 	_Frush(mNoon, kNoon);
 	_Frush(mEvening, kEvening);
-	//_Frush(&mGlobal, kGlobal);
+	_Frush(mGlobal, kGlobal);
 }
 
 void xEnvironmentPane::_Frush(CMFCPropertyGridCtrl & PropertyGrid, IPropertyObj * obj)

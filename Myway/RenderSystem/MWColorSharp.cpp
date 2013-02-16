@@ -39,7 +39,8 @@ namespace Myway {
         state.Address = TEXA_CLAMP;
         state.Filter = TEXF_POINT;
 
-        RenderSystem::Instance()->SetTexture(0, state, tex);
+		RenderSystem::Instance()->SetTexture(0, state, tex);
+        RenderSystem::Instance()->SetTexture(1, state, texDepth);
 
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech);
 

@@ -80,7 +80,6 @@ namespace Myway
         TString128 SkyTexture;
 
         float SunPicth;
-        float SunYaw;
 
         TString128 MoonTexture;
 

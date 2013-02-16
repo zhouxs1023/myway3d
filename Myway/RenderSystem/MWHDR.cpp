@@ -143,6 +143,7 @@ namespace Myway {
         uUVOffs->SetVector(uvOffs, 4);
 
         SamplerState state;
+		state.Address = TEXA_CLAMP;
         render->SetTexture(0, state, sceneTex);
         
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_DownScale2x);

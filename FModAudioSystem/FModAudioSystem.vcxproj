@@ -51,7 +51,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;../Myway/Plugin\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Sky;$(DXSDK_DIR)/include;$(CG_INC_PATH);fmod/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;..\ThirdParty\fmod/include;..\ThirdParty\xml;../Myway/Physics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MW_IMPORT;MW_DEBUG_MEMORY;MW_PROFILE_CODE_TIMER;MW_DEBUG_MEMORY_POOL;MW_SQLITE3_DATABASE;FM_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -61,8 +61,8 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>myway_d.lib;fmodvc.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <OutputFile>../bin/FMAudioSystem_d.dll</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;$(DXSDK_DIR)/lib/x86;$(CG_LIB_PATH);fmod/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <OutputFile>../bin/Debug/FMAudioSystem_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/fmod/lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>../bin/lib/FMAudioSystem_d.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>

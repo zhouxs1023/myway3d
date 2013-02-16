@@ -46,8 +46,8 @@
     </Shader>
 
     <Shader name = "TreeDepthPS" language = "cg" profile = "ps30" source = "TreeDepth.ps" >
-    </Shader>
-	
+    </Shader> 
+
 	</Shaders>
 
 	<Techniques>
@@ -69,7 +69,6 @@
     
     <Technique name = "LeafDepth" vs = "LeafDepthVS" ps = "TreeDepthPS">
     </Technique>
-
 
   </Techniques>
 

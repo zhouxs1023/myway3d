@@ -158,8 +158,15 @@ namespace Myway {
 			Environment::Instance()->GetGodRay()->Render(mTex_Depth.c_ptr());
 		}
 
-		// --->render object
+		// ---> render object
 		_renderSolidObjects(false);
+
+		// ---> soft leaf
+		if (Environment::Instance()->GetSoftLeaf())
+		{
+			_updateColorTexture();
+			Environment::Instance()->GetSoftLeaf()->Do(mTex_Color.c_ptr(), mTex_Depth.c_ptr());
+		}
 
 		RenderEvent::OnAfterDefferedShading(NULL, NULL);
 

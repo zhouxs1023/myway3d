@@ -310,7 +310,7 @@ namespace Myway {
             _1_u, _1_v = 1.0f,
             divide, noise;
 
-        float x, z, w;
+        float x, y, z, w;
 
         int i = 0, iv, iu;
 
@@ -330,8 +330,10 @@ namespace Myway {
                 x *= divide;
                 z *= divide;
                 noise = mNoise->getValue(x * 5, z * 5);
+				y = -mPlane.d + noise*mOptions.Strength * 1.2f;
 
-				Vertices[i].Position = Vec3(x, -mPlane.d + noise*mOptions.Strength * 1.2f, z);
+				//Vertices[i].Position = Vec3(x, -mPlane.d, z);
+				Vertices[i].Position = Vec3(x, y, z);
 
                 i++;
                 u += du;

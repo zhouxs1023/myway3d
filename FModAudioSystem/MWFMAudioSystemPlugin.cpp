@@ -5,25 +5,30 @@
 namespace Myway
 {
 
-FMAudioSystemPlugin::FMAudioSystemPlugin()
-: Plugin("FMAudioSystem")
-{
-}
+	FMAudioSystem * gAudioSystem = NULL;
 
-FMAudioSystemPlugin::~FMAudioSystemPlugin()
-{
-}
+	FMAudioSystemPlugin::FMAudioSystemPlugin()
+	: Plugin("FMAudioSystem")
+	{
+	}
 
-void FMAudioSystemPlugin::Install()
-{
-    const DeviceProperty * device = Engine::Instance()->GetDeviceProperty();
+	FMAudioSystemPlugin::~FMAudioSystemPlugin()
+	{
+	}
 
-    FMAudioSystem * pAudioSystem = new FMAudioSystem(device->hWnd);
-    Engine::Instance()->SetAudioSystem(pAudioSystem);
-}
+	void FMAudioSystemPlugin::Install()
+	{
+		d_assert (gAudioSystem == NULL);
 
-void FMAudioSystemPlugin::Uninstall()
-{
-}
+		const DeviceProperty * device = Engine::Instance()->GetDeviceProperty();
+
+		gAudioSystem = new FMAudioSystem(device->hWnd);
+		Engine::Instance()->SetAudioSystem(gAudioSystem);
+	}
+
+	void FMAudioSystemPlugin::Uninstall()
+	{
+		safe_delete (gAudioSystem);
+	}
 
 }
