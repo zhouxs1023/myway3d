@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MWRenderSystem.h"
+#include "MWPhysics.h"
 
 namespace Myway {
 
@@ -54,6 +55,8 @@ public:
 		int zWeightMapSize;
 		int iWeightMapSize;
 
+		BFlag32 phyFlags;
+
 		Config()
 		{
 			xSize = zSize = 1024;
@@ -71,6 +74,8 @@ public:
 
 			xWeightMapSize = 0;
 			zWeightMapSize = 0;
+
+			phyFlags.SetFlags(0xFFFFFFFF);
 		}
 	};
 
@@ -106,6 +111,7 @@ public:
 	TerrainSection *	GetVisibleSection(int i) { return mVisibleSections[i]; }
 
 	float				GetHeight(float x, float y);
+	Vec3				GetNormal(float x, float y);
 	Vec3				GetPosition(const Ray & ray);
 	// for editor
 	float *				LockHeight(const Rect & rc);
@@ -128,6 +134,8 @@ public:
 	Vec3				_getPosition(int x, int z);
 	float				_getHeight(int x, int z);
 	Color				_getNormal(int x, int z);
+
+	bool				RayTrace(PhyHitInfo & info, const Ray & ray, float dist);
 
 protected:
     void                OnPreVisibleCull(void * param0, void * param1);

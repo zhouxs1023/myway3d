@@ -23,6 +23,12 @@ enum ePick
 	PICK_Flag = 0x01,
 };
 
+enum eAppMode
+{
+	eAM_Editor,
+	eAM_Game,
+};
+
 #define xSliderMin 1
 #define xSliderMax 100
 
@@ -69,6 +75,8 @@ public:
 
 	Vec3 GetHitPosition(float fx, float fy);
 
+	eAppMode GetAppMode() { return mMode; }
+
 protected:
 	void _input();
 	void _loadPlugins();
@@ -80,6 +88,8 @@ protected:
 	Thread mThread;
 	bool mQuit;
 	bool mActivate;
+
+	eAppMode mMode;
 
 	Mutex * mMutex;
 	HWND mhWnd;

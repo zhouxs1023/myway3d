@@ -313,7 +313,7 @@ namespace Myway {
 		else
 			lightPicth = Math::Clamp(lightPicth, -89.0f, -1.0f);
 
-        p.SkyU = _getSkyU(mCurTime);
+		p.SkyU = _getSkyU(mCurTime);
 
         p.SunDir = _makeSunDir(lightYaw, lightPicth, sunRoll);
         p.MoonDir = _makeMoonDir(lightYaw, lightPicth, moonRoll);

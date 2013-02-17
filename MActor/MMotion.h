@@ -20,6 +20,7 @@ namespace Myway {
 			float BlendOutTime;
 			float Speed;
 			int Loops;
+			bool Mixed;
 			bool Overwrite;
 			bool UseScale;
 
@@ -31,6 +32,7 @@ namespace Myway {
 				Loops			 = -1;
 				Overwrite		 = true;
 				UseScale		 = false;
+				Mixed			 = false;
 			}
 		};
 

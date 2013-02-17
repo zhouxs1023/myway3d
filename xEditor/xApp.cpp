@@ -47,6 +47,8 @@ xApp::xApp()
 
 	mActivate = true;
 
+	mMode = eAM_Editor;
+
 	_loadPlugins();
 }
 
@@ -83,12 +85,30 @@ void xApp::Run()
 				mNeedResize = false;
 			}
 
-			xEvent::OnUpdate(NULL, NULL);
-
 			InputSystem::Instance()->Update();
 
 			if (mActivate && xScene::Instance()->IsInited())
-				_input();
+			{
+				if (mMode == eAM_Editor)
+				{
+					xEvent::OnUpdate(NULL, NULL);
+					_input();
+				}
+				else
+				{
+					xEvent::OnUpdateGame(NULL, NULL);
+				}
+
+				if (IKeyboard::Instance()->KeyUp(KC_F12))
+				{
+					if (mMode == eAM_Editor)
+						mMode = eAM_Game;
+					else
+						mMode = eAM_Editor;
+
+					xEvent::OnAppModeChanged(NULL, NULL);
+				}
+			}
 
 			mEngine->Run();
 		}

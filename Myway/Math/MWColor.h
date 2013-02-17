@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MWCore.h"
+#include "MWColor4.h"
 
 namespace Myway
 {
@@ -28,6 +29,18 @@ public:
 
     bool operator ==(const Color & c) const;
     bool operator !=(const Color & c) const;
+
+	Color4 ToColor4() const
+	{
+		Color4 c4;
+
+		c4.r = r / 255.0f;
+		c4.g = g / 255.0f;
+		c4.b = b / 255.0f;
+		c4.a = a / 255.0f;
+
+		return c4;
+	}
 
     friend MW_ENTRY std::ostream & operator <<(std::ostream & os, const Color & c);
 

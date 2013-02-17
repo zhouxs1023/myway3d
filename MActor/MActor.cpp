@@ -9,6 +9,7 @@ namespace Myway {
 		: Mover(name)
 		, OnActorLoaded(this, &MActor::_OnActorLoaded)
 		, mMainActor(NULL)
+		, mRotationMatrix(Mat4::Identity)
 	{
 	}
 
@@ -82,7 +83,8 @@ namespace Myway {
 
 		if (mMainActor)
 		{
-			mMainActor->Update(timePassed, true, (MCore::Matrix *)&mNode->GetWorldMatrix());
+			Mat4 worldTm = mRotationMatrix * mNode->GetWorldMatrix();
+			mMainActor->Update(timePassed, true, (MCore::Matrix *)&worldTm);
 		}
 	}
 
@@ -112,6 +114,7 @@ namespace Myway {
 		pbi.mPlaySpeed = info.Speed;
 		pbi.mNumLoops = info.Loops;
 		pbi.mPlayMask = info.UseScale ? EMotionFX::PLAYMASK_POSROTSCALE : EMotionFX::PLAYMASK_POSROT;
+		pbi.mMix = info.Mixed;
 
 		mMainActor->PlayMotion(emotion, &pbi);
 

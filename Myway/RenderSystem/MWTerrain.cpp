@@ -10,7 +10,7 @@
 
 namespace Myway {
 
-const int K_Terrain_Version = 2;
+const int K_Terrain_Version = 0;
 const int K_Terrain_Magic = 'TRN0';
 
 Terrain::Terrain(const Config & config)
@@ -278,6 +278,32 @@ void Terrain::_Create(const Config & config)
 	mInited = true;
 }
 
+void Terrain_ReadConfig(Terrain::Config * cfg, DataStreamPtr file, int version)
+{
+	file->Read(&cfg->xSize, sizeof(int));
+	file->Read(&cfg->zSize, sizeof(int));
+
+	file->Read(&cfg->xVertexCount, sizeof(int));
+	file->Read(&cfg->zVertexCount, sizeof(int));
+
+	file->Read(&cfg->iVertexCount, sizeof(int));
+
+	file->Read(&cfg->morphEnable, sizeof(bool));
+	file->Read(&cfg->morphStart, sizeof(float));
+
+	file->Read(&cfg->xSectionSize, sizeof(int));
+	file->Read(&cfg->zSectionSize, sizeof(int));
+	file->Read(&cfg->xSectionCount, sizeof(int));
+	file->Read(&cfg->zSectionCount, sizeof(int));
+	file->Read(&cfg->iSectionCount, sizeof(int));
+
+	file->Read(&cfg->xWeightMapSize, sizeof(int));
+	file->Read(&cfg->zWeightMapSize, sizeof(int));
+	file->Read(&cfg->iWeightMapSize, sizeof(int));
+
+	file->Read(&cfg->phyFlags, sizeof(BFlag32));
+}
+
 void Terrain::_Load(const char * filename)
 {
 	d_assert (!mInited);
@@ -299,55 +325,7 @@ void Terrain::_Load(const char * filename)
 	{
 		int count = 0;
 
-		count = stream->Read(&mConfig, sizeof(Config));
-		count = stream->Read(mLayer, sizeof(Layer), kMaxLayers);
-
-		count = stream->Read(&mBound, sizeof(Aabb));
-
-		mHeights = new float[mConfig.iVertexCount];
-		count = stream->Read(&mHeights[0], sizeof(float), mConfig.iVertexCount);
-
-		Vec3 * normals = new Vec3[mConfig.iVertexCount];
-		count = stream->Read(&normals[0], sizeof(Vec3), mConfig.iVertexCount);
-
-		mWeights = new Color[mConfig.iWeightMapSize];
-		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
-
-		mNormals = new Color[mConfig.iVertexCount];
-		for (int i = 0; i < mConfig.iVertexCount; ++i)
-		{
-			unsigned char r = unsigned char ((normals[i].x + 1) / 2 * 255);
-			unsigned char g = unsigned char ((normals[i].y + 1) / 2 * 255);
-			unsigned char b = unsigned char ((normals[i].z + 1) / 2 * 255);
-			unsigned char a = 255;
-			mNormals[i] = Color(r, g, b, a);
-		}
-
-		delete[] normals;
-	}
-	else if (version == 1)
-	{
-		int count = 0;
-
-		count = stream->Read(&mConfig, sizeof(Config));
-		count = stream->Read(mLayer, sizeof(Layer), kMaxLayers);
-
-		count = stream->Read(&mBound, sizeof(Aabb));
-
-		mHeights = new float[mConfig.iVertexCount];
-		count = stream->Read(&mHeights[0], sizeof(float), mConfig.iVertexCount);
-
-		mNormals = new Color[mConfig.iVertexCount];
-		count = stream->Read(&mNormals[0], sizeof(Color), mConfig.iVertexCount);
-
-		mWeights = new Color[mConfig.iWeightMapSize];
-		count = stream->Read(&mWeights[0], sizeof(Color), mConfig.iWeightMapSize);
-	}
-	else if (version == 2)
-	{
-		int count = 0;
-
-		count = stream->Read(&mConfig, sizeof(Config));
+		Terrain_ReadConfig(&mConfig, stream, version);
 		count = stream->Read(mLayer, sizeof(Layer), kMaxLayers);
 
 		count = stream->Read(&mBound, sizeof(Aabb));
@@ -394,6 +372,32 @@ void Terrain::_Load(const char * filename)
 	mInited = true;
 }
 
+void Terrain_WriteConfig(File & file, Terrain::Config * cfg)
+{
+	file.Write(&cfg->xSize, sizeof(int));
+	file.Write(&cfg->zSize, sizeof(int));
+
+	file.Write(&cfg->xVertexCount, sizeof(int));
+	file.Write(&cfg->zVertexCount, sizeof(int));
+
+	file.Write(&cfg->iVertexCount, sizeof(int));
+
+	file.Write(&cfg->morphEnable, sizeof(bool));
+	file.Write(&cfg->morphStart, sizeof(float));
+
+	file.Write(&cfg->xSectionSize, sizeof(int));
+	file.Write(&cfg->zSectionSize, sizeof(int));
+	file.Write(&cfg->xSectionCount, sizeof(int));
+	file.Write(&cfg->zSectionCount, sizeof(int));
+	file.Write(&cfg->iSectionCount, sizeof(int));
+
+	file.Write(&cfg->xWeightMapSize, sizeof(int));
+	file.Write(&cfg->zWeightMapSize, sizeof(int));
+	file.Write(&cfg->iWeightMapSize, sizeof(int));
+
+	file.Write(&cfg->phyFlags, sizeof(BFlag32));
+}
+
 void Terrain::Save(const char * filename)
 {
 	File file;
@@ -406,7 +410,7 @@ void Terrain::Save(const char * filename)
 	file.Write(&K_Terrain_Version, sizeof(int));
 
 	// write config
-	count = file.Write(&mConfig, sizeof(Config));
+	Terrain_WriteConfig(file, &mConfig);
 
 	// write layers
 	count = file.Write(mLayer, sizeof(Layer), kMaxLayers);
@@ -833,6 +837,58 @@ float Terrain::GetHeight(float x, float z)
 	return final;
 }
 
+Vec3 Terrain::GetNormal(float x, float z)
+{
+	float sx = 0, sz = mConfig.zSize;
+	float ex = mConfig.zSize, ez = 0;
+
+	float fx = (x - sx) / (ex - sx) * (mConfig.xVertexCount - 1);
+	float fz = (z - sz) / (ez - sz) * (mConfig.zVertexCount - 1);
+
+	int ix = (int) fx;
+	int iz = (int) fz;
+
+	d_assert(ix >= 0 && ix <= mConfig.xVertexCount - 1 &&
+		iz >= 0 && iz <= mConfig.zVertexCount - 1);
+
+	float dx = fx - ix;
+	float dz = fz - iz;
+
+	int ix1 = ix + 1;
+	int iz1 = iz + 1;
+
+	ix1 = Math::Minimum(ix1, mConfig.xVertexCount - 1);
+	iz1 = Math::Minimum(iz1, mConfig.zVertexCount - 1);
+
+	Color4 a = GetNormal(ix,  iz).ToColor4();
+	Color4 b = GetNormal(ix1, iz).ToColor4();
+	Color4 c = GetNormal(ix,  iz1).ToColor4();
+	Color4 d = GetNormal(ix1, iz1).ToColor4();
+	Color4 m = (b + c) * 0.5f;
+	Color4 h1, h2, final;
+
+	if (dx + dz <= 1.0f)
+	{
+		d = m + (m - a);
+	}
+	else
+	{
+		a = m + (m - d);
+	}
+
+	h1 = a * (1.0f - dx) + b * dx;
+	h2 = c * (1.0f - dx) + d * dx; 
+	final = h1 * (1.0f - dz) + h2 * dz;
+
+	Vec3 normal;
+
+	normal.x = final.r * 2 - 1;
+	normal.y = final.g * 2 - 1;
+	normal.z = final.b * 2 - 1;
+
+	return normal;
+}
+
 float *	Terrain::LockHeight(const Rect & rc)
 {
 	d_assert (mLockedData == NULL);
@@ -1087,5 +1143,84 @@ void Terrain::UnlockWeightMap(int layer)
 
 	safe_delete_array(mLockedWeightMapData);
 }
+
+
+bool Terrain::RayTrace(PhyHitInfo & info, const Ray & ray, float dist)
+{
+	const int iMaxCount = 1000;
+
+	int i = 0;
+	Vec3 pos = ray.origin;
+	float y = 0;
+
+	if ((ray.origin.x < mBound.minimum.x || ray.origin.x > mBound.maximum.x) ||
+		(ray.origin.y < mBound.minimum.y || ray.origin.y > mBound.maximum.y) ||
+		(ray.origin.z < mBound.minimum.z || ray.origin.z > mBound.maximum.z))
+	{
+		RayIntersectionInfo info = ray.Intersection(mBound);
+
+		if (!info.iterscetion)
+			return false;
+
+		pos = ray.origin + (info.distance + 0.1f) * ray.direction;
+	}
+
+	if (ray.direction == Vec3::UnitY)
+	{
+		y = GetHeight(pos.x, pos.z);
+		if (pos.y <= y && y - ray.origin.y < dist)
+		{
+			info.Hitted = true;
+			info.node = NULL;
+			info.Distance = y - ray.origin.y;
+			info.Normal = GetNormal(pos.x, pos.z);
+			info.MaterialId = -1;
+			return true;
+		}
+	}
+	else if (ray.direction == Vec3::NegUnitY)
+	{
+		y = GetHeight(pos.x, pos.z);
+		if (pos.y >= y && ray.origin.y - y < dist)
+		{
+			info.Hitted = true;
+			info.node = NULL;
+			info.Distance = ray.origin.y - y;
+			info.Normal = GetNormal(pos.x, pos.z);
+			info.MaterialId = -1;
+			return true;
+		}
+	}
+	else
+	{
+		while (pos.x > mBound.minimum.x && pos.x < mBound.maximum.x &&
+			   pos.z > mBound.minimum.z && pos.z < mBound.maximum.z &&
+			i++ < iMaxCount)
+		{
+			if (pos.Distance(ray.origin) >= dist)
+				return false;
+
+			y = GetHeight(pos.x, pos.z);
+			float d = ray.origin.Distance(Vec3(pos.x, y, pos.z));
+
+			if (pos.y <= y && d < dist)
+			{
+				info.Hitted = true;
+				info.node = NULL;
+				info.Distance = d;
+				info.Normal = GetNormal(pos.x, pos.z);
+				info.MaterialId = -1;
+
+				return true;
+			}
+
+			pos += ray.direction;
+		}
+	}
+
+	return false;
+}
+
+
 
 }

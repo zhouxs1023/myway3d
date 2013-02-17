@@ -45,7 +45,7 @@ enum KeyCode
     KC_L               = 0x26,
     KC_SEMICOLON       = 0x27,
     KC_APOSTROPHE      = 0x28,
-    KC_GRAVE           = 0x29,    /* accent grave */
+    KC_GRAVE           = 0x29,    /* accent grave (~)*/
     KC_LSHIFT          = 0x2A,
     KC_BACKSLASH       = 0x2B,
     KC_Z               = 0x2C,

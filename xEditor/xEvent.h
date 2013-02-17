@@ -13,6 +13,8 @@ public:
 	static Event OnSelectObj;
 	static Event OnUnSelectObj;
 	static Event OnUpdate;
+	static Event OnUpdateGame;
+	static Event OnAppModeChanged;
 	static Event OnDragFile;
 	static Event OnObjCreated;
 	static Event OnObjDistroy;

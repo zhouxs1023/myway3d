@@ -1,5 +1,6 @@
 #include "MOpcodeScene.h"
 #include "MWWorld.h"
+#include "MWEnvironment.h"
 #include "Opcode.h"
 
 namespace Myway {
@@ -119,6 +120,21 @@ namespace Myway {
 
 		Scene::TraceInfo::SortOp op;
 
+		// test on terrain
+		{
+			Terrain * terrain = Environment::Instance()->GetTerrain();
+
+			if (terrain && terrain->GetConfig().phyFlags.TestFlags(flag))
+			{
+				PhyHitInfo hitInfo;
+
+				if (terrain->RayTrace(hitInfo, ray, dist) && hitInfo.Distance < result.Distance)
+				{
+					result = hitInfo;
+				}
+			}
+		}
+
 		World::Instance()->RayTracing(ray, dist, traceArray, flag);
 
 		if (traceArray.Size() == 0)
@@ -142,7 +158,7 @@ namespace Myway {
 					PhyHitInfo hitInfo;
 					MOpcodeNode * opNode = (MOpcodeNode *)node->GetPhyData();
 
-					if (opNode->RayTrace(hitInfo, ray) && (!result.node || hitInfo.Distance < result.Distance))
+					if (opNode->RayTrace(hitInfo, ray) && hitInfo.Distance < result.Distance)
 					{
 						result = hitInfo;
 						result.node = opNode->GetSceneNode();
@@ -152,9 +168,9 @@ namespace Myway {
 				{
 					if (!result.node || whr->dist < result.Distance)
 					{
+						result.Hitted = true;
 						result.node = node;
 						result.Distance = whr->dist;
-						result.Position = ray.origin + ray.direction * result.Distance;
 						result.Normal = Vec3::Zero;
 						result.MaterialId = -1;
 					}
@@ -163,6 +179,8 @@ namespace Myway {
 				++whr;
 			}
 		}
+
+		
 
 		return result;
 	}

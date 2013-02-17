@@ -92,6 +92,7 @@
     <ClCompile Include="xMesh.cpp" />
     <ClCompile Include="xOcean.cpp" />
     <ClCompile Include="xPrefab.cpp" />
+    <ClCompile Include="xPreview.cpp" />
     <ClCompile Include="xRenderSetting.cpp" />
     <ClCompile Include="xRenderSettingPane.cpp" />
     <ClCompile Include="xTerrain.cpp" />
@@ -120,6 +121,7 @@
     <ClInclude Include="xMesh.h" />
     <ClInclude Include="xOcean.h" />
     <ClInclude Include="xPrefab.h" />
+    <ClInclude Include="xPreview.h" />
     <ClInclude Include="xRenderSetting.h" />
     <ClInclude Include="xRenderSettingPane.h" />
     <ClInclude Include="xTerrain.h" />

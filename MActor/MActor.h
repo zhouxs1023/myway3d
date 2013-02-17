@@ -29,6 +29,8 @@ namespace Myway {
 
 		EMotionFX::Actor * _GetMainActor() { return mMainActor; }
 
+		void SetRotationMatrix(const Mat4 & rotMatrix) { mRotationMatrix = rotMatrix; }
+
 	protected:
 		void _OnActorLoaded(void *, void *);
 		void _OnMainPartBind();
@@ -38,6 +40,8 @@ namespace Myway {
 		EMotionFX::Actor * mMainActor;
 
 		MActorResPtr mActorParts[K_MAX_PART];
+
+		Mat4 mRotationMatrix;
 
 		tEventListener<MActor> OnActorLoaded;
 	};

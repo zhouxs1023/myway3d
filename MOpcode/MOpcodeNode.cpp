@@ -125,20 +125,6 @@ namespace Myway {
 
 			info.Distance = queryResult->GetFaces()->mDistance;
 			info.MaterialId = -1;//mMateirals[mQueryResult->GetFaces()->mFaceID];
-			{
-				// calculates Barycentric coordinates.  V1 + f(V2-V1) + g(V3-V1)
-				const Opcode::CollisionFace * pColFace = queryResult->GetFaces();
-
-				const IceMaths::Point& p0 = *vp.Vertex[0];
-				const IceMaths::Point& p1 = *vp.Vertex[1];
-				const IceMaths::Point& p2 = *vp.Vertex[2];
-
-				IceMaths::Point pt = p0 + pColFace->mU * (p1-p0) +	pColFace->mV * (p2-p0);
-
-				info.Position.x = pt.x;
-				info.Position.y = pt.y;
-				info.Position.z = pt.z;
-			}
 
 			{			
 				const IceMaths::Point& p0 = *vp.Vertex[0];
@@ -152,6 +138,10 @@ namespace Myway {
 				info.Normal.z = Normal.z;
 				info.Normal.NormalizeL();
 			}
+
+			info.Normal.TransformN(worldTm);
+
+			info.Hitted = true;
 
 			return true;
 		}

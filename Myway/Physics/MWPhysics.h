@@ -8,16 +8,16 @@ namespace Myway {
 	struct PhyHitInfo
 	{
 		SceneNode * node;
+		bool Hitted;
 		float Distance;
-		Vec3 Position;
 		Vec3 Normal;
 		int MaterialId;
 
 		PhyHitInfo()
 		{
 			node = NULL;
-			Distance = FLT_MIN;
-			Position = Vec3::Zero;
+			Hitted = false;
+			Distance = FLT_MAX;
 			Normal = Vec3::Zero;
 			MaterialId = -1;
 		}
