@@ -7,6 +7,10 @@ DF_PROPERTY_BEGIN(xTree)
 	DF_PROPERTY(xTree, Position, "Transform", "Position", PT_Vec3, 12)
 	DF_PROPERTY(xTree, Orientation, "Transform", "Orientation", PT_Vec4, 16)
 	DF_PROPERTY(xTree, Scale, "Transform", "Scale", PT_Float, 4)
+
+	DF_PROPERTY(xTree, LeafDiffuse, "Material", "LeafDiffuse", PT_Color, 16)
+	DF_PROPERTY(xTree, FrondDiffuse, "Material", "FrondDiffuse", PT_Color, 16)
+	DF_PROPERTY(xTree, BranchDiffuse, "Material", "BranchDiffuse", PT_Color, 16)
 DF_PROPERTY_END();
 
 xTree::xTree(const TString128 & name)
@@ -16,6 +20,10 @@ xTree::xTree(const TString128 & name)
 	Position = Vec3::Zero;
 	Orientation = Quat::Identity;
 	Scale = 1;
+
+	LeafDiffuse = Color4::White;
+	FrondDiffuse = Color4::White;
+	BranchDiffuse = Color4::White;
 
 	mNode = World::Instance()->CreateSceneNode();
 	mTree = MForest::Instance()->CreateTreeInstance(name);
@@ -59,6 +67,10 @@ void xTree::SetTreeFile(const TString128 & meshFile)
 			colObj = IPhyWorld::Instance()->AddColMesh(mTree->GetTree().c_ptr(), mTree->GetTree()->GetColMesh(), Scale);
 
 		IPhyWorld::Instance()->AddNode(mNode, colObj);
+
+		SetLeafDiffuse(LeafDiffuse);
+		SetFrondDiffuse(FrondDiffuse);
+		SetBranchDiffuse(BranchDiffuse);
 	}
 }
 
@@ -67,8 +79,13 @@ xObj * xTree::Clone()
 	xTree * tree = (xTree *)xObjManager::Instance()->Create(GetTypeName().c_str());
 
 	tree->SetPosition(Position);
+	tree->SetOrientation(Orientation);
 	tree->SetScale(Scale);
 	tree->SetTreeFile(TreeFile);
+
+	tree->SetLeafDiffuse(LeafDiffuse);
+	tree->SetFrondDiffuse(FrondDiffuse);
+	tree->SetBranchDiffuse(BranchDiffuse);
 
 	return tree;
 }
@@ -113,11 +130,32 @@ float xTree::GetScale()
 	return Scale;
 }
 
+void xTree::SetLeafDiffuse(const Color4 & c)
+{
+	LeafDiffuse = c;
+	if (mTree)
+		mTree->SetLeafDiffuse(LeafDiffuse);
+}
+
+void xTree::SetFrondDiffuse(const Color4 & c)
+{
+	FrondDiffuse = c;
+	if (mTree)
+		mTree->SetFrondDiffuse(FrondDiffuse);
+}
+
+void xTree::SetBranchDiffuse(const Color4 & c)
+{
+	BranchDiffuse = c;
+	if (mTree)
+		mTree->SetBranchDiffuse(BranchDiffuse);
+}
+
 void xTree::Serialize(xSerializer & Serializer)
 {
 	xObj::Serialize(Serializer);
 
-	int version = 0;
+	int version = 1;
 
 	if (Serializer.IsSave())
 	{
@@ -126,22 +164,36 @@ void xTree::Serialize(xSerializer & Serializer)
 		Serializer << Position;
 		Serializer << Orientation;
 		Serializer << Scale;
+		Serializer << LeafDiffuse;
+		Serializer << FrondDiffuse;
+		Serializer << BranchDiffuse;
 	}
 	else
 	{
 		Serializer >> version;
-		if (version == 0)
+		if (version >= 0)
 		{
 			Serializer >> TreeFile;
 			Serializer >> Position;
 			Serializer >> Orientation;
 			Serializer >> Scale;
 		}
+		
+		if (version >= 1)
+		{
+			Serializer >> LeafDiffuse;
+			Serializer >> FrondDiffuse;
+			Serializer >> BranchDiffuse;
+		}
 
 		SetPosition(Position);
 		SetOrientation(Orientation);
 		SetScale(Scale);
 		SetTreeFile(TreeFile);
+
+		SetLeafDiffuse(LeafDiffuse);
+		SetFrondDiffuse(FrondDiffuse);
+		SetBranchDiffuse(BranchDiffuse);
 	}
 }
 
@@ -178,6 +230,18 @@ bool xTree::OnPropertyChanged(const Property * p)
 	else if (p->name == "Scale")
 	{
 		SetScale(Scale);
+	}
+	else if (p->name == "LeafDiffuse")
+	{
+		SetLeafDiffuse(LeafDiffuse);
+	}
+	else if (p->name == "FrondDiffuse")
+	{
+		SetFrondDiffuse(FrondDiffuse);
+	}
+	else if (p->name == "BranchDiffuse")
+	{
+		SetBranchDiffuse(BranchDiffuse);
 	}
 
 	return true;

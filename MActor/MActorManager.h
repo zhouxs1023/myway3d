@@ -15,6 +15,7 @@ namespace Myway {
 		~MActorManager();
 
 		VertexDeclarationPtr GetVertexDeclaration(bool skined);
+		VertexDeclarationPtr GetStaticMeshVertexDeclaration();
 
 		MActor * CreateActor(const TString128 & name);
 		MActor * CreateActor(const TString128 & name, const TString128 & source, float priority = 0);
@@ -23,7 +24,7 @@ namespace Myway {
 		MActor * GetActor(const TString128 & name);
 
 		MActorResPtr _LoadActorRes(const TString128 & source, float priority);
-		MActorRes * GetActorRes(const TString128 & source);
+		MActorResPtr GetActorRes(const TString128 & source);
 		void _DeleteActorRes(MActorRes * res);
 
 		void _addVisibleActor(MActor * actor);
@@ -48,6 +49,7 @@ namespace Myway {
 
 		VertexDeclarationPtr mVertexDecl;
 		VertexDeclarationPtr mVertexDeclSkined;
+		VertexDeclarationPtr mVertexDeclStaticMesh;
 
 		Array<MActorRes *> mActorResources;
 		Array<MActor *> mActors;

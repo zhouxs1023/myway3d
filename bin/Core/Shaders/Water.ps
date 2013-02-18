@@ -126,7 +126,7 @@ float CalcuSmoothFactor(float2 projUV, float3 vpos)
 	float d1 = vpos.z;
 	float d2 = tex2D(gTex_Depth, projUV).r * gFarClip.x;
 
-	float s = saturate((d2 - d1) / 1);
+	float s = saturate((d2 - d1) / 2);
 
 	float k = saturate((d2 - 200) / (1000 - 200));
 

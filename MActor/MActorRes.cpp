@@ -33,33 +33,35 @@ namespace Myway {
 
 			OnResourceLoaded(this, NULL);
 
-			// 
-			TString128 motionPath = File::GetFileDir(mSourceName);
-
-			d_assert (motionPath != "");
-
-			motionPath += "Motion\\";
-
-			Archive::FileInfoList motionList; 
-
-			ResourceManager::Instance()->GetFileInfosByFloder(motionList, motionPath);
-
-			mMotionCount = motionList.Size();
-
-			if (mMotionCount != 0)
 			{
-				mMotionSet = new MMotion[mMotionCount];
+				// 
+				TString128 motionPath = File::GetFileDir(mSourceName);
 
-				Archive::FileInfoList::Iterator whr = motionList.Begin();
-				Archive::FileInfoList::Iterator end = motionList.End();
+				d_assert (motionPath != "");
 
-				int index = 0;
+				motionPath += "Motion\\";
 
-				while (whr != end)
+				Archive::FileInfoList motionList; 
+
+				ResourceManager::Instance()->GetFileInfosByFloder(motionList, motionPath);
+
+				mMotionCount = motionList.Size();
+
+				if (mMotionCount != 0)
 				{
-					mMotionSet[index++]._Load(whr->name);
+					mMotionSet = new MMotion[mMotionCount];
 
-					++whr;
+					Archive::FileInfoList::Iterator whr = motionList.Begin();
+					Archive::FileInfoList::Iterator end = motionList.End();
+
+					int index = 0;
+
+					while (whr != end)
+					{
+						mMotionSet[index++]._Load(whr->name);
+
+						++whr;
+					}
 				}
 			}
 		}
@@ -236,17 +238,6 @@ namespace Myway {
 			{
 				vert->Texcoord.x = 0;
 				vert->Texcoord.y = 0;
-			}
-
-			if (pUV1Ar)
-			{
-				vert->LightmapUV.x = pUV1Ar[vtxNr].x;
-				vert->LightmapUV.y = pUV1Ar[vtxNr].y;
-			}
-			else
-			{
-				vert->LightmapUV.x = 0;
-				vert->LightmapUV.y = 0;
 			}
 
 			++vert;
@@ -439,8 +430,8 @@ namespace Myway {
 
 	void MActorRes::_shutdown()
 	{
-		safe_delete_array(mMaterials);
-		safe_delete_array(mMeshes);
+		safe_delete_array (mMaterials);
+		safe_delete_array (mMeshes);
 		safe_delete_array (mMotionSet);
 
 		mMaterialCount = 0;

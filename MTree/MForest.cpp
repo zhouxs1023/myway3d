@@ -712,6 +712,7 @@ namespace Myway {
 		ShaderParam * uWindMatrix = mTech_Branch->GetVertexShaderParamTable()->GetParam("gWindMatrices");
 		ShaderParam * uTranslateScale = mTech_Branch->GetVertexShaderParamTable()->GetParam("gTranslateScale");
 		ShaderParam * uRotationMatrix = mTech_Branch->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+		ShaderParam * uDiffuseColor = mTech_Branch->GetPixelShaderParamTable()->GetParam("gDiffuseColor");
 
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
@@ -733,6 +734,8 @@ namespace Myway {
 			{
 				MTree::Material * mtl = tree->_getBranchMaterial();
 				RenderOp * rop = tree->_getBranchRenderOp(0);
+
+				uDiffuseColor->SetColor(inst->GetBranchDiffuse() * mtl->Diffuse);
 
 				if (rop)
 				{
@@ -757,6 +760,7 @@ namespace Myway {
 		ShaderParam * uWindMatrix = mTech_Frond->GetVertexShaderParamTable()->GetParam("gWindMatrices");
 		ShaderParam * uTranslateScale = mTech_Frond->GetVertexShaderParamTable()->GetParam("gTranslateScale");
 		ShaderParam * uRotationMatrix = mTech_Frond->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+		ShaderParam * uDiffuseColor = mTech_Frond->GetPixelShaderParamTable()->GetParam("gDiffuseColor");
 
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
@@ -778,6 +782,8 @@ namespace Myway {
 			{
 				MTree::Material * mtl = tree->_getFrondMaterial();
 				RenderOp * rop = tree->_getFrondRenderOp(0);
+
+				uDiffuseColor->SetColor(inst->GetFrondDiffuse() * mtl->Diffuse);
 
 				if (rop != NULL)
 				{
@@ -806,6 +812,8 @@ namespace Myway {
 
 		ShaderParam * uBillboardTable = mTech_Leaf->GetVertexShaderParamTable()->GetParam("gBillboardTable");
 
+		ShaderParam * uDiffuseColor = mTech_Leaf->GetPixelShaderParamTable()->GetParam("gDiffuseColor");
+
 		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
 
 		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
@@ -824,12 +832,13 @@ namespace Myway {
 
 			if (tree)
 			{
+				MTree::Material * mtl = tree->_getLeafMaterial();
 				RenderOp * rop = tree->_getLeafRenderOp(0);
+
+				uDiffuseColor->SetColor(inst->GetLeafDiffuse() * mtl->Diffuse);
 
 				if (rop)
 				{
-					MTree::Material * mtl = tree->_getLeafMaterial();
-
 					tree->SetupLeafBillboard(uBillboardTable);
 
 					rop->xform = inst->GetAttachNode()->GetWorldMatrix();

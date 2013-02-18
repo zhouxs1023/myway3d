@@ -13,6 +13,9 @@ public:
 	Vec3 Position;
 	Quat Orientation;
 	float Scale;
+	Color4 LeafDiffuse;
+	Color4 FrondDiffuse;
+	Color4 BranchDiffuse;
 
 public:
 	xTree(const TString128 & name);
@@ -33,6 +36,10 @@ public:
 	virtual Vec3 GetPosition();
 	virtual Quat GetOrientation();
 	virtual float GetScale();
+
+			void SetLeafDiffuse(const Color4 & c);
+			void SetFrondDiffuse(const Color4 & c);
+			void SetBranchDiffuse(const Color4 & c);
 
 	virtual void Serialize(xSerializer & serializer);
 

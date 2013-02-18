@@ -163,7 +163,7 @@ namespace Myway {
 
 	MActorResPtr MActorManager::_LoadActorRes(const TString128 & source, float priority)
 	{
-		MActorRes * res = GetActorRes(source);
+		MActorResPtr res = GetActorRes(source);
 
 		if (res == NULL)
 		{
@@ -171,13 +171,13 @@ namespace Myway {
 			res->SetPriority(priority);
 			res->Load();
 
-			mActorResources.PushBack(res);
+			mActorResources.PushBack(res.c_ptr());
 		}
 
 		return res;
 	}
 
-	MActorRes * MActorManager::GetActorRes(const TString128 & source)
+	MActorResPtr MActorManager::GetActorRes(const TString128 & source)
 	{
 		for (int i = 0; i < mActorResources.Size(); ++i)
 		{

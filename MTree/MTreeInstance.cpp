@@ -9,6 +9,10 @@ namespace Myway {
 		mTree = NULL;
 		mLod = 0;
 		mWindMatrixOffset = (float)Math::RandRange(0, int(MTreeGlobal::K_NumWindMatrix));
+
+		mLeafDiffuse = Color4::White;
+		mFrondDiffuse = Color4::White;
+		mBranchDiffuse = Color4::White;
 	}
 
 	MTreeInstance::~MTreeInstance()

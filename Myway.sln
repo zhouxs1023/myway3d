@@ -70,6 +70,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Opcode", "ThirdParty\Opcode
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FModAudioSystem", "FModAudioSystem\FModAudioSystem.vcxproj", "{36A89E72-CF1D-496A-8180-7D4F01359279}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Game", "Game", "{38B0B2C8-C34F-48B7-BF9B-7E482ADE50BA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32

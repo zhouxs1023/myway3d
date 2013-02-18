@@ -24,7 +24,6 @@ namespace Myway {
 			Vec3 Position;
 			Vec3 Normal;
 			Vec2 Texcoord;
-			Vec2 LightmapUV;
 			Vec4 Tangent;
 		};
 

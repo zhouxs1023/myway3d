@@ -45,5 +45,4 @@ namespace Myway {
 
 		tEventListener<MActor> OnActorLoaded;
 	};
-
 }

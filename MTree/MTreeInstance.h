@@ -29,9 +29,21 @@ namespace Myway {
 
 		inline float GetWindMatrixOffset() const { return mWindMatrixOffset; }
 
+		void SetLeafDiffuse(const Color4 & c) { mLeafDiffuse = c; }
+		void SetFrondDiffuse(const Color4 & c) { mFrondDiffuse = c; }
+		void SetBranchDiffuse(const Color4 & c) { mBranchDiffuse = c; }
+
+		const Color4 & GetLeafDiffuse() const { return mLeafDiffuse; }
+		const Color4 & GetFrondDiffuse() const { return mFrondDiffuse; }
+		const Color4 & GetBranchDiffuse() const { return mBranchDiffuse; }
+
 	protected:
 		MTreePtr mTree;
 		int mLod;
 		float mWindMatrixOffset;
+
+		Color4 mLeafDiffuse;
+		Color4 mFrondDiffuse;
+		Color4 mBranchDiffuse;
 	};
 }

@@ -18,12 +18,13 @@ struct PS_OUT
 
 uniform sampler2D tex_diffuse : register(s0);
 uniform float4 gClipPlane;
+uniform float4 gDiffuseColor;
 
 PS_OUT main(PS_IN In)
 {
 	PS_OUT Out = (PS_OUT)0;
 
-    Out.color = tex2D(tex_diffuse, In.UV.xy);
+    Out.color = tex2D(tex_diffuse, In.UV.xy) * gDiffuseColor;
 	Out.normal = float4(In.NormalDepth.xyz, 1);
 	Out.material = float4(1, 1, 1, 1);
     Out.depth = float4(In.NormalDepth.w * gClipPlane.w, 0, 0, 0);
