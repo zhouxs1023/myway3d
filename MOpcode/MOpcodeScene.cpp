@@ -1,7 +1,6 @@
 #include "MOpcodeScene.h"
 #include "MWWorld.h"
 #include "MWEnvironment.h"
-#include "Opcode.h"
 
 namespace Myway {
 
@@ -9,6 +8,7 @@ namespace Myway {
 
 	MOpcodeScene::MOpcodeScene()
 	{
+		mTerrain = NULL;
 		mQueryResult = new Opcode::CollisionFaces;
 	}
 
@@ -16,6 +16,7 @@ namespace Myway {
 	{
 		safe_delete (mQueryResult);
 
+		d_assert (mTerrain == NULL);
 		d_assert (mColObjs.Size() == 0);
 	}
 
@@ -58,6 +59,18 @@ namespace Myway {
 		}
 
 		d_assert (0);
+	}
+
+	void MOpcodeScene::CreateTerrain()
+	{
+		d_assert (mTerrain == NULL);
+		mTerrain = new MOpcodeTerrain(NULL, 1);
+		mTerrain->Build();
+	}
+
+	void MOpcodeScene::DestroyTerrain()
+	{
+		safe_delete(mTerrain);
 	}
 
 	void MOpcodeScene::AddNode(SceneNode * sceneNode, IColObjPtr colObj)
@@ -112,16 +125,14 @@ namespace Myway {
 
 	
 
-	PhyHitInfo MOpcodeScene::RayTrace(const Ray & ray, float dist, int flag, bool ifNoPhyData)
+	void MOpcodeScene::RayCheck(HitInfoSetArray & hitInfos, const Ray & ray, float dist, int flag, bool ifNoPhyData)
 	{
-		PhyHitInfo result;
-
 		Array<Scene::TraceInfo> traceArray;
 
 		Scene::TraceInfo::SortOp op;
 
 		// test on terrain
-		{
+		/*{
 			Terrain * terrain = Environment::Instance()->GetTerrain();
 
 			if (terrain && terrain->GetConfig().phyFlags.TestFlags(flag))
@@ -133,12 +144,14 @@ namespace Myway {
 					result = hitInfo;
 				}
 			}
-		}
+		}*/
+
+		HitInfoSet info;
 
 		World::Instance()->RayTracing(ray, dist, traceArray, flag);
 
 		if (traceArray.Size() == 0)
-			return result;
+			return ;
 
 		Sort(&traceArray[0], traceArray.Size(), op);
 		
@@ -148,40 +161,37 @@ namespace Myway {
 
 			while (whr != end)
 			{
-				if (result.node && result.Distance < whr->dist)
+				if (info.node && info.r_distance < whr->dist)
 					break;
 
 				SceneNode * node = whr->node;
 
 				if (node->GetPhyData())
 				{
-					PhyHitInfo hitInfo;
+					HitInfoSet t_info;
 					MOpcodeNode * opNode = (MOpcodeNode *)node->GetPhyData();
 
-					if (opNode->RayTrace(hitInfo, ray) && hitInfo.Distance < result.Distance)
+					if (opNode->RayCheck(t_info, ray) && t_info.r_distance < info.r_distance)
 					{
-						result = hitInfo;
-						result.node = opNode->GetSceneNode();
+						info = t_info;
+						info.node = opNode->GetSceneNode();
 					}
 				}
 				else if (ifNoPhyData)
 				{
-					if (!result.node || whr->dist < result.Distance)
+					if (whr->dist < info.r_distance)
 					{
-						result.Hitted = true;
-						result.node = node;
-						result.Distance = whr->dist;
-						result.Normal = Vec3::Zero;
-						result.MaterialId = -1;
+						info.node = node;
+						info.r_distance = whr->dist;
+						info.r_that_position = ray.GetPosition(info.r_distance);
+						info.r_that_normal = Vec3::Zero;
 					}
 				}
 
 				++whr;
 			}
+
+			hitInfos.PushBack(info);
 		}
-
-		
-
-		return result;
 	}
 }

@@ -179,7 +179,13 @@ bool OBB::ComputeVertexNormals(Point* pts)	const
 
 	if(!pts)	return false;
 
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+	floatPointUnion u;
+	u.f = VertexNormals;
+	const Point* VN = u.p;
+#else
 	const Point* VN = (const Point*)VertexNormals;
+#endif
 	for(udword i=0;i<8;i++)
 	{
 		pts[i] = VN[i] * mRot;
@@ -230,7 +236,14 @@ const Point* OBB::GetLocalEdgeNormals() const
 		-INVSQRT2,	INVSQRT2,	0,			// 3-7
 		-INVSQRT2,	-INVSQRT2,	0			// 4-0
 	};
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+	floatPointUnion u;
+	u.f = EdgeNormals;
+	return u.p;
+#else
 	return (const Point*)EdgeNormals;
+#endif
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -275,6 +288,8 @@ void OBB::ComputeLSS(LSS& lss) const
 			lss.mP0 = mCenter + Axis2 * (mExtents.z - lss.mRadius);
 			lss.mP1 = mCenter - Axis2 * (mExtents.z - lss.mRadius);
 			break;
+		case _W: break;
+		case _FORCE_DWORD: break;
 	}
 }
 

@@ -36,7 +36,7 @@
 		inline_			udword				GetNodeSize()	const	{ return SIZEOFOBJECT;				}	\
 																											\
 						volume				mAABB;															\
-						udword				mData;
+						size_t				mData;
 
 	//! Common interface for a node of a no-leaf tree
 	#define IMPLEMENT_NOLEAF_NODE(base_class, volume)														\
@@ -56,10 +56,10 @@
 		inline_			udword				GetNodeSize()		const	{ return SIZEOFOBJECT;			}	\
 																											\
 						volume				mAABB;															\
-						udword				mPosData;														\
-						udword				mNegData;
+						size_t				mPosData;														\
+						size_t				mNegData;
 
-	class OPCODE_API AABBCollisionNode
+	class AABBCollisionNode
 	{
 		IMPLEMENT_IMPLICIT_NODE(AABBCollisionNode, CollisionAABB)
 
@@ -67,7 +67,17 @@
 		inline_			float				GetSize()		const	{ return mAABB.mExtents.SquareMagnitude();	}
 		inline_			udword				GetRadius()		const
 											{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+												union a_union {
+													udword * i;
+													const float  * f;
+												};
+												a_union u;
+												u.f = &mAABB.mExtents.x;
+												udword* Bits = u.i;
+#else
 												udword* Bits = (udword*)&mAABB.mExtents.x;
+#endif
 												udword Max = Bits[0];
 												if(Bits[1]>Max)	Max = Bits[1];
 												if(Bits[2]>Max)	Max = Bits[2];
@@ -83,7 +93,7 @@
 		// good strategy.
 	};
 
-	class OPCODE_API AABBQuantizedNode
+	class AABBQuantizedNode
 	{
 		IMPLEMENT_IMPLICIT_NODE(AABBQuantizedNode, QuantizedAABB)
 
@@ -99,12 +109,12 @@
 		// over the place.......!
 	};
 
-	class OPCODE_API AABBNoLeafNode
+	class AABBNoLeafNode
 	{
 		IMPLEMENT_NOLEAF_NODE(AABBNoLeafNode, CollisionAABB)
 	};
 
-	class OPCODE_API AABBQuantizedNoLeafNode
+	class AABBQuantizedNoLeafNode
 	{
 		IMPLEMENT_NOLEAF_NODE(AABBQuantizedNoLeafNode, QuantizedAABB)
 	};
@@ -130,7 +140,7 @@
 
 	typedef		bool				(*GenericWalkingCallback)	(const void* current, void* user_data);
 
-	class OPCODE_API AABBOptimizedTree
+	class AABBOptimizedTree
 	{
 		public:
 		// Constructor / Destructor
@@ -175,32 +185,32 @@
 						udword				mNbNodes;
 	};
 
-	class OPCODE_API AABBCollisionTree : public AABBOptimizedTree
+	class AABBCollisionTree : public AABBOptimizedTree
 	{
 		IMPLEMENT_COLLISION_TREE(AABBCollisionTree, AABBCollisionNode)
 	};
 
-	class OPCODE_API AABBNoLeafTree : public AABBOptimizedTree
+	class AABBNoLeafTree : public AABBOptimizedTree
 	{
 		IMPLEMENT_COLLISION_TREE(AABBNoLeafTree, AABBNoLeafNode)
 	};
 
-	class OPCODE_API AABBQuantizedTree : public AABBOptimizedTree
+	class AABBQuantizedTree : public AABBOptimizedTree
 	{
 		IMPLEMENT_COLLISION_TREE(AABBQuantizedTree, AABBQuantizedNode)
 
 		public:
-						Point				mCenterCoeff;
-						Point				mExtentsCoeff;
+						IceMaths::Point				mCenterCoeff;
+						IceMaths::Point				mExtentsCoeff;
 	};
 
-	class OPCODE_API AABBQuantizedNoLeafTree : public AABBOptimizedTree
+	class AABBQuantizedNoLeafTree : public AABBOptimizedTree
 	{
 		IMPLEMENT_COLLISION_TREE(AABBQuantizedNoLeafTree, AABBQuantizedNoLeafNode)
 
 		public:
-						Point				mCenterCoeff;
-						Point				mExtentsCoeff;
+						IceMaths::Point				mCenterCoeff;
+						IceMaths::Point				mExtentsCoeff;
 	};
 
 #endif // __OPC_OPTIMIZEDTREE_H__

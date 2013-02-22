@@ -96,7 +96,9 @@
 	//! x ^= y;		/* x' = (x^y) */
 	//! y ^= x;		/* y' = (y^(x^y)) = x */
 	//! x ^= y;		/* x' = (x^y)^x = y */
-	inline_ void	Swap(udword& x, udword& y)			{ x ^= y; y ^= x; x ^= y;					}
+	template < class INT > void Swap( INT & x, INT & y) { x ^= y; y ^= x; x ^= y; }
+	//inline_ void	Swap(size_t& x, size_t& y)			{ x ^= y; y ^= x; x ^= y;					}
+	//inline_ void	Swap(udword& x, udword& y)			{ x ^= y; y ^= x; x ^= y;					}
 
 	//! Little/Big endian (from Steve Baker's Cute Code Collection)
 	//!
@@ -204,7 +206,7 @@
 	//! TO BE DOCUMENTED
 	#define OFFSET_OF(Class, Member)	(size_t)&(((Class*)0)->Member)
 	//! TO BE DOCUMENTED
-	#define ARRAYSIZE(p)				(sizeof(p)/sizeof(p[0]))
+	//#define ARRAYSIZE(p)				(sizeof(p)/sizeof(p[0]))
 
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	/**
@@ -214,7 +216,7 @@
 	 *	\return		the best alignment (e.g. 1 for odd addresses, etc)
 	 */
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	FUNCTION ICECORE_API udword Alignment(udword address);
+	FUNCTION udword Alignment(udword address);
 
 	#define IS_ALIGNED_2(x)		((x&1)==0)
 	#define IS_ALIGNED_4(x)		((x&3)==0)

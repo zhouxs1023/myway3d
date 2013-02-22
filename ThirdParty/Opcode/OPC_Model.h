@@ -3,6 +3,10 @@
  *	OPCODE - Optimized Collision Detection
  *	Copyright (C) 2001 Pierre Terdiman
  *	Homepage: http://www.codercorner.com/Opcode.htm
+ *
+ *  OPCODE modifications for scaled model support (and other things)
+ *  Copyright (C) 2004 Gilvan Maia (gilvan 'at' vdl.ufc.br)
+ *	Check http://www.vdl.ufc.br/gilvan/coll/opcode/index.htm for updates.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +24,7 @@
 #ifndef __OPC_MODEL_H__
 #define __OPC_MODEL_H__
 
-	class OPCODE_API Model : public BaseModel
+	class Model : public BaseModel
 	{
 		public:
 		// Constructor/Destructor

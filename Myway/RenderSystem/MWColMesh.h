@@ -8,6 +8,7 @@ namespace Myway {
 	{
 		CT_Unknown,
 		CT_Mesh,
+		CT_Terrain,
 	};
 
 	class MW_ENTRY ColMesh

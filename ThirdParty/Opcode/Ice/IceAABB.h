@@ -46,13 +46,13 @@
 
 #ifdef USE_MINMAX
 
-	struct ICEMATHS_API ShadowAABB
+	struct ShadowAABB
 	{
 		Point	mMin;
 		Point	mMax;
 	};
 
-	class ICEMATHS_API AABB
+	class AABB
 	{
 		public:
 		//! Constructor
@@ -264,7 +264,7 @@
 
 #else
 
-	class ICEMATHS_API AABB
+	class AABB
 	{
 		public:
 		//! Constructor
@@ -426,6 +426,14 @@
 										// Compute new center
 										aabb.mCenter = mCenter * mtx;
 
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+										Point Ex(mtx.m[0][0] * mExtents.x, mtx.m[0][1] * mExtents.x, mtx.m[0][2] * mExtents.x);
+										absVal( Ex.x );	absVal( Ex.y );	absVal( Ex.z );
+										Point Ey(mtx.m[1][0] * mExtents.y, mtx.m[1][1] * mExtents.y, mtx.m[1][2] * mExtents.y);
+										absVal( Ey.x );	absVal( Ey.y );	absVal( Ey.z );
+										Point Ez(mtx.m[2][0] * mExtents.z, mtx.m[2][1] * mExtents.z, mtx.m[2][2] * mExtents.z);
+										absVal( Ez.x );	absVal( Ez.y );	absVal( Ez.z );
+#else
 										// Compute new extents. FPU code & CPU code have been interleaved for improved performance.
 										Point Ex(mtx.m[0][0] * mExtents.x, mtx.m[0][1] * mExtents.x, mtx.m[0][2] * mExtents.x);
 										IR(Ex.x)&=0x7fffffff;	IR(Ex.y)&=0x7fffffff;	IR(Ex.z)&=0x7fffffff;
@@ -436,6 +444,7 @@
 										Point Ez(mtx.m[2][0] * mExtents.z, mtx.m[2][1] * mExtents.z, mtx.m[2][2] * mExtents.z);
 										IR(Ez.x)&=0x7fffffff;	IR(Ez.y)&=0x7fffffff;	IR(Ez.z)&=0x7fffffff;
 
+#endif
 										aabb.mExtents.x = Ex.x + Ey.x + Ez.x;
 										aabb.mExtents.y = Ex.y + Ey.y + Ez.y;
 										aabb.mExtents.z = Ex.z + Ey.z + Ez.z;

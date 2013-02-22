@@ -20,7 +20,7 @@
 #ifndef __OPC_AABBCOLLIDER_H__
 #define __OPC_AABBCOLLIDER_H__
 
-	struct OPCODE_API AABBCache : VolumeCache
+	struct AABBCache : VolumeCache
 	{
 						AABBCache() : FatCoeff(1.1f)
 						{
@@ -34,7 +34,7 @@
 		float			FatCoeff;	//!< mRadius2 multiplier used to create a fat sphere
 	};
 
-	class OPCODE_API AABBCollider : public VolumeCollider
+	class AABBCollider : public VolumeCollider
 	{
 		public:
 		// Constructor / Destructor
@@ -52,7 +52,6 @@
 		 *	\param		box				[in] collision AABB in world space
 		 *	\param		model			[in] Opcode model to collide with
 		 *	\return		true if success
-		 *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
 		 */
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 							bool			Collide(AABBCache& cache, const CollisionAABB& box, const Model& model);
@@ -60,10 +59,10 @@
 							bool			Collide(AABBCache& cache, const CollisionAABB& box, const AABBTree* tree);
 		protected:
 							CollisionAABB	mBox;			//!< Query box in (center, extents) form
-							Point			mMin;			//!< Query box min point
-							Point			mMax;			//!< Query box max point
+							IceMaths::Point			mMin;			//!< Query box min point
+							IceMaths::Point			mMax;			//!< Query box max point
 		// Leaf description
-							Point			mLeafVerts[3];	//!< Triangle vertices
+							IceMaths::Point			mLeafVerts[3];	//!< Triangle vertices
 		// Internal methods
 							void			_Collide(const AABBCollisionNode* node);
 							void			_Collide(const AABBNoLeafNode* node);
@@ -75,14 +74,14 @@
 							void			_CollideNoPrimitiveTest(const AABBQuantizedNode* node);
 							void			_CollideNoPrimitiveTest(const AABBQuantizedNoLeafNode* node);
 			// Overlap tests
-		inline_				BOOL			AABBContainsBox(const Point& bc, const Point& be);
-		inline_				BOOL			AABBAABBOverlap(const Point& b, const Point& Pb);
+		inline_				BOOL			AABBContainsBox(const IceMaths::Point& bc, const IceMaths::Point& be);
+		inline_				BOOL			AABBAABBOverlap(const IceMaths::Point& b, const IceMaths::Point& Pb);
 		inline_				BOOL			TriBoxOverlap();
 			// Init methods
 							BOOL			InitQuery(AABBCache& cache, const CollisionAABB& box);
 	};
 
-	class OPCODE_API HybridAABBCollider : public AABBCollider
+	class HybridAABBCollider : public AABBCollider
 	{
 		public:
 		// Constructor / Destructor
@@ -91,7 +90,7 @@
 
 							bool			Collide(AABBCache& cache, const CollisionAABB& box, const HybridModel& model);
 		protected:
-							Container		mTouchedBoxes;
+							IceCore::Container		mTouchedBoxes;
 	};
 
 #endif // __OPC_AABBCOLLIDER_H__

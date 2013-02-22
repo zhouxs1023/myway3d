@@ -34,7 +34,7 @@
 		AXES_FORCE_DWORD	= 0x7fffffff
 	};
 
-	class ICEMATHS_API Axes
+	class Axes
 	{
 		public:
 

@@ -115,7 +115,7 @@ public:
                         static  float       Fmod(float x, float y);
 
                         static  float       Exp(float v);
-                        static  float       Log(float v);
+                        static  float       Log_(float v);
                         static  float       Pow(float base, float exponent);
 
                         static  void        SRandom(int seed);

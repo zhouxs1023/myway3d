@@ -14,6 +14,8 @@
 #endif // _MSC_VER > 1000
 
 // Insert your headers here
+#define NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+
 #define WIN32_LEAN_AND_MEAN		// Exclude rarely-used stuff from Windows headers
 
 #include "Opcode.h"

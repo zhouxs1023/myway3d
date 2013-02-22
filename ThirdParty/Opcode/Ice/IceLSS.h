@@ -12,7 +12,7 @@
 #ifndef __ICELSS_H__
 #define __ICELSS_H__
 
-	class ICEMATHS_API LSS : public Segment
+	class LSS : public Segment
 	{
 		public:
 		//! Constructor

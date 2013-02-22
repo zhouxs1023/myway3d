@@ -206,7 +206,7 @@ namespace Myway {
 
         } while ( w >= 1.0f );
 
-        w = Math::Sqrt( (-2.0f * Math::Log( w ) ) / w );
+        w = Math::Sqrt( (-2.0f * Math::Log_( w ) ) / w );
         y1 = x1 * w;
 
         return y1;

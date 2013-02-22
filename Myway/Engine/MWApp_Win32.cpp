@@ -57,6 +57,7 @@ void App_Win32::Update()
 void App_Win32::Shutdown()
 {
     Engine::Instance()->Shutdown();
+	delete Engine::Instance();
 }
 
 bool App_Win32::Quit()

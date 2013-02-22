@@ -34,7 +34,7 @@
 		OPC_FORCE_DWORD			= 0x7fffffff
 	};
 
-	class OPCODE_API Collider
+	class Collider
 	{
 		public:
 		// Constructor / Destructor

@@ -46,7 +46,7 @@ namespace Myway {
         int width = dp->Width;
         int height = dp->Height;
         float pixFactor = 1.0f / width;
-        float magScale = -Math::Log (mMagnitudeScale) / 2;
+        float magScale = -Math::Log_ (mMagnitudeScale) / 2;
         float mag0Size = mMag0PixelSize * pixFactor;
         float minSize = mMinPixelSize * pixFactor;
         float maxSize = mMaxPixelSize * pixFactor;

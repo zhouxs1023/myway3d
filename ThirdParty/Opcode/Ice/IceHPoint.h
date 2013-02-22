@@ -12,7 +12,7 @@
 #ifndef __ICEHPOINT_H__
 #define __ICEHPOINT_H__
 
-	class ICEMATHS_API HPoint : public Point
+	class HPoint : public Point
 	{
 		public:
 
@@ -147,7 +147,10 @@
 		// Cast operators
 
 		//! Cast a HPoint to a Point. w is discarded.
+#ifdef _MSC_VER
 		inline_				operator	Point()					const		{ return Point(x, y, z);									}
+		// gcc complains that conversion to a base class will never use a type conversion operator
+#endif
 
 		public:
 				float		w;

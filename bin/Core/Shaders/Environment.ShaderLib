@@ -99,14 +99,17 @@
 			  <param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
 		</Shader>
 
+    <Shader name = "CloudVS" language = "cg" profile = "vs30" source = "Cloud.vs" >
+    </Shader>
+
+    <Shader name = "CloudPS" language = "cg" profile = "ps30" source = "Cloud.ps" >
+    </Shader>
+
 		<Shader name = "CloudShadingVS" language = "cg" profile = "vs30" source = "CloudShading.vs" >
 		</Shader>
 
 		<Shader name = "CloudShadingPS" language = "cg" profile = "ps30" source = "CloudShading.ps" >
 		</Shader>
-
-    <Shader name = "CloudLightingVS" language = "cg" profile = "vs30" source = "CloudLighting.vs" >
-    </Shader>
 
     <Shader name = "CloudLightingPS" language = "cg" profile = "ps30" source = "CloudLighting.ps" >
     </Shader>
@@ -255,10 +258,13 @@
 		<Technique name = "ColorSharp" vs = "QuadVS" ps = "ColorSharpPS">
 		</Technique>
 
+    <Technique name = "Cloud" vs = "CloudVS" ps = "CloudPS">
+    </Technique>
+
 		<Technique name = "CloudShading" vs = "CloudShadingVS" ps = "CloudShadingPS">
 		</Technique>
 
-    <Technique name = "CloudLighting" vs = "CloudLightingVS" ps = "CloudLightingPS">
+    <Technique name = "CloudLighting" vs = "QuadVS" ps = "CloudLightingPS">
     </Technique>
 
 		<Technique name = "Water" vs = "WaterVS" ps = "WaterPS">

@@ -75,7 +75,6 @@ AABBTreeNode::~AABBTreeNode()
 {
 	// Opcode 1.3:
 	const AABBTreeNode* Pos = GetPos();
-	const AABBTreeNode* Neg = GetNeg();
 #ifndef OPC_NO_NEG_VANILLA_TREE
 	if(!(mPos&1))	DELETESINGLE(Pos);
 	if(!(mNeg&1))	DELETESINGLE(Neg);
@@ -164,7 +163,7 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 	if(builder->mSettings.mRules & SPLIT_LARGEST_AXIS)
 	{
 		// Find the largest axis to split along
-		Point Extents;	mBV.GetExtents(Extents);	// Box extents
+		IceMaths::Point Extents;	mBV.GetExtents(Extents);	// Box extents
 		udword Axis	= Extents.LargestAxis();		// Index of largest axis
 
 		// Split along the axis
@@ -176,7 +175,7 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 	else if(builder->mSettings.mRules & SPLIT_SPLATTER_POINTS)
 	{
 		// Compute the means
-		Point Means(0.0f, 0.0f, 0.0f);
+		IceMaths::Point Means(0.0f, 0.0f, 0.0f);
 		for(udword i=0;i<mNbPrimitives;i++)
 		{
 			udword Index = mNodePrimitives[i];
@@ -187,7 +186,7 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 		Means/=float(mNbPrimitives);
 
 		// Compute variances
-		Point Vars(0.0f, 0.0f, 0.0f);
+		IceMaths::Point Vars(0.0f, 0.0f, 0.0f);
 		for(udword i=0;i<mNbPrimitives;i++)
 		{
 			udword Index = mNodePrimitives[i];
@@ -234,7 +233,7 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 		// Test largest, then middle, then smallest axis...
 
 		// Sort axis
-		Point Extents;	mBV.GetExtents(Extents);	// Box extents
+		IceMaths::Point Extents;	mBV.GetExtents(Extents);	// Box extents
 		udword SortedAxis[] = { 0, 1, 2 };
 		float* Keys = (float*)&Extents.x;
 		for(udword j=0;j<3;j++)
@@ -292,21 +291,21 @@ bool AABBTreeNode::Subdivide(AABBTreeBuilder* builder)
 		// Set last bit to tell it shouldn't be freed ### pretty ugly, find a better way. Maybe one bit in mNbPrimitives
 		ASSERT(!(udword(&Pool[Count+0])&1));
 		ASSERT(!(udword(&Pool[Count+1])&1));
-		mPos = udword(&Pool[Count+0])|1;
+		mPos = size_t(&Pool[Count+0])|1;
 #ifndef OPC_NO_NEG_VANILLA_TREE
-		mNeg = udword(&Pool[Count+1])|1;
+		mNeg = size_t(&Pool[Count+1])|1;
 #endif
 	}
 	else
 	{
 		// Non-complete trees and/or Opcode 1.2 allocate nodes on-the-fly
 #ifndef OPC_NO_NEG_VANILLA_TREE
-		mPos = (udword)new AABBTreeNode;	CHECKALLOC(mPos);
-		mNeg = (udword)new AABBTreeNode;	CHECKALLOC(mNeg);
+		mPos = (size_t)new AABBTreeNode;	CHECKALLOC(mPos);
+		mNeg = (size_t)new AABBTreeNode;	CHECKALLOC(mNeg);
 #else
 		AABBTreeNode* PosNeg = new AABBTreeNode[2];
 		CHECKALLOC(PosNeg);
-		mPos = (udword)PosNeg;
+		mPos = (size_t)PosNeg;
 #endif
 	}
 
@@ -519,8 +518,8 @@ bool AABBTree::Refit2(AABBTreeBuilder* builder)
 	ASSERT(mPool);
 
 	// Bottom-up update
-	Point Min,Max;
-	Point Min_,Max_;
+	IceMaths::Point Min,Max;
+	IceMaths::Point Min_,Max_;
 	udword Index = mTotalNbNodes;
 	while(Index--)
 	{
@@ -528,7 +527,7 @@ bool AABBTree::Refit2(AABBTreeBuilder* builder)
 
 		if(Current.IsLeaf())
 		{
-			builder->ComputeGlobalBox(Current.GetPrimitives(), Current.GetNbPrimitives(), *(AABB*)Current.GetAABB());
+			builder->ComputeGlobalBox(Current.GetPrimitives(), Current.GetNbPrimitives(), *(IceMaths::AABB*)Current.GetAABB());
 		}
 		else
 		{
@@ -541,7 +540,7 @@ bool AABBTree::Refit2(AABBTreeBuilder* builder)
 			Min.Min(Min_);
 			Max.Max(Max_);
 
-			((AABB*)Current.GetAABB())->SetMinMax(Min, Max);
+			((IceMaths::AABB*)Current.GetAABB())->SetMinMax(Min, Max);
 		}
 	}
 	return true;

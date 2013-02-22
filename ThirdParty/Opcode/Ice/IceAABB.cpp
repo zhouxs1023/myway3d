@@ -194,7 +194,13 @@ const Point* AABB::GetVertexNormals()	const
 		INVSQRT3,	INVSQRT3,	INVSQRT3,
 		-INVSQRT3,	INVSQRT3,	INVSQRT3
 	};
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+	floatPointUnion u;
+	u.f = VertexNormals;
+	return u.p;
+#else
 	return (const Point*)VertexNormals;
+#endif
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -239,7 +245,14 @@ const Point* AABB::GetEdgeNormals() const
 		-INVSQRT2,	INVSQRT2,	0,			// 3-7
 		-INVSQRT2,	-INVSQRT2,	0			// 4-0
 	};
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+	floatPointUnion u;
+	u.f = EdgeNormals;
+	return u.p;
+#else
 	return (const Point*)EdgeNormals;
+#endif
+
 }
 
 // ===========================================================================

@@ -18,7 +18,7 @@
 
 	#define	MATRIX4X4_EPSILON		(1.0e-7f)
 
-	class ICEMATHS_API Matrix4x4
+	class Matrix4x4
 	{
 //				void	LUBackwardSubstitution( sdword *indx, float* b );
 //				void	LUDecomposition( sdword* indx, float* d );
@@ -41,6 +41,7 @@
 		inline_						Matrix4x4(const Matrix4x4& mat)				{ CopyMemory(m, &mat.m, 16*sizeof(float));	}
 		//! Destructor.
 		inline_						~Matrix4x4()								{}
+		
 
 		//! Assign values (rotation only)
 		inline_	Matrix4x4&			Set(	float m00, float m01, float m02,
@@ -223,12 +224,21 @@
 		//! Transposes the matrix.
 				void				Transpose()
 									{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+										swap( m[1][0], m[0][1] );
+										swap( m[2][0], m[0][2] );
+										swap( m[3][0], m[0][3] );
+										swap( m[1][2], m[2][1] );
+										swap( m[1][3], m[3][1] );
+										swap( m[2][3], m[3][2] );
+#else
 										IR(m[1][0]) ^= IR(m[0][1]);		IR(m[0][1]) ^= IR(m[1][0]);		IR(m[1][0]) ^= IR(m[0][1]);
 										IR(m[2][0]) ^= IR(m[0][2]);		IR(m[0][2]) ^= IR(m[2][0]);		IR(m[2][0]) ^= IR(m[0][2]);
 										IR(m[3][0]) ^= IR(m[0][3]);		IR(m[0][3]) ^= IR(m[3][0]);		IR(m[3][0]) ^= IR(m[0][3]);
 										IR(m[1][2]) ^= IR(m[2][1]);		IR(m[2][1]) ^= IR(m[1][2]);		IR(m[1][2]) ^= IR(m[2][1]);
 										IR(m[1][3]) ^= IR(m[3][1]);		IR(m[3][1]) ^= IR(m[1][3]);		IR(m[1][3]) ^= IR(m[3][1]);
 										IR(m[2][3]) ^= IR(m[3][2]);		IR(m[3][2]) ^= IR(m[2][3]);		IR(m[2][3]) ^= IR(m[3][2]);
+#endif
 									}
 
 		//! Computes a cofactor. Used for matrix inversion.
@@ -449,7 +459,9 @@
 		dest.z = source.x * rot.m[0][2] + source.y * rot.m[1][2] + source.z * rot.m[2][2];
 	}
 
-	ICEMATHS_API void InvertPRMatrix(Matrix4x4& dest, const Matrix4x4& src);
+	void InvertPRMatrix(Matrix4x4& dest, const Matrix4x4& src);
+	void InvertPRSMatrix(Matrix4x4& dest, const Matrix4x4& src);
+	void NormalizePRSMatrix(Matrix4x4& dest, Point& scale, const Matrix4x4& src);
 
 #endif // __ICEMATRIX4X4_H__
 

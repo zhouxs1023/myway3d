@@ -32,6 +32,7 @@ namespace Myway {
 
 	protected:
 		void _init();
+		void _initRT();
 
 		void _renderUnderWater(Texture * depthTex, Texture * colorTex);
 		void _renderUpWater(Texture * depthTex, Texture * colorTex);

@@ -17,9 +17,9 @@ uniform float4 gSunUV;
 uniform float4 gUVScale;
 uniform float4 gUVScroll;
 
+uniform sampler2D gTex_Cloud;
 uniform sampler2D gTex_Layer0;
 uniform sampler2D gTex_Layer1;
-
 
 float Gaussian(float x, float gm)
 {
@@ -32,16 +32,17 @@ float Gaussian(float x, float gm)
 
 float4 main(PS_IN In) : COLOR
 {
-	float3 uvRay = float3(gSunUV.xy - In.uv0, 0.01f);
-	uvRay = normalize(uvRay);
-
 	float uvStep = 1.5f / 1024.0f;
+	float2 cloudUV = tex2D(gTex_Cloud, In.uv0).rg;
+
+	float3 uvRay = float3(gSunUV.xy - cloudUV, gSunUV.z);
+	uvRay = normalize(uvRay);
 	
 	float lighting = 0;
 	
 	for (int i = 0; i < 4; ++i)
 	{
-		float2 uv = In.uv0 + uvStep * i * uvRay.xy;
+		float2 uv = cloudUV + uvStep * i * uvRay.xy;
 		float2 uvLayer0 = uv * gUVScale.x + gUVScroll.xy;
 		float2 uvLayer1 = uv * gUVScale.y + gUVScroll.zw;
 
@@ -58,7 +59,7 @@ float4 main(PS_IN In) : COLOR
 
 	for (int i = 4; i < 32; ++i)
 	{
-		float2 uv = In.uv0 + uvStep * i * uvRay.xy;
+		float2 uv = cloudUV + uvStep * i * uvRay.xy;
 		float2 uvLayer0 = uv * gUVScale.x + gUVScroll.xy;
 		float2 uvLayer1 = uv * gUVScale.y + gUVScroll.zw;
 

@@ -16,8 +16,14 @@
  *	\return		true if boxes overlap
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-inline_ BOOL AABBTreeCollider::BoxBoxOverlap(const Point& ea, const Point& ca, const Point& eb, const Point& cb)
+inline_ BOOL AABBTreeCollider::BoxBoxOverlap(const IceMaths::Point& ea_, const IceMaths::Point& ca_, const IceMaths::Point& eb_, const IceMaths::Point& cb_)
 {
+	// Applies model scales
+	const IceMaths::Point ea = ea_*mScale0;
+	const IceMaths::Point ca = ca_*mScale0;
+	const IceMaths::Point eb = eb_*mScale1;
+	const IceMaths::Point cb = cb_*mScale1;
+
 	// Stats
 	mNbBVBVTests++;
 
@@ -65,8 +71,12 @@ inline_ BOOL AABBTreeCollider::BoxBoxOverlap(const Point& ea, const Point& ca, c
 }
 
 //! A dedicated version when one box is constant
-inline_ BOOL OBBCollider::BoxBoxOverlap(const Point& extents, const Point& center)
+inline_ BOOL OBBCollider::BoxBoxOverlap(const IceMaths::Point& extents_, const IceMaths::Point& center_)
 {
+	// Applies the model's local scale
+	const IceMaths::Point extents = extents_ * mLocalScale;
+	const IceMaths::Point center  = center_  * mLocalScale;
+
 	// Stats
 	mNbVolumeBVTests++;
 
@@ -109,7 +119,7 @@ inline_ BOOL OBBCollider::BoxBoxOverlap(const Point& extents, const Point& cente
 }
 
 //! A special version for 2 axis-aligned boxes
-inline_ BOOL AABBCollider::AABBAABBOverlap(const Point& extents, const Point& center)
+inline_ BOOL AABBCollider::AABBAABBOverlap(const IceMaths::Point& extents, const IceMaths::Point& center)
 {
 	// Stats
 	mNbVolumeBVTests++;

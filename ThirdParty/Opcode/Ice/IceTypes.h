@@ -12,6 +12,20 @@
 #ifndef __ICETYPES_H__
 #define __ICETYPES_H__
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+// Things to help us compile on non-windows platforms
+
+#if defined(__MACOSX__) || defined(__APPLE__)
+#undef bool
+#define bool char
+#undef true
+#define true ((bool)-1)
+#undef false
+#define false ((bool)0)
+#endif // mac stuff
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	#define USE_HANDLE_MANAGER
 
 	// Constants
@@ -114,7 +128,7 @@
 	#define	MAX_UDWORD				0xffffffff					//!< max possible udword value
 	#define	MIN_UDWORD				0x00000000					//!< min possible udword value
 	#define	MAX_FLOAT				FLT_MAX						//!< max possible float value
-	#define	MIN_FLOAT				(-FLT_MAX)					//!< min possible loat value
+	#define	MIN_FLOAT				(-FLT_MAX)					//!< min possible float value
 	#define IEEE_1_0				0x3f800000					//!< integer representation of 1.0
 	#define IEEE_255_0				0x437f0000					//!< integer representation of 255.0
 	#define IEEE_MAX_FLOAT			0x7f7fffff					//!< integer representation of MAX_FLOAT

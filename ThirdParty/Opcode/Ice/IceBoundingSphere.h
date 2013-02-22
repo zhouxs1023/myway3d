@@ -21,7 +21,7 @@
 		BS_FORCE_DWORD	= 0x7fffffff
 	};
 
-	class ICEMATHS_API Sphere
+	class Sphere
 	{
 		public:
 		//! Constructor

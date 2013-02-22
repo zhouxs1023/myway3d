@@ -36,7 +36,7 @@ public:
     RayIntersectionInfo Intersection(const Aabb & rk) const;
     RayIntersectionInfo Intersection(const Tri3 & rk) const;
 
-	Vec3 GetPosition(float dist)
+	Vec3 GetPosition(float dist) const
 	{
 		return origin + direction * dist;
 	}

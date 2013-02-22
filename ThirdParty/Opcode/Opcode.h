@@ -21,33 +21,72 @@
 #define __OPCODE_H__
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Compilation messages
-#if defined(OPCODE_EXPORTS)
-	#pragma message("Compiling OPCODE")
-#elif !defined(OPCODE_EXPORTS)
-	#pragma message("Using OPCODE")
-	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-	// Automatic linking
-	#ifndef BAN_OPCODE_AUTOLINK
-		#ifdef _DEBUG
-			#pragma comment(lib, "Opcode_D.lib")
-		#else
-			#pragma comment(lib, "Opcode.lib")
-		#endif
-	#endif
+// Things to help us compile on non-windows platforms
+
+#if defined(__APPLE__) || defined(__MACOSX__)
+#if __APPLE_CC__ < 1495
+#define sqrtf sqrt
+#define sinf sin
+#define cosf cos
+#define acosf acos
+#define asinf sinf
+#endif
 #endif
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Preprocessor
-#ifndef ICE_NO_DLL
-	#ifdef OPCODE_EXPORTS
-		#define OPCODE_API __declspec(dllexport)
-	#else
-		#define OPCODE_API __declspec(dllimport)
-	#endif
-#else
-		#define OPCODE_API
+#ifndef _MSC_VER
+
+#ifndef __MINGW32__
+#define __int64 long long int
+#define __stdcall /* */
 #endif
+
+#endif
+
+// Turn deprecation warnings off when using VC8
+#if (_MSC_VER >= 1400)
+#pragma warning (disable : 4996)
+#ifndef _CRT_SECURE_NO_DEPRECATE
+#define _CRT_SECURE_NO_DEPRECATE 1
+#endif
+#ifndef _CRT_NONSTDC_NO_DEPRECATE
+#define _CRT_NONSTDC_NO_DEPRECATE 1
+#endif
+#endif //VC8
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// Compilation messages
+//#ifdef _MSC_VER
+//	#if defined(OPCODE_EXPORTS)
+//		 //#pragma message("Compiling OPCODE")
+//	#elif !defined(OPCODE_EXPORTS)
+//		 //#pragma message("Using OPCODE")
+//		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//		// Automatic linking
+//		#ifndef BAN_OPCODE_AUTOLINK
+//			#ifdef _DEBUG
+//				#pragma comment(lib, "Opcode_d.lib")
+//			#else
+//				#pragma comment(lib, "Opcode.lib")
+//			#endif
+//		#endif
+//	#endif
+//#endif
+//
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//// Preprocessor
+//#ifdef _MSC_VER
+//	#ifndef ICE_NO_DLL
+//		#ifdef OPCODE_EXPORTS
+//			#define __declspec(dllexport)
+//		#else
+//			#define __declspec(dllimport)
+//		#endif
+//	#else
+//		#define OPCODE_API
+//	#endif
+//#else
+//	#define OPCODE_API
+//#endif
 
 	#include "OPC_IceHook.h"
 
@@ -82,8 +121,8 @@
 		#include "OPC_BoxPruning.h"
 		#include "OPC_SweepAndPrune.h"
 
-		FUNCTION OPCODE_API bool InitOpcode();
-		FUNCTION OPCODE_API bool CloseOpcode();
+		FUNCTION bool InitOpcode();
+		FUNCTION bool CloseOpcode();
 	}
 
 #endif // __OPCODE_H__

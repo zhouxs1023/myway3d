@@ -21,7 +21,7 @@
 #define __OPC_BASEMODEL_H__
 
 	//! Model creation structure
-	struct OPCODE_API OPCODECREATE
+	struct OPCODECREATE
 	{
 		//! Constructor
 								OPCODECREATE();
@@ -47,7 +47,7 @@
 		OPC_SINGLE_NODE	= (1<<2)	//!< Special case for 1-node models
 	};
 
-	class OPCODE_API BaseModel
+	class BaseModel
 	{
 		public:
 		// Constructor/Destructor

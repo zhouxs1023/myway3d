@@ -26,18 +26,20 @@ namespace Myway {
 
 		mMatProj.MakePerspectiveFovLH(cam->GetFov(), cam->GetAspect(), cam->GetNearClip(), mFarClip);
 
+		RenderSystem * render = RenderSystem::Instance();
+		RenderTarget * oldRt = render->GetRenderTarget(0);
+
         if (lighting)
         {
-            RenderSystem * render = RenderSystem::Instance();
-            RenderTarget * oldRt = render->GetRenderTarget(0);
+			_cloud();
 
             _lighting();
 
             _blur();
-
-            render->SetRenderTarget(0, oldRt);
         }
-        
+
+		render->SetRenderTarget(0, oldRt);
+
         _shading(lighting);
     }
 
@@ -143,6 +145,7 @@ namespace Myway {
 
     void Cloud::_initTechnique()
     {
+		mTech_Cloud = Environment::Instance()->GetShaderLib()->GetTechnique("Cloud");
         mTech_Lighting = Environment::Instance()->GetShaderLib()->GetTechnique("CloudLighting");
         mTech_BlurH = Environment::Instance()->GetShaderLib()->GetTechnique("BlurH");
         mTech_BlurV = Environment::Instance()->GetShaderLib()->GetTechnique("BlurV");
@@ -151,8 +154,11 @@ namespace Myway {
 
     void Cloud::_initRenderTarget()
     {
-        mRenderTarget = NULL;
-        mTexture = NULL;
+		mRT_Cloud = NULL;
+		mTex_Cloud = NULL;
+
+        mRT_Lighting = NULL;
+        mTex_Lighting= NULL;
 
         const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
 
@@ -161,8 +167,11 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
-        mRenderTarget = video->CreateRenderTarget("Core_Cloud_RT", width, height, FMT_R16F, MSAA_NONE);
-        mTexture = video->CreateTextureRT("Core_Cloud_Texture", width, height, FMT_R16F);
+		mTex_Cloud = video->CreateTextureRT("Core_Cloud_Tex_Cloud", width, height, FMT_G16R16F);
+		mRT_Cloud = video->CreateRenderTarget(mTex_Cloud);
+
+        mRT_Lighting = video->CreateRenderTarget("Core_Cloud_RT_Lighting", width, height, FMT_R16F, MSAA_NONE);
+        mTex_Lighting = video->CreateTextureRT("Core_Cloud_Tex_Lighting", width, height, FMT_R16F);
     }
 
     void Cloud::_initLayer()
@@ -176,18 +185,53 @@ namespace Myway {
 		d_assert (mTex_Layer0 != NULL && mTex_Layer1 != NULL);
     }
 
+	void Cloud::_cloud()
+	{
+		RenderSystem * render = RenderSystem::Instance();
+
+		render->SetRenderTarget(0, mRT_Cloud.c_ptr());
+
+		render->ClearBuffer(NULL, true, false, false);
+
+		ShaderParam * uTranslate = mTech_Cloud->GetVertexShaderParamTable()->GetParam("gTranslate");
+		ShaderParam * uScale = mTech_Cloud->GetVertexShaderParamTable()->GetParam("gScale");
+		ShaderParam * uMatWVP = mTech_Cloud->GetVertexShaderParamTable()->GetParam("matWVP");
+		ShaderParam * uUVScale = mTech_Cloud->GetVertexShaderParamTable()->GetParam("gUVScale");
+		ShaderParam * uUVScroll = mTech_Cloud->GetVertexShaderParamTable()->GetParam("gUVScroll");
+
+		ShaderParam * uMass = mTech_Cloud->GetPixelShaderParamTable()->GetParam("gMass");
+		ShaderParam * uWeight = mTech_Cloud->GetPixelShaderParamTable()->GetParam("gWeight");
+
+		Camera * cam = World::Instance()->MainCamera();
+		float farclip = cam->GetFarClip() * 0.9f;
+		Vec3 pos = cam->GetPosition();
+
+		const EvParam * param = Environment::Instance()->GetEvParam();
+		float time = Engine::Instance()->GetTime();
+
+		float height = param->CloudParam.height;
+		float curved = param->CloudParam.curved;
+	
+		uTranslate->SetUnifom(pos.x, pos.y + farclip * height, pos.z, 1);
+		uScale->SetUnifom(mFarClip, farclip * curved, mFarClip, 1);
+		uMatWVP->SetMatrix(cam->GetViewMatrix() * mMatProj);
+
+		mRender.rState.depthCheck = DCM_ALWAYS;
+		render->Render(mTech_Cloud, &mRender);
+		mRender.rState.depthCheck = DCM_LESS_EQUAL;
+
+		mRT_Cloud->Stretch(mTex_Cloud.c_ptr());
+	}
+
     void Cloud::_lighting()
     {
         RenderSystem * render = RenderSystem::Instance();
-        render->SetRenderTarget(0, mRenderTarget.c_ptr());
+
+		render->SetRenderTarget(0, mRT_Lighting.c_ptr());
 
         Camera * cam = World::Instance()->MainCamera();
         float farclip = cam->GetFarClip() * 0.9f;
         Vec3 pos = cam->GetPosition();
-
-        ShaderParam * uTranslate = mTech_Lighting->GetVertexShaderParamTable()->GetParam("gTranslate");
-        ShaderParam * uScale = mTech_Lighting->GetVertexShaderParamTable()->GetParam("gScale");
-		ShaderParam * uMatWVP = mTech_Lighting->GetVertexShaderParamTable()->GetParam("matWVP");
 
         ShaderParam * uMass = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gMass");
         ShaderParam * uWeight = mTech_Lighting->GetPixelShaderParamTable()->GetParam("gWeight");
@@ -223,49 +267,46 @@ namespace Myway {
         uvScroll0 *= time;
         uvScroll1 *= time;
 
-        uTranslate->SetUnifom(pos.x, pos.y + farclip * height, pos.z, 1);
-        uScale->SetUnifom(mFarClip, farclip * curved, mFarClip, 1);
-		uMatWVP->SetMatrix(cam->GetViewMatrix() * mMatProj);
-
         uMass->SetUnifom(mass, 0, 0, 0);
         uWeight->SetUnifom(wieght0, wieght1, 0, 0);
         uUVScale->SetUnifom(uvScale0, uvScale1, 0, 0);
         uUVScroll->SetUnifom(windDir.x * uvScroll0, windDir.y * uvScroll0,
                              windDir.x * uvScroll1, windDir.y * uvScroll1);
-        uUVSun->SetUnifom(0.5f, 0.5f, 0, 1);
+        uUVSun->SetUnifom(0.5f, 0.5f, 0.001f, 1);
         uAlphaParam->SetUnifom(alpha, alphaStrength, 0, 0);
         uLightingParam->SetUnifom(lightStrength, 0, 0, 0);
 
         SamplerState state;
-        render->SetTexture(0, state, mTex_Layer0.c_ptr());
-        render->SetTexture(1, state, mTex_Layer1.c_ptr());
+		state.Address = TEXA_CLAMP;
+        render->SetTexture(0, state, mTex_Cloud.c_ptr());
 
-		mRender.rState.depthCheck = DCM_ALWAYS;
-        render->Render(mTech_Lighting, &mRender);
-		mRender.rState.depthCheck = DCM_LESS_EQUAL;
+		state.Address = TEXA_WRAP;
+		render->SetTexture(1, state, mTex_Layer0.c_ptr());
+		render->SetTexture(2, state, mTex_Layer1.c_ptr());
 
-        mRenderTarget->Stretch(mTexture.c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Lighting);
+
+		mRT_Lighting->Stretch(mTex_Lighting.c_ptr());
     }
 
     void Cloud::_blur()
     {
         RenderSystem * render = RenderSystem::Instance();
-        render->SetRenderTarget(0, mRenderTarget.c_ptr());
 
         SamplerState state;
         state.Address = TEXA_CLAMP;
 
-        render->SetTexture(0, state, mTexture.c_ptr());
+        render->SetTexture(0, state, mTex_Lighting.c_ptr());
 
         for (int i = 0; i < 1; ++i)
         {
             RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurH);
 
-            mRenderTarget->Stretch(mTexture.c_ptr());
+            mRT_Lighting->Stretch(mTex_Lighting.c_ptr());
 
             RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_BlurV);
 
-            mRenderTarget->Stretch(mTexture.c_ptr());
+			mRT_Lighting->Stretch(mTex_Lighting.c_ptr());
         }
     }
 
@@ -278,8 +319,8 @@ namespace Myway {
 
         Vec3 pos = cam->GetPosition();
 
-        ShaderParam * uTranslate = mTech_Shading->GetVertexShaderParamTable()->GetParam("gTranslate");
-        ShaderParam * uScale = mTech_Shading->GetVertexShaderParamTable()->GetParam("gScale");
+		ShaderParam * uTranslate = mTech_Shading->GetVertexShaderParamTable()->GetParam("gTranslate");
+		ShaderParam * uScale = mTech_Shading->GetVertexShaderParamTable()->GetParam("gScale");
 		ShaderParam * uMatWVP = mTech_Shading->GetVertexShaderParamTable()->GetParam("matWVP");
         ShaderParam * uUVScale = mTech_Shading->GetVertexShaderParamTable()->GetParam("gUVScale");
         ShaderParam * uUVScroll = mTech_Shading->GetVertexShaderParamTable()->GetParam("gUVScroll");
@@ -334,11 +375,11 @@ namespace Myway {
         uDiffuse->SetUnifom(diffuse.r, diffuse.g, diffuse.b, diffuseScale);
 
         SamplerState state;
-        render->SetTexture(0, state, mTex_Layer0.c_ptr());
+		render->SetTexture(0, state, mTex_Layer0.c_ptr());
         render->SetTexture(1, state, mTex_Layer1.c_ptr());
 
         if (lighting)
-            render->SetTexture(2, state, mTexture.c_ptr());
+            render->SetTexture(2, state, mTex_Lighting.c_ptr());
         else
             render->SetTexture(2, state, RenderHelper::Instance()->GetWhiteTexture().c_ptr());
 

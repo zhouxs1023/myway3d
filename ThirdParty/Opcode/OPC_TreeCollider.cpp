@@ -3,6 +3,11 @@
  *	OPCODE - Optimized Collision Detection
  *	Copyright (C) 2001 Pierre Terdiman
  *	Homepage: http://www.codercorner.com/Opcode.htm
+ *
+ *  OPCODE modifications for scaled model support (and other things)
+ *  Copyright (C) 2004 Gilvan Maia (gilvan 'at' vdl.ufc.br)
+ *	Check http://www.vdl.ufc.br/gilvan/coll/opcode/index.htm for updates.
+ *
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -19,6 +24,7 @@
 /**
  *	Contains an AABB tree collider.
  *	This class performs a collision test between two AABB trees.
+ *  This class had changed a bit since jan/2005 in order to support scaled models.
  *
  *	\class		AABBTreeCollider
  *	\author		Pierre Terdiman
@@ -32,10 +38,16 @@
 #include "Stdafx.h"
 
 using namespace Opcode;
+using namespace IceMaths;
 
 #include "OPC_BoxBoxOverlap.h"
 #include "OPC_TriBoxOverlap.h"
-#include "OPC_TriTriOverlap.h"
+
+// The tri-tri overlap
+#include "OPC_TriTriOverlap.h"  // Standard OPCODE's tri-tri overlap routine (by Pierre)
+// #include "OPC_TriTriOverlapGilvan.h" // An optional tri-tri overlap routine based on SAT - Separating Axis Theorem (by Gilvan)
+
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
@@ -43,13 +55,15 @@ using namespace Opcode;
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 AABBTreeCollider::AABBTreeCollider() :
+	mIMesh0				(null),
+	mIMesh1				(null),
 	mNbBVBVTests		(0),
 	mNbPrimPrimTests	(0),
 	mNbBVPrimTests		(0),
+	mScale0				(1.0,1.0,1.0),
+	mScale1				(1.0,1.0,1.0),
 	mFullBoxBoxTest		(true),
-	mFullPrimBoxTest	(true),
-	mIMesh0				(null),
-	mIMesh1				(null)
+	mFullPrimBoxTest	(true)
 {
 }
 
@@ -85,12 +99,11 @@ const char* AABBTreeCollider::ValidateSettings()
  *	\param		world0			[in] world matrix for first object
  *	\param		world1			[in] world matrix for second object
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool AABBTreeCollider::Collide(BVTCache& cache, const Matrix4x4* world0, const Matrix4x4* world1)
+bool AABBTreeCollider::Collide(BVTCache& cache, const IceMaths::Matrix4x4* world0, const IceMaths::Matrix4x4* world1)
 {
-	// Checkings
+	// Checkings: olny works for corresponding models(leaf style and quantization )
 	if(!cache.Model0 || !cache.Model1)								return false;
 	if(cache.Model0->HasLeafNodes()!=cache.Model1->HasLeafNodes())	return false;
 	if(cache.Model0->IsQuantized()!=cache.Model1->IsQuantized())	return false;
@@ -113,11 +126,11 @@ bool AABBTreeCollider::Collide(BVTCache& cache, const Matrix4x4* world0, const M
 		{
 			struct Local
 			{
-				static Point* SVCallback(const Point& sv, udword& previndex, udword user_data)
+				static IceMaths::Point* SVCallback(const IceMaths::Point& sv, udword& previndex, udword user_data)
 				{
 					CollisionHull* Hull = (CollisionHull*)user_data;
 					previndex = Hull->ComputeSupportingVertex(sv, previndex);
-					return (Point*)&Hull->GetVerts()[previndex];
+					return (IceMaths::Point*)&Hull->GetVerts()[previndex];
 				}
 			};
 
@@ -152,13 +165,13 @@ bool AABBTreeCollider::Collide(BVTCache& cache, const Matrix4x4* world0, const M
 
 			if(!Collide)
 			{
-		// Reset stats & contact status
-		mFlags &= ~OPC_CONTACT;
-		mNbBVBVTests		= 0;
-		mNbPrimPrimTests	= 0;
-		mNbBVPrimTests		= 0;
-		mPairs.Reset();
-		return true;
+				// Reset stats & contact status
+				mFlags &= ~OPC_CONTACT;
+				mNbBVBVTests		= 0;
+				mNbPrimPrimTests	= 0;
+				mNbBVPrimTests		= 0;
+				mPairs.Reset();
+				return true;
 			}
 		}
 	}
@@ -167,7 +180,8 @@ bool AABBTreeCollider::Collide(BVTCache& cache, const Matrix4x4* world0, const M
 	cache.HullTest = false;
 #endif // __MESHMERIZER_H__
 
-	// Checkings
+	// Checkings: was this modified by someone? Why?
+	// mFlags &= ~OPC_CONTACT;
 	if(!Setup(cache.Model0->GetMeshInterface(), cache.Model1->GetMeshInterface()))	return false;
 
 	// Simple double-dispatch
@@ -229,10 +243,9 @@ bool AABBTreeCollider::Collide(BVTCache& cache, const Matrix4x4* world0, const M
  *
  *	\param		world0			[in] world matrix for first object
  *	\param		world1			[in] world matrix for second object
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void AABBTreeCollider::InitQuery(const Matrix4x4* world0, const Matrix4x4* world1)
+void AABBTreeCollider::InitQuery(const IceMaths::Matrix4x4* world0, const IceMaths::Matrix4x4* world1)
 {
 	// Reset stats & contact status
 	Collider::InitQuery();
@@ -242,16 +255,39 @@ void AABBTreeCollider::InitQuery(const Matrix4x4* world0, const Matrix4x4* world
 	mPairs.Reset();
 
 	// Setup matrices
-	Matrix4x4 InvWorld0, InvWorld1;
-	if(world0)	InvertPRMatrix(InvWorld0, *world0);
-	else		InvWorld0.Identity();
+	IceMaths::Matrix4x4 InvWorld0, InvWorld1;
+	IceMaths::Matrix4x4 WorldM0, WorldM1; // normalized (rotation & translation parts)
 
-	if(world1)	InvertPRMatrix(InvWorld1, *world1);
-	else		InvWorld1.Identity();
+	if(world0)
+	{		
+		NormalizePRSMatrix( WorldM0, mScale0,*world0);
+		
+		InvertPRMatrix(InvWorld0, WorldM0);
+	}
+	else
+	{
+		mScale0.Set(1.0,1.0,1.0);		
+		InvWorld0.Identity();
+	}
 
-	Matrix4x4 World0to1 = world0 ? (*world0 * InvWorld1) : InvWorld1;
-	Matrix4x4 World1to0 = world1 ? (*world1 * InvWorld0) : InvWorld0;
+	if(world1)
+	{
+		NormalizePRSMatrix( WorldM1, mScale1,*world1);		
+		
+		InvertPRMatrix(InvWorld1, WorldM1);
+	}
+	else
+	{
+		mScale1.Set(1.0,1.0,1.0);		
+		InvWorld1.Identity();
+	}
 
+	IceMaths::Matrix4x4 World0to1 = world0 ? (WorldM0 * InvWorld1) : InvWorld1;
+	IceMaths::Matrix4x4 World1to0 = world1 ? (WorldM1 * InvWorld0) : InvWorld0;
+	// scale & rotation only
+	mSR0to1 = world0 ? (*world0 * InvWorld1) : InvWorld1;
+	mSR1to0 = world1 ? (*world1 * InvWorld0) : InvWorld0;
+	// rotation & translation only
 	mR0to1 = World0to1;		World0to1.GetTrans(mT0to1);
 	mR1to0 = World1to0;		World1to0.GetTrans(mT1to0);
 
@@ -304,10 +340,9 @@ bool AABBTreeCollider::CheckTemporalCoherence(Pair* cache)
  *	\param		world1			[in] world matrix for second object
  *	\param		cache			[in/out] cache for a pair of previously colliding primitives
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool AABBTreeCollider::Collide(const AABBCollisionTree* tree0, const AABBCollisionTree* tree1, const Matrix4x4* world0, const Matrix4x4* world1, Pair* cache)
+bool AABBTreeCollider::Collide(const AABBCollisionTree* tree0, const AABBCollisionTree* tree1, const IceMaths::Matrix4x4* world0, const IceMaths::Matrix4x4* world1, Pair* cache)
 {
 	// Init collision query
 	InitQuery(world0, world1);
@@ -332,10 +367,9 @@ bool AABBTreeCollider::Collide(const AABBCollisionTree* tree0, const AABBCollisi
  *	\param		world1			[in] world matrix for second object
  *	\param		cache			[in/out] cache for a pair of previously colliding primitives
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool AABBTreeCollider::Collide(const AABBNoLeafTree* tree0, const AABBNoLeafTree* tree1, const Matrix4x4* world0, const Matrix4x4* world1, Pair* cache)
+bool AABBTreeCollider::Collide(const AABBNoLeafTree* tree0, const AABBNoLeafTree* tree1, const IceMaths::Matrix4x4* world0, const IceMaths::Matrix4x4* world1, Pair* cache)
 {
 	// Init collision query
 	InitQuery(world0, world1);
@@ -360,10 +394,9 @@ bool AABBTreeCollider::Collide(const AABBNoLeafTree* tree0, const AABBNoLeafTree
  *	\param		world1			[in] world matrix for second object
  *	\param		cache			[in/out] cache for a pair of previously colliding primitives
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool AABBTreeCollider::Collide(const AABBQuantizedTree* tree0, const AABBQuantizedTree* tree1, const Matrix4x4* world0, const Matrix4x4* world1, Pair* cache)
+bool AABBTreeCollider::Collide(const AABBQuantizedTree* tree0, const AABBQuantizedTree* tree1, const IceMaths::Matrix4x4* world0, const IceMaths::Matrix4x4* world1, Pair* cache)
 {
 	// Init collision query
 	InitQuery(world0, world1);
@@ -379,12 +412,12 @@ bool AABBTreeCollider::Collide(const AABBQuantizedTree* tree0, const AABBQuantiz
 
 	// Dequantize box A
 	const AABBQuantizedNode* N0 = tree0->GetNodes();
-	const Point a(float(N0->mAABB.mExtents[0]) * mExtentsCoeff0.x, float(N0->mAABB.mExtents[1]) * mExtentsCoeff0.y, float(N0->mAABB.mExtents[2]) * mExtentsCoeff0.z);
-	const Point Pa(float(N0->mAABB.mCenter[0]) * mCenterCoeff0.x, float(N0->mAABB.mCenter[1]) * mCenterCoeff0.y, float(N0->mAABB.mCenter[2]) * mCenterCoeff0.z);
+	const IceMaths::Point a(float(N0->mAABB.mExtents[0]) * mExtentsCoeff0.x, float(N0->mAABB.mExtents[1]) * mExtentsCoeff0.y, float(N0->mAABB.mExtents[2]) * mExtentsCoeff0.z);
+	const IceMaths::Point Pa(float(N0->mAABB.mCenter[0]) * mCenterCoeff0.x, float(N0->mAABB.mCenter[1]) * mCenterCoeff0.y, float(N0->mAABB.mCenter[2]) * mCenterCoeff0.z);
 	// Dequantize box B
 	const AABBQuantizedNode* N1 = tree1->GetNodes();
-	const Point b(float(N1->mAABB.mExtents[0]) * mExtentsCoeff1.x, float(N1->mAABB.mExtents[1]) * mExtentsCoeff1.y, float(N1->mAABB.mExtents[2]) * mExtentsCoeff1.z);
-	const Point Pb(float(N1->mAABB.mCenter[0]) * mCenterCoeff1.x, float(N1->mAABB.mCenter[1]) * mCenterCoeff1.y, float(N1->mAABB.mCenter[2]) * mCenterCoeff1.z);
+	const IceMaths::Point b(float(N1->mAABB.mExtents[0]) * mExtentsCoeff1.x, float(N1->mAABB.mExtents[1]) * mExtentsCoeff1.y, float(N1->mAABB.mExtents[2]) * mExtentsCoeff1.z);
+	const IceMaths::Point Pb(float(N1->mAABB.mCenter[0]) * mCenterCoeff1.x, float(N1->mAABB.mCenter[1]) * mCenterCoeff1.y, float(N1->mAABB.mCenter[2]) * mCenterCoeff1.z);
 
 	// Perform collision query
 	_Collide(N0, N1, a, Pa, b, Pb);
@@ -403,10 +436,9 @@ bool AABBTreeCollider::Collide(const AABBQuantizedTree* tree0, const AABBQuantiz
  *	\param		world1			[in] world matrix for second object
  *	\param		cache			[in/out] cache for a pair of previously colliding primitives
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool AABBTreeCollider::Collide(const AABBQuantizedNoLeafTree* tree0, const AABBQuantizedNoLeafTree* tree1, const Matrix4x4* world0, const Matrix4x4* world1, Pair* cache)
+bool AABBTreeCollider::Collide(const AABBQuantizedNoLeafTree* tree0, const AABBQuantizedNoLeafTree* tree1, const IceMaths::Matrix4x4* world0, const IceMaths::Matrix4x4* world1, Pair* cache)
 {
 	// Init collision query
 	InitQuery(world0, world1);
@@ -533,14 +565,14 @@ void AABBTreeCollider::PrimTest(udword id0, udword id1)
 	mIMesh0->GetTriangle(VP0, id0);
 	mIMesh1->GetTriangle(VP1, id1);
 
-	// Transform from space 1 to space 0
-	Point u0,u1,u2;
-	TransformPoint(u0, *VP1.Vertex[0], mR1to0, mT1to0);
-	TransformPoint(u1, *VP1.Vertex[1], mR1to0, mT1to0);
-	TransformPoint(u2, *VP1.Vertex[2], mR1to0, mT1to0);
+	// Transform from space 1 to space 0 (applies scale 1 to u0u1u2)
+	IceMaths::Point u0,u1,u2;
+	TransformPoint(u0, *VP1.Vertex[0], mSR1to0, mT1to0);
+	TransformPoint(u1, *VP1.Vertex[1], mSR1to0, mT1to0);
+	TransformPoint(u2, *VP1.Vertex[2], mSR1to0, mT1to0);
 
-	// Perform triangle-triangle overlap test
-	if(TriTriOverlap(*VP0.Vertex[0], *VP0.Vertex[1], *VP0.Vertex[2], u0, u1, u2))
+	// Perform triangle-triangle overlap test (includes scale 0 to v0v1v2)
+	if(TriTriOverlap((*VP0.Vertex[0])*mScale0, (*VP0.Vertex[1])*mScale0, (*VP0.Vertex[2])*mScale0, u0, u1, u2))
 	{
 		// Keep track of colliding pairs
 		mPairs.Add(id0).Add(id1);
@@ -561,8 +593,8 @@ inline_ void AABBTreeCollider::PrimTestTriIndex(udword id1)
 	VertexPointers VP;
 	mIMesh1->GetTriangle(VP, id1);
 
-	// Perform triangle-triangle overlap test
-	if(TriTriOverlap(mLeafVerts[0], mLeafVerts[1], mLeafVerts[2], *VP.Vertex[0], *VP.Vertex[1], *VP.Vertex[2]))
+	// Perform triangle-triangle overlap test (uses mScale1)
+	if(TriTriOverlap(mLeafVerts[0], mLeafVerts[1], mLeafVerts[2], *VP.Vertex[0]*mScale1, *VP.Vertex[1]*mScale1, *VP.Vertex[2]*mScale1))
 	{
 		// Keep track of colliding pairs
 		mPairs.Add(mLeafIndex).Add(id1);
@@ -583,8 +615,8 @@ inline_ void AABBTreeCollider::PrimTestIndexTri(udword id0)
 	VertexPointers VP;
 	mIMesh0->GetTriangle(VP, id0);
 
-	// Perform triangle-triangle overlap test
-	if(TriTriOverlap(mLeafVerts[0], mLeafVerts[1], mLeafVerts[2], *VP.Vertex[0], *VP.Vertex[1], *VP.Vertex[2]))
+	// Perform triangle-triangle overlap test (uses mScale0)
+	if(TriTriOverlap(mLeafVerts[0], mLeafVerts[1], mLeafVerts[2], *VP.Vertex[0]*mScale0, *VP.Vertex[1]*mScale0, *VP.Vertex[2]*mScale0))
 	{
 		// Keep track of colliding pairs
 		mPairs.Add(id0).Add(mLeafIndex);
@@ -601,8 +633,8 @@ inline_ void AABBTreeCollider::PrimTestIndexTri(udword id0)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void AABBTreeCollider::_CollideTriBox(const AABBNoLeafNode* b)
 {
-	// Perform triangle-box overlap test
-	if(!TriBoxOverlap(b->mAABB.mCenter, b->mAABB.mExtents))	return;
+	// Perform triangle-box overlap test (applies mScale1 on the box first!)
+	if(!TriBoxOverlap(b->mAABB.mCenter*mScale1, b->mAABB.mExtents*mScale1))	return;
 
 	// Keep same triangle, deal with first child
 	if(b->HasPosLeaf())	PrimTestTriIndex(b->GetPosPrimitive());
@@ -623,8 +655,8 @@ void AABBTreeCollider::_CollideTriBox(const AABBNoLeafNode* b)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void AABBTreeCollider::_CollideBoxTri(const AABBNoLeafNode* b)
 {
-	// Perform triangle-box overlap test
-	if(!TriBoxOverlap(b->mAABB.mCenter, b->mAABB.mExtents))	return;
+	// Perform triangle-box overlap test (applies mScale0 on the box first!)
+	if(!TriBoxOverlap(b->mAABB.mCenter*mScale0, b->mAABB.mExtents*mScale0))	return;
 
 	// Keep same triangle, deal with first child
 	if(b->HasPosLeaf())	PrimTestIndexTri(b->GetPosPrimitive());
@@ -656,7 +688,7 @@ void AABBTreeCollider::_CollideBoxTri(const AABBNoLeafNode* b)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b)
 {
-	// Perform BV-BV overlap test
+	// Perform BV-BV overlap test (uses )
 	if(!BoxBoxOverlap(a->mAABB.mExtents, a->mAABB.mCenter, b->mAABB.mExtents, b->mAABB.mCenter))	return;
 
 	// Catch leaf status
@@ -665,7 +697,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
 
 	if(a->HasPosLeaf())
 	{
-		FETCH_LEAF(a->GetPosPrimitive(), mIMesh0, mR0to1, mT0to1)
+		FETCH_LEAF(a->GetPosPrimitive(), mIMesh0, mSR0to1, mT0to1)
 
 		if(BHasPosLeaf)	PrimTestTriIndex(b->GetPosPrimitive());
 		else			_CollideTriBox(b->GetPos());
@@ -679,7 +711,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
 	{
 		if(BHasPosLeaf)
 		{
-			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetPos());
 		}
@@ -689,7 +721,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
 
 		if(BHasNegLeaf)
 		{
-			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetPos());
 		}
@@ -700,7 +732,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
 
 	if(a->HasNegLeaf())
 	{
-		FETCH_LEAF(a->GetNegPrimitive(), mIMesh0, mR0to1, mT0to1)
+		FETCH_LEAF(a->GetNegPrimitive(), mIMesh0, mSR0to1, mT0to1)
 
 		if(BHasPosLeaf)	PrimTestTriIndex(b->GetPosPrimitive());
 		else			_CollideTriBox(b->GetPos());
@@ -715,7 +747,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
 		if(BHasPosLeaf)
 		{
 			// ### That leaf has possibly already been fetched
-			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetNeg());
 		}
@@ -726,7 +758,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
 		if(BHasNegLeaf)
 		{
 			// ### That leaf has possibly already been fetched
-			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetNeg());
 		}
@@ -749,7 +781,7 @@ void AABBTreeCollider::_Collide(const AABBNoLeafNode* a, const AABBNoLeafNode* b
  *	\param		Pb		[in] center from box B
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void AABBTreeCollider::_Collide(const AABBQuantizedNode* b0, const AABBQuantizedNode* b1, const Point& a, const Point& Pa, const Point& b, const Point& Pb)
+void AABBTreeCollider::_Collide(const AABBQuantizedNode* b0, const AABBQuantizedNode* b1, const IceMaths::Point& a, const IceMaths::Point& Pa, const IceMaths::Point& b, const IceMaths::Point& Pb)
 {
 	// Perform BV-BV overlap test
 	if(!BoxBoxOverlap(a, Pa, b, Pb))	return;
@@ -760,32 +792,32 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNode* b0, const AABBQuantized
 	{
 		// Dequantize box
 		const QuantizedAABB* Box = &b0->GetNeg()->mAABB;
-		const Point negPa(float(Box->mCenter[0]) * mCenterCoeff0.x, float(Box->mCenter[1]) * mCenterCoeff0.y, float(Box->mCenter[2]) * mCenterCoeff0.z);
-		const Point nega(float(Box->mExtents[0]) * mExtentsCoeff0.x, float(Box->mExtents[1]) * mExtentsCoeff0.y, float(Box->mExtents[2]) * mExtentsCoeff0.z);
+		const IceMaths::Point negPa(float(Box->mCenter[0]) * mCenterCoeff0.x, float(Box->mCenter[1]) * mCenterCoeff0.y, float(Box->mCenter[2]) * mCenterCoeff0.z);
+		const IceMaths::Point nega(float(Box->mExtents[0]) * mExtentsCoeff0.x, float(Box->mExtents[1]) * mExtentsCoeff0.y, float(Box->mExtents[2]) * mExtentsCoeff0.z);
 		_Collide(b0->GetNeg(), b1, nega, negPa, b, Pb);
 
 		if(ContactFound()) return;
 
 		// Dequantize box
 		Box = &b0->GetPos()->mAABB;
-		const Point posPa(float(Box->mCenter[0]) * mCenterCoeff0.x, float(Box->mCenter[1]) * mCenterCoeff0.y, float(Box->mCenter[2]) * mCenterCoeff0.z);
-		const Point posa(float(Box->mExtents[0]) * mExtentsCoeff0.x, float(Box->mExtents[1]) * mExtentsCoeff0.y, float(Box->mExtents[2]) * mExtentsCoeff0.z);
+		const IceMaths::Point posPa(float(Box->mCenter[0]) * mCenterCoeff0.x, float(Box->mCenter[1]) * mCenterCoeff0.y, float(Box->mCenter[2]) * mCenterCoeff0.z);
+		const IceMaths::Point posa(float(Box->mExtents[0]) * mExtentsCoeff0.x, float(Box->mExtents[1]) * mExtentsCoeff0.y, float(Box->mExtents[2]) * mExtentsCoeff0.z);
 		_Collide(b0->GetPos(), b1, posa, posPa, b, Pb);
 	}
 	else
 	{
 		// Dequantize box
 		const QuantizedAABB* Box = &b1->GetNeg()->mAABB;
-		const Point negPb(float(Box->mCenter[0]) * mCenterCoeff1.x, float(Box->mCenter[1]) * mCenterCoeff1.y, float(Box->mCenter[2]) * mCenterCoeff1.z);
-		const Point negb(float(Box->mExtents[0]) * mExtentsCoeff1.x, float(Box->mExtents[1]) * mExtentsCoeff1.y, float(Box->mExtents[2]) * mExtentsCoeff1.z);
+		const IceMaths::Point negPb(float(Box->mCenter[0]) * mCenterCoeff1.x, float(Box->mCenter[1]) * mCenterCoeff1.y, float(Box->mCenter[2]) * mCenterCoeff1.z);
+		const IceMaths::Point negb(float(Box->mExtents[0]) * mExtentsCoeff1.x, float(Box->mExtents[1]) * mExtentsCoeff1.y, float(Box->mExtents[2]) * mExtentsCoeff1.z);
 		_Collide(b0, b1->GetNeg(), a, Pa, negb, negPb);
 
 		if(ContactFound()) return;
 
 		// Dequantize box
 		Box = &b1->GetPos()->mAABB;
-		const Point posPb(float(Box->mCenter[0]) * mCenterCoeff1.x, float(Box->mCenter[1]) * mCenterCoeff1.y, float(Box->mCenter[2]) * mCenterCoeff1.z);
-		const Point posb(float(Box->mExtents[0]) * mExtentsCoeff1.x, float(Box->mExtents[1]) * mExtentsCoeff1.y, float(Box->mExtents[2]) * mExtentsCoeff1.z);
+		const IceMaths::Point posPb(float(Box->mCenter[0]) * mCenterCoeff1.x, float(Box->mCenter[1]) * mCenterCoeff1.y, float(Box->mCenter[2]) * mCenterCoeff1.z);
+		const IceMaths::Point posb(float(Box->mExtents[0]) * mExtentsCoeff1.x, float(Box->mExtents[1]) * mExtentsCoeff1.y, float(Box->mExtents[2]) * mExtentsCoeff1.z);
 		_Collide(b0, b1->GetPos(), a, Pa, posb, posPb);
 	}
 }
@@ -805,11 +837,11 @@ void AABBTreeCollider::_CollideTriBox(const AABBQuantizedNoLeafNode* b)
 {
 	// Dequantize box
 	const QuantizedAABB* bb = &b->mAABB;
-	const Point Pb(float(bb->mCenter[0]) * mCenterCoeff1.x, float(bb->mCenter[1]) * mCenterCoeff1.y, float(bb->mCenter[2]) * mCenterCoeff1.z);
-	const Point eb(float(bb->mExtents[0]) * mExtentsCoeff1.x, float(bb->mExtents[1]) * mExtentsCoeff1.y, float(bb->mExtents[2]) * mExtentsCoeff1.z);
+	const IceMaths::Point Pb(float(bb->mCenter[0]) * mCenterCoeff1.x, float(bb->mCenter[1]) * mCenterCoeff1.y, float(bb->mCenter[2]) * mCenterCoeff1.z);
+	const IceMaths::Point eb(float(bb->mExtents[0]) * mExtentsCoeff1.x, float(bb->mExtents[1]) * mExtentsCoeff1.y, float(bb->mExtents[2]) * mExtentsCoeff1.z);
 
-	// Perform triangle-box overlap test
-	if(!TriBoxOverlap(Pb, eb))	return;
+	// Perform triangle-box overlap test (box comes from B, so apply mScale1 to it)
+	if(!TriBoxOverlap(Pb*mScale1, eb*mScale1))	return;
 
 	if(b->HasPosLeaf())	PrimTestTriIndex(b->GetPosPrimitive());
 	else				_CollideTriBox(b->GetPos());
@@ -831,11 +863,11 @@ void AABBTreeCollider::_CollideBoxTri(const AABBQuantizedNoLeafNode* b)
 {
 	// Dequantize box
 	const QuantizedAABB* bb = &b->mAABB;
-	const Point Pa(float(bb->mCenter[0]) * mCenterCoeff0.x, float(bb->mCenter[1]) * mCenterCoeff0.y, float(bb->mCenter[2]) * mCenterCoeff0.z);
-	const Point ea(float(bb->mExtents[0]) * mExtentsCoeff0.x, float(bb->mExtents[1]) * mExtentsCoeff0.y, float(bb->mExtents[2]) * mExtentsCoeff0.z);
+	const IceMaths::Point Pa(float(bb->mCenter[0]) * mCenterCoeff0.x, float(bb->mCenter[1]) * mCenterCoeff0.y, float(bb->mCenter[2]) * mCenterCoeff0.z);
+	const IceMaths::Point ea(float(bb->mExtents[0]) * mExtentsCoeff0.x, float(bb->mExtents[1]) * mExtentsCoeff0.y, float(bb->mExtents[2]) * mExtentsCoeff0.z);
 
-	// Perform triangle-box overlap test
-	if(!TriBoxOverlap(Pa, ea))	return;
+	// Perform triangle-box overlap test  (box comes from A, so apply mScale0 to it)
+	if(!TriBoxOverlap(Pa*mScale0, ea*mScale0))	return;
 
 	if(b->HasPosLeaf())	PrimTestIndexTri(b->GetPosPrimitive());
 	else				_CollideBoxTri(b->GetPos());
@@ -857,14 +889,14 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 {
 	// Dequantize box A
 	const QuantizedAABB* ab = &a->mAABB;
-	const Point Pa(float(ab->mCenter[0]) * mCenterCoeff0.x, float(ab->mCenter[1]) * mCenterCoeff0.y, float(ab->mCenter[2]) * mCenterCoeff0.z);
-	const Point ea(float(ab->mExtents[0]) * mExtentsCoeff0.x, float(ab->mExtents[1]) * mExtentsCoeff0.y, float(ab->mExtents[2]) * mExtentsCoeff0.z);
+	const IceMaths::Point Pa(float(ab->mCenter[0]) * mCenterCoeff0.x, float(ab->mCenter[1]) * mCenterCoeff0.y, float(ab->mCenter[2]) * mCenterCoeff0.z);
+	const IceMaths::Point ea(float(ab->mExtents[0]) * mExtentsCoeff0.x, float(ab->mExtents[1]) * mExtentsCoeff0.y, float(ab->mExtents[2]) * mExtentsCoeff0.z);
 	// Dequantize box B
 	const QuantizedAABB* bb = &b->mAABB;
-	const Point Pb(float(bb->mCenter[0]) * mCenterCoeff1.x, float(bb->mCenter[1]) * mCenterCoeff1.y, float(bb->mCenter[2]) * mCenterCoeff1.z);
-	const Point eb(float(bb->mExtents[0]) * mExtentsCoeff1.x, float(bb->mExtents[1]) * mExtentsCoeff1.y, float(bb->mExtents[2]) * mExtentsCoeff1.z);
+	const IceMaths::Point Pb(float(bb->mCenter[0]) * mCenterCoeff1.x, float(bb->mCenter[1]) * mCenterCoeff1.y, float(bb->mCenter[2]) * mCenterCoeff1.z);
+	const IceMaths::Point eb(float(bb->mExtents[0]) * mExtentsCoeff1.x, float(bb->mExtents[1]) * mExtentsCoeff1.y, float(bb->mExtents[2]) * mExtentsCoeff1.z);
 
-	// Perform BV-BV overlap test
+	// Perform BV-BV overlap test (don't use scales)
 	if(!BoxBoxOverlap(ea, Pa, eb, Pb))	return;
 
 	// Catch leaf status
@@ -873,7 +905,7 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 
 	if(a->HasPosLeaf())
 	{
-		FETCH_LEAF(a->GetPosPrimitive(), mIMesh0, mR0to1, mT0to1)
+		FETCH_LEAF(a->GetPosPrimitive(), mIMesh0, mSR0to1, mT0to1)
 
 		if(BHasPosLeaf)	PrimTestTriIndex(b->GetPosPrimitive());
 		else			_CollideTriBox(b->GetPos());
@@ -887,7 +919,7 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 	{
 		if(BHasPosLeaf)
 		{
-			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetPos());
 		}
@@ -897,7 +929,7 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 
 		if(BHasNegLeaf)
 		{
-			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetPos());
 		}
@@ -908,7 +940,7 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 
 	if(a->HasNegLeaf())
 	{
-		FETCH_LEAF(a->GetNegPrimitive(), mIMesh0, mR0to1, mT0to1)
+		FETCH_LEAF(a->GetNegPrimitive(), mIMesh0, mSR0to1, mT0to1)
 
 		if(BHasPosLeaf)	PrimTestTriIndex(b->GetPosPrimitive());
 		else			_CollideTriBox(b->GetPos());
@@ -923,7 +955,7 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 		if(BHasPosLeaf)
 		{
 			// ### That leaf has possibly already been fetched
-			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetPosPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetNeg());
 		}
@@ -934,7 +966,7 @@ void AABBTreeCollider::_Collide(const AABBQuantizedNoLeafNode* a, const AABBQuan
 		if(BHasNegLeaf)
 		{
 			// ### That leaf has possibly already been fetched
-			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mR1to0, mT1to0)
+			FETCH_LEAF(b->GetNegPrimitive(), mIMesh1, mSR1to0, mT1to0)
 
 			_CollideBoxTri(a->GetNeg());
 		}

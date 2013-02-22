@@ -1145,81 +1145,81 @@ void Terrain::UnlockWeightMap(int layer)
 }
 
 
-bool Terrain::RayTrace(PhyHitInfo & info, const Ray & ray, float dist)
-{
-	const int iMaxCount = 1000;
-
-	int i = 0;
-	Vec3 pos = ray.origin;
-	float y = 0;
-
-	if ((ray.origin.x < mBound.minimum.x || ray.origin.x > mBound.maximum.x) ||
-		(ray.origin.y < mBound.minimum.y || ray.origin.y > mBound.maximum.y) ||
-		(ray.origin.z < mBound.minimum.z || ray.origin.z > mBound.maximum.z))
-	{
-		RayIntersectionInfo info = ray.Intersection(mBound);
-
-		if (!info.iterscetion)
-			return false;
-
-		pos = ray.origin + (info.distance + 0.1f) * ray.direction;
-	}
-
-	if (ray.direction == Vec3::UnitY)
-	{
-		y = GetHeight(pos.x, pos.z);
-		if (pos.y <= y && y - ray.origin.y < dist)
-		{
-			info.Hitted = true;
-			info.node = NULL;
-			info.Distance = y - ray.origin.y;
-			info.Normal = GetNormal(pos.x, pos.z);
-			info.MaterialId = -1;
-			return true;
-		}
-	}
-	else if (ray.direction == Vec3::NegUnitY)
-	{
-		y = GetHeight(pos.x, pos.z);
-		if (pos.y >= y && ray.origin.y - y < dist)
-		{
-			info.Hitted = true;
-			info.node = NULL;
-			info.Distance = ray.origin.y - y;
-			info.Normal = GetNormal(pos.x, pos.z);
-			info.MaterialId = -1;
-			return true;
-		}
-	}
-	else
-	{
-		while (pos.x > mBound.minimum.x && pos.x < mBound.maximum.x &&
-			   pos.z > mBound.minimum.z && pos.z < mBound.maximum.z &&
-			i++ < iMaxCount)
-		{
-			if (pos.Distance(ray.origin) >= dist)
-				return false;
-
-			y = GetHeight(pos.x, pos.z);
-			float d = ray.origin.Distance(Vec3(pos.x, y, pos.z));
-
-			if (pos.y <= y && d < dist)
-			{
-				info.Hitted = true;
-				info.node = NULL;
-				info.Distance = d;
-				info.Normal = GetNormal(pos.x, pos.z);
-				info.MaterialId = -1;
-
-				return true;
-			}
-
-			pos += ray.direction;
-		}
-	}
-
-	return false;
-}
+//bool Terrain::RayTrace(PhyHitInfo & info, const Ray & ray, float dist)
+//{
+//	const int iMaxCount = 1000;
+//
+//	int i = 0;
+//	Vec3 pos = ray.origin;
+//	float y = 0;
+//
+//	if ((ray.origin.x < mBound.minimum.x || ray.origin.x > mBound.maximum.x) ||
+//		(ray.origin.y < mBound.minimum.y || ray.origin.y > mBound.maximum.y) ||
+//		(ray.origin.z < mBound.minimum.z || ray.origin.z > mBound.maximum.z))
+//	{
+//		RayIntersectionInfo info = ray.Intersection(mBound);
+//
+//		if (!info.iterscetion)
+//			return false;
+//
+//		pos = ray.origin + (info.distance + 0.1f) * ray.direction;
+//	}
+//
+//	if (ray.direction == Vec3::UnitY)
+//	{
+//		y = GetHeight(pos.x, pos.z);
+//		if (pos.y <= y && y - ray.origin.y < dist)
+//		{
+//			info.Hitted = true;
+//			info.node = NULL;
+//			info.Distance = y - ray.origin.y;
+//			info.Normal = GetNormal(pos.x, pos.z);
+//			info.MaterialId = -1;
+//			return true;
+//		}
+//	}
+//	else if (ray.direction == Vec3::NegUnitY)
+//	{
+//		y = GetHeight(pos.x, pos.z);
+//		if (pos.y >= y && ray.origin.y - y < dist)
+//		{
+//			info.Hitted = true;
+//			info.node = NULL;
+//			info.Distance = ray.origin.y - y;
+//			info.Normal = GetNormal(pos.x, pos.z);
+//			info.MaterialId = -1;
+//			return true;
+//		}
+//	}
+//	else
+//	{
+//		while (pos.x > mBound.minimum.x && pos.x < mBound.maximum.x &&
+//			   pos.z > mBound.minimum.z && pos.z < mBound.maximum.z &&
+//			i++ < iMaxCount)
+//		{
+//			if (pos.Distance(ray.origin) >= dist)
+//				return false;
+//
+//			y = GetHeight(pos.x, pos.z);
+//			float d = ray.origin.Distance(Vec3(pos.x, y, pos.z));
+//
+//			if (pos.y <= y && d < dist)
+//			{
+//				info.Hitted = true;
+//				info.node = NULL;
+//				info.Distance = d;
+//				info.Normal = GetNormal(pos.x, pos.z);
+//				info.MaterialId = -1;
+//
+//				return true;
+//			}
+//
+//			pos += ray.direction;
+//		}
+//	}
+//
+//	return false;
+//}
 
 
 

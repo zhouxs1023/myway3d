@@ -22,7 +22,7 @@
 		FIND_FORCE_DWORD = 0x7fffffff
 	};
 
-	class ICECORE_API Container
+	class Container
 	{
 		public:
 		// Constructor / Destructor
@@ -51,6 +51,17 @@
 
 									// Add new entry
 									mEntries[mCurNbEntries++]	= entry;
+									return *this;
+								}
+
+		inline_	Container&		Add(const uword* entries, udword nb)
+								{
+									// Resize if needed
+									if(mCurNbEntries+nb>mMaxNbEntries)	Resize(nb);
+
+									// Add new entry
+									CopyMemory(&mEntries[mCurNbEntries], entries, nb*sizeof(uword));
+									mCurNbEntries+=nb;
 									return *this;
 								}
 

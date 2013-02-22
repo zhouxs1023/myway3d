@@ -27,7 +27,7 @@
 	};
 
 	// A triangle class.
-	class ICEMATHS_API Triangle
+	class Triangle
 	{
 		public:
 		//! Constructor

@@ -11,16 +11,17 @@ inline_ BOOL PlanesCollider::PlanesTriOverlap(udword in_clip_mask)
 	// Stats
 	mNbVolumePrimTests++;
 
-	const Plane* p = mPlanes;
+	const IceMaths::Plane* p = mPlanes;
 	udword Mask = 1;
 
 	while(Mask<=in_clip_mask)
 	{
 		if(in_clip_mask & Mask)
 		{
-			float d0 = p->Distance(*mVP.Vertex[0]);
-			float d1 = p->Distance(*mVP.Vertex[1]);
-			float d2 = p->Distance(*mVP.Vertex[2]);
+			// distance with scaled vertices
+			float d0 = p->Distance( (*mVP.Vertex[0])*mLocalScale );
+			float d1 = p->Distance( (*mVP.Vertex[1])*mLocalScale );
+			float d2 = p->Distance( (*mVP.Vertex[2])*mLocalScale );
 			if(d0>0.0f && d1>0.0f && d2>0.0f)	return FALSE;
 //			if(!(IR(d0)&SIGN_BITMASK) && !(IR(d1)&SIGN_BITMASK) && !(IR(d2)&SIGN_BITMASK))	return FALSE;
 		}

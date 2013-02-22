@@ -41,7 +41,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../ThirdParty/Opcode;../Myway\Physics</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../ThirdParty;../Myway\Physics</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>MOPCODE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
@@ -66,16 +66,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="MOpcodeColObj.h" />
     <ClInclude Include="MOpcodeEntry.h" />
+    <ClInclude Include="MOpcodeMath.h" />
+    <ClInclude Include="MOpcodeMesh.h" />
     <ClInclude Include="MOpcodeNode.h" />
     <ClInclude Include="MOpcodePlugin.h" />
     <ClInclude Include="MOpcodeScene.h" />
+    <ClInclude Include="MOpcodeTerrain.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MOpcodeColObj.cpp" />
+    <ClCompile Include="MOpcodeMath.cpp" />
+    <ClCompile Include="MOpcodeMesh.cpp" />
     <ClCompile Include="MOpcodeNode.cpp" />
     <ClCompile Include="MOpcodePlugin.cpp" />
     <ClCompile Include="MOpcodeScene.cpp" />
+    <ClCompile Include="MOpcodeTerrain.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

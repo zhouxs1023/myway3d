@@ -14,17 +14,44 @@
 
 	#define	SIGN_BITMASK			0x80000000
 
+#define NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+	inline void swap( float & x, float & y ){ float tmp( y ); y = x; x = tmp; }
+
+	inline void absVal( float & x ) { x = fabs( x ); }
+
+	union udwordFloatUnion {
+		udword i;
+		float f;
+	};
+	union sdwordFloatUnion {
+		sdword i;
+		float f;
+	};
+	union intFloatUnion {
+		int i;
+		float f;
+	};
+
+	inline float  FR(  udword x ) { udwordFloatUnion u; u.i = x; return u.f; }
+	inline sdword SIR( float x  ) { sdwordFloatUnion u; u.f = x; return u.i; }
+	inline udword IR(  float x  ) { udwordFloatUnion u; u.f = x; return u.i; }
+	inline int  IntR(  float x  ) { intFloatUnion u; u.f = x; return u.i; }
+#else
 	//! Integer representation of a floating-point value.
 	#define IR(x)					((udword&)(x))
 
 	//! Signed integer representation of a floating-point value.
 	#define SIR(x)					((sdword&)(x))
 
-	//! Absolute integer representation of a floating-point value
-	#define AIR(x)					(IR(x)&0x7fffffff)
-
 	//! Floating-point representation of an integer value.
 	#define FR(x)					((float&)(x))
+
+#endif
+
+	//! Absolute integer representation of a floating-point value
+	#define AIR(x)					(IR(x)&0x7fffffff)
 
 	//! Integer-based comparison of a floating point value.
 	//! Don't use it blindly, it can be faster or slower than the FPU comparison, depends on the context.
@@ -41,6 +68,7 @@
 	//! Fast square root for floating-point values.
 	inline_ float FastSqrt(float square)
 	{
+#ifdef _MSC_VER
 			float retval;
 
 			__asm {
@@ -51,38 +79,57 @@
 					mov             [retval], eax
 			}
 			return retval;
+#else
+			return sqrt(square);
+#endif
 	}
 
 	//! Saturates positive to zero.
 	inline_ float fsat(float f)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		udword y = IR(f) & ~(SIR(f) >>31);
+		return FR(y);
+#else
 		udword y = (udword&)f & ~((sdword&)f >>31);
 		return (float&)y;
+#endif
 	}
 
 	//! Computes 1.0f / sqrtf(x).
 	inline_ float frsqrt(float f)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		return 1.0 / sqrt( f );
+#else
 		float x = f * 0.5f;
 		udword y = 0x5f3759df - ((udword&)f >> 1);
 		// Iteration...
 		(float&)y  = (float&)y * ( 1.5f - ( x * (float&)y * (float&)y ) );
 		// Result
 		return (float&)y;
+#endif
 	}
 
 	//! Computes 1.0f / sqrtf(x). Comes from NVIDIA.
 	inline_ float InvSqrt(const float& x)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		return frsqrt( x );
+#else
 		udword tmp = (udword(IEEE_1_0 << 1) + IEEE_1_0 - *(udword*)&x) >> 1;   
 		float y = *(float*)&tmp;                                             
 		return y * (1.47f - 0.47f * x * y * y);
+#endif
 	}
 
 	//! Computes 1.0f / sqrtf(x). Comes from Quake3. Looks like the first one I had above.
 	//! See http://www.magic-software.com/3DGEDInvSqrt.html
 	inline_ float RSqrt(float number)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		return frsqrt( number );
+#else
 		long i;
 		float x2, y;
 		const float threehalfs = 1.5f;
@@ -95,26 +142,41 @@
 		y  = y * (threehalfs - (x2 * y * y));
 
 		return y;
+#endif	       
 	}
 
 	//! TO BE DOCUMENTED
 	inline_ float fsqrt(float f)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+	  return frsqrt( f );
+#else
 		udword y = ( ( (sdword&)f - 0x3f800000 ) >> 1 ) + 0x3f800000;
 		// Iteration...?
 		// (float&)y = (3.0f - ((float&)y * (float&)y) / f) * (float&)y * 0.5f;
 		// Result
 		return (float&)y;
+#endif	       
 	}
 
 	//! Returns the float ranged espilon value.
 	inline_ float fepsilon(float f)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		udword b = IR(f) & 0xff800000;
+		udword a = b | 0x00000001;
+		float fa = FR( a );
+		float fb = FR( b );
+		fa -= fb;
+		// Result
+		return fa;
+#else
 		udword b = (udword&)f & 0xff800000;
 		udword a = b | 0x00000001;
 		(float&)a -= (float&)b;
 		// Result
 		return (float&)a;
+#endif
 	}
 
 	//! Is the float valid ?
@@ -168,9 +230,13 @@
 	//! This function computes the slowest possible floating-point value (you can also directly use FLT_EPSILON)
 	inline_ float ComputeFloatEpsilon()
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		return FLT_EPSILON;
+#else
 		float f = 1.0f;
 		((udword&)f)^=1;
 		return f - 1.0f;	// You can check it's the same as FLT_EPSILON
+#endif
 	}
 
 	inline_ bool IsFloatZero(float x, float epsilon=1e-6f)
@@ -221,6 +287,7 @@
 	//! A global function to find MAX(a,b) using FCOMI/FCMOV
 	inline_ float FCMax2(float a, float b)
 	{
+#ifdef _MSC_VER
 		float Res;
 		_asm	fld		[a]
 		_asm	fld		[b]
@@ -229,11 +296,15 @@
 		_asm	fstp	[Res]
 		_asm	fcomp
 		return Res;
+#else
+		return (a > b) ? a : b;
+#endif
 	}
 
 	//! A global function to find MIN(a,b) using FCOMI/FCMOV
 	inline_ float FCMin2(float a, float b)
 	{
+#ifdef _MSC_VER
 		float Res;
 		_asm	fld		[a]
 		_asm	fld		[b]
@@ -242,11 +313,15 @@
 		_asm	fstp	[Res]
 		_asm	fcomp
 		return Res;
+#else
+		return (a < b) ? a : b;
+#endif
 	}
 
 	//! A global function to find MAX(a,b,c) using FCOMI/FCMOV
 	inline_ float FCMax3(float a, float b, float c)
 	{
+#ifdef _MSC_VER
 		float Res;
 		_asm	fld		[a]
 		_asm	fld		[b]
@@ -258,11 +333,15 @@
 		_asm	fstp	[Res]
 		_asm	fcompp
 		return Res;
+#else
+		return (a > b) ? ((a > c) ? a : c) : ((b > c) ? b : c);
+#endif
 	}
 
 	//! A global function to find MIN(a,b,c) using FCOMI/FCMOV
 	inline_ float FCMin3(float a, float b, float c)
 	{
+#ifdef _MSC_VER
 		float Res;
 		_asm	fld		[a]
 		_asm	fld		[b]
@@ -274,11 +353,18 @@
 		_asm	fstp	[Res]
 		_asm	fcompp
 		return Res;
+#else
+		return (a < b) ? ((a < c) ? a : c) : ((b < c) ? b : c);
+#endif
 	}
 
 	inline_ int ConvertToSortable(float f)
 	{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+		int Fi = IntR( f );
+#else
 		int& Fi = (int&)f;
+#endif
 		int Fmask = (Fi>>31);
 		Fi ^= Fmask;
 		Fmask &= ~(1<<31);
@@ -295,23 +381,23 @@
 		FPU_FORCE_DWORD	= 0x7fffffff
 	};
 
-	FUNCTION ICECORE_API FPUMode	GetFPUMode();
-	FUNCTION ICECORE_API void		SaveFPU();
-	FUNCTION ICECORE_API void		RestoreFPU();
-	FUNCTION ICECORE_API void		SetFPUFloorMode();
-	FUNCTION ICECORE_API void		SetFPUCeilMode();
-	FUNCTION ICECORE_API void		SetFPUBestMode();
+	FUNCTION FPUMode	GetFPUMode();
+	FUNCTION void		SaveFPU();
+	FUNCTION void		RestoreFPU();
+	FUNCTION void		SetFPUFloorMode();
+	FUNCTION void		SetFPUCeilMode();
+	FUNCTION void		SetFPUBestMode();
 
-	FUNCTION ICECORE_API void		SetFPUPrecision24();
-	FUNCTION ICECORE_API void		SetFPUPrecision53();
-	FUNCTION ICECORE_API void		SetFPUPrecision64();
-	FUNCTION ICECORE_API void		SetFPURoundingChop();
-	FUNCTION ICECORE_API void		SetFPURoundingUp();
-	FUNCTION ICECORE_API void		SetFPURoundingDown();
-	FUNCTION ICECORE_API void		SetFPURoundingNear();
+	FUNCTION void		SetFPUPrecision24();
+	FUNCTION void		SetFPUPrecision53();
+	FUNCTION void		SetFPUPrecision64();
+	FUNCTION void		SetFPURoundingChop();
+	FUNCTION void		SetFPURoundingUp();
+	FUNCTION void		SetFPURoundingDown();
+	FUNCTION void		SetFPURoundingNear();
 
-	FUNCTION ICECORE_API int		intChop(const float& f);
-	FUNCTION ICECORE_API int		intFloor(const float& f);
-	FUNCTION ICECORE_API int		intCeil(const float& f);
+	FUNCTION int		intChop(const float& f);
+	FUNCTION int		intFloor(const float& f);
+	FUNCTION int		intCeil(const float& f);
 
 #endif // __ICEFPU_H__

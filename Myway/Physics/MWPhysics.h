@@ -5,23 +5,43 @@
 
 namespace Myway {
 
-	struct PhyHitInfo
+	class HitInfo
+	{
+		Vec3 this_position;
+		Vec3 this_normal;
+		int this_faceId;
+
+		Vec3 that_position;
+		Vec3 that_normal;
+		int that_faceId;
+	};
+
+	struct HitInfoSet
 	{
 		SceneNode * node;
-		bool Hitted;
-		float Distance;
-		Vec3 Normal;
-		int MaterialId;
 
-		PhyHitInfo()
+		MColType colType;
+
+		Vec3 r_that_position;				// only for ray trace
+		Vec3 r_that_normal;					// only for ray trace
+		int r_that_faceId;					// only for ray trace
+		float r_distance;					// only for ray trace
+
+		Array<HitInfo> hitInfos;
+
+		HitInfoSet()
 		{
 			node = NULL;
-			Hitted = false;
-			Distance = FLT_MAX;
-			Normal = Vec3::Zero;
-			MaterialId = -1;
+			colType = CT_Unknown;
+
+			r_that_position = Vec3::Zero;
+			r_that_normal = Vec3::Zero;
+			r_that_faceId = -1;
+			r_distance = FLT_MAX;
 		}
 	};
+
+	typedef Array<HitInfoSet> HitInfoSetArray;
 
 	class IColObj : public RefObj
 	{
@@ -30,8 +50,6 @@ namespace Myway {
 		virtual ~IColObj() {};
 
 		virtual MColType GetType() = 0;
-
-		virtual bool RayTrace(PhyHitInfo & info, const Ray & ray, const Mat4 & worldTm, unsigned int * cache) = 0;
 
 		void * GetUId() const { return mUId; }
 		float GetScale() const { return mScale; }
@@ -64,10 +82,13 @@ namespace Myway {
 		virtual IColObjPtr GetColMesh(void * uId, float scale) = 0;
 		virtual void RemoveColMesh(IColObj * obj) = 0;
 
+		virtual void CreateTerrain() = 0;
+		virtual void DestroyTerrain() = 0;
+
 		virtual void AddNode(SceneNode * sceneNode, IColObjPtr colObj) = 0;
 		virtual void RemoveNode(SceneNode * sceneNode) = 0;
 		virtual void OnNodeScaleChanged(SceneNode * sceneNode) = 0;
 
-		virtual PhyHitInfo RayTrace(const Ray & ray, float dist, int flag, bool ifNoPhyData = false) = 0;
+		virtual void RayCheck(HitInfoSetArray & hitInfos, const Ray & ray, float dist, int flag, bool ifNoPhyData = false) = 0;
 	};
 }

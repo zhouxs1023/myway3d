@@ -47,4 +47,11 @@ public:
     float   radius;
 };
 
+struct MW_ENTRY SweptSphere
+{
+	Vec3 position;
+	Vec3 movement;
+	float radius;
+};
+
 }

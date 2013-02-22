@@ -227,16 +227,17 @@ void xApp::_input()
 				 ++whr;
 			 }*/
 
-			 PhyHitInfo result = IPhyWorld::Instance()->RayTrace(ray, 1000.0f, PICK_Flag, true);
 
-			 if (result.node)
+			 HitInfoSetArray infos;
+
+			 IPhyWorld::Instance()->RayCheck(infos, ray, 1000.0f, PICK_Flag, true);
+
+			 if (infos.Size() > 0 && infos[0].node)
 			 {
-				 xObj * obj = mObjMgr.Get(result.node);
+				 xObj * obj = mObjMgr.Get(infos[0].node);
 
 				 if (obj)
-				 {
 					 SetSelectedObj(obj);
-				 }
 			 }
 		 }
 	}

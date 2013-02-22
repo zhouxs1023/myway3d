@@ -12,7 +12,7 @@
 #ifndef __ICESEGMENT_H__
 #define __ICESEGMENT_H__
 
-	class ICEMATHS_API Segment
+	class Segment
 	{
 		public:
 		//! Constructor

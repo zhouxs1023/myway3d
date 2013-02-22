@@ -20,16 +20,16 @@
 #ifndef __OPC_VOLUMECOLLIDER_H__
 #define __OPC_VOLUMECOLLIDER_H__
 
-	struct OPCODE_API VolumeCache
+	struct VolumeCache
 	{
 							VolumeCache() : Model(null)		{}
 							~VolumeCache()					{}
 
-		Container			TouchedPrimitives;	//!< Indices of touched primitives
+		IceCore::Container			TouchedPrimitives;	//!< Indices of touched primitives
 		const BaseModel*	Model;				//!< Owner
 	};
 
-	class OPCODE_API VolumeCollider : public Collider
+	class VolumeCollider : public Collider
 	{
 		public:
 		// Constructor / Destructor
@@ -90,11 +90,12 @@
 
 		protected:
 		// Touched primitives
-							Container*		mTouchedPrimitives;	//!< List of touched primitives
-
+							IceCore::Container*		mTouchedPrimitives;	//!< List of touched primitives
+		// Precompured scale cache
+							IceMaths::Point			mLocalScale;		//!< Collision model's local scale (stripped off from its matrix)
 		// Dequantization coeffs
-							Point			mCenterCoeff;
-							Point			mExtentsCoeff;
+							IceMaths::Point			mCenterCoeff;
+							IceMaths::Point			mExtentsCoeff;
 		// Stats
 							udword			mNbVolumeBVTests;	//!< Number of Volume-BV tests
 							udword			mNbVolumePrimTests;	//!< Number of Volume-Primitive tests

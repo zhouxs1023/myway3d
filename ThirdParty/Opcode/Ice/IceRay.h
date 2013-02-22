@@ -12,7 +12,7 @@
 #ifndef __ICERAY_H__
 #define __ICERAY_H__
 
-	class ICEMATHS_API Ray
+	class Ray
 	{
 		public:
 		//! Constructor

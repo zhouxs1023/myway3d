@@ -3,6 +3,11 @@
  *	OPCODE - Optimized Collision Detection
  *	Copyright (C) 2001 Pierre Terdiman
  *	Homepage: http://www.codercorner.com/Opcode.htm
+ *
+ *  OPCODE modifications for scaled model support (and other things)
+ *  Copyright (C) 2004 Gilvan Maia (gilvan 'at' vdl.ufc.br)
+ *	Check http://www.vdl.ufc.br/gilvan/coll/opcode/index.htm for updates.
+ *
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -115,6 +120,12 @@
 #include "Stdafx.h"
 
 using namespace Opcode;
+using namespace IceMaths;
+
+// When this macro is set, the overlap tests considers an scaling on AABBs/tris.
+// This means that the ray/line is not entirely in the model's local space when collision
+// tests take places.
+// #define OPC_RAYCOLLIDER_SCALE_BEFORE_OVERLAP
 
 #include "OPC_RayAABBOverlap.h"
 #include "OPC_RayTriOverlap.h"
@@ -256,16 +267,25 @@ const char* RayCollider::ValidateSettings()
  *	\param		world			[in] model's world matrix, or null
  *	\param		cache			[in] a possibly cached face index, or null
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool RayCollider::Collide(const Ray& world_ray, const Model& model, const Matrix4x4* world, udword* cache)
+bool RayCollider::Collide(const IceMaths::Ray& world_ray, const Model& model, const IceMaths::Matrix4x4* world, udword* cache)
 {
 	// Checkings
 	if(!Setup(&model))	return false;
 
 	// Init collision query
-	if(InitQuery(world_ray, world, cache))	return true;
+	float maxDistanceBkp = mMaxDist;	
+	Point originBkp = mOrigin;
+	Point dirBkp = mDir;
+
+	if(InitQuery(world_ray, world, cache))
+	{
+		mMaxDist = maxDistanceBkp;
+		mDir = dirBkp;
+		mOrigin = originBkp;
+		return true;
+	}
 
 	if(!model.HasLeafNodes())
 	{
@@ -314,6 +334,11 @@ bool RayCollider::Collide(const Ray& world_ray, const Model& model, const Matrix
 		}
 	}
 
+	// reverts max distance, etc
+	mMaxDist = maxDistanceBkp;
+	mDir = dirBkp;
+	mOrigin = originBkp;
+
 	// Update cache if needed
 	UPDATE_CACHE
 	return true;
@@ -331,10 +356,9 @@ bool RayCollider::Collide(const Ray& world_ray, const Model& model, const Matrix
  *	\param		world		[in] object's world matrix, or null
  *	\param		face_id		[in] index of previously stabbed triangle
  *	\return		TRUE if we can return immediately
- *	\warning	SCALE NOT SUPPORTED. The matrix must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL RayCollider::InitQuery(const Ray& world_ray, const Matrix4x4* world, udword* face_id)
+BOOL RayCollider::InitQuery(const IceMaths::Ray& world_ray, const IceMaths::Matrix4x4* world, udword* face_id)
 {
 	// Reset stats & contact status
 	Collider::InitQuery();
@@ -349,15 +373,45 @@ BOOL RayCollider::InitQuery(const Ray& world_ray, const Matrix4x4* world, udword
 	// The (Origin/Dir) form is needed for the ray-triangle test anyway (even for segment tests)
 	if(world)
 	{
-		Matrix3x3 InvWorld = *world;
+#ifdef OPC_RAYCOLLIDER_SCALE_BEFORE_OVERLAP
+		// Matrix normalization & scaling stripping		
+		Matrix4x4 normWorldm;
+		NormalizePRSMatrix( normWorldm, mLocalScale, *world );
+		
+		// Invert model matrix
+		Matrix3x3 InvWorld = normWorldm;
 		mDir = InvWorld * world_ray.mDir;
 
 		Matrix4x4 World;
-		InvertPRMatrix(World, *world);
+		InvertPRMatrix(World, normWorldm);
 		mOrigin = world_ray.mOrig * World;
+#else
+		// Now we are a much better code to get the ray in local space.
+		// Some notes about this new code:
+		//	- faster, because we don't need to compute square roots anymore;
+		//  - faster yet, because the number of divisions is even smaller now;
+		//  - the intersection tests are robust enough to handle rays with non-unit direction vectors;
+		//  - matrices are less subject to FPU errors, because I don't like square root;
+		//	 (it seems to introduce errors, because it cuts number precision by a half when
+		//	  stripping the matrix scale off)
+		//  - the code is shorter and easier to maintain;  :P
+#ifdef MSVC
+		#pragma message(" >> Using new code for ray collision")		
+#endif
+
+		// first, invert the world matrix and transform the ray's origin
+		Matrix4x4 World;
+		InvertPRSMatrix(World, *world);
+		mOrigin = world_ray.mOrig * World;
+
+		// second, transform the ray's direction
+		Matrix3x3 InvWorld = World;
+		mDir = world_ray.mDir * InvWorld;
+#endif
 	}
 	else
 	{
+          	mLocalScale.Set(1.0f,1.0f,1.0f);
 		mDir	= world_ray.mDir;
 		mOrigin	= world_ray.mOrig;
 	}
@@ -460,7 +514,7 @@ BOOL RayCollider::InitQuery(const Ray& world_ray, const Matrix4x4* world, udword
  *	\return		true if success
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool RayCollider::Collide(const Ray& world_ray, const AABBTree* tree, Container& box_indices)
+bool RayCollider::Collide(const IceMaths::Ray& world_ray, const AABBTree* tree, Container& box_indices)
 {
 	// ### bad design here
 
@@ -519,8 +573,8 @@ void RayCollider::_SegmentStab(const AABBQuantizedNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Segment-AABB overlap test
 	if(!SegmentAABBOverlap(Center, Extents))	return;
@@ -575,8 +629,8 @@ void RayCollider::_SegmentStab(const AABBQuantizedNoLeafNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Segment-AABB overlap test
 	if(!SegmentAABBOverlap(Center, Extents))	return;
@@ -606,7 +660,7 @@ void RayCollider::_SegmentStab(const AABBQuantizedNoLeafNode* node)
 void RayCollider::_SegmentStab(const AABBTreeNode* node, Container& box_indices)
 {
 	// Test the box against the segment
-	Point Center, Extents;
+   IceMaths::Point Center, Extents;
 	node->GetAABB()->GetCenter(Center);
 	node->GetAABB()->GetExtents(Extents);
 	if(!SegmentAABBOverlap(Center, Extents))	return;
@@ -657,8 +711,8 @@ void RayCollider::_RayStab(const AABBQuantizedNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Ray-AABB overlap test
 	if(!RayAABBOverlap(Center, Extents))	return;
@@ -713,8 +767,8 @@ void RayCollider::_RayStab(const AABBQuantizedNoLeafNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Ray-AABB overlap test
 	if(!RayAABBOverlap(Center, Extents))	return;
@@ -744,7 +798,7 @@ void RayCollider::_RayStab(const AABBQuantizedNoLeafNode* node)
 void RayCollider::_RayStab(const AABBTreeNode* node, Container& box_indices)
 {
 	// Test the box against the ray
-	Point Center, Extents;
+	IceMaths::Point Center, Extents;
 	node->GetAABB()->GetCenter(Center);
 	node->GetAABB()->GetExtents(Extents);
 	if(!RayAABBOverlap(Center, Extents))	return;

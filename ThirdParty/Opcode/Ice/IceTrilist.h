@@ -12,7 +12,7 @@
 #ifndef __ICETRILIST_H__
 #define __ICETRILIST_H__
 
-	class ICEMATHS_API TriList : public Container
+	class TriList : public IceCore::Container
 	{
 		public:
 		// Constructor / Destructor
@@ -37,7 +37,7 @@
 								}
 	};
 
-	class ICEMATHS_API TriangleList : public Container
+	class TriangleList : public IceCore::Container
 	{
 		public:
 		// Constructor / Destructor
@@ -49,7 +49,7 @@
 
 				void				AddTriangle(const IndexedTriangle& tri)
 									{
-										Add(tri.mVRef[0]).Add(tri.mVRef[1]).Add(tri.mVRef[2]);
+										Add((udword)tri.mVRef[0]).Add((udword)tri.mVRef[1]).Add((udword)tri.mVRef[2]);
 									}
 
 				void				AddTriangle(udword vref0, udword vref1, udword vref2)

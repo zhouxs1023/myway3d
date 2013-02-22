@@ -95,14 +95,14 @@ String::String(char x)
 
 String::String(int x)
 {
-    itoa(x, mCache, 10);
+	itoa(x, mCache, 10);
 
-    mLength = Strlen(mCache);
-    mMaxSize = msCacheSize;
-    mIncreaseSize = mMaxSize;
-    mStr = NULL;
-    mUseCache = TRUE;
-    mCache[mLength] = 0;
+	mLength = Strlen(mCache);
+	mMaxSize = msCacheSize;
+	mIncreaseSize = mMaxSize;
+	mStr = NULL;
+	mUseCache = TRUE;
+	mCache[mLength] = 0;
 }
 
 String::String(float x)

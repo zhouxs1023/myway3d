@@ -16,6 +16,11 @@ xPreViewer::~xPreViewer()
 
 void xPreViewer::Init()
 {
+	if (Environment::Instance()->GetTerrain())
+	{
+		IPhyWorld::Instance()->CreateTerrain();
+	}
+
 	TString128 ActorFile = "Actor\\Test.lma";
 
 	mNode = World::Instance()->CreateSceneNode();
@@ -37,18 +42,35 @@ void xPreViewer::Init()
 	ray.origin = mNode->GetPosition() + Vec3::UnitY * 5.0f;
 	ray.direction = Vec3::NegUnitY;
 
-	PhyHitInfo info = IPhyWorld::Instance()->RayTrace(ray, 10, PICK_Flag);
+	HitInfoSetArray infos;
 
-	if (!info.Hitted)
+	IPhyWorld::Instance()->RayCheck(infos, ray, 10, PICK_Flag);
+
+	if (!infos.Size())
 	{
 		OnXailuo();
 	}
 	else
 	{
-		mNode->SetPosition(ray.GetPosition(info.Distance));
+		mNode->SetPosition(infos[0].r_that_position);
 		OnIdle();
 	}
 }
+
+void xPreViewer::Shutdown()
+{
+	if (Environment::Instance()->GetTerrain())
+	{
+		IPhyWorld::Instance()->DestroyTerrain();
+	}
+
+	World::Instance()->DestroySceneNode(mNode);
+	MActorManager::Instance()->DestroyActor(mActor);
+
+	mNode = NULL;
+	mActor = NULL;
+}
+
 
 void xPreViewer::Update()
 {
@@ -63,11 +85,13 @@ void xPreViewer::Update()
 		ray.origin = mNode->GetPosition() + Vec3::UnitY * 5.0f;
 		ray.direction = Vec3::NegUnitY;
 
-		PhyHitInfo info = IPhyWorld::Instance()->RayTrace(ray, 10, PICK_Flag);
+		HitInfoSetArray infos;
 
-		if (info.Hitted)
+		IPhyWorld::Instance()->RayCheck(infos, ray, 10, PICK_Flag);
+
+		if (infos.Size())
 		{
-			mNode->SetPosition(ray.GetPosition(info.Distance));
+			mNode->SetPosition(infos[0].r_that_position);
 			OnIdle();
 		}
 		else
@@ -90,11 +114,13 @@ void xPreViewer::Update()
 			ray.origin = nextPos + Vec3::UnitY * height;
 			ray.direction = Vec3::NegUnitY;
 
-			PhyHitInfo info = IPhyWorld::Instance()->RayTrace(ray, 100, PICK_Flag);
+			HitInfoSetArray infos;
 
-			if (info.Hitted)
+			IPhyWorld::Instance()->RayCheck(infos, ray, 100, PICK_Flag);
+
+			if (infos.Size())
 			{
-				mNode->SetPosition(ray.GetPosition(info.Distance));
+				mNode->SetPosition(infos[0].r_that_position);
 			}
 			else
 			{
@@ -158,15 +184,6 @@ void xPreViewer::Update()
 		cam->SetOrientation(q * mNode->GetOrientation());
 		cam->SetPosition(cam->GetPosition() - cam->GetDirection() * 50);
 	}
-}
-
-void xPreViewer::Shutdown()
-{
-	World::Instance()->DestroySceneNode(mNode);
-	MActorManager::Instance()->DestroyActor(mActor);
-
-	mNode = NULL;
-	mActor = NULL;
 }
 
 void xPreViewer::OnXailuo()

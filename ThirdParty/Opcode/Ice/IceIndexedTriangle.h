@@ -13,16 +13,20 @@
 #define __ICEINDEXEDTRIANGLE_H__
 
 	// Forward declarations
+#ifdef _MSC_VER
 	enum CubeIndex;
+#else
+	typedef int CubeIndex;
+#endif
 
 	// An indexed triangle class.
-	class ICEMATHS_API IndexedTriangle
+	class IndexedTriangle
 	{
 		public:
 		//! Constructor
 		inline_					IndexedTriangle()									{}
 		//! Constructor
-		inline_					IndexedTriangle(udword r0, udword r1, udword r2)	{ mVRef[0]=r0; mVRef[1]=r1; mVRef[2]=r2; }
+		inline_					IndexedTriangle(size_t r0, size_t r1, size_t r2)	{ mVRef[0]=r0; mVRef[1]=r1; mVRef[2]=r2; }
 		//! Copy constructor
 		inline_					IndexedTriangle(const IndexedTriangle& triangle)
 								{
@@ -33,7 +37,7 @@
 		//! Destructor
 		inline_					~IndexedTriangle()									{}
 		//! Vertex-references
-				udword			mVRef[3];
+				size_t			mVRef[3];
 
 		// Methods
 				void			Flip();

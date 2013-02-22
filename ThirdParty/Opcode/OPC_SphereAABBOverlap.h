@@ -1,15 +1,19 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Sphere-AABB overlap test, based on Jim Arvo's code.
- *	\param		center		[in] box center
- *	\param		extents		[in] box extents
+ *	\param		center_		[in] box center
+ *	\param		extents_		[in] box extents
  *	\return		TRUE on overlap
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-inline_ BOOL SphereCollider::SphereAABBOverlap(const Point& center, const Point& extents)
+inline_ BOOL SphereCollider::SphereAABBOverlap(const IceMaths::Point& center_, const IceMaths::Point& extents_)
 { 
 	// Stats
 	mNbVolumeBVTests++;
+
+	// Applies the model's local scale
+	const IceMaths::Point  center = center_ *mLocalScale;
+	const IceMaths::Point extents = extents_*mLocalScale;
 
 	float d = 0.0f;
 

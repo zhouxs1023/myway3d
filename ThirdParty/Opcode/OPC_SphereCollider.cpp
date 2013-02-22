@@ -35,9 +35,12 @@
 #include "Stdafx.h"
 
 using namespace Opcode;
+using namespace IceMaths;
 
 #include "OPC_SphereAABBOverlap.h"
 #include "OPC_SphereTriOverlap.h"
+
+
 
 #define SET_CONTACT(prim_index, flag)									\
 	/* Set contact status */											\
@@ -88,10 +91,10 @@ SphereCollider::~SphereCollider()
  *	\param		worlds		[in] sphere's world matrix, or null
  *	\param		worldm		[in] model's world matrix, or null
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
+ *	\warning	SCALE NOT SUPPORTED IN SPHERE WORLD MATRIX. The matrix must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const Model& model, const Matrix4x4* worlds, const Matrix4x4* worldm)
+bool SphereCollider::Collide(SphereCache& cache, const IceMaths::Sphere& sphere, const Model& model, const IceMaths::Matrix4x4* worlds, const IceMaths::Matrix4x4* worldm)
 {
 	// Checkings
 	if(!Setup(&model))	return false;
@@ -160,10 +163,10 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const Mod
  *	\param		worlds		[in] sphere's world matrix, or null
  *	\param		worldm		[in] model's world matrix, or null
  *	\return		TRUE if we can return immediately
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
+ *	\warning	SCALE NOT SUPPORTED IN SPHERE WORLD MATRIX. The matrix must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL SphereCollider::InitQuery(SphereCache& cache, const Sphere& sphere, const Matrix4x4* worlds, const Matrix4x4* worldm)
+BOOL SphereCollider::InitQuery(SphereCache& cache, const IceMaths::Sphere& sphere, const IceMaths::Matrix4x4* worlds, const IceMaths::Matrix4x4* worldm)
 {
 	// 1) Call the base method
 	VolumeCollider::InitQuery();
@@ -178,11 +181,18 @@ BOOL SphereCollider::InitQuery(SphereCache& cache, const Sphere& sphere, const M
 	// -> to model space
 	if(worldm)
 	{
+		// Matrix normalization & scaling stripping
+		IceMaths::Matrix4x4 normWorldm;
+		NormalizePRSMatrix( normWorldm, mLocalScale, *worldm );
+		
 		// Invert model matrix
-		Matrix4x4 InvWorldM;
-		InvertPRMatrix(InvWorldM, *worldm);
+		IceMaths::Matrix4x4 InvWorldM;
+		InvertPRMatrix(InvWorldM, normWorldm); // OLD:		//InvertPRMatrix(InvWorldM, *worldm);
 
 		mCenter *= InvWorldM;
+	}else
+	{
+		mLocalScale.Set(1.0,1.0,1.0);
 	}
 
 	// 3) Setup destination pointer
@@ -281,7 +291,7 @@ BOOL SphereCollider::InitQuery(SphereCache& cache, const Sphere& sphere, const M
  *	\return		true if success
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const AABBTree* tree)
+bool SphereCollider::Collide(SphereCache& cache, const IceMaths::Sphere& sphere, const AABBTree* tree)
 {
 	// This is typically called for a scene tree, full of -AABBs-, not full of triangles.
 	// So we don't really have "primitives" to deal with. Hence it doesn't work with
@@ -303,16 +313,21 @@ bool SphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const AAB
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Checks the sphere completely contains the box. In which case we can end the query sooner.
- *	\param		bc	[in] box center
- *	\param		be	[in] box extents
+ *	\param		bc_	[in] box center
+ *	\param		be_	[in] box extents
  *	\return		true if the sphere contains the whole box
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-inline_ BOOL SphereCollider::SphereContainsBox(const Point& bc, const Point& be)
+inline_ BOOL SphereCollider::SphereContainsBox(const IceMaths::Point& bc_, const IceMaths::Point& be_)
 {
 	// I assume if all 8 box vertices are inside the sphere, so does the whole box.
 	// Sounds ok but maybe there's a better way?
-	Point p;
+	IceMaths::Point p;
+
+	// scaling freak
+	IceMaths::Point bc = bc_*mLocalScale;
+	IceMaths::Point be = be_*mLocalScale;
+
 	p.x=bc.x+be.x; p.y=bc.y+be.y; p.z=bc.z+be.z;	if(mCenter.SquareDistance(p)>=mRadius2)	return FALSE;
 	p.x=bc.x-be.x;									if(mCenter.SquareDistance(p)>=mRadius2)	return FALSE;
 	p.x=bc.x+be.x; p.y=bc.y-be.y;					if(mCenter.SquareDistance(p)>=mRadius2)	return FALSE;
@@ -398,8 +413,8 @@ void SphereCollider::_Collide(const AABBQuantizedNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Sphere-AABB overlap test
 	if(!SphereAABBOverlap(Center, Extents))	return;
@@ -430,8 +445,8 @@ void SphereCollider::_CollideNoPrimitiveTest(const AABBQuantizedNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Sphere-AABB overlap test
 	if(!SphereAABBOverlap(Center, Extents))	return;
@@ -506,8 +521,8 @@ void SphereCollider::_Collide(const AABBQuantizedNoLeafNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Sphere-AABB overlap test
 	if(!SphereAABBOverlap(Center, Extents))	return;
@@ -533,8 +548,8 @@ void SphereCollider::_CollideNoPrimitiveTest(const AABBQuantizedNoLeafNode* node
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform Sphere-AABB overlap test
 	if(!SphereAABBOverlap(Center, Extents))	return;
@@ -559,7 +574,7 @@ void SphereCollider::_CollideNoPrimitiveTest(const AABBQuantizedNoLeafNode* node
 void SphereCollider::_Collide(const AABBTreeNode* node)
 {
 	// Perform Sphere-AABB overlap test
-	Point Center, Extents;
+	IceMaths::Point Center, Extents;
 	node->GetAABB()->GetCenter(Center);
 	node->GetAABB()->GetExtents(Extents);
 	if(!SphereAABBOverlap(Center, Extents))	return;
@@ -600,7 +615,7 @@ HybridSphereCollider::~HybridSphereCollider()
 {
 }
 
-bool HybridSphereCollider::Collide(SphereCache& cache, const Sphere& sphere, const HybridModel& model, const Matrix4x4* worlds, const Matrix4x4* worldm)
+bool HybridSphereCollider::Collide(SphereCache& cache, const IceMaths::Sphere& sphere, const HybridModel& model, const IceMaths::Matrix4x4* worlds, const IceMaths::Matrix4x4* worldm)
 {
 	// We don't want primitive tests here!
 	mFlags |= OPC_NO_PRIMITIVE_TESTS;

@@ -14,18 +14,24 @@
 
 	// Check platform
 	#if defined( _WIN32 ) || defined( WIN32 )
-		#pragma message("Compiling on Windows...")
+		// #pragma message("Compiling on Windows...")
 		#define PLATFORM_WINDOWS
 	#else
-		#pragma message("Compiling on unknown platform...")
+		// don't issue pragmas on unknown platforms
+		// #pragma message("Compiling on unknown platform...")
 	#endif
 
 	// Check compiler
 	#if defined(_MSC_VER)
-		#pragma message("Compiling with VC++...")
+		// #pragma message("Compiling with VC++...")
 		#define COMPILER_VISUAL_CPP
+	
+		// disable annoying warnings
+		#pragma warning (disable : 4267) // data type conversion: size_t to BOOL, size_t to udword, etc)
+
 	#else
-		#pragma message("Compiling with unknown compiler...")
+		// don't issue pragmas on unknown platforms
+		// #pragma message("Compiling with unknown compiler...")
 	#endif
 
 	// Check compiler options. If this file is included in user-apps, this
@@ -102,7 +108,9 @@
 		#endif
 
 	// Down the hatch
+#ifdef _MSC_VER
 	#pragma inline_depth( 255 )
+#endif
 
 	#ifdef COMPILER_VISUAL_CPP
 		#pragma intrinsic(memcmp)

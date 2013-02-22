@@ -23,7 +23,7 @@
 		RADIX_FORCE_DWORD = 0x7fffffff
 	};
 
-	class ICECORE_API RadixSort
+	class RadixSort
 	{
 		public:
 		// Constructor/Destructor
@@ -51,9 +51,9 @@
 				udword*			mHistogram;			//!< Counters for each byte
 				udword*			mOffset;			//!< Offsets (nearly a cumulative distribution function)
 #endif
-				udword			mCurrentSize;		//!< Current size of the indices list
 				udword*			mRanks;				//!< Two lists, swapped each pass
 				udword*			mRanks2;
+				udword			mCurrentSize;		//!< Current size of the indices list
 		// Stats
 				udword			mTotalCalls;		//!< Total number of calls to the sort routine
 				udword			mNbHits;			//!< Number of early exits due to coherence

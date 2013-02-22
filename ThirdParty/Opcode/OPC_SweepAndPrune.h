@@ -35,7 +35,7 @@
 	class SAP_EndPoint;
 	class SAP_Box;
 
-	class OPCODE_API SAP_PairData
+	class SAP_PairData
 	{
 		public:
 								SAP_PairData();
@@ -62,14 +62,14 @@
 				void			Release();
 	};
 
-	class OPCODE_API SweepAndPrune
+	class SweepAndPrune
 	{
 		public:
 								SweepAndPrune();
 								~SweepAndPrune();
 
-				bool			Init(udword nb_objects, const AABB** boxes);
-				bool			UpdateObject(udword i, const AABB& box);
+				bool			Init(udword nb_objects, const IceMaths::AABB** boxes);
+				bool			UpdateObject(udword i, const IceMaths::AABB& box);
 
 				void			GetPairs(Pairs& pairs)								const;
 				void			GetPairs(PairCallback callback, void* user_data)	const;

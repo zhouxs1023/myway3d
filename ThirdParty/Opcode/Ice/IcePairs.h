@@ -13,7 +13,7 @@
 #define __ICEPAIRS_H__
 
 	//! A generic couple structure
-	struct ICECORE_API Pair
+	struct Pair
 	{
 		inline_	Pair()	{}
 		inline_	Pair(udword i0, udword i1) : id0(i0), id1(i1)	{}
@@ -22,7 +22,7 @@
 		udword	id1;	//!< Second index of the pair
 	};
 
-	class ICECORE_API Pairs : private Container
+	class Pairs : private Container
 	{
 		public:
 		// Constructor / Destructor

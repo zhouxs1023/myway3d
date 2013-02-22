@@ -37,13 +37,13 @@
 		inline_	bool				IsLeaf()		const	{ return !GetPos();						}					\
 																														\
 		/* Stats */																										\
-		inline_	udword				GetNodeSize()	const	{ return SIZEOFOBJECT;					}					\
+		inline_	udword				GetNodeSize()	const	{ return sizeof(*this);					}					\
 		protected:																										\
 		/* Tree-independent data */																						\
 		/* Following data always belong to the BV-tree, regardless of what the tree actually contains.*/				\
 		/* Whatever happens we need the two children and the enclosing volume.*/										\
 				volume				mBV;		/* Global bounding-volume enclosing all the node-related primitives */	\
-				udword				mPos;		/* "Positive" & "Negative" children */
+				size_t				mPos;		/* "Positive" & "Negative" children */
 #else
 	//! TO BE DOCUMENTED
 	#define IMPLEMENT_TREE(base_class, volume)																			\
@@ -62,21 +62,42 @@
 		inline_	bool				IsLeaf()		const	{ return !GetPos();						}					\
 																														\
 		/* Stats */																										\
-		inline_	udword				GetNodeSize()	const	{ return SIZEOFOBJECT;					}					\
+		inline_	udword				GetNodeSize()	const	{ return sizeof(*this);					}					\
 		protected:																										\
 		/* Tree-independent data */																						\
 		/* Following data always belong to the BV-tree, regardless of what the tree actually contains.*/				\
 		/* Whatever happens we need the two children and the enclosing volume.*/										\
 				volume				mBV;		/* Global bounding-volume enclosing all the node-related primitives */	\
-				udword				mPos;		/* "Positive" child */													\
-				udword				mNeg;		/* "Negative" child */
+				size_t				mPos;		/* "Positive" child */													\
+				size_t				mNeg;		/* "Negative" child */
 #endif
 
 	typedef		void				(*CullingCallback)		(udword nb_primitives, udword* node_primitives, BOOL need_clipping, void* user_data);
 
-	class OPCODE_API AABBTreeNode
+	class AABBTreeNode
 	{
-									IMPLEMENT_TREE(AABBTreeNode, AABB)
+//									IMPLEMENT_TREE(AABBTreeNode, IceMaths::AABB)
+   public:
+      /* Constructor / Destructor */
+      AABBTreeNode();
+      ~AABBTreeNode();
+      /* Data access */
+      inline_	const IceMaths::AABB*		GetAABB()	const	{ return &mBV;							}
+      /* Clear the last bit */
+      inline_	const AABBTreeNode*	GetPos()		const	{ return (const AABBTreeNode*)(mPos&~1);	}
+      inline_	const AABBTreeNode*	GetNeg()		const	{ const AABBTreeNode* P = GetPos(); return P ? P+1 : null;}
+
+      /* We don't need to test both nodes since we can't have one without the other	*/
+      inline_	bool				IsLeaf()		const	{ return !GetPos();						}
+
+      /* Stats */
+      inline_	udword				GetNodeSize()	const	{ return sizeof(*this);					}
+   protected:
+   /* Tree-independent data */
+   /* Following data always belong to the BV-tree, regardless of what the tree actually contains.*/
+   /* Whatever happens we need the two children and the enclosing volume.*/
+   IceMaths::AABB				mBV;		/* Global bounding-volume enclosing all the node-related primitives */
+   size_t				mPos;		/* "Positive" & "Negative" children */
 		public:
 		// Data access
 		inline_	const udword*		GetPrimitives()		const	{ return mNodePrimitives;	}
@@ -104,7 +125,7 @@
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	typedef		bool				(*WalkingCallback)	(const AABBTreeNode* current, udword depth, void* user_data);
 
-	class OPCODE_API AABBTree : public AABBTreeNode
+	class AABBTree : public AABBTreeNode
 	{
 		public:
 		// Constructor / Destructor

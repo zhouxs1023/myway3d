@@ -12,16 +12,16 @@
 #ifndef __ICERANDOM_H__
 #define __ICERANDOM_H__
 
-	FUNCTION ICECORE_API	void	SRand(udword seed);
-	FUNCTION ICECORE_API	udword	Rand();
+	FUNCTION 	void	SRand(udword seed);
+	FUNCTION 	udword	Rand();
 
 	//! Returns a unit random floating-point value
 	inline_ float UnitRandomFloat()	{ return float(Rand()) * ONE_OVER_RAND_MAX;	}
 
 	//! Returns a random index so that 0<= index < max_index
-	ICECORE_API	udword GetRandomIndex(udword max_index);
+		udword GetRandomIndex(udword max_index);
 
-	class ICECORE_API BasicRandom
+	class BasicRandom
 	{
 		public:
 

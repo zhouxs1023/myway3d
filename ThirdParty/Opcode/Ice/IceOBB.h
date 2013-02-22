@@ -15,7 +15,7 @@
 	// Forward declarations
 	class LSS;
 
-	class ICEMATHS_API OBB
+	class OBB
 	{
 		public:
 		//! Constructor

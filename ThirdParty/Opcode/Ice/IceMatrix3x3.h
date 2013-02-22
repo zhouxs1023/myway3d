@@ -17,7 +17,7 @@
 
 	#define	MATRIX3X3_EPSILON		(1.0e-7f)
 
-	class ICEMATHS_API Matrix3x3
+	class Matrix3x3
 	{
 		public:
 		//! Empty constructor
@@ -286,9 +286,15 @@
 		//! Transpose the matrix.
 				void			Transpose()
 								{
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+									swap( m[1][0], m[0][1] );
+									swap( m[2][0], m[0][2] );
+									swap( m[2][1], m[1][2] );
+#else
 									IR(m[1][0]) ^= IR(m[0][1]);	IR(m[0][1]) ^= IR(m[1][0]);	IR(m[1][0]) ^= IR(m[0][1]);
 									IR(m[2][0]) ^= IR(m[0][2]);	IR(m[0][2]) ^= IR(m[2][0]);	IR(m[2][0]) ^= IR(m[0][2]);
 									IR(m[2][1]) ^= IR(m[1][2]);	IR(m[1][2]) ^= IR(m[2][1]);	IR(m[2][1]) ^= IR(m[1][2]);
+#endif
 								}
 
 		//! this = Transpose(a)

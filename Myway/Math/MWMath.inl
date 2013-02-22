@@ -843,7 +843,7 @@ inline float Math::Exp(float x)
         x的2的对数.
 ------------------------------------------------------------------------------
 */
-inline float Math::Log(float x)
+inline float Math::Log_(float x)
 {
     return ::logf(x);
 }

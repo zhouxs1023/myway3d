@@ -119,7 +119,7 @@ static void _BuildCollisionTree(AABBCollisionNode* linear, const udword box_id, 
 		udword PosID = current_id++;	// Get a new id for positive child
 		udword NegID = current_id++;	// Get a new id for negative child
 		// Setup box data as the forthcoming new P pointer
-		linear[box_id].mData = (udword)&linear[PosID];
+		linear[box_id].mData = (size_t)&linear[PosID];
 		// Make sure it's not marked as leaf
 		ASSERT(!(linear[box_id].mData&1));
 		// Recurse with new IDs
@@ -172,7 +172,7 @@ static void _BuildNoLeafTree(AABBNoLeafNode* linear, const udword box_id, udword
 		// Get a new id for positive child
 		udword PosID = current_id++;
 		// Setup box data
-		linear[box_id].mPosData = (udword)&linear[PosID];
+		linear[box_id].mPosData = (size_t)&linear[PosID];
 		// Make sure it's not marked as leaf
 		ASSERT(!(linear[box_id].mPosData&1));
 		// Recurse
@@ -193,7 +193,7 @@ static void _BuildNoLeafTree(AABBNoLeafNode* linear, const udword box_id, udword
 		// Get a new id for negative child
 		udword NegID = current_id++;
 		// Setup box data
-		linear[box_id].mNegData = (udword)&linear[NegID];
+		linear[box_id].mNegData = (size_t)&linear[NegID];
 		// Make sure it's not marked as leaf
 		ASSERT(!(linear[box_id].mNegData&1));
 		// Recurse
@@ -253,17 +253,101 @@ bool AABBCollisionTree::Build(AABBTree* tree)
 	return true;
 }
 
+inline_ void ComputeMinMax(IceMaths::Point& min, IceMaths::Point& max, const VertexPointers& vp)
+{
+	// Compute triangle's AABB = a leaf box
+#ifdef OPC_USE_FCOMI	// a 15% speedup on my machine, not much
+	min.x = FCMin3(vp.Vertex[0]->x, vp.Vertex[1]->x, vp.Vertex[2]->x);
+	max.x = FCMax3(vp.Vertex[0]->x, vp.Vertex[1]->x, vp.Vertex[2]->x);
+
+	min.y = FCMin3(vp.Vertex[0]->y, vp.Vertex[1]->y, vp.Vertex[2]->y);
+	max.y = FCMax3(vp.Vertex[0]->y, vp.Vertex[1]->y, vp.Vertex[2]->y);
+
+	min.z = FCMin3(vp.Vertex[0]->z, vp.Vertex[1]->z, vp.Vertex[2]->z);
+	max.z = FCMax3(vp.Vertex[0]->z, vp.Vertex[1]->z, vp.Vertex[2]->z);
+#else
+	min = *vp.Vertex[0];
+	max = *vp.Vertex[0];
+	min.Min(*vp.Vertex[1]);
+	max.Max(*vp.Vertex[1]);
+	min.Min(*vp.Vertex[2]);
+	max.Max(*vp.Vertex[2]);
+#endif
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Refits the collision tree after vertices have been modified.
+ *
+ *	\remarks
+ *	        OPCODE 1.3 does not provide support for refitting 'normal' collision trees
+ *	        because they are much slower to update than no-leaf trees. This feature was
+ *              added in OPCODE 1.3.2 because we may want to compute between deformable models
+ *              using 'normal' AABB trees. The main problem here is that normal trees have twice
+ *              as nodes to refit than no-leaf trees.
+ *              The performance tests I've conduced in my engine points that normal trees are
+ *              roughly 2 times slower to refit than no-leaf trees. I recommend thge use of 'normal'
+ *              trees only when you absolutely need triangle-triangle intersections to be performed,
+ *              because no-leaf trees typically outperforms normal trees in just everything. Send me
+ *              any questions, comments or suggestions you have by mail {gilvanmaia@gmail.com}.
+ *
  *	\param		mesh_interface	[in] mesh interface for current model
  *	\return		true if success
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool AABBCollisionTree::Refit(const MeshInterface* mesh_interface)
 {
-	ASSERT(!"Not implemented since AABBCollisionTrees have twice as more nodes to refit as AABBNoLeafTrees!");
-	return false;
+	// (Commented because we support it now!)
+	// ASSERT(!"Not implemented since AABBCollisionTrees have twice as more nodes to refit as AABBNoLeafTrees!");
+
+	// Checkings
+	if(!mesh_interface)	return false;
+
+	// Bottom-up update
+	VertexPointers VP;
+	IceMaths::Point Min,Max;
+	IceMaths::Point Min_,Max_;
+	udword Index = mNbNodes;
+	while(Index--)
+	{
+		AABBCollisionNode& Current = mNodes[Index];		
+		
+		if( Current.IsLeaf() )
+		{
+			mesh_interface->GetTriangle(VP, Current.GetPrimitive());
+			ComputeMinMax(Min, Max, VP);
+		}
+		else
+		{
+			if( Current.GetPos() )
+			{
+				const CollisionAABB& CurrentBox = Current.GetPos()->mAABB;
+				CurrentBox.GetMin(Min);
+				CurrentBox.GetMax(Max);
+			}
+
+			if( Current.GetNeg() )
+			{
+				const CollisionAABB& CurrentBox = Current.GetNeg()->mAABB;
+				CurrentBox.GetMin(Min_);
+				CurrentBox.GetMax(Max_);
+			}
+		}
+
+#ifdef OPC_USE_FCOMI
+		Min.x = FCMin2(Min.x, Min_.x);
+		Max.x = FCMax2(Max.x, Max_.x);
+		Min.y = FCMin2(Min.y, Min_.y);
+		Max.y = FCMax2(Max.y, Max_.y);
+		Min.z = FCMin2(Min.z, Min_.z);
+		Max.z = FCMax2(Max.z, Max_.z);
+#else
+		Min.Min(Min_);
+		Max.Max(Max_);
+#endif
+		Current.mAABB.SetMinMax(Min, Max);
+	}
+	return true;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -348,28 +432,6 @@ bool AABBNoLeafTree::Build(AABBTree* tree)
 	return true;
 }
 
-inline_ void ComputeMinMax(Point& min, Point& max, const VertexPointers& vp)
-{
-	// Compute triangle's AABB = a leaf box
-#ifdef OPC_USE_FCOMI	// a 15% speedup on my machine, not much
-	min.x = FCMin3(vp.Vertex[0]->x, vp.Vertex[1]->x, vp.Vertex[2]->x);
-	max.x = FCMax3(vp.Vertex[0]->x, vp.Vertex[1]->x, vp.Vertex[2]->x);
-
-	min.y = FCMin3(vp.Vertex[0]->y, vp.Vertex[1]->y, vp.Vertex[2]->y);
-	max.y = FCMax3(vp.Vertex[0]->y, vp.Vertex[1]->y, vp.Vertex[2]->y);
-
-	min.z = FCMin3(vp.Vertex[0]->z, vp.Vertex[1]->z, vp.Vertex[2]->z);
-	max.z = FCMax3(vp.Vertex[0]->z, vp.Vertex[1]->z, vp.Vertex[2]->z);
-#else
-	min = *vp.Vertex[0];
-	max = *vp.Vertex[0];
-	min.Min(*vp.Vertex[1]);
-	max.Max(*vp.Vertex[1]);
-	min.Min(*vp.Vertex[2]);
-	max.Max(*vp.Vertex[2]);
-#endif
-}
-
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Refits the collision tree after vertices have been modified.
@@ -384,8 +446,8 @@ bool AABBNoLeafTree::Refit(const MeshInterface* mesh_interface)
 
 	// Bottom-up update
 	VertexPointers VP;
-	Point Min,Max;
-	Point Min_,Max_;
+	IceMaths::Point Min,Max;
+	IceMaths::Point Min_,Max_;
 	udword Index = mNbNodes;
 	while(Index--)
 	{
@@ -476,8 +538,8 @@ bool AABBNoLeafTree::Walk(GenericWalkingCallback callback, void* user_data) cons
 // a single extents. While extents would be the biggest, the center wouldn't.
 #define FIND_MAX_VALUES																			\
 	/* Get max values */																		\
-	Point CMax(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);												\
-	Point EMax(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);												\
+	IceMaths::Point CMax(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);												\
+	IceMaths::Point EMax(MIN_FLOAT, MIN_FLOAT, MIN_FLOAT);												\
 	for(udword i=0;i<mNbNodes;i++)																\
 	{																							\
 		if(fabsf(Nodes[i].mAABB.mCenter.x)>CMax.x)	CMax.x = fabsf(Nodes[i].mAABB.mCenter.x);	\
@@ -494,7 +556,7 @@ bool AABBNoLeafTree::Walk(GenericWalkingCallback callback, void* user_data) cons
 	if(!gFixQuantized) nbe++;												\
 																			\
 	/* Compute quantization coeffs */										\
-	Point CQuantCoeff, EQuantCoeff;											\
+	IceMaths::Point CQuantCoeff, EQuantCoeff;											\
 	CQuantCoeff.x = CMax.x!=0.0f ? float((1<<nbc)-1)/CMax.x : 0.0f;			\
 	CQuantCoeff.y = CMax.y!=0.0f ? float((1<<nbc)-1)/CMax.y : 0.0f;			\
 	CQuantCoeff.z = CMax.z!=0.0f ? float((1<<nbc)-1)/CMax.z : 0.0f;			\
@@ -521,8 +583,8 @@ bool AABBNoLeafTree::Walk(GenericWalkingCallback callback, void* user_data) cons
 	if(gFixQuantized)																\
 	{																				\
 		/* Make sure the quantized box is still valid */							\
-		Point Max = Nodes[i].mAABB.mCenter + Nodes[i].mAABB.mExtents;				\
-		Point Min = Nodes[i].mAABB.mCenter - Nodes[i].mAABB.mExtents;				\
+		IceMaths::Point Max = Nodes[i].mAABB.mCenter + Nodes[i].mAABB.mExtents;				\
+		IceMaths::Point Min = Nodes[i].mAABB.mCenter - Nodes[i].mAABB.mExtents;				\
 		/* For each axis */															\
 		for(udword j=0;j<3;j++)														\
 		{	/* Dequantize the box center */											\
@@ -550,8 +612,8 @@ bool AABBNoLeafTree::Walk(GenericWalkingCallback callback, void* user_data) cons
 	if(!(Data&1))													\
 	{																\
 		/* Compute box number */									\
-		udword Nb = (Data - udword(Nodes))/Nodes[i].GetNodeSize();	\
-		Data = udword(&mNodes[Nb]);									\
+		udword Nb = (Data - size_t(Nodes))/Nodes[i].GetNodeSize();	\
+		Data = (size_t) &mNodes[Nb];								\
 	}																\
 	/* ...remapped */												\
 	mNodes[i].member = Data;
@@ -613,7 +675,7 @@ bool AABBQuantizedTree::Build(AABBTree* tree)
 		INIT_QUANTIZATION
 
 		// Quantize
-		udword Data;
+		size_t Data;
 		for(udword i=0;i<mNbNodes;i++)
 		{
 			PERFORM_QUANTIZATION
@@ -728,7 +790,7 @@ bool AABBQuantizedNoLeafTree::Build(AABBTree* tree)
 		INIT_QUANTIZATION
 
 		// Quantize
-		udword Data;
+		size_t Data;
 		for(udword i=0;i<mNbNodes;i++)
 		{
 			PERFORM_QUANTIZATION

@@ -3,6 +3,11 @@
  *	OPCODE - Optimized Collision Detection
  *	Copyright (C) 2001 Pierre Terdiman
  *	Homepage: http://www.codercorner.com/Opcode.htm
+ *
+ *  OPCODE modifications for scaled model support (and other things)
+ *  Copyright (C) 2004 Gilvan Maia (gilvan 'at' vdl.ufc.br)
+ *	Check http://www.vdl.ufc.br/gilvan/coll/opcode/index.htm for updates.
+ *
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -20,7 +25,7 @@
 #ifndef __OPC_RAYCOLLIDER_H__
 #define __OPC_RAYCOLLIDER_H__
 
-	class OPCODE_API CollisionFace
+	class CollisionFace
 	{
 		public:
 		//! Constructor
@@ -33,7 +38,7 @@
 				float		mU, mV;					//!< Impact barycentric coordinates
 	};
 
-	class OPCODE_API CollisionFaces : private Container
+	class CollisionFaces : private IceCore::Container
 	{
 		public:
 		//! Constructor
@@ -44,7 +49,7 @@
 		inline_	udword					GetNbFaces()					const	{ return GetNbEntries()>>2;						}
 		inline_	const CollisionFace*	GetFaces()						const	{ return (const CollisionFace*)GetEntries();	}
 
-		inline_	void					Reset()									{ Container::Reset();							}
+		inline_	void					Reset()									{ IceCore::Container::Reset();							}
 
 		inline_	void					AddFace(const CollisionFace& face)		{ Add(face.mFaceID).Add(face.mDistance).Add(face.mU).Add(face.mV);	}
 	};
@@ -60,7 +65,7 @@
 	typedef void	(*HitCallback)	(const CollisionFace& hit, void* user_data);
 #endif
 
-	class OPCODE_API RayCollider : public Collider
+	class RayCollider : public Collider
 	{
 		public:
 		// Constructor / Destructor
@@ -78,12 +83,11 @@
 		 *	\param		world			[in] model's world matrix, or null
 		 *	\param		cache			[in] a possibly cached face index, or null
 		 *	\return		true if success
-		 *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
 		 */
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-							bool			Collide(const Ray& world_ray, const Model& model, const Matrix4x4* world=null, udword* cache=null);
+							bool			Collide(const IceMaths::Ray& world_ray, const Model& model, const IceMaths::Matrix4x4* world=null, udword* cache=null);
 		//
-							bool			Collide(const Ray& world_ray, const AABBTree* tree, Container& box_indices);
+							bool			Collide(const IceMaths::Ray& world_ray, const AABBTree* tree, IceCore::Container& box_indices);
 		// Settings
 
 #ifndef OPC_RAYHIT_CALLBACK
@@ -177,10 +181,12 @@
 
 		protected:
 		// Ray in local space
-							Point			mOrigin;			//!< Ray origin
-							Point			mDir;				//!< Ray direction (normalized)
-							Point			mFDir;				//!< fabsf(mDir)
-							Point			mData, mData2;
+							IceMaths::Point			mOrigin;			//!< Ray origin
+							IceMaths::Point			mDir;				//!< Ray direction (normalized)
+							IceMaths::Point			mFDir;				//!< fabsf(mDir)
+							IceMaths::Point			mData, mData2;
+		// Model scaling
+							IceMaths::Point			mLocalScale;		//!< Model's local scale
 		// Stabbed faces
 							CollisionFace	mStabbedFace;		//!< Current stabbed face
 #ifdef OPC_RAYHIT_CALLBACK
@@ -195,8 +201,8 @@
 		// In-out test
 							udword			mNbIntersections;	//!< Number of valid intersections
 		// Dequantization coeffs
-							Point			mCenterCoeff;
-							Point			mExtentsCoeff;
+							IceMaths::Point			mCenterCoeff;
+							IceMaths::Point			mExtentsCoeff;
 		// Settings
 							float			mMaxDist;			//!< Valid segment on the ray
 #ifndef OPC_RAYHIT_CALLBACK
@@ -208,18 +214,18 @@
 							void			_SegmentStab(const AABBNoLeafNode* node);
 							void			_SegmentStab(const AABBQuantizedNode* node);
 							void			_SegmentStab(const AABBQuantizedNoLeafNode* node);
-							void			_SegmentStab(const AABBTreeNode* node, Container& box_indices);
+							void			_SegmentStab(const AABBTreeNode* node, IceCore::Container& box_indices);
 							void			_RayStab(const AABBCollisionNode* node);
 							void			_RayStab(const AABBNoLeafNode* node);
 							void			_RayStab(const AABBQuantizedNode* node);
 							void			_RayStab(const AABBQuantizedNoLeafNode* node);
-							void			_RayStab(const AABBTreeNode* node, Container& box_indices);
+							void			_RayStab(const AABBTreeNode* node, IceCore::Container& box_indices);
 			// Overlap tests
-		inline_				BOOL			RayAABBOverlap(const Point& center, const Point& extents);
-		inline_				BOOL			SegmentAABBOverlap(const Point& center, const Point& extents);
-		inline_				BOOL			RayTriOverlap(const Point& vert0, const Point& vert1, const Point& vert2);
+		inline_				BOOL			RayAABBOverlap(const IceMaths::Point& center, const IceMaths::Point& extents);
+		inline_				BOOL			SegmentAABBOverlap(const IceMaths::Point& center, const IceMaths::Point& extents);
+		inline_				BOOL			RayTriOverlap(const IceMaths::Point& vert0, const IceMaths::Point& vert1, const IceMaths::Point& vert2);
 			// Init methods
-							BOOL			InitQuery(const Ray& world_ray, const Matrix4x4* world=null, udword* face_id=null);
+							BOOL			InitQuery(const IceMaths::Ray& world_ray, const IceMaths::Matrix4x4* world=null, udword* face_id=null);
 	};
 
 #endif // __OPC_RAYCOLLIDER_H__

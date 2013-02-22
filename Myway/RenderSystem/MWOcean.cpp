@@ -26,6 +26,7 @@ namespace Myway {
 
 	void Ocean::_Resize(void * param0, void * param1)
 	{
+		_initRT();
 	}
 
     void Ocean::_PreRender(void * param0, void * param1)
@@ -57,10 +58,25 @@ namespace Myway {
 		mCameraNode = World::Instance()->CreateSceneNode("Core_Water_Refl_Node");
 		mCameraNode->Attach(mCamera);
 
-		mRT_Refl = VideoBufferManager::Instance()->CreateRenderTarget("Core_Water_RT", -1, -1, FMT_X8R8G8B8, MSAA_NONE);
-		mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_Water_DS", -1, -1, FMT_D24S8, MSAA_NONE);
-		mTex_Refl = VideoBufferManager::Instance()->CreateTextureRT("Core_Water_Tex", -1, -1);
+		_initRT();
 	}
+
+	void Ocean::_initRT()
+	{
+		mTex_Refl = NULL;
+		mDepthStencil = NULL;
+		mRT_Refl = NULL;
+
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+
+		int width = dp->Width / 2;
+		int height = dp->Height / 2;
+
+		mTex_Refl = VideoBufferManager::Instance()->CreateTextureRT("Core_Water_Tex", width, height);
+		mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_Water_DS", width, height, FMT_D24S8, MSAA_NONE);
+		mRT_Refl = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Refl);
+	}
+
 
     void Ocean::_renderUpWater(Texture * depthTex, Texture * colorTex)
     {

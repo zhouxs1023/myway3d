@@ -22,12 +22,12 @@
 
 	const float EPSILON2 = 1.0e-20f;
 
-	class ICEMATHS_API Point
+	class Point
 	{
 		public:
 
 		//! Empty constructor
-		inline_					Point()														{}
+		inline_					Point():x(0.0), y(0.0),z(0.0)								{}
 		//! Constructor from a single float
 //		inline_					Point(float val) : x(val), y(val), z(val)					{}
 // Removed since it introduced the nasty "Point T = *Matrix4x4.GetTrans();" bug.......
@@ -522,7 +522,15 @@
 				float			x, y, z;
 	};
 
-	FUNCTION ICEMATHS_API void Normalize1(Point& a);
-	FUNCTION ICEMATHS_API void Normalize2(Point& a);
+	FUNCTION void Normalize1(Point& a);
+	FUNCTION void Normalize2(Point& a);
+
+#ifdef NOT_SO_FAST_BUT_DO_NOT_BREAK_ALIAS_RULE
+union floatPointUnion{
+	float * f;
+	const Point * p;
+};
+#endif
+
 
 #endif //__ICEPOINT_H__

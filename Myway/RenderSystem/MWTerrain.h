@@ -135,7 +135,7 @@ public:
 	float				_getHeight(int x, int z);
 	Color				_getNormal(int x, int z);
 
-	bool				RayTrace(PhyHitInfo & info, const Ray & ray, float dist);
+	//bool				RayTrace(PhyHitInfo & info, const Ray & ray, float dist);
 
 protected:
     void                OnPreVisibleCull(void * param0, void * param1);

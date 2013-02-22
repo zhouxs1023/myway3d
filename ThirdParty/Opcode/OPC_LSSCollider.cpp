@@ -3,6 +3,11 @@
  *	OPCODE - Optimized Collision Detection
  *	Copyright (C) 2001 Pierre Terdiman
  *	Homepage: http://www.codercorner.com/Opcode.htm
+ *
+ *  OPCODE modifications for scaled model support (and other things)
+ *  Copyright (C) 2004 Gilvan Maia (gilvan 'at' vdl.ufc.br)
+ *	Check http://www.vdl.ufc.br/gilvan/coll/opcode/index.htm for updates.
+ *
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -84,10 +89,10 @@ LSSCollider::~LSSCollider()
  *	\param		worldl			[in] lss world matrix, or null
  *	\param		worldm			[in] model's world matrix, or null
  *	\return		true if success
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
+ *	\warning	SCALE NOT SUPPORTED IN LSS WORLD MATRIX. The LSS matrix must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool LSSCollider::Collide(LSSCache& cache, const LSS& lss, const Model& model, const Matrix4x4* worldl, const Matrix4x4* worldm)
+bool LSSCollider::Collide(LSSCache& cache, const IceMaths::LSS& lss, const Model& model, const IceMaths::Matrix4x4* worldl, const IceMaths::Matrix4x4* worldm)
 {
 	// Checkings
 	if(!Setup(&model))	return false;
@@ -157,10 +162,10 @@ bool LSSCollider::Collide(LSSCache& cache, const LSS& lss, const Model& model, c
  *	\param		worldl		[in] lss world matrix, or null
  *	\param		worldm		[in] model's world matrix, or null
  *	\return		TRUE if we can return immediately
- *	\warning	SCALE NOT SUPPORTED. The matrices must contain rotation & translation parts only.
+ *	\warning	SCALE NOT SUPPORTED IN LSS WORLD MATRIX. The matrix must contain rotation & translation parts only.
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-BOOL LSSCollider::InitQuery(LSSCache& cache, const LSS& lss, const Matrix4x4* worldl, const Matrix4x4* worldm)
+BOOL LSSCollider::InitQuery(LSSCache& cache, const IceMaths::LSS& lss, const IceMaths::Matrix4x4* worldl, const IceMaths::Matrix4x4* worldm)
 {
 	// 1) Call the base method
 	VolumeCollider::InitQuery();
@@ -180,12 +185,19 @@ BOOL LSSCollider::InitQuery(LSSCache& cache, const LSS& lss, const Matrix4x4* wo
 	// -> to model space
 	if(worldm)
 	{
+		// Matrix normalization & scaling stripping
+		IceMaths::Matrix4x4 normWorldm;
+		IceMaths::NormalizePRSMatrix( normWorldm, mLocalScale, *worldm );
+		
 		// Invert model matrix
-		Matrix4x4 InvWorldM;
-		InvertPRMatrix(InvWorldM, *worldm);
+		IceMaths::Matrix4x4 InvWorldM;
+		IceMaths::InvertPRMatrix(InvWorldM, normWorldm); 
 
 		mSeg.mP0 *= InvWorldM;
 		mSeg.mP1 *= InvWorldM;
+	}else
+	{
+		mLocalScale.Set(1.0,1.0,1.0);
 	}
 
 	// 3) Setup destination pointer
@@ -240,8 +252,8 @@ BOOL LSSCollider::InitQuery(LSSCache& cache, const LSS& lss, const Matrix4x4* wo
 
 			// ### rewrite this
 
-			LSS Test(mSeg, lss.mRadius);	// in model space
-			LSS Previous(cache.Previous, sqrtf(cache.Previous.mRadius));
+			IceMaths::LSS Test(mSeg, lss.mRadius);	// in model space
+			IceMaths::LSS Previous(cache.Previous, sqrtf(cache.Previous.mRadius));
 
 //			if(cache.Previous.Contains(Test))
 			if(IsCacheValid(cache) && Previous.Contains(Test))
@@ -292,7 +304,7 @@ BOOL LSSCollider::InitQuery(LSSCache& cache, const LSS& lss, const Matrix4x4* wo
  *	\return		true if success
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool LSSCollider::Collide(LSSCache& cache, const LSS& lss, const AABBTree* tree)
+bool LSSCollider::Collide(LSSCache& cache, const IceMaths::LSS& lss, const AABBTree* tree)
 {
 	// This is typically called for a scene tree, full of -AABBs-, not full of triangles.
 	// So we don't really have "primitives" to deal with. Hence it doesn't work with
@@ -319,7 +331,7 @@ bool LSSCollider::Collide(LSSCache& cache, const LSS& lss, const AABBTree* tree)
  *	\return		true if the LSS contains the whole box
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-inline_ BOOL LSSCollider::LSSContainsBox(const Point& bc, const Point& be)
+inline_ BOOL LSSCollider::LSSContainsBox(const IceMaths::Point& bc, const IceMaths::Point& be)
 {
 	// Not implemented
 	return FALSE;
@@ -398,8 +410,8 @@ void LSSCollider::_Collide(const AABBQuantizedNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform LSS-AABB overlap test
 	if(!LSSAABBOverlap(Center, Extents))	return;
@@ -430,8 +442,8 @@ void LSSCollider::_CollideNoPrimitiveTest(const AABBQuantizedNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform LSS-AABB overlap test
 	if(!LSSAABBOverlap(Center, Extents))	return;
@@ -506,8 +518,8 @@ void LSSCollider::_Collide(const AABBQuantizedNoLeafNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform LSS-AABB overlap test
 	if(!LSSAABBOverlap(Center, Extents))	return;
@@ -533,8 +545,8 @@ void LSSCollider::_CollideNoPrimitiveTest(const AABBQuantizedNoLeafNode* node)
 {
 	// Dequantize box
 	const QuantizedAABB& Box = node->mAABB;
-	const Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
-	const Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
+	const IceMaths::Point Center(float(Box.mCenter[0]) * mCenterCoeff.x, float(Box.mCenter[1]) * mCenterCoeff.y, float(Box.mCenter[2]) * mCenterCoeff.z);
+	const IceMaths::Point Extents(float(Box.mExtents[0]) * mExtentsCoeff.x, float(Box.mExtents[1]) * mExtentsCoeff.y, float(Box.mExtents[2]) * mExtentsCoeff.z);
 
 	// Perform LSS-AABB overlap test
 	if(!LSSAABBOverlap(Center, Extents))	return;
@@ -559,7 +571,7 @@ void LSSCollider::_CollideNoPrimitiveTest(const AABBQuantizedNoLeafNode* node)
 void LSSCollider::_Collide(const AABBTreeNode* node)
 {
 	// Perform LSS-AABB overlap test
-	Point Center, Extents;
+	IceMaths::Point Center, Extents;
 	node->GetAABB()->GetCenter(Center);
 	node->GetAABB()->GetExtents(Extents);
 	if(!LSSAABBOverlap(Center, Extents))	return;
@@ -599,7 +611,7 @@ HybridLSSCollider::~HybridLSSCollider()
 {
 }
 
-bool HybridLSSCollider::Collide(LSSCache& cache, const LSS& lss, const HybridModel& model, const Matrix4x4* worldl, const Matrix4x4* worldm)
+bool HybridLSSCollider::Collide(LSSCache& cache, const IceMaths::LSS& lss, const HybridModel& model, const IceMaths::Matrix4x4* worldl, const IceMaths::Matrix4x4* worldm)
 {
 	// We don't want primitive tests here!
 	mFlags |= OPC_NO_PRIMITIVE_TESTS;

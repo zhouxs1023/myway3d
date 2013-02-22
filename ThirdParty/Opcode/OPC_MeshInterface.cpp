@@ -3,6 +3,11 @@
  *	OPCODE - Optimized Collision Detection
  *	Copyright (C) 2001 Pierre Terdiman
  *	Homepage: http://www.codercorner.com/Opcode.htm
+ *
+ *  OPCODE modifications for scaled model support (and other things)
+ *  Copyright (C) 2004 Gilvan Maia (gilvan 'at' vdl.ufc.br)
+ *	Check http://www.vdl.ufc.br/gilvan/coll/opcode/index.htm for updates.
+ *
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -120,6 +125,8 @@
 
 using namespace Opcode;
 
+IceMaths::Point MeshInterface::VertexCache[3];
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 /**
  *	Constructor.
@@ -133,12 +140,13 @@ MeshInterface::MeshInterface() :
 	mTris			(null),
 	mVerts			(null),
 	#ifdef OPC_USE_STRIDE
-	mTriStride		(sizeof(IndexedTriangle)),
-	mVertexStride	(sizeof(Point)),
+	mTriStride		(sizeof(IceMaths::IndexedTriangle)),
+	mVertexStride	(sizeof(IceMaths::Point)),
 	#endif
 #endif
 	mNbTris			(0),
-	mNbVerts		(0)
+	mNbVerts		(0),
+	mMIType         (MESH_TRIANGLE)
 {
 }
 
@@ -163,7 +171,14 @@ bool MeshInterface::IsValid() const
 #ifdef OPC_USE_CALLBACKS
 	if(!mObjCallback)			return false;
 #else
-	if(!mTris || !mVerts)		return false;
+	//if(!mTris || !mVerts)		return false;
+	// TODO: Perform a more complete check for every type of mesh interface: triangles, terrain, etc.
+	//		 (By now, just checking vertices - it would be nice if this method returns an error message!)
+	if(!mVerts)
+	{
+		//DEBUG: "There is no vertices in the model"
+		return false;
+	}
 #endif
 	return true;
 }
@@ -175,6 +190,8 @@ bool MeshInterface::IsValid() const
  *	\return		number of degenerate faces
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+#include <iostream>
+
 udword MeshInterface::CheckTopology()	const
 {
 	// Check topology. If the model contains degenerate faces, collision report can be wrong in some cases.
@@ -225,9 +242,13 @@ bool MeshInterface::SetCallback(RequestCallback callback, void* user_data)
  *	\return		true if success
  */
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-bool MeshInterface::SetPointers(const IndexedTriangle* tris, const Point* verts)
+bool MeshInterface::SetPointers(const IceMaths::IndexedTriangle* tris, const IceMaths::Point* verts)
 {
-	if(!tris || !verts)	return SetIceError("MeshInterface::SetPointers: pointer is null", null);
+	//if(!tris || !verts)	return SetIceError("MeshInterface::SetPointers: pointer is null", null);
+	
+	// TODO: Perform a more complete check for every type of mesh interface: triangles, terrain, etc.
+	//		 (By now, just checking vertices - it would be nice if this method returns an error message!)
+	if(!verts)	return SetIceError("MeshInterface::SetPointers: pointer is null", null);
 
 	mTris	= tris;
 	mVerts	= verts;
@@ -244,8 +265,8 @@ bool MeshInterface::SetPointers(const IndexedTriangle* tris, const Point* verts)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 bool MeshInterface::SetStrides(udword tri_stride, udword vertex_stride)
 {
-	if(tri_stride<sizeof(IndexedTriangle))	return SetIceError("MeshInterface::SetStrides: invalid triangle stride", null);
-	if(vertex_stride<sizeof(Point))			return SetIceError("MeshInterface::SetStrides: invalid vertex stride", null);
+	if(tri_stride<sizeof(IceMaths::IndexedTriangle))	return SetIceError("MeshInterface::SetStrides: invalid triangle stride", null);
+	if(vertex_stride<sizeof(IceMaths::Point))			return SetIceError("MeshInterface::SetStrides: invalid vertex stride", null);
 
 	mTriStride		= tri_stride;
 	mVertexStride	= vertex_stride;
@@ -272,28 +293,31 @@ bool MeshInterface::RemapClient(udword nb_indices, const udword* permutation) co
 	// We can't really do that using callbacks
 	return false;
 #else
-	IndexedTriangle* Tmp = new IndexedTriangle[mNbTris];
-	CHECKALLOC(Tmp);
-
-	#ifdef OPC_USE_STRIDE
-	udword Stride = mTriStride;
-	#else
-	udword Stride = sizeof(IndexedTriangle);
-	#endif
-
-	for(udword i=0;i<mNbTris;i++)
+	if( mTris )
 	{
-		const IndexedTriangle* T = (const IndexedTriangle*)(((ubyte*)mTris) + i * Stride);
-		Tmp[i] = *T;
-	}
+		IceMaths::IndexedTriangle* Tmp = new IceMaths::IndexedTriangle[mNbTris];
+		CHECKALLOC(Tmp);
 
-	for(udword i=0;i<mNbTris;i++)
-	{
-		IndexedTriangle* T = (IndexedTriangle*)(((ubyte*)mTris) + i * Stride);
-		*T = Tmp[permutation[i]];
-	}
+		#ifdef OPC_USE_STRIDE
+		udword Stride = mTriStride;
+		#else
+		udword Stride = sizeof(IceMaths::IndexedTriangle);
+		#endif
 
-	DELETEARRAY(Tmp);
+		for(udword i=0;i<mNbTris;i++)
+		{
+			const IceMaths::IndexedTriangle* T = (const IceMaths::IndexedTriangle*)(((ubyte*)mTris) + i * Stride);
+			Tmp[i] = *T;
+		}
+
+		for(udword i=0;i<mNbTris;i++)
+		{
+			IceMaths::IndexedTriangle* T = (IceMaths::IndexedTriangle*)(((ubyte*)mTris) + i * Stride);
+			*T = Tmp[permutation[i]];
+		}
+
+		DELETEARRAY(Tmp);
+	}
 #endif
 	return true;
 }

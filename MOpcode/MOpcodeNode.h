@@ -4,6 +4,7 @@
 #include "MWSceneNode.h"
 #include "MWColMesh.h"
 #include "MWPhysics.h"
+#include "MOpcodeColObj.h"
 
 namespace Opcode {
 	class Model;
@@ -13,39 +14,13 @@ namespace Opcode {
 
 namespace Myway {
 
-	class MOpcodeMesh : public IColObj
-	{
-		DECLARE_ALLOC();
-		DeclareRefObj();
-
-	public:
-		MOpcodeMesh(void * uid, float scale);
-		virtual ~MOpcodeMesh();
-
-		virtual MColType GetType() { return CT_Mesh; }
-
-		void Build(ColMesh * mesh);
-		void Build(MOpcodeMesh * rk);
-
-		IColObj * Clone(float scale);
-
-		virtual bool RayTrace(PhyHitInfo & info, const Ray & ray, const Mat4 & worldTm, unsigned int * cache);
-
-	protected:
-		Opcode::Model *	mCollisionModel;
-		Opcode::MeshInterface *	mMeshInterface;
-
-		Array<Vec3> mVertices;
-		Array<int> mIndices;
-	};
-
 	class MOpcodeNode
 	{
 	public:
 		MOpcodeNode(SceneNode * node);
 		~MOpcodeNode();
 
-		virtual bool RayTrace(PhyHitInfo & info, const Ray & ray);
+		virtual bool RayCheck(HitInfoSet & info, const Ray & ray);
 
 		void SetColObj(IColObjPtr obj) { mColObj = obj; }
 		IColObjPtr GetColObj() { return mColObj; }
