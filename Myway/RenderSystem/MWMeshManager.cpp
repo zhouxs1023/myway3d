@@ -409,10 +409,10 @@ MeshPtr MeshManager::CreatePlane(const TString128 & sMeshName,
         Math::QuatTranslate(d, quat, d);
     }
 
-    a += trans;
-    b += trans;
-    c += trans;
-    d += trans;
+	a += trans;
+	b += trans;
+	c += trans;
+	d += trans;
 
     int iVertexCount = (iTileW + 1) * (iTileH + 1);
     int iIndexCount = iTileW * iTileH * 6;

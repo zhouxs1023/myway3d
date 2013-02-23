@@ -11,12 +11,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{4CEFA01D-4AEE-4B66-87C0-7C8F2D975467}</ProjectGuid>
-    <RootNamespace>test_Newton_empty</RootNamespace>
+    <ProjectGuid>{1B2A67C3-804D-4CF2-94E0-40E703997A00}</ProjectGuid>
+    <RootNamespace>MNewton</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -41,13 +41,14 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../ThirdParty/Newton</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../ThirdParty;../Myway\Physics</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>MNEWTON_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>../bin/Debug/test_Newton_empty.exe</OutputFile>
-      <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/Newton/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>myway_d.lib;newton.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <OutputFile>../bin/debug/MNewton_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>myway_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,16 +65,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NewtonBody.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NewtonShape.cpp" />
-    <ClCompile Include="NewtonWorld.cpp" />
+    <ClCompile Include="MNewton.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NewtonBody.h" />
-    <ClInclude Include="NewtonPhysics.h" />
-    <ClInclude Include="NewtonShape.h" />
-    <ClInclude Include="NewtonWorld.h" />
+    <ClInclude Include="MNewtonEntry.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

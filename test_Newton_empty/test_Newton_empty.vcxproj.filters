@@ -2,13 +2,14 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Shape.cpp" />
-    <ClCompile Include="World.cpp" />
-    <ClCompile Include="Body.cpp" />
+    <ClCompile Include="NewtonShape.cpp" />
+    <ClCompile Include="NewtonWorld.cpp" />
+    <ClCompile Include="NewtonBody.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Shape.h" />
-    <ClInclude Include="World.h" />
-    <ClInclude Include="Body.h" />
+    <ClInclude Include="NewtonShape.h" />
+    <ClInclude Include="NewtonWorld.h" />
+    <ClInclude Include="NewtonBody.h" />
+    <ClInclude Include="NewtonPhysics.h" />
   </ItemGroup>
 </Project>

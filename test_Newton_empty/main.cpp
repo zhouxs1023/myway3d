@@ -1,14 +1,18 @@
-#include "World.h"
-#include "Shape.h"
-#include "Body.h"
 #include "MWApp_Win32.h"
+#include "NewtonPhysics.h"
 
 using namespace Myway;
 
 
 class MyApp : public App_Win32
 {
-	Newton::World ntWorld;
+	Newton::tWorld  * ntWorld;
+
+	Newton::tShape * floorShape;
+	Newton::tBody * floorBody;
+
+	Newton::tShape * sphShape;
+	Newton::tBody * sphBody;
 
 public:
 	MyApp()
@@ -21,7 +25,9 @@ public:
 	{
 		App_Win32::Init();
 
-		Newton::World::Instance()->Init();
+		ntWorld = new Newton::tWorld;
+
+		ntWorld->Init();
 
 		CreateScene();
 
@@ -37,10 +43,10 @@ public:
 
 		floorNode->Attach(floorEnt);
 
-		const Vec3 & vFloorMin = floorNode->GetWorldAabb().minimum; 
-		const Vec3 & vFloorMax = floorNode->GetWorldAabb().maximum; 
-		Newton::ntShape * floorShape = Newton::CreateBox(0, vFloorMin, vFloorMax);
-		Newton::ntBody * floorBody = Newton::CreateRigidBody(floorNode, floorShape, 0);
+		floorShape = new Newton::tPlane(ntWorld, Plane(Vec3(0, 1, 0), 0), 1000, 1000);
+		//floorShape = new Newton::tBox(ntWorld, floorNode->GetWorldAabb().GetSize());
+		floorBody = new Newton::tRigidBody(ntWorld, floorShape, floorNode, 0);
+
 
 		// create sphere
 		MeshPtr sphMesh = MeshManager::Instance()->CreateSphere("sphere", 20, 20, 20);
@@ -50,8 +56,8 @@ public:
 		sphNode->Attach(sphEntity);
 		sphNode->SetPosition(0, 300, 0);
 
-		Newton::ntShape * sphShape = Newton::CreateSphere(1, 20);
-		Newton::ntBody * sphBody = Newton::CreateRigidBody(sphNode, sphShape, 10000);
+		sphShape = new Newton::tEllipsoid(ntWorld, 20);
+		sphBody = new Newton::tRigidBody(ntWorld, sphShape, sphNode, 10);
 
 		World::Instance()->MainCameraNode()->SetPosition(0, 200, -500);
 		World::Instance()->MainCamera()->SetDirection(Vec3(0, 0, 0) - Vec3(0, 200, -500));
@@ -61,7 +67,13 @@ public:
 
 	virtual void Shutdown()
 	{
-		Newton::World::Instance()->Shutdown();
+		delete floorBody;
+		delete floorShape;
+
+		delete sphBody;
+		delete sphShape;
+
+		ntWorld->Shutdown();
 
 		App_Win32::Shutdown();
 	}
@@ -109,7 +121,7 @@ public:
 			}
 		}
 
-		Newton::World::Instance()->Update();
+		ntWorld->Update();
 	}
 };
 
