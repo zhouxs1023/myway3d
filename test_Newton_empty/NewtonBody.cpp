@@ -8,16 +8,17 @@ namespace Myway {
 
 	namespace Newton {
 
-		tBody::tBody(tWorld * world, tShape * shape, int type)
-			: mWorld(world)
-			, mShape(shape)
+		tBody::tBody(tShape * shape, int type)
+			: mShape(shape)
 			, mType(type)
+			, mNode(NULL)
+			, mBody(NULL)
 		{
 		}
 
 		tBody::~tBody()
 		{
-			NewtonDestroyBody(mWorld->_getNewtonWorld(), mBody);
+			NewtonDestroyBody(mShape->_getWorld()->_getNewtonWorld(), mBody);
 		}
 
 		void tBody::SetBodyMatrix(const Mat4 & worldTm)
@@ -25,8 +26,23 @@ namespace Myway {
 			NewtonBodySetMatrix(mBody, &worldTm[0][0]);
 		}
 
+		Vec4 tBody::GetMassMatrix() const
+		{
+			Vec4 massMat;
 
+			NewtonBodyGetMassMatrix(mBody, &massMat.w, &massMat.x, &massMat.y, &massMat.z);
 
+			return massMat;
+		}
+
+		Vec3 tBody::GetCenterOfMass() const
+		{
+			Vec3 center;
+
+			NewtonBodyGetCentreOfMass(mBody, &center.x);
+
+			return center;
+		}
 
 
 
@@ -36,7 +52,9 @@ namespace Myway {
 
 		void DestroyBodyCallback (const NewtonBody* body)
 		{
-			// nothing
+			tBody * me = (tBody *)NewtonBodyGetUserData(body);
+
+			me->OnDestroy(NULL, NULL);
 		}
 
 		// Transform callback to set the matrix of a the visual entity
@@ -60,7 +78,7 @@ namespace Myway {
 
 			Mat4 worldTm = *(Mat4 *)matrix;
 
-			me->OnTransform(me, &worldTm);
+			me->OnTransform(&posit, &rotation);
 		}
 
 
@@ -72,12 +90,16 @@ namespace Myway {
 			dFloat Izz;
 			dFloat mass;
 
+			tBody * me = (tBody *)NewtonBodyGetUserData(body);
+
 			// for this tutorial the only external force in the Gravity
 			NewtonBodyGetMassMatrix (body, &mass, &Ixx, &Iyy, &Izz);
 
-			Vec4 gravityForce(0.0f, mass * GRAVITY, 0.0f, 1);
+			Vec3 force = Vec3(0.0f, mass * GRAVITY, 0.0f);
 
-			NewtonBodySetForce(body, &gravityForce[0]);
+			me->OnApplyForce(&force, NULL);
+
+			NewtonBodySetForce(body, &force[0]);
 		}
 
 
@@ -86,8 +108,8 @@ namespace Myway {
 
 
 
-		tRigidBody::tRigidBody(tWorld * world, tShape * shape, SceneNode * node, float mass)
-			: tBody(world, shape, tBody::eRigidBody)
+		tRigidBody::tRigidBody(tShape * shape, SceneNode * node, float mass)
+			: tBody(shape, tBody::eRigidBody)
 		{
 			mNode = node;
 			Vec4 origin, inertia;
@@ -99,7 +121,7 @@ namespace Myway {
 				worldTm.MakeTransform(node->GetWorldPosition(), node->GetWorldOrientation(), Vec3::Unit);
 			}
 
-			mBody = NewtonCreateBody(world->_getNewtonWorld(), shape->_getNewtonCollision(), worldTm[0]);
+			mBody = NewtonCreateBody(shape->_getWorld()->_getNewtonWorld(), shape->_getNewtonCollision(), worldTm[0]);
 
 			NewtonBodySetDestructorCallback (mBody, DestroyBodyCallback);
 			NewtonBodySetUserData(mBody, this);

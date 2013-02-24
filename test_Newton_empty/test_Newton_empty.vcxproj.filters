@@ -5,11 +5,13 @@
     <ClCompile Include="NewtonShape.cpp" />
     <ClCompile Include="NewtonWorld.cpp" />
     <ClCompile Include="NewtonBody.cpp" />
+    <ClCompile Include="NewtonRayCheck.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NewtonShape.h" />
     <ClInclude Include="NewtonWorld.h" />
     <ClInclude Include="NewtonBody.h" />
     <ClInclude Include="NewtonPhysics.h" />
+    <ClInclude Include="NewtonRayCheck.h" />
   </ItemGroup>
 </Project>

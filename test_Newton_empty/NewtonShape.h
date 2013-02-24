@@ -49,6 +49,7 @@ namespace Myway {
 			int GetType() { return mType; }
 
 			NewtonCollision * _getNewtonCollision() { return mCollision; }
+			tWorld * _getWorld() { return mWorld; }
 
 		protected:
 			tWorld * mWorld;

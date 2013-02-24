@@ -6,7 +6,7 @@ using namespace Myway;
 
 class MyApp : public App_Win32
 {
-	Newton::tWorld  * ntWorld;
+	Newton::tWorld ntWorld;
 
 	Newton::tShape * floorShape;
 	Newton::tBody * floorBody;
@@ -25,9 +25,7 @@ public:
 	{
 		App_Win32::Init();
 
-		ntWorld = new Newton::tWorld;
-
-		ntWorld->Init();
+		ntWorld.Init();
 
 		CreateScene();
 
@@ -43,9 +41,9 @@ public:
 
 		floorNode->Attach(floorEnt);
 
-		floorShape = new Newton::tPlane(ntWorld, Plane(Vec3(0, 1, 0), 0), 1000, 1000);
+		floorShape = new Newton::tPlane(&ntWorld, Plane(Vec3(0, 1, 0), 0), 1000, 1000);
 		//floorShape = new Newton::tBox(ntWorld, floorNode->GetWorldAabb().GetSize());
-		floorBody = new Newton::tRigidBody(ntWorld, floorShape, floorNode, 0);
+		floorBody = new Newton::tRigidBody(floorShape, floorNode, 0);
 
 
 		// create sphere
@@ -56,8 +54,8 @@ public:
 		sphNode->Attach(sphEntity);
 		sphNode->SetPosition(0, 300, 0);
 
-		sphShape = new Newton::tEllipsoid(ntWorld, 20);
-		sphBody = new Newton::tRigidBody(ntWorld, sphShape, sphNode, 10);
+		sphShape = new Newton::tEllipsoid(&ntWorld, 20);
+		sphBody = new Newton::tRigidBody(sphShape, sphNode, 10);
 
 		World::Instance()->MainCameraNode()->SetPosition(0, 200, -500);
 		World::Instance()->MainCamera()->SetDirection(Vec3(0, 0, 0) - Vec3(0, 200, -500));
@@ -73,7 +71,7 @@ public:
 		delete sphBody;
 		delete sphShape;
 
-		ntWorld->Shutdown();
+		ntWorld.Shutdown();
 
 		App_Win32::Shutdown();
 	}
@@ -121,7 +119,7 @@ public:
 			}
 		}
 
-		ntWorld->Update();
+		ntWorld.Update();
 	}
 };
 
@@ -129,6 +127,8 @@ public:
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
 	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF|_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF));
+
+	//BreakAllock(803);
 
 	char sFileName[1024];
 	GetModuleFileName(GetModuleHandle(NULL), sFileName, 1024);

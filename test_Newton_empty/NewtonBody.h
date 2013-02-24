@@ -32,23 +32,27 @@ namespace Myway {
 
 			Event OnTransform;
 			Event OnApplyForce;
+			Event OnDestroy;
 
 		public:
-			tBody(tWorld * world, tShape * shape, int type);
+			tBody(tShape * shape, int type);
 			virtual ~tBody();
 
 			void SetBodyMatrix(const Mat4 & worldTm);
 
-			int GetType() { return mType; }
+			int GetType() const { return mType; }
 
-			SceneNode * GetSceneNode() { return mNode; }
+			SceneNode * GetSceneNode() const { return mNode; }
+
+			Vec4 GetMassMatrix() const;
+			Vec3 GetCenterOfMass() const;
 			
 		protected:
-			SceneNode * mNode;
-			tWorld * mWorld;
-			NewtonBody * mBody;
 			tShape * mShape;
 			int mType;
+			NewtonBody * mBody;
+
+			SceneNode * mNode;
 		};
 
 
@@ -59,7 +63,7 @@ namespace Myway {
 		class tRigidBody : public tBody
 		{
 		public:
-			tRigidBody(tWorld * world, tShape * shape, SceneNode * node, float mass = 0);
+			tRigidBody(tShape * shape, SceneNode * node, float mass = 0);
 			~tRigidBody() {}
 		};
 
