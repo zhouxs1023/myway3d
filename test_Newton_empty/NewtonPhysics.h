@@ -13,3 +13,4 @@
 #include "NewtonWorld.h"
 #include "NewtonShape.h"
 #include "NewtonBody.h"
+#include "NewtonRayCheck.h"

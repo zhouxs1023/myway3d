@@ -14,6 +14,8 @@ class MyApp : public App_Win32
 	Newton::tShape * sphShape;
 	Newton::tBody * sphBody;
 
+	Newton::tRayCheckBase rayCheck;
+
 public:
 	MyApp()
 	{
