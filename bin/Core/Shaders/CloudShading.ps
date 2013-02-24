@@ -37,19 +37,19 @@ float4 main(PS_IN In) : COLOR
 {
 	float density = 0;
 
-	float2 uvInc[9] = {
-		float2(-1, -1), float2(0, -1), float2(1, -1),
+	float2 uvInc[] = {
+						float2(0, -1), 
 		float2(-1, -1), float2(0,  0), float2(1,  0),
-		float2(-1,  1), float2(0,  1), float2(1,  1)
+						float2(0,  1)
 	};
 
-	float weight[9] = {
-		0.05f, 0.10f, 0.05f,
-		0.10f, 0.40f, 0.10f,
-		0.05f, 0.10f, 0.05f
+	float weight[] = {
+			   0.05f,
+		0.05f, 0.80f, 0.05f,
+			   0.05f
 	};
 
-	for (int i = 0; i < 9; ++i)
+	for (int i = 0; i < 5; ++i)
 	{
 		float2 inc = uvInc[i] * (1 / 1024.0f);
 		density += tex2Dlod(gTex_Layer0, float4(In.uv0 + inc, 0, 0)).r * gWeight.x * weight[i];
