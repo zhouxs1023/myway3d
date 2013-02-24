@@ -1,0 +1,14 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float2 uv0 : TEXCOORD0;
+};
+
+float4 main(PS_IN In) : COLOR
+{
+	return float4(In.uv0.x, In.uv0.y, 0, 1);
+}
