@@ -6,6 +6,7 @@
     <ClCompile Include="NewtonWorld.cpp" />
     <ClCompile Include="NewtonBody.cpp" />
     <ClCompile Include="NewtonRayCheck.cpp" />
+    <ClCompile Include="NewtonJoint.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NewtonShape.h" />
@@ -13,5 +14,6 @@
     <ClInclude Include="NewtonBody.h" />
     <ClInclude Include="NewtonPhysics.h" />
     <ClInclude Include="NewtonRayCheck.h" />
+    <ClInclude Include="NewtonJoint.h" />
   </ItemGroup>
 </Project>

@@ -10,6 +10,7 @@ class MyApp : public App_Win32
 
 	Newton::tShape * floorShape;
 	Newton::tBody * floorBody;
+	Entity * sphEntity;
 
 	Newton::tShape * sphShape;
 	Newton::tBody * sphBody;
@@ -50,7 +51,7 @@ public:
 
 		// create sphere
 		MeshPtr sphMesh = MeshManager::Instance()->CreateSphere("sphere", 20, 20, 20);
-		Entity * sphEntity = World::Instance()->CreateEntity("sphere", sphMesh);
+		sphEntity = World::Instance()->CreateEntity("sphere", sphMesh);
 		SceneNode * sphNode = World::Instance()->CreateSceneNode();
 
 		sphNode->Attach(sphEntity);
@@ -121,7 +122,39 @@ public:
 			}
 		}
 
+		Point2f pt = IMouse::Instance()->GetPositionUnit();
+
+		if (pt.x > 0 && pt.x < 1 && pt.y > 0 && pt.y < 1)
+		{
+			Ray ray = World::Instance()->MainCamera()->GetViewportRay(pt.x, pt.y);
+
+			if (IMouse::Instance()->KeyUp(MKC_BUTTON0))
+			{
+				rayCheck.Clear();
+
+				rayCheck.Do(&ntWorld, ray.origin, ray.origin + ray.direction * 1000.0f);
+
+				const Newton::tRayCheckBase::Info * tInfo = rayCheck.GetFirst();
+
+				if (tInfo && tInfo->body == sphBody)
+				{
+					float r = Math::RandRange(0.0f, 1.0f);
+					float g = Math::RandRange(0.0f, 1.0f);
+					float b = Math::RandRange(0.0f, 1.0f);
+					float a = 1;
+
+					Color4 diffuse = Color4(r, g, b, a);
+
+					sphEntity->GetSubEntity(0)->GetMaterial()->SetDiffuse(diffuse);
+				}
+			}
+		}
+
+		if ()
+
 		ntWorld.Update();
+
+
 	}
 };
 

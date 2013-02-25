@@ -66,12 +66,14 @@
   <ItemGroup>
     <ClCompile Include="NewtonBody.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="NewtonJoint.cpp" />
     <ClCompile Include="NewtonRayCheck.cpp" />
     <ClCompile Include="NewtonShape.cpp" />
     <ClCompile Include="NewtonWorld.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NewtonBody.h" />
+    <ClInclude Include="NewtonJoint.h" />
     <ClInclude Include="NewtonPhysics.h" />
     <ClInclude Include="NewtonRayCheck.h" />
     <ClInclude Include="NewtonShape.h" />

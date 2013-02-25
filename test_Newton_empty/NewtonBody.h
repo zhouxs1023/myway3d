@@ -42,10 +42,14 @@ namespace Myway {
 
 			int GetType() const { return mType; }
 
+			tShape * GetShape() const { return mShape; }
+
 			SceneNode * GetSceneNode() const { return mNode; }
 
 			Vec4 GetMassMatrix() const;
 			Vec3 GetCenterOfMass() const;
+
+			NewtonBody * _getNewtonBody() const { return mBody; }
 			
 		protected:
 			tShape * mShape;
