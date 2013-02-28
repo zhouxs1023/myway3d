@@ -2,9 +2,251 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MNewton.h" />
+    <ClCompile Include="NewtonBody.cpp" />
+    <ClCompile Include="NewtonJoint.cpp" />
+    <ClCompile Include="NewtonMaterial.cpp" />
+    <ClCompile Include="NewtonRayCheck.cpp" />
+    <ClCompile Include="NewtonShape.cpp" />
+    <ClCompile Include="NewtonWorld.cpp" />
+    <ClCompile Include="..\ThirdParty\Newton\dMath\dMathDefines.cpp">
+      <Filter>dMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dMath\dMatrix.cpp">
+      <Filter>dMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dMath\dQuaternion.cpp">
+      <Filter>dMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dMath\dStdAfxMath.cpp">
+      <Filter>dMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dMath\dVector.cpp">
+      <Filter>dMath</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dBaseHierarchy.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dClassInfo.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dContainersStdAfx.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dCRC.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dRefCounter.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dThread.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dContainers\dTree.cpp">
+      <Filter>dContainers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\Custom6DOF.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomBallAndSocket.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomCorkScrew.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomDGRayCastCar.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomDryRollingFriction.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomGear.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomHinge.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomJointLibraryStdAfx.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomKinematicController.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomMultiBodyVehicle.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomPathFollow.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomPlayerController.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomPulley.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomRagDoll.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomSlider.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomSlidingContact.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomUniversal.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomUpVector.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomUserBlank.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\CustomWormGear.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\JointLibrary.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="..\ThirdParty\Newton\dCustomJoints\NewtonCustomJoint.cpp">
+      <Filter>dCustomJoints</Filter>
+    </ClCompile>
+    <ClCompile Include="NewtonDebuger.cpp" />
+    <ClCompile Include="NewtonPlayerController.cpp" />
+    <ClCompile Include="NewtonUtil.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="MNewtonEntry.h" />
+    <ClInclude Include="NewtonBody.h" />
+    <ClInclude Include="NewtonJoint.h" />
+    <ClInclude Include="NewtonMaterial.h" />
+    <ClInclude Include="NewtonPhysics.h" />
+    <ClInclude Include="NewtonRayCheck.h" />
+    <ClInclude Include="NewtonShape.h" />
+    <ClInclude Include="NewtonWorld.h" />
+    <ClInclude Include="NewtonEntry.h" />
+    <ClInclude Include="NewtonPlayerController.h" />
+    <ClInclude Include="..\ThirdParty\Newton\dMath\dMathDefines.h">
+      <Filter>dMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dMath\dMatrix.h">
+      <Filter>dMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dMath\dQuaternion.h">
+      <Filter>dMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dMath\dStdAfxMath.h">
+      <Filter>dMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dMath\dVector.h">
+      <Filter>dMath</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dBaseHierarchy.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dClassInfo.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dContainersStdAfx.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dCRC.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dHeap.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dList.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dRefCounter.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dRtti.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dThread.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dContainers\dTree.h">
+      <Filter>dContainers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\Custom6DOF.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomBallAndSocket.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomCorkScrew.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomDGRayCastCar.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomDryRollingFriction.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomGear.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomHinge.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomJointLibraryStdAfx.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomKinematicController.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomMultiBodyVehicle.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomPathFollow.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomPlayerController.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomPulley.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomRagDoll.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomSlider.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomSlidingContact.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomUniversal.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomUpVector.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomUserBlank.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\CustomWormGear.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\JointLibrary.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="..\ThirdParty\Newton\dCustomJoints\NewtonCustomJoint.h">
+      <Filter>dCustomJoints</Filter>
+    </ClInclude>
+    <ClInclude Include="NewtonDebuger.h" />
+    <ClInclude Include="NewtonUtil.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="dMath">
+      <UniqueIdentifier>{bb1365c2-ce57-4512-b475-9ebb4f6b12a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dContainers">
+      <UniqueIdentifier>{3d4e63f3-67b6-49b6-b494-5a8650a4d2e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="dCustomJoints">
+      <UniqueIdentifier>{dae7790b-2c71-474f-93d7-0dc27faed7a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
