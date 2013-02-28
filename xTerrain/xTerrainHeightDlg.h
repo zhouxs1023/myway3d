@@ -9,7 +9,7 @@ public:
 	xTerrainHeightDlg();
 	~xTerrainHeightDlg();
 
-	void _Init(void * param0, void * param1);
+	void _Init(Event * sender);
 
 protected:
 	afx_msg void OnOpChanged();

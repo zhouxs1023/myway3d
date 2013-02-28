@@ -1032,34 +1032,34 @@ namespace Myway {
 	{
 	}
 
-	void MForestListener::_init(void * param0, void * param1)
+	void MForestListener::_init(Event * sender)
 	{
 		mForest = new MForest();
 	}
 
-	void MForestListener::_shutdown(void * param0, void * param1)
+	void MForestListener::_shutdown(Event * sender)
 	{
 		delete mForest;
 	}
 
-	void MForestListener::_update(void * param0, void * param1)
+	void MForestListener::_update(Event * sender)
 	{
 		mForest->Update();
 	}
 
-	void MForestListener::_render(void * param0, void * param1)
+	void MForestListener::_render(Event * sender)
 	{
 		mForest->_render();
 	}
 
-	void MForestListener::_preVisibleCull(void * param0, void * param1)
+	void MForestListener::_preVisibleCull(Event * sender)
 	{
 		mForest->_preVisibleCull();
 	}
 
-	void MForestListener::_renderDepth(void * param0, void * param1)
+	void MForestListener::_renderDepth(Event * sender)
 	{
-		int layer = *(int *)param1;
+		int layer = *(int *)sender->GetParam(1);
 		mForest->_renderDepthForShadow(layer);
 	}
 

@@ -37,7 +37,7 @@ namespace Myway {
 		render->_EndEvent();
     }
 
-    void GodRay::_resize(void * param0, void * param1)
+    void GodRay::_resize(Event * sender)
     {
 		_initRenderTarget();
     }

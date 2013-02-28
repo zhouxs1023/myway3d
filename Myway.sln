@@ -77,6 +77,10 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{72113450-1FA8-4708-A8CA-10BC4B01278D}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_Newton_empty", "test_Newton_empty\test_Newton_empty.vcxproj", "{4CEFA01D-4AEE-4B66-87C0-7C8F2D975467}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1470171E-7B11-4D7D-B470-8D9EDD9BAFA6} = {1470171E-7B11-4D7D-B470-8D9EDD9BAFA6}
+		{1B2A67C3-804D-4CF2-94E0-40E703997A00} = {1B2A67C3-804D-4CF2-94E0-40E703997A00}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

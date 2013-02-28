@@ -422,7 +422,7 @@ void xApp::_loadPlugins()
 	}
 }
 
-void xApp::_unloadScene(void * param0, void * param1)
+void xApp::_unloadScene(Event * sender)
 {
 	SetSelectedObj(NULL);
 }

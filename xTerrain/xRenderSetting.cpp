@@ -53,13 +53,13 @@ bool xRenderSetting::OnPropertyChanged(const Property * p)
 	return true;
 }
 
-void xRenderSetting::_OnSerialize(void * param0, void * param1)
+void xRenderSetting::_OnSerialize(Event * sender)
 {
 	const int K_ChunkId = 'xRS0';
 	int K_Version = 0;
 
-	int chunkId = *(int *)param0;
-	xSerializer & Serializer = *(xSerializer *)param1;
+	int chunkId = *(int *)sender->GetParam(0);
+	xSerializer & Serializer = *(xSerializer *)sender->GetParam(1);
 
 	if (Serializer.IsSave())
 	{

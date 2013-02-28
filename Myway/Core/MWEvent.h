@@ -16,7 +16,7 @@ public:
     EventListener();
     virtual ~EventListener();
 
-    virtual void OnCall(Event * sender, void * param0, void * param1) = 0;
+    virtual void OnCall(Event * sender) = 0;
 
 protected:
     EventListener * prev;
@@ -25,24 +25,42 @@ protected:
 
 class MW_ENTRY Event
 {
+	static const int MAX_PARAM_COUNT = 8;
 public:
     Event();
     ~Event();
 
-    void Call(void * param0, void * param1);
+	int GetParamCount() const { return paramCount; }
+	void * GetParam(int index) const { d_assert (index < paramCount); return param[index]; }
 
     void operator += (EventListener * p);
     void operator -= (EventListener * p);
-	void operator ()(void * param0, void * param1) { Call(param0, param1); }
+
+	void operator ()(void);
+	void operator ()(void * p0);
+	void operator ()(void * p0, void * p1);
+	void operator ()(void * p0, void * p1, void * p2);
+	void operator ()(void * p0, void * p1, void * p2, void * p3);
+	void operator ()(void * p0, void * p1, void * p2, void * p3, void * p4);
+	void operator ()(void * p0, void * p1, void * p2, void * p3, void * p4, void * p5);
+	void operator ()(void * p0, void * p1, void * p2, void * p3, void * p4, void * p5, void * p6);
+	void operator ()(void * p0, void * p1, void * p2, void * p3, void * p4, void * p5, void * p6 ,void * p7);
+
+private:
+	void Call();
 
 protected:
+	void * userData;
     EventListener * head;
+
+	int paramCount;
+	void * param[MAX_PARAM_COUNT];
 };
 
 template <class T>
 class tEventListener : public EventListener
 {
-	typedef void (T::*F)(void * param0, void * param1);
+	typedef void (T::*F)(Event * sender);
 public:
 	tEventListener(T * p, F f) : listener(p), func(f)
 	{
@@ -82,10 +100,10 @@ public:
 		evt = NULL;
 	}
 
-	virtual void OnCall(Event * sender, void * param0, void * param1)
+	virtual void OnCall(Event * sender)
 	{
 		if (sender == evt)
-			(listener->*func)(param0, param1);
+			(listener->*func)(sender);
 	}
 
 protected:

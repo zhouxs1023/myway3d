@@ -31,10 +31,10 @@ protected:
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point) {}
 
 
-	void _Create(void * param0, void * param1);
-	void _Init(void * param0, void * param1);
-	void _Shutdown(void * param0, void * param1);
-	void _Update(void * param0, void * param1);
+	void _Create(Event * sender);
+	void _Init(Event * sender);
+	void _Shutdown(Event * sender);
+	void _Update(Event * sender);
 
 	void _Frush(CMFCPropertyGridCtrl & PropertyGrid, IPropertyObj * obj);
 	void _ToCtrl(CMFCPropertyGridProperty * gp, IPropertyObj * obj, const Property * p);

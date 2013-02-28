@@ -41,7 +41,7 @@ namespace Myway {
 
 		if (pActor->GetLoadState() == Resource::LOADED)
 		{
-			_OnActorLoaded(NULL, NULL);
+			_OnActorLoaded(&pActor->OnResourceLoaded);
 		}
 	}
 
@@ -61,7 +61,7 @@ namespace Myway {
 		MActorManager::Instance()->_addVisibleActor(this);
 	}
 
-	void MActor::_OnActorLoaded(void *, void *)
+	void MActor::_OnActorLoaded(Event * sender)
 	{
 		const Aabb & aabb = mActorParts[0]->GetAabb();
 		const Sphere & sph = mActorParts[0]->GetSphere();

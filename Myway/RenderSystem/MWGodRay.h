@@ -15,7 +15,7 @@ namespace Myway {
         void Render(Texture * depthTex);
 
     protected:
-		void _resize(void * param0, void * param1);
+		void _resize(Event * sender);
 
         void _initGeometry();
         void _initTechnique();

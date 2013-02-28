@@ -22,7 +22,7 @@ public:
 	bool OnPropertyChanged(const Property * p);
 
 protected:
-	void _OnSerialize(void * param0, void * param1);
+	void _OnSerialize(Event * sender);
 
 protected:
 	tEventListener<xRenderSetting> OnSerialize;

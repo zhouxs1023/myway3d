@@ -53,7 +53,7 @@ xObjManager::~xObjManager()
 	SHUT_SLN;
 }
 
-void xObjManager::_UnloadScene(void * param0, void * param1)
+void xObjManager::_UnloadScene(Event * sender)
 {
 	for (int i = 0; i < mObjs.Size(); ++i)
 	{
@@ -63,12 +63,12 @@ void xObjManager::_UnloadScene(void * param0, void * param1)
 	mObjs.Clear();
 }
 
-void xObjManager::_Serialize(void * param0, void * param1)
+void xObjManager::_Serialize(Event * sender)
 {
 	const int CHUNK_ID = 'OBJS';
 
-	int chunkId = *(int*)param0;
-	xSerializer & Serializer = *(xSerializer*)param1;
+	int chunkId = *(int*)sender->GetParam(0);
+	xSerializer & Serializer = *(xSerializer*)sender->GetParam(1);
 
 	if (Serializer.IsSave())
 	{
@@ -121,7 +121,7 @@ void xObjManager::_Save(xSerializer & Serializer)
 	}
 }
 
-void xObjManager::_Shutdown(void * param0, void * param1)
+void xObjManager::_Shutdown(Event * sender)
 {
 	for (int i = 0; i < mFactorys.Size(); ++i)
 	{

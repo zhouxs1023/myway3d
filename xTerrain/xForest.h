@@ -7,10 +7,10 @@ public:
 	~xForest();
 
 protected:
-	void _OnNewScene(void * param0, void * param1);
-	void _OnLoadScene(void * param0, void * param1);
-	void _OnUnloadScene(void * param0, void * param1);
-	void _OnSerialize(void * param0, void * param1);
+	void _OnNewScene(Event * sender);
+	void _OnLoadScene(Event * sender);
+	void _OnUnloadScene(Event * sender);
+	void _OnSerialize(Event * sender);
 
 protected:
 	tEventListener<xForest> OnNewScene;

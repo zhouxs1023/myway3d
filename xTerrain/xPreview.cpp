@@ -242,12 +242,12 @@ xPreViewerListener::~xPreViewerListener()
 {
 }
 
-void xPreViewerListener::_OnUpdate(void *, void *)
+void xPreViewerListener::_OnUpdate(Event * sender)
 {
 	mPreviewer.Update();
 }
 
-void xPreViewerListener::_OnAppModeChanged(void *, void *)
+void xPreViewerListener::_OnAppModeChanged(Event * sender)
 {
 	switch (xApp::Instance()->GetAppMode())
 	{

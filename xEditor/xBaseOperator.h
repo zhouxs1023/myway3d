@@ -17,8 +17,8 @@ public:
 	virtual const char * GetIcon() = 0;
 
 protected:
-	void Init(void * param0, void * param1);
-	void OnCommand(void * param0, void * param1);
+	void Init(Event * sender);
+	void OnCommand(Event * sender);
 
 protected:
 	tEventListener<xBaseOp> mOnCommand;

@@ -80,7 +80,7 @@ public:
 protected:
 	void _input();
 	void _loadPlugins();
-	void _unloadScene(void * param0, void * param1);
+	void _unloadScene(Event * sender);
 
 protected:
 	Engine * mEngine;

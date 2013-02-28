@@ -35,14 +35,14 @@ protected:
 	afx_msg void OnSize(UINT nType, int cx, int cy);
 	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point) {}
 
-	void _Create(void * param0, void * param1);
-	void _Init(void * param0, void * param1);
-	void _Shutdown(void * param0, void * param1);
-	void _Update(void * param0, void * param1);
-	void _Render(void * param0, void * param1);
-	void _RenderUI(void * param0, void * param1);
-	void _UnloadScene(void * param0, void * param1);
-	void _AfterloadScene(void * param0, void * param1);
+	void _Create(Event * sender);
+	void _Init(Event * sender);
+	void _Shutdown(Event * sender);
+	void _Update(Event * sender);
+	void _Render(Event * sender);
+	void _RenderUI(Event * sender);
+	void _UnloadScene(Event * sender);
+	void _AfterloadScene(Event * sender);
 
 protected:
 	tEventListener<xTerrainPane> OnCreatePane;

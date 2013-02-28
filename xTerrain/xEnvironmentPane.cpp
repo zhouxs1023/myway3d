@@ -298,9 +298,9 @@ void xEnvironmentPane::OnSize(UINT nType, int cx, int cy)
 	AdjustLayout();
 }
 
-void xEnvironmentPane::_Create(void * param0, void * param1)
+void xEnvironmentPane::_Create(Event * sender)
 {
-	CFrameWndEx * frame = (CFrameWndEx *)param0;
+	CFrameWndEx * frame = (CFrameWndEx *)sender->GetParam(0);
 
 	if (!Create("Environment", frame, CRect(0, 0, 200, 200), TRUE, IDD_Environment, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
@@ -315,15 +315,15 @@ void xEnvironmentPane::_Create(void * param0, void * param1)
 	ShowPane(FALSE, FALSE, TRUE);
 }
 
-void xEnvironmentPane::_Init(void * param0, void * param1)
+void xEnvironmentPane::_Init(Event * sender)
 {
 }
 
-void xEnvironmentPane::_Shutdown(void * param0, void * param1)
+void xEnvironmentPane::_Shutdown(Event * sender)
 {
 }
 
-void xEnvironmentPane::_Update(void * param0, void * param1)
+void xEnvironmentPane::_Update(Event * sender)
 {
 	if (!xScene::Instance()->IsInited())
 		return ;

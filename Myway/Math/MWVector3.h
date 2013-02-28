@@ -73,6 +73,7 @@ public:
 	Vec3 Minimum(const Vec3 & rk) const;
     Vec3 Maximum(const Vec3 & rk) const;
     float Dot(const Vec3 & rk) const;
+	float Dot(const float * rk) const;
     float Length() const;
     float LengthSq() const;
     float InvLength() const;

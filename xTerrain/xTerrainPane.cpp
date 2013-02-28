@@ -122,9 +122,9 @@ void xTerrainPane::AdjustLayout()
 	mLayerDlg.MoveWindow(&rc);
 }
 
-void xTerrainPane::_Create(void * param0, void * param1)
+void xTerrainPane::_Create(Event * sender)
 {
-	CFrameWndEx * frame = (CFrameWndEx *)param0;
+	CFrameWndEx * frame = (CFrameWndEx *)sender->GetParam(0);
 
 	if (!Create("Terrain", frame, CRect(0, 0, 200, 200), TRUE, IDD_Terrain, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
@@ -139,25 +139,25 @@ void xTerrainPane::_Create(void * param0, void * param1)
 	ShowPane(FALSE, FALSE, TRUE);
 }
 
-void xTerrainPane::_Init(void * param0, void * param1)
+void xTerrainPane::_Init(Event * sender)
 {
-	mEditHeight._Init(NULL, NULL);
-	mEditLayer._Init(NULL, NULL);
-	mEditVeg._Init(NULL, NULL);
+	mEditHeight._Init(NULL);
+	mEditLayer._Init(NULL);
+	mEditVeg._Init(NULL);
 
-	mHeightDlg._Init(NULL, NULL);
-	mLayerDlg._Init(NULL, NULL);
-	mVegDlg._Init(NULL, NULL);
+	mHeightDlg._Init(NULL);
+	mLayerDlg._Init(NULL);
+	mVegDlg._Init(NULL);
 }
 
-void xTerrainPane::_Shutdown(void * param0, void * param1)
+void xTerrainPane::_Shutdown(Event * sender)
 {
-	mEditHeight._Shutdown(NULL, NULL);
-	mEditLayer._Shutdown(NULL, NULL);
-	mEditVeg._Shutdown(NULL, NULL);
+	mEditHeight._Shutdown(NULL);
+	mEditLayer._Shutdown(NULL);
+	mEditVeg._Shutdown(NULL);
 }
 
-void xTerrainPane::_Update(void * param0, void * param1)
+void xTerrainPane::_Update(Event * sender)
 {
 	int op = xApp::Instance()->GetOperator();
 
@@ -171,19 +171,19 @@ void xTerrainPane::_Update(void * param0, void * param1)
 
 	if (isel == xHeightPage)
 	{
-		mEditHeight._Update(NULL, NULL);
+		mEditHeight._Update(NULL);
 	}
 	else if (isel == xLayerPage)
 	{
-		mEditLayer._Update(NULL, NULL);
+		mEditLayer._Update(NULL);
 	}
 	else if (isel == xVegPage)
 	{
-		mEditVeg._Update(NULL, NULL);
+		mEditVeg._Update(NULL);
 	}
 }
 
-void xTerrainPane::_Render(void * param0, void * param1)
+void xTerrainPane::_Render(Event * sender)
 {
 	int op = xApp::Instance()->GetOperator();
 
@@ -194,19 +194,19 @@ void xTerrainPane::_Render(void * param0, void * param1)
 
 	if (isel == xHeightPage)
 	{
-		mEditHeight._Render(NULL, NULL);
+		mEditHeight._Render(NULL);
 	}
 	else if (isel == xLayerPage)
 	{
-		mEditLayer._Render(NULL, NULL);
+		mEditLayer._Render(NULL);
 	}
 	else if (isel == xVegPage)
 	{
-		mEditVeg._Render(NULL, NULL);
+		mEditVeg._Render(NULL);
 	}
 }
 
-void xTerrainPane::_RenderUI(void * param0, void * param1)
+void xTerrainPane::_RenderUI(Event * sender)
 {
 	int op = xApp::Instance()->GetOperator();
 
@@ -224,16 +224,16 @@ void xTerrainPane::_RenderUI(void * param0, void * param1)
 	}
 }
 
-void xTerrainPane::_UnloadScene(void * param0, void * param1)
+void xTerrainPane::_UnloadScene(Event * sender)
 {
 	mEditLayer.SetLayer(-1);
-	mLayerDlg._UnloadScene(NULL, NULL);
-	mVegDlg._UnloadScene(NULL, NULL);
+	mLayerDlg._UnloadScene(NULL);
+	mVegDlg._UnloadScene(NULL);
 }
 
-void xTerrainPane::_AfterloadScene(void * param0, void * param1)
+void xTerrainPane::_AfterloadScene(Event * sender)
 {
 	mEditLayer.SetLayer(-1);
-	mLayerDlg._AfterLoadScene(NULL, NULL);
-	mVegDlg._AfterLoadScene(NULL, NULL);
+	mLayerDlg._AfterLoadScene(NULL);
+	mVegDlg._AfterLoadScene(NULL);
 }

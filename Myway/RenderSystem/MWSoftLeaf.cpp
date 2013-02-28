@@ -7,7 +7,7 @@ namespace Myway {
 	SoftLeaf::SoftLeaf()
 		: OnResize(&RenderEvent::OnResize, this, &SoftLeaf::_resize)
 	{
-		_resize(NULL, NULL);
+		_resize(&RenderEvent::OnResize);
 	}
 
 	SoftLeaf::~SoftLeaf()
@@ -31,7 +31,7 @@ namespace Myway {
 		_blend();
 	}
 
-	void SoftLeaf::_resize(void *, void *)
+	void SoftLeaf::_resize(Event * sender)
 	{
 		mTex_Quad = NULL;
 		mRT_Quad = NULL;

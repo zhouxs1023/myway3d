@@ -305,7 +305,7 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
     VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
     decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
     decl->AddElement(0, 12, DT_FLOAT3, DU_NORMAL, 0);
-    decl->AddElement(0, 24, DT_FLOAT3, DU_TEXCOORD, 0);
+    decl->AddElement(0, 24, DT_FLOAT2, DU_TEXCOORD, 0);
     decl->Init();
 
     sm->GetVertexStream()->SetDeclaration(decl);
@@ -315,18 +315,21 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
     float * verteces;
     verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
     {
-        float fTileRingAngle = (Math::PI_1 / iRings);
+        float fTileRingAngle = (Math::PI_2 / iRings);
         float x, z, u, rads;
 
         for (int i = 0; i <= iRings; ++i)
         {
             rads = i * fTileRingAngle;
-            u = rads / 360.0f;
+            u = rads / Math::PI_2;
 
             Math::SinCos(rads, z, x);
 
+			x *= fRadius;
+			z *= fRadius;
+
             *verteces++ = x;
-            *verteces++ = fHeight;
+            *verteces++ = -fHeight / 2;
             *verteces++ = z;
             *verteces++ = x;
             *verteces++ = 0;
@@ -335,7 +338,7 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
             *verteces++ = 0;
 
             *verteces++ = x;
-            *verteces++ = 0;
+            *verteces++ = fHeight / 2;
             *verteces++ = z;
             *verteces++ = x;
             *verteces++ = 0;
@@ -349,28 +352,30 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
     sm->GetVertexStream()->SetCount(iVertexCount);
     sm->GetVertexStream()->Bind(0, buffer, 32);
 
-    IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
-    short * indices;
-    indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
-    {
-        for (short i = 0; i < iVertexCount; i += 4)
-        {
-            *indices++ = i;
-            *indices++ = i + 1;
-            *indices++ = i + 2;
+	/*IndexBufferPtr ibuffer = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(short));
+	short * indices;
+	indices = (short *)ibuffer->Lock(0, 0, LOCK_DISCARD);
+	{
+	for (short i = 0; i < iVertexCount; i += 2)
+	{
+	*indices++ = i + 0;
+	*indices++ = i + 1;
+	*indices++ = i + 2;
 
-            *indices++ = i + 2;
-            *indices++ = i + 1;
-            *indices++ = i + 3;
-        }
-    }
-    ibuffer->Unlock();
+	*indices++ = i + 2;
+	*indices++ = i + 1;
+	*indices++ = i + 3;
+	}
+	}
+	ibuffer->Unlock();*/
 
-    sm->GetIndexStream()->SetCount(iIndexCount);
-    sm->GetIndexStream()->Bind(ibuffer, 0);
+    //sm->GetIndexStream()->SetCount(iIndexCount);
+    //sm->GetIndexStream()->Bind(ibuffer, 0);
 
     sm->SetPrimitiveCount(iPrimCount);
-    sm->SetPrimitiveType(PRIM_TRIANGLELIST);
+    sm->SetPrimitiveType(PRIM_TRIANGLESTRIP);
+
+	sm->GetMaterial()->SetCullMode(CULL_NONE);
 
     pMesh->SetAabb(Vec3(-fRadius, 0, -fRadius), Vec3(fRadius, fHeight, fRadius));
     pMesh->SetBoundingSphere(Vec3(0, fHeight * 0.5f, 0), fRadius > fHeight * 0.5f ? fRadius : fHeight * 0.5f);

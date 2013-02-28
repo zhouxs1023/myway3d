@@ -25,7 +25,7 @@ void xEditTerrainLayer::SetBrush(const TString128 & tex)
 	d_assert (mBrush.texture != NULL && mBrush.image != NULL);
 }
 
-void xEditTerrainLayer::_Init(void * param0, void * param1)
+void xEditTerrainLayer::_Init(Event * sender)
 {
 	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
 	mTech_Layer = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainLayer");
@@ -33,7 +33,7 @@ void xEditTerrainLayer::_Init(void * param0, void * param1)
 	d_assert (mTech_Brush != NULL && mTech_Layer != NULL);
 }
 
-void xEditTerrainLayer::_Update(void * param0, void * param1)
+void xEditTerrainLayer::_Update(Event * sender)
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
@@ -59,13 +59,13 @@ void xEditTerrainLayer::_Update(void * param0, void * param1)
 	_UpdateWeightMap();
 }
 
-void xEditTerrainLayer::_Shutdown(void * param0, void * param1)
+void xEditTerrainLayer::_Shutdown(Event * sender)
 {
 	mBrush.texture = NULL;
 	mBrush.image = NULL;
 }
 
-void xEditTerrainLayer::_Render(void * param0, void * param1)
+void xEditTerrainLayer::_Render(Event * sender)
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 

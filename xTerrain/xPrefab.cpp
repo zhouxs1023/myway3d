@@ -164,10 +164,10 @@ void xPrefab::SetScale(float scale)
 xPrefabFactoryListener gListener;
 
 
-void xPrefabFactoryListener::_OnDragFile(void * param0, void * param1)
+void xPrefabFactoryListener::_OnDragFile(Event * sender)
 {
-	Point2f pt = *(Point2f*)param0;
-	TString128 file = (const char *)param1;
+	Point2f pt = *(Point2f*)sender->GetParam(0);
+	TString128 file = (const char *)sender->GetParam(1);
 
 	file.Lower();
 	file.Replace('/', '\\');

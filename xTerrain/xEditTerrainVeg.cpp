@@ -15,16 +15,16 @@ xEditTerrainVeg::~xEditTerrainVeg()
 {
 }
 
-void xEditTerrainVeg::_Init(void * param0, void * param1)
+void xEditTerrainVeg::_Init(Event * sender)
 {
 	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
 }
 
-void xEditTerrainVeg::_Shutdown(void * param0, void * param1)
+void xEditTerrainVeg::_Shutdown(Event * sender)
 {
 }
 
-void xEditTerrainVeg::_Update(void * param0, void * param1)
+void xEditTerrainVeg::_Update(Event * sender)
 {
 	float brushSize = xTerrainPane::Instance()->GetTerrainVegDlg()->BrushSize();
 	int brushDensity = xTerrainPane::Instance()->GetTerrainVegDlg()->BrushDensity();
@@ -110,7 +110,7 @@ void xEditTerrainVeg::_Update(void * param0, void * param1)
 	}
 }
 
-void xEditTerrainVeg::_Render(void * param0, void * param1)
+void xEditTerrainVeg::_Render(Event * sender)
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 

@@ -168,10 +168,10 @@ void xActor::SetScale(float scale)
 xActorFactoryListener gListener;
 
 
-void xActorFactoryListener::_OnDragFile(void * param0, void * param1)
+void xActorFactoryListener::_OnDragFile(Event * sender)
 {
-	Point2f pt = *(Point2f*)param0;
-	TString128 ActorFile = (const char *)param1;
+	Point2f pt = *(Point2f*)sender->GetParam(0);
+	TString128 ActorFile = (const char *)sender->GetParam(1);
 
 	ActorFile.Lower();
 	ActorFile.Replace('/', '\\');

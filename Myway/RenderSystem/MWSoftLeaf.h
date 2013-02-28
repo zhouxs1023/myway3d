@@ -14,7 +14,7 @@ namespace Myway {
 		void Do(Texture * colorTex, Texture * depthTex);
 
 	protected:
-		void _resize(void *, void *);
+		void _resize(Event * sender);
 
 		void _downSample(Texture * colorTex, Texture * depthTex);
 		void _blur();

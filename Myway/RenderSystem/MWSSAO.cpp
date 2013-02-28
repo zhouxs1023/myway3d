@@ -45,7 +45,7 @@ namespace Myway {
 		mTex_Random = video->Load2DTexture("random2.png", "Shaders\\random.png");
 	}
 
-	void SSAO::_resize(void *, void *)
+	void SSAO::_resize(Event * sender)
 	{
 		_init();
 	}

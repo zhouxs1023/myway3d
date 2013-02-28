@@ -19,7 +19,7 @@ namespace Myway {
 
 		}
 
-		void _Init(void *, void *)
+		void _Init(Event * sender)
 		{
 			mVertexBuffer_Billboard = VideoBufferManager::Instance()->CreateVertexBuffer(20 * 4);
 
@@ -85,7 +85,7 @@ namespace Myway {
 			mIndexBuffer_X2->Unlock();
 		}
 
-		void _Shutdown(void *, void *)
+		void _Shutdown(Event * sender)
 		{
 			mVertexBuffer_Billboard = NULL;
 			mVertexBuffer_X2 = NULL;

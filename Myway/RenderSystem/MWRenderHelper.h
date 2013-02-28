@@ -28,7 +28,7 @@ public:
     void DrawScreenQuad(BLEND_MODE mode, Technique * tech);
 
 protected:
-	void _resize(void * param0, void * param1);
+	void _resize(Event * sender);
     void _initTexture();
     void _initScreenQuad();
     void _updateScreenQuad();

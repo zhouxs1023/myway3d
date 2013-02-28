@@ -71,12 +71,12 @@ public:
 	{
 	}
 
-	void _Init(void * param0, void * param1)
+	void _Init(Event * sender)
 	{
 		xObjManager::Instance()->AddFactory(new xActorFactory());
 	}
 
-	void _OnDragFile(void * param0, void * param1);
+	void _OnDragFile(Event * sender);
 
 	tEventListener<xActorFactoryListener> OnInit;
 	tEventListener<xActorFactoryListener> OnDragFile;

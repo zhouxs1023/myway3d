@@ -89,7 +89,7 @@ namespace Myway {
         float _getMoonRoll(float time);
 		float _getLightRoll(float time);
 
-        void _update(void * param0, void * param1);
+        void _update(Event * sender);
         void _updateTime();
         void _updateKey(int k0, int k1, float d);
 

@@ -20,7 +20,7 @@ namespace Myway
         SHUT_SLN;
     }
 
-	void RenderHelper::_resize(void * param0, void * param1)
+	void RenderHelper::_resize(Event * sender)
 	{
 		_updateScreenQuad();
 	}

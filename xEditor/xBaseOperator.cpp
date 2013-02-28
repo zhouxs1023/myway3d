@@ -19,14 +19,14 @@ xBaseOp::~xBaseOp()
 {
 }
 
-void xBaseOp::Init(void * param0, void * param1)
+void xBaseOp::Init(Event * sender)
 {
 	xOpToolBar::Instance()->Add(GetIcon(), mOperatorId);
 }
 
-void xBaseOp::OnCommand(void * param0, void * param1)
+void xBaseOp::OnCommand(Event * sender)
 {
-	int id = *(int *)param0;
+	int id = *(int *)sender->GetParam(0);
 
 	if (id == mOperatorId)
 		Process();

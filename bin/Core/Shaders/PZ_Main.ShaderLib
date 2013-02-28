@@ -14,7 +14,8 @@
 		</Shader>
 
 		<Shader name = "basePS" language = "cg" profile = "ps30" source = "base.ps" >
-			<param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+      <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+      <param name = "mtlDiffuse" type = "float4" btype = "mtlDiffuse" />
 		</Shader>
 
 		<Shader name = "QuadVS" language = "cg" profile = "vs30" source = "Quad.vs" >

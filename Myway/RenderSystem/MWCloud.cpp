@@ -43,7 +43,7 @@ namespace Myway {
         _shading(lighting);
     }
 
-	void Cloud::_resize(void * param0, void * param1)
+	void Cloud::_resize(Event * sender)
 	{
 		_initRenderTarget();
 	}

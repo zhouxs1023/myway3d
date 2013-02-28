@@ -2,18 +2,9 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NewtonShape.cpp" />
-    <ClCompile Include="NewtonWorld.cpp" />
-    <ClCompile Include="NewtonBody.cpp" />
-    <ClCompile Include="NewtonRayCheck.cpp" />
-    <ClCompile Include="NewtonJoint.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NewtonShape.h" />
-    <ClInclude Include="NewtonWorld.h" />
-    <ClInclude Include="NewtonBody.h" />
-    <ClInclude Include="NewtonPhysics.h" />
-    <ClInclude Include="NewtonRayCheck.h" />
-    <ClInclude Include="NewtonJoint.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
 </Project>

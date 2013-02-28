@@ -554,7 +554,7 @@ Color Terrain::GetWeight(int x, int z)
 	return mWeights[z * mConfig.xWeightMapSize + x];
 }
 
-void Terrain::OnPreVisibleCull(void * param0, void * param1)
+void Terrain::OnPreVisibleCull(Event * sender)
 {
 	mVisibleSections.Clear();
 }

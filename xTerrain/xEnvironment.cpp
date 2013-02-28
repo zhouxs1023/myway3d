@@ -18,19 +18,19 @@ xEnvironment::~xEnvironment()
 {
 }
 
-void xEnvironment::_OnNewScene(void * param0, void * param1)
+void xEnvironment::_OnNewScene(Event * sender)
 {
 	Environment::Instance()->InitEv();
 
 	xEnvironmentPane::Instance()->_Frush();
 }
 
-void xEnvironment::_OnLoadScene(void * param0, void * param1)
+void xEnvironment::_OnLoadScene(Event * sender)
 {
 	Environment::Instance()->InitEv();
 }
 
-void xEnvironment::_OnUnloadScene(void * param0, void * param1)
+void xEnvironment::_OnUnloadScene(Event * sender)
 {
 	Environment::Instance()->DeInitEv();
 }
@@ -45,13 +45,13 @@ void _LoadPropertyObj(IPropertyObj * obj, xSerializer & Serializer)
 	Serializer >> obj;
 }
 
-void xEnvironment::_OnSerialize(void * param0, void * param1)
+void xEnvironment::_OnSerialize(Event * sender)
 {
 	const int K_ChunkId = 'xEnv';
 	int K_Version = 0;
 
-	int chunkId = *(int *)param0;
-	xSerializer & Serializer = *(xSerializer *)param1;
+	int chunkId = *(int *)sender->GetParam(0);
+	xSerializer & Serializer = *(xSerializer *)sender->GetParam(1);
 
 	if (Serializer.IsSave())
 	{

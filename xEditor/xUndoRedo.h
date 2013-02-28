@@ -26,7 +26,7 @@ public:
 	void Redo();
 
 protected:
-	void _Shutdown(void * param0, void * param1);
+	void _Shutdown(Event * sender);
 
 protected:
 	DQueue<xUndoRedo *> mUndoStack;

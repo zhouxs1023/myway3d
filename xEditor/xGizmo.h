@@ -8,10 +8,10 @@ public:
 	xGizmo();
 	~xGizmo();
 
-	void Init(void * param0, void * param1);
-	void Shutdown(void * param0, void * param1);
-	void Render(void * param0, void * param1);
-	void Update(void * param0, void * param1);
+	void Init(Event * sender);
+	void Shutdown(Event * sender);
+	void Render(Event * sender);
+	void Update(Event * sender);
 
 	bool IsPicked() { return mPicked; }
 

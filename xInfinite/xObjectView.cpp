@@ -205,7 +205,7 @@ void xObjectView::_initIcon()
 	mCreatorView.SetImageList(&mImages, TVSIL_NORMAL);
 }
 
-void xObjectView::_Init(void * param0, void * param1)
+void xObjectView::_Init(Event * sender)
 {
 	_initIcon();
 

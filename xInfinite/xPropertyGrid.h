@@ -33,8 +33,8 @@ public:
 	void AdjustLayout();
 
 protected:
-	void _OnSelect(void * param0, void * param1);
-	void _OnUnSelect(void * param0, void * param1);
+	void _OnSelect(Event * sender);
+	void _OnUnSelect(Event * sender);
 	void Show(xObj * obj);
 	void _ToCtrl(CMFCPropertyGridProperty * gp, xObj * obj, const Property * p);
 

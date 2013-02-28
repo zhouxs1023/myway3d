@@ -183,7 +183,7 @@ void xPropertyGrid::OnSize(UINT nType, int cx, int cy)
 //	m_wndPropList.AddProperty(pGroup4);
 //}
 
-void xPropertyGrid::_OnSelect(void * param0, void * param1)
+void xPropertyGrid::_OnSelect(Event * sender)
 {
 	xObj * obj = xApp::Instance()->GetSelectedObj(0);
 
@@ -193,7 +193,7 @@ void xPropertyGrid::_OnSelect(void * param0, void * param1)
 	Show(obj);
 }
 
-void xPropertyGrid::_OnUnSelect(void * param0, void * param1)
+void xPropertyGrid::_OnUnSelect(Event * sender)
 {
 	Show(NULL);
 }

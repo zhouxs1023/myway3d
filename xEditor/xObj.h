@@ -76,9 +76,9 @@ public:
 protected:
 	xObj * _Create(const TString128 & name, const TString128 & type);
 
-	void _Shutdown(void * param0, void * param1);
-	void _Serialize(void * param0, void * param1);
-	void _UnloadScene(void * param0, void * param1);
+	void _Shutdown(Event * sender);
+	void _Serialize(Event * sender);
+	void _UnloadScene(Event * sender);
 
 	void _Load(xSerializer & Serializer);
 	void _Save(xSerializer & Serializer);

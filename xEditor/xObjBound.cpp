@@ -15,7 +15,7 @@ xObjBound::~xObjBound()
 {
 }
 
-void xObjBound::Init(void * param0, void * param1)
+void xObjBound::Init(Event * sender)
 {
 	mRenderAABB = new RenderOp();
 
@@ -129,7 +129,7 @@ void xObjBound::Init(void * param0, void * param1)
 	mRenderColMesh->rState.blendMode = BM_OPATICY;
 }
 
-void xObjBound::Shutdown(void * param0, void * param1)
+void xObjBound::Shutdown(Event * sender)
 {
 	safe_delete (mRenderAABB);
 	safe_delete (mRenderColMesh);
@@ -160,7 +160,7 @@ void xObjBound::RenderColMesh()
 					 &(colMesh->GetIndices()[0]));
 }
 
-void xObjBound::Render(void * param0, void * param1)
+void xObjBound::Render(Event * sender)
 {
 	if (xApp::Instance()->GetSelectedObjSize() == 0)
 		return ;

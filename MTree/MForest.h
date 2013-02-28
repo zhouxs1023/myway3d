@@ -134,14 +134,14 @@ namespace Myway {
 		MForestListener();
 		~MForestListener();
 
-		void _init(void * param0, void * param1);
-		void _shutdown(void * param0, void * param1);
-		void _update(void * param0, void * param1);
+		void _init(Event * sender);
+		void _shutdown(Event * sender);
+		void _update(Event * sender);
 
-		void _render(void * param0, void * param1);
-		void _renderDepth(void * param0, void * param1);
+		void _render(Event * sender);
+		void _renderDepth(Event * sender);
 
-		void _preVisibleCull(void * param0, void * param1);
+		void _preVisibleCull(Event * sender);
 
 	protected:
 		tEventListener<MForestListener> OnInit;

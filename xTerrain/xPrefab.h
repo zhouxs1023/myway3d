@@ -75,12 +75,12 @@ public:
 	{
 	}
 
-	void _Init(void * param0, void * param1)
+	void _Init(Event * sender)
 	{
 		xObjManager::Instance()->AddFactory(new xPrefabFactory());
 	}
 
-	void _OnDragFile(void * param0, void * param1);
+	void _OnDragFile(Event * sender);
 
 	tEventListener<xPrefabFactoryListener> OnInit;
 	tEventListener<xPrefabFactoryListener> OnDragFile;

@@ -263,7 +263,7 @@ BOOL xExplorer::PreTranslateMessage(MSG* pMsg)
 	return CDockablePane::PreTranslateMessage(pMsg);
 }
 
-void xExplorer::_Init(void * param0, void * param1)
+void xExplorer::_Init(Event * sender)
 {
 	mTypeIconMap.Clear();
 	mImages.DeleteImageList();
@@ -290,7 +290,7 @@ void xExplorer::_Init(void * param0, void * param1)
 	mViewTree.SetImageList(&mImages, TVSIL_NORMAL);
 }
 
-void xExplorer::_UnloadScene(void * param0, void * param1)
+void xExplorer::_UnloadScene(Event * sender)
 {
 	_deleteAllItem();
 	mItems.Destroy();
@@ -330,10 +330,10 @@ void xExplorer::_LoadItem(Item & item, xSerializer & Serializer)
 	}
 }
 
-void xExplorer::_OnSerialize(void * param0, void * param1)
+void xExplorer::_OnSerialize(Event * sender)
 {
-	int chunkId = *(int *)param0;
-	xSerializer & Serializer = *(xSerializer *)param1;
+	int chunkId = *(int *)sender->GetParam(0);
+	xSerializer & Serializer = *(xSerializer *)sender->GetParam(1);
 
 	const int K_ChunkId = 'xExp';
 	const int K_Version = 0;
@@ -376,7 +376,7 @@ void xExplorer::_OnSerialize(void * param0, void * param1)
 	}
 }
 
-void xExplorer::_AfterLoadScene(void * param0, void * param1)
+void xExplorer::_AfterLoadScene(Event * sender)
 {
 	mViewTree.DeleteAllItems();
 
@@ -411,9 +411,9 @@ void xExplorer::_AfterLoadScene(void * param0, void * param1)
 	}
 }
 
-void xExplorer::_ObjCreated(void * param0, void * param1)
+void xExplorer::_ObjCreated(Event * sender)
 {
-	xObj * obj = (xObj *)param0;
+	xObj * obj = (xObj *)sender->GetParam(0);
 
 	TString128 type = obj->GetTypeName();
 
@@ -435,9 +435,9 @@ void xExplorer::_ObjCreated(void * param0, void * param1)
 	mItems.PushBack(item);
 }
 
-void xExplorer::_ObjDistroy(void * param0, void * param1)
+void xExplorer::_ObjDistroy(Event * sender)
 {
-	xObj * obj = (xObj *)param0;
+	xObj * obj = (xObj *)sender->GetParam(0);
 
 	Item * item = _getItem(obj);
 

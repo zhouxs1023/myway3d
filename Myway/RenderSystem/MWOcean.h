@@ -18,8 +18,8 @@ namespace Myway {
 		tEventListener<Ocean> OnResize;
 		tEventListener<Ocean> OnPreRender;
 
-		void _Resize(void * param0, void * param1);
-		void _PreRender(void * param0, void * param1);
+		void _Resize(Event * sender);
+		void _PreRender(Event * sender);
 
 	public:
 		Ocean();

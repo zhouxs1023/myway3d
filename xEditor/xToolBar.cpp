@@ -30,7 +30,7 @@ void xOpToolBar::Add(const char * image, int id)
 	++mNumButtons;
 }
 
-void xOpToolBar::Init(void * param0, void * param1)
+void xOpToolBar::Init(Event * sender)
 {
 	for (int i = 0; i < mNumButtons; ++i)
 	{
@@ -42,7 +42,7 @@ void xOpToolBar::Init(void * param0, void * param1)
 	mTech_Checked = xApp::Instance()->GetHelperShaderLib()->GetTechnique("OpToolBarChecked");
 }
 
-void xOpToolBar::Shutdown(void * param0, void * param1)
+void xOpToolBar::Shutdown(Event * sender)
 {
 	for (int i = 0; i < mNumButtons; ++i)
 	{
@@ -50,7 +50,7 @@ void xOpToolBar::Shutdown(void * param0, void * param1)
 	}
 }
 
-void xOpToolBar::Update(void * param0, void * param1)
+void xOpToolBar::Update(Event * sender)
 {
 	if (!IMouse::Instance()->KeyUp(MKC_BUTTON0))
 		return ;
@@ -81,7 +81,7 @@ void xOpToolBar::Update(void * param0, void * param1)
 	}
 }
 
-void xOpToolBar::Render(void * param0, void * param1)
+void xOpToolBar::Render(Event * sender)
 {
 	int wndWidth = Engine::Instance()->GetDeviceProperty()->Width;
 	int wndHeight = Engine::Instance()->GetDeviceProperty()->Height;

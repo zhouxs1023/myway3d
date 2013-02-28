@@ -16,9 +16,9 @@ public:
 	Mode GetMode() const { return mMode; }
 
 protected:
-	void _init(void *, void *);
-	void _shutdown(void *, void *);
-	void _render(void *, void *);
+	void _init(Event * sender);
+	void _shutdown(Event * sender);
+	void _render(Event * sender);
 
 protected:
 	tEventListener<xDebugRender> OnInit;

@@ -30,12 +30,12 @@ namespace Myway {
 		void _addVisibleActor(MActor * actor);
 
 	protected:
-		void _Init(void *, void *);
-		void _Shutdown(void *, void *);
-		void _PreVisibleCull(void *, void *);
+		void _Init(Event * sender);
+		void _Shutdown(Event * sender);
+		void _PreVisibleCull(Event * sender);
 
-		void _Render(void *, void *);
-		void _RenderDepth(void *, void *);
+		void _Render(Event * sender);
+		void _RenderDepth(Event * sender);
 
 		void _drawMesh(MActorRes::SMesh * mesh);
 		void _drawMeshSkined(MActorRes::SMesh * mesh);

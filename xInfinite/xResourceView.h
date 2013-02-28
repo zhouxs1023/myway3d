@@ -52,7 +52,7 @@ protected:
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-	void _Init(void * param0, void * param1);
+	void _Init(Event * sender);
 
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

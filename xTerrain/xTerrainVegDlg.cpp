@@ -19,7 +19,7 @@ xTerrainVegDlg::~xTerrainVegDlg()
 {
 }
 
-void xTerrainVegDlg::_Init(void * param0, void * param1)
+void xTerrainVegDlg::_Init(Event * sender)
 {
 	SetDlgItemText(IDC_TV_BrushSize, "10");
 	SetDlgItemText(IDC_TV_BrushDensity, "3");
@@ -29,7 +29,7 @@ void xTerrainVegDlg::_Init(void * param0, void * param1)
 	SetDlgItemText(IDC_TV_MaxLum, "1");
 }
 
-void xTerrainVegDlg::_UnloadScene(void * param0, void * param1)
+void xTerrainVegDlg::_UnloadScene(Event * sender)
 {
 	CListBox * list = (CListBox *)GetDlgItem(IDC_TV_List);
 
@@ -39,7 +39,7 @@ void xTerrainVegDlg::_UnloadScene(void * param0, void * param1)
 	MForest::Instance()->RemoveAllVegetationBlock();
 }
 
-void xTerrainVegDlg::_AfterLoadScene(void * param0, void * param1)
+void xTerrainVegDlg::_AfterLoadScene(Event * sender)
 {
 	CListBox * list = (CListBox *)GetDlgItem(IDC_TV_List);
 

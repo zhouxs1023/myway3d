@@ -24,12 +24,12 @@ namespace Myway {
 		World::Instance()->DestroySceneNode(mCameraNode);
     }
 
-	void Ocean::_Resize(void * param0, void * param1)
+	void Ocean::_Resize(Event * sender)
 	{
 		_initRT();
 	}
 
-    void Ocean::_PreRender(void * param0, void * param1)
+    void Ocean::_PreRender(Event * sender)
     {
 		if (!WaterManager::Instance()->IsUnderWater())
 			_renderRelfection();

@@ -41,8 +41,8 @@ public:
 	xPreViewerListener();
 	~xPreViewerListener();
 
-	void _OnAppModeChanged(void *, void *);
-	void _OnUpdate(void *, void *);
+	void _OnAppModeChanged(Event * sender);
+	void _OnUpdate(Event * sender);
 
 protected:
 	tEventListener<xPreViewerListener> OnAppModeChanged;

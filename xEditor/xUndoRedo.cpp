@@ -59,7 +59,7 @@ void xUndoRedoManager::Redo()
 	}
 }
 
-void xUndoRedoManager::_Shutdown(void * param0, void * param1)
+void xUndoRedoManager::_Shutdown(Event * sender)
 {
 	while (mRedoStack.Size())
 	{

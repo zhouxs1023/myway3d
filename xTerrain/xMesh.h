@@ -43,9 +43,9 @@ public:
 	virtual bool OnPropertyChanged(const Property * p);
 
 protected:
-	void _Update(void * param0, void * param1);
+	void _Update(Event * sender);
 
-	void _renderSkel(void * param0, void * param1);
+	void _renderSkel(Event * sender);
 
 protected:
 	SceneNode * mNode;
@@ -82,12 +82,12 @@ public:
 	{
 	}
 
-	void _Init(void * param0, void * param1)
+	void _Init(Event * sender)
 	{
 		xObjManager::Instance()->AddFactory(new xMeshFactory());
 	}
 
-	void _OnDragFile(void * param0, void * param1);
+	void _OnDragFile(Event * sender);
 
 	tEventListener<xMeshFactoryListener> OnInit;
 	tEventListener<xMeshFactoryListener> OnDragFile;
@@ -105,8 +105,8 @@ public:
 	void Render(Entity * entity);
 
 protected:
-	void _init(void * param0, void * param1);
-	void _shutdown(void * param0, void * param1);
+	void _init(Event * sender);
+	void _shutdown(Event * sender);
 
 protected:
 	Technique * mTech;

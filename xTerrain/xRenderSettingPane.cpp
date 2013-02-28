@@ -178,9 +178,9 @@ LRESULT xRenderSettingPane::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 	return S_OK;
 }
 
-void xRenderSettingPane::_Create(void * param0, void * param1)
+void xRenderSettingPane::_Create(Event * sender)
 {
-	CFrameWndEx * frame = (CFrameWndEx *)param0;
+	CFrameWndEx * frame = (CFrameWndEx *)sender->GetParam(0);
 
 	if (!Create("Render Setting", frame, CRect(0, 0, 200, 200), TRUE, IDD_RenderSetting, 
 		WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_RIGHT | CBRS_FLOAT_MULTI))
@@ -195,7 +195,7 @@ void xRenderSettingPane::_Create(void * param0, void * param1)
 	ShowPane(FALSE, FALSE, TRUE);
 }
 
-void xRenderSettingPane::_AfterLoadScene(void * param0, void * param1)
+void xRenderSettingPane::_AfterLoadScene(Event * sender)
 {
 	Show(true);
 }

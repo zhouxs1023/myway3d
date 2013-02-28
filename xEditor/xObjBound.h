@@ -6,9 +6,9 @@ public:
 	xObjBound();
 	virtual ~xObjBound();
 
-	void Init(void * param0, void * param1);
-	void Shutdown(void * param0, void * param1);
-	void Render(void * param0, void * param1);
+	void Init(Event * sender);
+	void Shutdown(Event * sender);
+	void Render(Event * sender);
 
 protected:
 	void RenderColMesh();

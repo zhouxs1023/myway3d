@@ -16,7 +16,7 @@ namespace Myway {
 
 	protected:
 		void _init();
-		void _resize(void *, void *);
+		void _resize(Event * sender);
 
 		void _renderAo(Texture * depthTex, Texture * normalTex);
 		void _downSample();

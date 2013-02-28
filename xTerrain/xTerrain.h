@@ -48,7 +48,7 @@ public:
 	{
 	}
 
-	void _Init(void * param0, void * param1)
+	void _Init(Event * sender)
 	{
 		xObjManager::Instance()->AddFactory(new xTerrainFactory());
 	}

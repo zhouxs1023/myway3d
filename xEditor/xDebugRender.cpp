@@ -16,18 +16,18 @@ xDebugRender::~xDebugRender()
 {
 }
 
-void xDebugRender::_init(void *, void *)
+void xDebugRender::_init(Event * sender)
 {
 	mTech_Normal = xApp::Instance()->GetHelperShaderLib()->GetTechnique("DebugNormal");
 
 	d_assert (mTech_Normal);
 }
 
-void xDebugRender::_shutdown(void *, void *)
+void xDebugRender::_shutdown(Event * sender)
 {
 }
 
-void xDebugRender::_render(void *, void *)
+void xDebugRender::_render(Event * sender)
 {
 	if (mMode == K_DisplayNormal)
 	{

@@ -192,7 +192,7 @@ void xMesh::SetScale(float scale)
     mNode->SetScale(scale);
 }
 
-void xMesh::_Update(void * param0, void * param1)
+void xMesh::_Update(Event * sender)
 {
 	float time = Engine::Instance()->GetFrameTime();
 
@@ -202,7 +202,7 @@ void xMesh::_Update(void * param0, void * param1)
 	mEntity->UpdateAnimation();
 }
 
-void xMesh::_renderSkel(void * param0, void * param1)
+void xMesh::_renderSkel(Event * sender)
 {
 	/*if (mEntity)
 	{
@@ -222,10 +222,10 @@ void xMesh::_renderSkel(void * param0, void * param1)
 xMeshFactoryListener gListener;
 
 
-void xMeshFactoryListener::_OnDragFile(void * param0, void * param1)
+void xMeshFactoryListener::_OnDragFile(Event * sender)
 {
-	Point2f pt = *(Point2f*)param0;
-	TString128 ActorFile = (const char *)param1;
+	Point2f pt = *(Point2f*)sender->GetParam(0);
+	TString128 ActorFile = (const char *)sender->GetParam(1);
 
 	ActorFile.Lower();
 	ActorFile.Replace('/', '\\');
@@ -386,7 +386,7 @@ void xSkeletonRenderer::Render(Entity * entity)
 	render->Render(mTech, mRenderOp);
 }
 
-void xSkeletonRenderer::_init(void * param0, void * param1)
+void xSkeletonRenderer::_init(Event * sender)
 {
 	mRenderOp = new RenderOp();
 
@@ -438,7 +438,7 @@ void xSkeletonRenderer::_init(void * param0, void * param1)
 	d_assert (mTech);
 }
 
-void xSkeletonRenderer::_shutdown(void * param0, void * param1)
+void xSkeletonRenderer::_shutdown(Event * sender)
 {
 	delete mRenderOp;
 }

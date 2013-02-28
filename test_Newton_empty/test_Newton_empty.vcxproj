@@ -41,13 +41,13 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../ThirdParty/Newton</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../ThirdParty/Newton;../MNewton</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>../bin/Debug/test_Newton_empty.exe</OutputFile>
       <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/Newton/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>myway_d.lib;newton.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myway_d.lib;mnewton_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -64,20 +64,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NewtonBody.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="NewtonJoint.cpp" />
-    <ClCompile Include="NewtonRayCheck.cpp" />
-    <ClCompile Include="NewtonShape.cpp" />
-    <ClCompile Include="NewtonWorld.cpp" />
+    <ClCompile Include="Player.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="NewtonBody.h" />
-    <ClInclude Include="NewtonJoint.h" />
-    <ClInclude Include="NewtonPhysics.h" />
-    <ClInclude Include="NewtonRayCheck.h" />
-    <ClInclude Include="NewtonShape.h" />
-    <ClInclude Include="NewtonWorld.h" />
+    <ClInclude Include="Player.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

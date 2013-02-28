@@ -20,25 +20,25 @@ xForest::~xForest()
 {
 }
 
-void xForest::_OnNewScene(void * param0, void * param1)
+void xForest::_OnNewScene(Event * sender)
 {
 }
 
-void xForest::_OnLoadScene(void * param0, void * param1)
+void xForest::_OnLoadScene(Event * sender)
 {
 }
 
-void xForest::_OnUnloadScene(void * param0, void * param1)
+void xForest::_OnUnloadScene(Event * sender)
 {
 }
 
-void xForest::_OnSerialize(void * param0, void * param1)
+void xForest::_OnSerialize(Event * sender)
 {
 	int K_ChunkId = 'xFrt';
 	int K_Version = 0;
 
-	int chunkId = *(int *)param0;
-	xSerializer & Serializer = *(xSerializer *)param1;
+	int chunkId = *(int *)sender->GetParam(0);
+	xSerializer & Serializer = *(xSerializer *)sender->GetParam(1);
 
 	if (Serializer.IsSave())
 	{

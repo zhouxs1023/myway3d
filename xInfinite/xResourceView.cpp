@@ -224,7 +224,7 @@ BOOL xResourceView::PreTranslateMessage(MSG* pMsg)
 	return CDockablePane::PreTranslateMessage(pMsg);
 }
 
-void xResourceView::_Init(void * param0, void * param1)
+void xResourceView::_Init(Event * sender)
 {
 	mTypeIconMap.Clear();
 	mImages.DeleteImageList();

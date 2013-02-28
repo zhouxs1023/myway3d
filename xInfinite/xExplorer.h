@@ -75,12 +75,12 @@ protected:
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 
-	void _Init(void * param0, void * param1);
-	void _UnloadScene(void * param0, void * param1);
-	void _OnSerialize(void * param0, void * param1);
-	void _AfterLoadScene(void * param0, void * param1);
-	void _ObjCreated(void * param0, void * param1);
-	void _ObjDistroy(void * param0, void * param1);
+	void _Init(Event * sender);
+	void _UnloadScene(Event * sender);
+	void _OnSerialize(Event * sender);
+	void _AfterLoadScene(Event * sender);
+	void _ObjCreated(Event * sender);
+	void _ObjDistroy(Event * sender);
 
 	void _SaveItem(Item & item, xSerializer & Serializer);
 	void _LoadItem(Item & item, xSerializer & Serializer);

@@ -32,7 +32,7 @@ namespace Myway {
 		void SetRotationMatrix(const Mat4 & rotMatrix) { mRotationMatrix = rotMatrix; }
 
 	protected:
-		void _OnActorLoaded(void *, void *);
+		void _OnActorLoaded(Event * sender);
 		void _OnMainPartBind();
 		void _OnUpdateAnimtion();
 

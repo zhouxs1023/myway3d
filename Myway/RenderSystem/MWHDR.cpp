@@ -35,7 +35,7 @@ namespace Myway {
         _toneMap(sceneTex);
     }
 
-	void HDRLighting::_resize(void * param0, void * param1)
+	void HDRLighting::_resize(Event * sender)
 	{
 		_initRT();
 	}

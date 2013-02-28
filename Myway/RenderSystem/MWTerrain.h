@@ -138,7 +138,7 @@ public:
 	//bool				RayTrace(PhyHitInfo & info, const Ray & ray, float dist);
 
 protected:
-    void                OnPreVisibleCull(void * param0, void * param1);
+    void                OnPreVisibleCull(Event * sender);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
 
 	void				_Create(const Config & config);

@@ -54,7 +54,7 @@ int xTerrainLayerDlg::GetCurLayer()
 	return -1;
 }
 
-void xTerrainLayerDlg::_Init(void * param0, void * param1)
+void xTerrainLayerDlg::_Init(Event * sender)
 {
 	CComboBox * cbBrushType = (CComboBox *)GetDlgItem(IDC_Combo_TL_BrushType);
 
@@ -88,7 +88,7 @@ void xTerrainLayerDlg::_Init(void * param0, void * param1)
 	SetDlgItemText(IDC_Edit_TL_BrushDensity, "0.5");
 }
 
-void xTerrainLayerDlg::_UnloadScene(void * param0, void * param1)
+void xTerrainLayerDlg::_UnloadScene(Event * sender)
 {
 	CListBox * list = (CListBox *)GetDlgItem(IDC_List_TL_Layers);
 
@@ -98,7 +98,7 @@ void xTerrainLayerDlg::_UnloadScene(void * param0, void * param1)
 	mLayerIds.Clear();
 }
 
-void xTerrainLayerDlg::_AfterLoadScene(void * param0, void * param1)
+void xTerrainLayerDlg::_AfterLoadScene(Event * sender)
 {
 	// init layer list
 	Terrain * terrain = Environment::Instance()->GetTerrain();

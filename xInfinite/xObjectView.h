@@ -46,7 +46,7 @@ public:
 	void OnChangeVisualStyle();
 
 protected:
-	void _Init(void * param0, void * param1);
+	void _Init(Event * sender);
 	void _initIcon();
 
 protected:

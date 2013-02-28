@@ -20,12 +20,12 @@ public:
 	void Show(bool b);
 
 protected:
-	void _OnSelect(void * param0, void * param1);
-	void _OnUnSelect(void * param0, void * param1);
+	void _OnSelect(Event * sender);
+	void _OnUnSelect(Event * sender);
 	void _ToCtrl(CMFCPropertyGridProperty * gp, IPropertyObj * obj, const Property * p);
 
-	void _Create(void * param0, void * param1);
-	void _AfterLoadScene(void * param0, void * param1);
+	void _Create(Event * sender);
+	void _AfterLoadScene(Event * sender);
 
 protected:
 	tEventListener<xRenderSettingPane> OnCreatePane;

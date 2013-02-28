@@ -28,7 +28,7 @@ namespace Myway {
 		SHUT_SLN;
 	}
 
-	void MActorManager::_Init(void *, void *)
+	void MActorManager::_Init(Event * sender)
 	{
 		mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Actor\\Actor.ShaderLib", "Actor\\Actor.ShaderLib");
 
@@ -45,7 +45,7 @@ namespace Myway {
 		d_assert (mTech_Depth != NULL && mSkinedTech_Depth != NULL);
 	}
 
-	void MActorManager::_Shutdown(void *, void *)
+	void MActorManager::_Shutdown(Event * sender)
 	{
 		d_assert (mActorResources.Size() == 0);
 
@@ -53,7 +53,7 @@ namespace Myway {
 		mVertexDeclSkined = NULL;
 	}
 
-	void MActorManager::_PreVisibleCull(void *, void *)
+	void MActorManager::_PreVisibleCull(Event * sender)
 	{
 		mVisibleActors.Clear();
 	}
@@ -210,7 +210,7 @@ namespace Myway {
 		mVisibleActors.PushBack(actor);
 	}
 
-	void MActorManager::_Render(void * p0, void * p1)
+	void MActorManager::_Render(Event * sender)
 	{
 		RenderSystem * render = RenderSystem::Instance();
 
@@ -272,9 +272,9 @@ namespace Myway {
 		render->_EndEvent();
 	}
 
-	void MActorManager::_RenderDepth(void * param0, void * param1)
+	void MActorManager::_RenderDepth(Event * sender)
 	{
-		int layer = *(int *)param1;
+		int layer = *(int *)sender->GetParam(1);
 
 		const Shadow::CascadedMatrixs & forms = Environment::Instance()->GetShadow()->GetCascadedMatrix(layer);
 

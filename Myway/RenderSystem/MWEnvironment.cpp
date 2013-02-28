@@ -244,7 +244,7 @@ namespace Myway {
 		return roll;
 	}
 
-    void Environment::_update(void * param0, void * param1)
+    void Environment::_update(Event * sender)
     {
         _updateTime();
 

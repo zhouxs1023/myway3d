@@ -232,6 +232,15 @@ float Vec3::Dot(const Vec3 & rk) const
     return Math::VecDot(*this, rk);
 }
 
+float Vec3::Dot(const float * rk) const
+{
+	float rx = rk[0];
+	float ry = rk[1];
+	float rz = rk[2];
+
+	return x * rx + y * ry + z * rz;
+}
+
 float Vec3::Length() const
 {
     return Math::VecLength(*this);
