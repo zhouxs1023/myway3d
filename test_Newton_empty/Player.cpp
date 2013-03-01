@@ -9,13 +9,15 @@ namespace Myway {
 
 	void Player::Init()
 	{
-		MeshPtr mesh = MeshManager::Instance()->CreateSphere("playerM", 20, 20, 30);
+		MeshPtr mesh = MeshManager::Instance()->CreateSphere("playerM", 20, 20, 30, Vec3(0, 30, 0));
 		mEntity = World::Instance()->CreateEntity("playerM", mesh);
 		mSceneNode = World::Instance()->CreateSceneNode();
 
 		mSceneNode->Attach(mEntity);
 
-		mShape = new Newton::tEllipsoid(32);
+		Mat4 offsetTm;
+		offsetTm.MakeTranslate(0, 30, 0);
+		mShape = new Newton::tEllipsoid(32, offsetTm);
 
 		float padding = 1 / 64.0f;
 		float maxStairStepFactor = mesh->GetAabb().GetHeight();
@@ -24,7 +26,7 @@ namespace Myway {
 
 		Mat4 worldTm;
 
-		mSceneNode->SetPosition(0, 30, -100);
+		mSceneNode->SetPosition(0, 100, -100);
 	}
 
 	void Player::Shutdown()
@@ -57,8 +59,13 @@ namespace Myway {
 			sideSpeed = PLAYER_SPEED;
 		}
 
-		if (mSceneNode->GetPosition().y <= 50)
-			mController->SetVelocity(forwardSpeed);
+		if (IKeyboard::Instance()->KeyUp(KC_SPACE))
+		{
+			mController->Jump();
+		}
+
+		mController->SetForwordVelocity(forwardSpeed);
+		mController->SetSideVelocity(sideSpeed);
 
 		float frameTime = Engine::Instance()->GetFrameTime();
 

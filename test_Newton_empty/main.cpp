@@ -226,6 +226,11 @@ public:
 			}
 		}
 
+		if (IKeyboard::Instance()->KeyUp(KC_V))
+		{
+			floorEntity->SetVisible(false);
+		}
+
 		mPlayer.Update();
 		ntWorld.Update();
 	}
