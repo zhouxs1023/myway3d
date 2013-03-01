@@ -9,9 +9,10 @@ namespace Myway {
 		{
 			tBody * meBody = (tBody *)NewtonBodyGetUserData(body);
 			tRayCheck * rayCheck = (tRayCheck *)userData;
-			const Vec3 & normal = *(const Vec3 *)hitNormal;
 
-			if (rayCheck->UserCallback(meBody, dist, normal, collisionID))
+			Vec3 normal = Vec3(hitNormal[0], hitNormal[1], hitNormal[2]);
+
+			if (dist < 1 && rayCheck->UserCallback(meBody, dist, normal, collisionID))
 				return dist;
 			else
 				return 1.1f;
