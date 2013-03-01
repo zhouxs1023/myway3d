@@ -44,7 +44,8 @@ MeshPtr MeshManager::CreateMesh(const TString128 & sMeshName)
 }
 
 MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
-                               float width, float height, float depth)
+                               float width, float height, float depth,
+							   const Vec3 & offset)
 {
     MeshPtr pMesh = CreateMesh(sMeshName);
 
@@ -73,7 +74,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         Vec3 pos, normal;
 
         //front
-        pos = Vec3(-half_w, half_h, -half_d);
+        pos = Vec3(-half_w, half_h, -half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -82,7 +83,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.y;
         *verteces++ = normal.z;
 
-        pos = Vec3(half_w, half_h, -half_d);
+        pos = Vec3(half_w, half_h, -half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -91,7 +92,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.y;
         *verteces++ = normal.z;
 
-        pos = Vec3(-half_w, -half_h, -half_d);
+        pos = Vec3(-half_w, -half_h, -half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -100,7 +101,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.y;
         *verteces++ = normal.z;
 
-        pos = Vec3(half_w, -half_h, -half_d);
+        pos = Vec3(half_w, -half_h, -half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -110,7 +111,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.z;
 
         //back
-        pos = Vec3(-half_w, half_h, half_d);
+        pos = Vec3(-half_w, half_h, half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -119,7 +120,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.y;
         *verteces++ = normal.z;
 
-        pos = Vec3(half_w, half_h, half_d);
+        pos = Vec3(half_w, half_h, half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -128,7 +129,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.y;
         *verteces++ = normal.z;
 
-        pos = Vec3(-half_w, -half_h, half_d);
+        pos = Vec3(-half_w, -half_h, half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -137,7 +138,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
         *verteces++ = normal.y;
         *verteces++ = normal.z;
 
-        pos = Vec3(half_w, -half_h, half_d);
+        pos = Vec3(half_w, -half_h, half_d) + offset;
         Math::VecNormalize(normal, pos);
         *verteces++ = pos.x;
         *verteces++ = pos.y;
@@ -186,14 +187,15 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
     sm->SetPrimitiveCount(iPrimCount);
     sm->SetPrimitiveType(PRIM_TRIANGLELIST);
 
-    pMesh->SetAabb(Vec3(-half_w, -half_h, -half_d), Vec3(half_w, half_h, half_d));
-    pMesh->SetBoundingSphere(Vec3(0, 0, 0), Math::Sqrt(half_w * half_w + half_h * half_h + half_d * half_d));
+    pMesh->SetAabb(Vec3(-half_w, -half_h, -half_d) + offset, Vec3(half_w, half_h, half_d) + offset);
+    pMesh->SetBoundingSphere(Vec3(0, 0, 0) + offset, Math::Sqrt(half_w * half_w + half_h * half_h + half_d * half_d));
 
     return pMesh;
 }
 
 MeshPtr MeshManager::CreateSphere(const TString128 & sMeshName,
-                                  short iRings, short iSegments, float fRadius)
+                                  short iRings, short iSegments, float fRadius,
+								  const Vec3 & offset)
 {
     MeshPtr pMesh = CreateMesh(sMeshName);
 
@@ -234,9 +236,9 @@ MeshPtr MeshManager::CreateSphere(const TString128 & sMeshName,
                 pos.z = r * Math::Sin(j * fTileSegAngle);
                 Math::VecNormalize(normal, pos);
 
-                *verteces++ = pos.x;
-                *verteces++ = pos.y;
-                *verteces++ = pos.z;
+                *verteces++ = pos.x + offset.x;
+                *verteces++ = pos.y + offset.y;
+                *verteces++ = pos.z + offset.z;
                 *verteces++ = normal.x;
                 *verteces++ = normal.y;
                 *verteces++ = normal.z;
@@ -283,14 +285,15 @@ MeshPtr MeshManager::CreateSphere(const TString128 & sMeshName,
     sm->SetPrimitiveCount(iPrimCount);
     sm->SetPrimitiveType(PRIM_TRIANGLELIST);
 
-    pMesh->SetAabb(Vec3(-fRadius, -fRadius, -fRadius), Vec3(fRadius, fRadius, fRadius));
-    pMesh->SetBoundingSphere(Vec3(0, 0, 0), fRadius);
+    pMesh->SetAabb(Vec3(-fRadius, -fRadius, -fRadius) + offset, Vec3(fRadius, fRadius, fRadius) + offset);
+    pMesh->SetBoundingSphere(Vec3(0, 0, 0) + offset, fRadius);
 
     return pMesh;
 }
 
 MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
-                                    float fRadius, float fHeight, int iRings)
+                                    float fRadius, float fHeight, int iRings,
+									const Vec3 & offset)
 {
     MeshPtr pMesh = CreateMesh(sName);
 
@@ -328,18 +331,18 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
 			x *= fRadius;
 			z *= fRadius;
 
-            *verteces++ = x;
-            *verteces++ = -fHeight / 2;
-            *verteces++ = z;
+            *verteces++ = x + offset.x;
+            *verteces++ = -fHeight / 2 + offset.y;
+            *verteces++ = z + offset.z;
             *verteces++ = x;
             *verteces++ = 0;
             *verteces++ = z;
             *verteces++ = u;
             *verteces++ = 0;
 
-            *verteces++ = x;
-            *verteces++ = fHeight / 2;
-            *verteces++ = z;
+            *verteces++ = x + offset.x;
+            *verteces++ = fHeight / 2 + offset.y;
+            *verteces++ = z + offset.z;
             *verteces++ = x;
             *verteces++ = 0;
             *verteces++ = z;
@@ -377,8 +380,8 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
 
 	sm->GetMaterial()->SetCullMode(CULL_NONE);
 
-    pMesh->SetAabb(Vec3(-fRadius, 0, -fRadius), Vec3(fRadius, fHeight, fRadius));
-    pMesh->SetBoundingSphere(Vec3(0, fHeight * 0.5f, 0), fRadius > fHeight * 0.5f ? fRadius : fHeight * 0.5f);
+    pMesh->SetAabb(Vec3(-fRadius, 0, -fRadius) + offset, Vec3(fRadius, fHeight, fRadius) + offset);
+    pMesh->SetBoundingSphere(Vec3(0, fHeight * 0.5f, 0) + offset, fRadius > fHeight * 0.5f ? fRadius : fHeight * 0.5f);
 
     return pMesh;
 }

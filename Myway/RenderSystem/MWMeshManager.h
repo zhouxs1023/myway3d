@@ -29,13 +29,16 @@ public:
     MeshPtr         CreateMesh(const TString128 & sMeshName);
 
     MeshPtr         CreateBox(const TString128 & sMeshName,
-                              float width, float height, float depth);
+                              float width, float height, float depth,
+							  const Vec3 & offset = Vec3::Zero);
 
     MeshPtr         CreateSphere(const TString128 & sMeshName, 
-                                 short iRings, short iSegments, float fRadius);
+                                 short iRings, short iSegments, float fRadius,
+								 const Vec3 & offset = Vec3::Zero);
 
      MeshPtr        CreateCylinder(const TString128 & sName,
-                                   float fRadius, float fHeight, int iRings);
+                                   float fRadius, float fHeight, int iRings,
+								   const Vec3 & offset = Vec3::Zero);
 
     MeshPtr         CreatePlane(const TString128 & sMeshName,
                                 const Plane & plane,
