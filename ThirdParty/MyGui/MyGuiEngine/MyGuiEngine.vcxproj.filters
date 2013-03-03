@@ -1,0 +1,800 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Include">
+      <UniqueIdentifier>{94fa3d3d-dba4-4cf2-86f2-09cc3e0c7f28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{b11db4b8-7945-4c67-8940-a7a34cf75139}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\MyGUI.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ActionController.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Align.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Allocator.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Any.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_BackwardCompatibility.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_BiIndexBase.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Bitwise.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Button.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Canvas.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ChildSkinInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ClipboardManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Colour.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ComboBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Common.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_CommonStateInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ConsoleLogListener.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Constants.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ControllerEdgeHide.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ControllerFadeAlpha.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ControllerItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ControllerManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ControllerPosition.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_CoordConverter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_CustomAllocator.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DataFileStream.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DataManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DataStream.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DDContainer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DDItemInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Delegate.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DelegateImplement.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DeprecatedTypes.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DeprecatedWidgets.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Diagnostic.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DynLib.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_DynLibManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_EditBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_EditText.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Enumerator.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_EventPair.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Exception.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_FactoryManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_FileLogListener.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_FlowDirection.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_FontData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_FontManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_GenericFactory.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_GeometryUtility.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Gui.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IBItemInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ICroppedRectangle.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IDataStream.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IFont.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IItemContainer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ILayer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ILayerItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ILayerNode.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ILogFilter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ILogListener.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ImageBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ImageInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_InputManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IPointer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IRenderTarget.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IResource.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ISerializable.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IStateInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ISubWidget.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ISubWidgetRect.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ISubWidgetText.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ItemBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ITexture.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IUnlinkWidget.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_IVertexBuffer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_KeyCode.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LanguageManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LayerItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LayerManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LayerNode.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LayoutData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LayoutManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LevelLogFilter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ListBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LogLevel.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LogManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LogSource.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_LogStream.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Macros.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MainSkin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MaskPickInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MenuBar.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MenuControl.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MenuItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MenuItemType.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MouseButton.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MultiListBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_MultiListItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_OverlappedLayer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Platform.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Plugin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_PluginManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_PointerManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_PolygonalSkin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_PopupMenu.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Prerequest.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ProgressBar.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_RenderFormat.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_RenderItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_RenderManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_RenderTargetInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResizingPolicy.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceImageSet.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceImageSetData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceImageSetPointer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceLayout.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceManualFont.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceManualPointer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceSkin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ResourceTrueTypeFont.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_RotatingSkin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_RTTI.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ScrollBar.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ScrollView.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ScrollViewBase.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SharedLayer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SharedLayerNode.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SimpleText.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Singleton.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SkinItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SkinManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_StringUtility.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SubSkin.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SubWidgetBinding.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SubWidgetInfo.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_SubWidgetManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TabControl.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TabItem.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TCoord.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TextBox.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TextChangeHistory.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TextIterator.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TextureUtility.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TextView.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TextViewData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TileRect.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Timer.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_ToolTipManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TPoint.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TRect.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_TSize.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Types.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_UString.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Version.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_VertexData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Widget.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetDefines.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetInput.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetManager.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetStyle.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetToolTip.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetTranslate.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_WidgetUserData.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Window.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_XmlDocument.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\MyGUI_Precompiled.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\MyGUI_ActionController.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Any.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_BackwardCompatibility.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_BiIndexBase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Button.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Canvas.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ChildSkinInfo.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ClipboardManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Colour.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ComboBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ConsoleLogListener.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Constants.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ControllerEdgeHide.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ControllerFadeAlpha.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ControllerManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ControllerPosition.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_DataFileStream.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_DataManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_DataStream.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_DDContainer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_DynLib.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_DynLibManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_EditBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_EditText.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Exception.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_FactoryManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_FileLogListener.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_FontManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_GeometryUtility.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Gui.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ImageBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_InputManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ItemBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LanguageManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LayerItem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LayerManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LayerNode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LayoutManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LevelLogFilter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ListBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LogManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_LogSource.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MainSkin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MaskPickInfo.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MenuBar.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MenuControl.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MenuItem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MultiListBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_MultiListItem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_OverlappedLayer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_PluginManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_PointerManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_PolygonalSkin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_PopupMenu.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ProgressBar.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_RenderItem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_RenderManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceImageSet.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceImageSetPointer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceLayout.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceManualFont.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceManualPointer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceSkin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ResourceTrueTypeFont.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_RotatingSkin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ScrollBar.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ScrollView.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ScrollViewBase.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SharedLayer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SharedLayerNode.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SimpleText.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SkinItem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SkinManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SubSkin.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SubWidgetBinding.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_SubWidgetManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TabControl.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TabItem.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TextBox.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TextIterator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TextureUtility.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TextView.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_TileRect.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Timer.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_ToolTipManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_UString.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Widget.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_WidgetInput.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_WidgetManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_WidgetUserData.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Window.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_XmlDocument.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\MyGUI_Precompiled.cpp" />
+  </ItemGroup>
+</Project>

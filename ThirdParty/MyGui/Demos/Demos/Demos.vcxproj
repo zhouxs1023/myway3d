@@ -1,0 +1,148 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{CB52108E-2EB2-4F75-B01B-F9A8910CE7B6}</ProjectGuid>
+    <RootNamespace>Demos</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Demo_Colour\ColourPanel.cpp" />
+    <ClCompile Include="..\Demo_Colour\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Colour\EditPanel.cpp" />
+    <ClCompile Include="..\Demo_Console\Console.cpp" />
+    <ClCompile Include="..\Demo_Console\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Controllers\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Controllers\State.cpp" />
+    <ClCompile Include="..\Demo_Gui\ColourWindow.cpp" />
+    <ClCompile Include="..\Demo_Gui\ColourWindowBox.cpp" />
+    <ClCompile Include="..\Demo_Gui\ColourWindowCellView.cpp" />
+    <ClCompile Include="..\Demo_Gui\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Gui\EditorWindow.cpp" />
+    <ClCompile Include="..\Demo_Gui\InformationWindow.cpp" />
+    <ClCompile Include="..\Demo_Gui\MainPanel.cpp" />
+    <ClCompile Include="..\Demo_ItemBox\CellView.cpp" />
+    <ClCompile Include="..\Demo_ItemBox\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_ItemBox\ItemBox.cpp" />
+    <ClCompile Include="..\Demo_ItemBox\ItemBoxWindow.cpp" />
+    <ClCompile Include="..\Demo_ItemBox\ResourceItemInfo.cpp" />
+    <ClCompile Include="..\Demo_ItemBox\ToolTip.cpp" />
+    <ClCompile Include="..\Demo_PanelView\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_PanelView\PanelDirector.cpp" />
+    <ClCompile Include="..\Demo_PanelView\PanelDynamic.cpp" />
+    <ClCompile Include="..\Demo_PanelView\PanelStatic.cpp" />
+    <ClCompile Include="..\Demo_Picking\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_PluginBerkeliumWidget\BerkeliumBrowser.cpp" />
+    <ClCompile Include="..\Demo_PluginBerkeliumWidget\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_PluginStrangeButton\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Pointers\ControlPanel.cpp" />
+    <ClCompile Include="..\Demo_Pointers\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Pointers\EnemyPanel.cpp" />
+    <ClCompile Include="..\Demo_Pointers\FriendPanel.cpp" />
+    <ClCompile Include="..\Demo_Pointers\PointerContextManager.cpp" />
+    <ClCompile Include="..\Demo_Pointers\ResourcePointerContext.cpp" />
+    <ClCompile Include="..\Demo_RenderBox\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_ScrollView\DemoKeeper.cpp" />
+    <ClCompile Include="..\Demo_Themes\DemoKeeper.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Demo_Colour\ColourPanel.h" />
+    <ClInclude Include="..\Demo_Colour\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Colour\EditPanel.h" />
+    <ClInclude Include="..\Demo_Console\Console.h" />
+    <ClInclude Include="..\Demo_Console\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Controllers\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Controllers\State.h" />
+    <ClInclude Include="..\Demo_Gui\ColourWindow.h" />
+    <ClInclude Include="..\Demo_Gui\ColourWindowBox.h" />
+    <ClInclude Include="..\Demo_Gui\ColourWindowCellData.h" />
+    <ClInclude Include="..\Demo_Gui\ColourWindowCellView.h" />
+    <ClInclude Include="..\Demo_Gui\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Gui\EditorWindow.h" />
+    <ClInclude Include="..\Demo_Gui\InformationWindow.h" />
+    <ClInclude Include="..\Demo_Gui\MainPanel.h" />
+    <ClInclude Include="..\Demo_ItemBox\CellView.h" />
+    <ClInclude Include="..\Demo_ItemBox\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_ItemBox\ItemBox.h" />
+    <ClInclude Include="..\Demo_ItemBox\ItemBoxWindow.h" />
+    <ClInclude Include="..\Demo_ItemBox\ItemData.h" />
+    <ClInclude Include="..\Demo_ItemBox\ResourceItemInfo.h" />
+    <ClInclude Include="..\Demo_ItemBox\ToolTip.h" />
+    <ClInclude Include="..\Demo_PanelView\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_PanelView\PanelDirector.h" />
+    <ClInclude Include="..\Demo_PanelView\PanelDynamic.h" />
+    <ClInclude Include="..\Demo_PanelView\PanelStatic.h" />
+    <ClInclude Include="..\Demo_PanelView\PanelView.h" />
+    <ClInclude Include="..\Demo_PanelView\PanelViewCell.h" />
+    <ClInclude Include="..\Demo_PanelView\PanelViewWindow.h" />
+    <ClInclude Include="..\Demo_Picking\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_PluginBerkeliumWidget\BerkeliumBrowser.h" />
+    <ClInclude Include="..\Demo_PluginBerkeliumWidget\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_PluginStrangeButton\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Pointers\ControlPanel.h" />
+    <ClInclude Include="..\Demo_Pointers\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Pointers\EnemyPanel.h" />
+    <ClInclude Include="..\Demo_Pointers\FriendPanel.h" />
+    <ClInclude Include="..\Demo_Pointers\PointerContextManager.h" />
+    <ClInclude Include="..\Demo_Pointers\ResourcePointerContext.h" />
+    <ClInclude Include="..\Demo_RenderBox\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_ScrollView\DemoKeeper.h" />
+    <ClInclude Include="..\Demo_Themes\DemoKeeper.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,285 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Demo_Colour">
+      <UniqueIdentifier>{44cf59e8-bb97-4f59-aa32-96aa79d2bdf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_Console">
+      <UniqueIdentifier>{342698cc-5d7e-44cd-92cf-8f44285ddcca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_Controllers">
+      <UniqueIdentifier>{6bfa652e-d7a9-47b2-801f-471c826a206c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_Gui">
+      <UniqueIdentifier>{126e20f9-5395-43d9-94cb-25ac58871f44}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_ItemBox">
+      <UniqueIdentifier>{48783fc8-894b-4490-abd3-7234521b0958}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_PanelView">
+      <UniqueIdentifier>{7f5afb42-59eb-478a-b999-323e25ce4953}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_Picking">
+      <UniqueIdentifier>{46b365ea-6ff2-45ae-8cfc-7567f621cc39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_PluginBerkeliumWidget">
+      <UniqueIdentifier>{7b637372-85d9-4cbc-be27-6b70571bfeae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_PluginStrangeButton">
+      <UniqueIdentifier>{fbe7116d-b2e8-4018-8ee3-330525b98537}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_Pointers">
+      <UniqueIdentifier>{6d99344e-7bf4-4071-bf26-56d6f47306b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_RenderBox">
+      <UniqueIdentifier>{08749ab4-3a77-466b-b555-3594afba55fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_ScrollView">
+      <UniqueIdentifier>{3d738f3b-21cd-4ff9-bce5-da277cf7fc49}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Demo_Themes">
+      <UniqueIdentifier>{ab559c29-b6cd-443a-b167-8963cd2bfdc9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Demo_Colour\ColourPanel.cpp">
+      <Filter>Demo_Colour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Colour\DemoKeeper.cpp">
+      <Filter>Demo_Colour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Colour\EditPanel.cpp">
+      <Filter>Demo_Colour</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Console\Console.cpp">
+      <Filter>Demo_Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Console\DemoKeeper.cpp">
+      <Filter>Demo_Console</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Controllers\DemoKeeper.cpp">
+      <Filter>Demo_Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Controllers\State.cpp">
+      <Filter>Demo_Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\ColourWindow.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\ColourWindowBox.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\ColourWindowCellView.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\DemoKeeper.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\EditorWindow.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\InformationWindow.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Gui\MainPanel.cpp">
+      <Filter>Demo_Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ItemBox\CellView.cpp">
+      <Filter>Demo_ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ItemBox\DemoKeeper.cpp">
+      <Filter>Demo_ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ItemBox\ItemBox.cpp">
+      <Filter>Demo_ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ItemBox\ItemBoxWindow.cpp">
+      <Filter>Demo_ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ItemBox\ResourceItemInfo.cpp">
+      <Filter>Demo_ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ItemBox\ToolTip.cpp">
+      <Filter>Demo_ItemBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PanelView\DemoKeeper.cpp">
+      <Filter>Demo_PanelView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PanelView\PanelDirector.cpp">
+      <Filter>Demo_PanelView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PanelView\PanelDynamic.cpp">
+      <Filter>Demo_PanelView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PanelView\PanelStatic.cpp">
+      <Filter>Demo_PanelView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Picking\DemoKeeper.cpp">
+      <Filter>Demo_Picking</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PluginBerkeliumWidget\BerkeliumBrowser.cpp">
+      <Filter>Demo_PluginBerkeliumWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PluginBerkeliumWidget\DemoKeeper.cpp">
+      <Filter>Demo_PluginBerkeliumWidget</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_PluginStrangeButton\DemoKeeper.cpp">
+      <Filter>Demo_PluginStrangeButton</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Pointers\ControlPanel.cpp">
+      <Filter>Demo_Pointers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Pointers\DemoKeeper.cpp">
+      <Filter>Demo_Pointers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Pointers\EnemyPanel.cpp">
+      <Filter>Demo_Pointers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Pointers\FriendPanel.cpp">
+      <Filter>Demo_Pointers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Pointers\PointerContextManager.cpp">
+      <Filter>Demo_Pointers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Pointers\ResourcePointerContext.cpp">
+      <Filter>Demo_Pointers</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_RenderBox\DemoKeeper.cpp">
+      <Filter>Demo_RenderBox</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_ScrollView\DemoKeeper.cpp">
+      <Filter>Demo_ScrollView</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Demo_Themes\DemoKeeper.cpp">
+      <Filter>Demo_Themes</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Demo_Colour\ColourPanel.h">
+      <Filter>Demo_Colour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Colour\DemoKeeper.h">
+      <Filter>Demo_Colour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Colour\EditPanel.h">
+      <Filter>Demo_Colour</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Console\Console.h">
+      <Filter>Demo_Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Console\DemoKeeper.h">
+      <Filter>Demo_Console</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Controllers\DemoKeeper.h">
+      <Filter>Demo_Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Controllers\State.h">
+      <Filter>Demo_Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\ColourWindow.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\ColourWindowBox.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\ColourWindowCellData.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\ColourWindowCellView.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\DemoKeeper.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\EditorWindow.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\InformationWindow.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Gui\MainPanel.h">
+      <Filter>Demo_Gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\CellView.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\DemoKeeper.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\ItemBox.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\ItemBoxWindow.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\ItemData.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\ResourceItemInfo.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ItemBox\ToolTip.h">
+      <Filter>Demo_ItemBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\DemoKeeper.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\PanelDirector.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\PanelDynamic.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\PanelStatic.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\PanelView.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\PanelViewCell.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PanelView\PanelViewWindow.h">
+      <Filter>Demo_PanelView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Picking\DemoKeeper.h">
+      <Filter>Demo_Picking</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PluginBerkeliumWidget\BerkeliumBrowser.h">
+      <Filter>Demo_PluginBerkeliumWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PluginBerkeliumWidget\DemoKeeper.h">
+      <Filter>Demo_PluginBerkeliumWidget</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_PluginStrangeButton\DemoKeeper.h">
+      <Filter>Demo_PluginStrangeButton</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Pointers\ControlPanel.h">
+      <Filter>Demo_Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Pointers\DemoKeeper.h">
+      <Filter>Demo_Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Pointers\EnemyPanel.h">
+      <Filter>Demo_Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Pointers\FriendPanel.h">
+      <Filter>Demo_Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Pointers\PointerContextManager.h">
+      <Filter>Demo_Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Pointers\ResourcePointerContext.h">
+      <Filter>Demo_Pointers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_RenderBox\DemoKeeper.h">
+      <Filter>Demo_RenderBox</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_ScrollView\DemoKeeper.h">
+      <Filter>Demo_ScrollView</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Demo_Themes\DemoKeeper.h">
+      <Filter>Demo_Themes</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
