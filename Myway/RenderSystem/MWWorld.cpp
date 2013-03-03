@@ -610,6 +610,10 @@ void World::UpdateFrame()
     render->SetTime(Engine::Instance()->GetTime());
 
     RenderScheme::Instance()->DoRender();
+
+	RenderEvent::OnRenderGUI1();
+	RenderEvent::OnRenderGUI2();
+	RenderEvent::OnRenderGUI3();
     
     render->EndScene();
 }

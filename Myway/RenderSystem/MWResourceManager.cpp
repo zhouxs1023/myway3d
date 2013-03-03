@@ -237,6 +237,11 @@ bool ResourceManager::Exist(const TString128 & name) const
     return mResourceGroup.Exist(name);
 }
 
+const Archive::FileInfo * ResourceManager::GetFileInfo(const TString128 & name) const
+{
+	return mResourceGroup.GetFileInfo(name);
+}
+
 Archive * ResourceManager::GetArchive(const TString128 & name)
 {
     return mResourceGroup.GetArchive(name);

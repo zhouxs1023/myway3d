@@ -33,4 +33,8 @@ namespace Myway {
 
 	Event RenderEvent::OnAfterRender;
 	Event RenderEvent::OnDebugRender;
+
+	Event RenderEvent::OnRenderGUI1;
+	Event RenderEvent::OnRenderGUI2;
+	Event RenderEvent::OnRenderGUI3;
 }

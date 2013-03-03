@@ -101,6 +101,7 @@ public:
 									 const void * vertices, int stride, int numVerts,
 		                             const void * indices, bool bIndex32 = true) = 0;
 
+	virtual void			RenderUI(Technique * efx, VertexDeclarationPtr decl, VertexBufferPtr vb, int primCount) = 0;
 
 	virtual void			SetSMAAType(eSmaaType::enum_t type) = 0;
 	virtual eSmaaType::enum_t GetSMAAType() = 0;

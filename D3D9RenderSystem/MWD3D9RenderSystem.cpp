@@ -747,10 +747,10 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
          D3DErrorExceptionFunction(DrawPrimitive, hr);
     }
 
-    RenderRegister::Instance()->End();
+	RenderRegister::Instance()->End();
 
-    mBatchCount += 1;
-    mPrimitivCount += primCount;
+	mBatchCount += 1;
+	mPrimitivCount += primCount;
 }
 
 void D3D9RenderSystem::RenderUp(Technique * tech, RenderOp * rop, const void * vertices, int stride, int numVerts, const void * indices, bool bIndex32)
@@ -858,6 +858,92 @@ void D3D9RenderSystem::RenderUp(Technique * tech, RenderOp * rop, const void * v
 	EXCEPTION_DEBUG(SUCCEEDED(hr), "DrawIndexedPrimitiveUP error");
 
 	RenderRegister::Instance()->End();
+
+	mBatchCount += 1;
+	mPrimitivCount += primCount;
+}
+
+void D3D9RenderSystem::RenderUI(Technique * tech, VertexDeclarationPtr decl, VertexBufferPtr vb, int primCount)
+{
+	SetVertexShader(tech->GetVertexShader());
+	SetPixelShader(tech->GetPixelShader());
+
+	ShaderParamTable * pVertexShaderParam = tech->GetVertexShaderParamTable();
+	ShaderParamTable * pPixelShaderParam = tech->GetPixelShaderParamTable();
+	SetVertexShaderParam(pVertexShaderParam);
+	SetPixelShaderParam(pPixelShaderParam);
+
+	HRESULT hr = D3D_OK;
+
+	//set shader register
+	if (mVertexShaderParams)
+	{
+		int count = mVertexShaderParams->GetNumParam();
+		ShaderParam * param = NULL;
+
+		for (int i = 0; i < count; ++i)
+		{
+			param = mVertexShaderParams->GetParam(i);
+			DWORD idx = param->GetRegister();
+			DWORD v4c = param->GetVec4Count();
+
+			if (param->IsInt())
+			{
+				hr = mD3DDevice->SetVertexShaderConstantI(idx, (const int *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetVertexShaderConstantI error.");
+			}
+			else
+			{
+				hr = mD3DDevice->SetVertexShaderConstantF(idx, (const float *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetVertexShaderConstantF error");
+			}
+
+		}
+	}
+
+	if (mPixelShaderParams)
+	{
+		int count = mPixelShaderParams->GetNumParam();
+		ShaderParam * param = NULL;
+
+		for (int i = 0; i < count; ++i)
+		{
+			param = mPixelShaderParams->GetParam(i);
+			DWORD idx = param->GetRegister();
+			DWORD v4c = param->GetVec4Count();
+
+			if (param->IsInt())
+			{
+				hr = mD3DDevice->SetPixelShaderConstantI(idx, (const int *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetPixelShaderConstantI error.");
+			}
+			else
+			{
+				hr = mD3DDevice->SetPixelShaderConstantF(idx, (const float *)param->GetData(), v4c);
+				EXCEPTION_DEBUG(SUCCEEDED(hr), "SetPixelShaderConstantF error");
+			}
+		}
+	}
+
+	D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
+
+	int stride = decl->GetStreamSize(0);
+
+	hr = mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
+
+	D3D9VertexBuffer * d3dvb = (D3D9VertexBuffer*)vb.c_ptr();
+
+	hr = mD3DDevice->SetStreamSource(0, d3dvb->GetD3DVertexBuffer(), 0, stride);
+
+	mD3DDevice->SetStreamSourceFreq(0, 1);
+
+	D3DErrorExceptionFunction(SetStreamSource, hr);
+
+	{
+		hr = mD3DDevice->DrawPrimitive(D3DPT_TRIANGLELIST, 0, primCount);
+
+		D3DErrorExceptionFunction(DrawPrimitive, hr);
+	}
 
 	mBatchCount += 1;
 	mPrimitivCount += primCount;

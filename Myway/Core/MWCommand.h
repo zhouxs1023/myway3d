@@ -14,8 +14,8 @@ namespace Myway
 #define CMD_BACKGROUND_RED       0x0040 // background color contains red.
 #define CMD_BACKGROUND_INTENSITY 0x0080 // background color is intensified.
 
-#define _cmd Command::Instance()
-#define _endl '\n'
+#define mcmd Command::Instance()
+#define mendl '\n'
 
 class MW_ENTRY Command : public AllocObj
 {

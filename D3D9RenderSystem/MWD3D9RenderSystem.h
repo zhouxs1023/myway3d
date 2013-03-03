@@ -88,6 +88,7 @@ public:
 	virtual void						RenderUp(Technique * efx, RenderOp * rop,
 		                                         const void * vertices, int stride, int numVerts,
 												 const void * indices, bool bIndex32);
+	virtual void						RenderUI(Technique * efx, VertexDeclarationPtr decl, VertexBufferPtr vb, int primCount);
 
 	virtual void						SetSMAAType(eSmaaType::enum_t type);
 	virtual eSmaaType::enum_t			GetSMAAType();
