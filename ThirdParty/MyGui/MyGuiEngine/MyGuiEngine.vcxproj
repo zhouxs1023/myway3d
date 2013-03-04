@@ -53,6 +53,7 @@
       <ImportLibrary>..\bin\MyGuiEngine_d.lib</ImportLibrary>
       <AdditionalDependencies>freetype241_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>..\..\freetype2\lib</AdditionalLibraryDirectories>
+      <ProgramDatabaseFile>..\bin\MyGuiEngine_d.pdb</ProgramDatabaseFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -1,4 +1,5 @@
 #include "MWDIMouse.h"
+#include "Engine.h"
 
 namespace Myway
 {
@@ -189,9 +190,15 @@ void DIMouse::Update()
 		m_bActive = SUCCEEDED(hr);
 
 		POINT pt;
-		RECT rt;
+		POINT ptLocal;
 		::GetCursorPos(&pt);
-		::GetWindowRect(m_hWnd, &rt);
+
+		ptLocal = pt;
+
+		::ScreenToClient(m_hWnd, &ptLocal);
+
+		int w = Engine::Instance()->GetDeviceProperty()->Width;
+		int h = Engine::Instance()->GetDeviceProperty()->Height;
 
         m_oldPositionLocal = m_positionLocal;
         m_oldPositionGlobal = m_positionGlobal;
@@ -199,10 +206,10 @@ void DIMouse::Update()
 
 		m_positionGlobal.x = pt.x;
 		m_positionGlobal.y = pt.y;
-		m_positionLocal.x = pt.x - rt.left;
-		m_positionLocal.y = pt.y - rt.top;
-		m_positionUnit.x = (float)(pt.x - rt.left) / (rt.right - rt.left);
-		m_positionUnit.y = (float)(pt.y - rt.top) / (rt.bottom - rt.top);
+		m_positionLocal.x = ptLocal.x;
+		m_positionLocal.y = ptLocal.y;
+		m_positionUnit.x = (float)ptLocal.x / w;
+		m_positionUnit.y = (float)ptLocal.y / h;
 	}
 }
 

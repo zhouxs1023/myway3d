@@ -197,7 +197,6 @@
     </Shader>
 
     <Shader name = "SoftLeaf_BlendPS" language = "cg" profile = "ps30" source = "SoftLeaf_Blend.ps" >
-      <param name = "gInvTexSize" type = "float4" btype = "invTexSize" />
     </Shader>
 
   </Shaders>

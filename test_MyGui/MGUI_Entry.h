@@ -18,8 +18,8 @@
 #endif
 
 #include "Myway.h"
-#include "MyGUI_Prerequest.h"
 
+#include "MyGUI.h"
 
 #define MYGUI_PLATFORM_LOG_SECTION "Platform"
 #define MYGUI_PLATFORM_LOG(level, text) MYGUI_LOGGING(MYGUI_PLATFORM_LOG_SECTION, level, text)

@@ -49,6 +49,7 @@ namespace Myway {
 		mVertexDecl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
 		mVertexDecl->AddElement(0, 12, DT_COLOR, DU_COLOR, 0);
 		mVertexDecl->AddElement(0, 16, DT_FLOAT2, DU_TEXCOORD, 0);
+		mVertexDecl->Init();
 
 		MYGUI_PLATFORM_LOG(Info, getClassTypeName() << " successfully initialized");
 		mIsInitialise = true;

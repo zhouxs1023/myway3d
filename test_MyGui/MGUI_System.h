@@ -14,6 +14,7 @@
 #include "MGUI_Entry.h"
 #include "MGUI_RenderSystem.h"
 #include "MGUI_DataManager.h"
+#include "MGUI_Input.h"
 
 namespace Myway {
 
@@ -32,6 +33,16 @@ namespace Myway {
 		void Render();
 
 		MGUI_RenderSystem * GetRenderManager() { return mRenderManager; }
+
+		void InjectMouseEvent();
+		void InjectKeyEvent(DWORD uMsg, WPARAM wParam,LPARAM lParam);
+
+	protected:
+		void injectMouseMove(int _absx, int _absy, int _absz);
+		void injectMousePress(int _absx, int _absy, MyGUI::MouseButton _id);
+		void injectMouseRelease(int _absx, int _absy, MyGUI::MouseButton _id);
+		void injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text);
+		void injectKeyRelease(MyGUI::KeyCode _key);
 
 	protected:
 		void _OnResize(Event * sender);

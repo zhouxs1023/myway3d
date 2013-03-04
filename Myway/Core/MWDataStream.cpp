@@ -231,12 +231,11 @@ int FileStream::ReadLine(void * data, int maxsize)
 
     if (!Eof())
     {
-        char c;
-
-        mFile.Read(&c, sizeof(char), 1);
+        char c = 0;
 
         while (size < maxsize && c != '\n' && !Eof())
         {
+			mFile.Read(&c, sizeof(char), 1);
             buf[size++] = c;
         }
     }

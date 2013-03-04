@@ -688,6 +688,8 @@ void D3D9RenderSystem::Render(Technique * tech, Renderer * obj)
     VertexDeclarationPtr decl = vstream->GetDeclaration();
     D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
 
+	d_assert(d3dvd->GetD3DVertexDeclaration());
+
     hr = mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
 
     for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
@@ -847,6 +849,8 @@ void D3D9RenderSystem::RenderUp(Technique * tech, RenderOp * rop, const void * v
 
 	D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
 
+	d_assert(d3dvd->GetD3DVertexDeclaration());
+
 	mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
 	
 	int primCount = rop->iPrimCount;
@@ -926,6 +930,8 @@ void D3D9RenderSystem::RenderUI(Technique * tech, VertexDeclarationPtr decl, Ver
 	}
 
 	D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
+
+	d_assert(d3dvd->GetD3DVertexDeclaration());
 
 	int stride = decl->GetStreamSize(0);
 
@@ -1048,6 +1054,8 @@ void D3D9RenderSystem::Render(Technique * tech, RenderOp * rd)
 
 	VertexDeclarationPtr decl = vstream->GetDeclaration();
 	D3D9VertexDeclaration* d3dvd = (D3D9VertexDeclaration*)decl.c_ptr();
+
+	d_assert(d3dvd->GetD3DVertexDeclaration());
 
 	hr = mD3DDevice->SetVertexDeclaration(d3dvd->GetD3DVertexDeclaration());
 

@@ -59,9 +59,9 @@ namespace Myway {
 
 	MyGUI::IDataStream* MGUI_DataManager::getData(const std::string& _name)
 	{
-		std::string filepath = getDataPath(_name);
+		/*std::string filepath = getDataPath(_name);
 		if (filepath.empty())
-			return nullptr;
+		return nullptr;*/
 
 		DataStreamPtr dstream = ResourceManager::Instance()->OpenResource(_name.c_str());
 

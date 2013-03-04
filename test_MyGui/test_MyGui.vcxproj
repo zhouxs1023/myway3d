@@ -76,6 +76,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MGUI_Input.cpp" />
     <ClCompile Include="MGUI_RenderSystem.cpp" />
     <ClCompile Include="MGUI_System.cpp" />
     <ClCompile Include="MGUI_Texture.cpp" />
@@ -83,6 +84,7 @@
     <ClCompile Include="MGUI_DataManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="MGUI_Input.h" />
     <ClInclude Include="MGUI_RenderSystem.h" />
     <ClInclude Include="MGUI_System.h" />
     <ClInclude Include="MGUI_Texture.h" />
