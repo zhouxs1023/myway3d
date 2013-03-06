@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="Precompiled.cpp" />
+    <ClCompile Include="Application.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Tools\Dialog.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Tools\DialogManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Tools\OpenSaveFileDialog.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinControl.cpp">
+      <Filter>Source\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinItem.cpp">
+      <Filter>Source\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinListControl.cpp">
+      <Filter>Source\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinManager.cpp">
+      <Filter>Source\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinPropertyControl.cpp">
+      <Filter>Source\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="SkinTextureControl.cpp">
+      <Filter>Source\Skin</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureBrowseControl.cpp">
+      <Filter>Source\TextureBrowse</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureBrowseCell.cpp">
+      <Filter>Source\TextureBrowse</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\Input\PointerManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Property.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyBoolControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyAlignControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyColourControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyInt2Control.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyInt4Control.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyIntControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertySet.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyRegionTypeControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyTexturesControl.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="RecentFilesManager.cpp">
+      <Filter>Source\Property</Filter>
+    </ClCompile>
+    <ClCompile Include="SeparatorControl.cpp">
+      <Filter>Source\Separator</Filter>
+    </ClCompile>
+    <ClCompile Include="SeparatorItem.cpp">
+      <Filter>Source\Separator</Filter>
+    </ClCompile>
+    <ClCompile Include="SeparatorListControl.cpp">
+      <Filter>Source\Separator</Filter>
+    </ClCompile>
+    <ClCompile Include="SeparatorPropertyControl.cpp">
+      <Filter>Source\Separator</Filter>
+    </ClCompile>
+    <ClCompile Include="SeparatorTextureControl.cpp">
+      <Filter>Source\Separator</Filter>
+    </ClCompile>
+    <ClCompile Include="StateControl.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StateItem.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StateListControl.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StateManager.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StatePropertyControl.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StateTextureControl.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="TestState.cpp">
+      <Filter>Source\State</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionControl.cpp">
+      <Filter>Source\Region</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionItem.cpp">
+      <Filter>Source\Region</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionListControl.cpp">
+      <Filter>Source\Region</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionPropertyControl.cpp">
+      <Filter>Source\Region</Filter>
+    </ClCompile>
+    <ClCompile Include="RegionTextureControl.cpp">
+      <Filter>Source\Region</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsManager.cpp">
+      <Filter>Source\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsResourcePathsControl.cpp">
+      <Filter>Source\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsResourcesControl.cpp">
+      <Filter>Source\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsSector.cpp">
+      <Filter>Source\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsWindow.cpp">
+      <Filter>Source\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="HorizontalSelectorBlackControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="HorizontalSelectorControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalSelectorBlackControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="VerticalSelectorControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectorControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionSelectorControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="PositionSelectorBlackControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsGeneralControl.cpp">
+      <Filter>Source\Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureToolControl.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureControl.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="TextFieldControl.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="TestWindow.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBoxManager.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBoxFadeControl.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPane.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuControl.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ExportManager.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="EditorState.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ColourPanel.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ColourManager.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandManager.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundControl.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionManager.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="AreaSelectorControl.cpp">
+      <Filter>Source\SelectorControl</Filter>
+    </ClCompile>
+    <ClCompile Include="HotKeyManager.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MyGUI_FilterNoneSkin.cpp">
+      <Filter>Source\Misc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Precompiled.h" />
+    <ClInclude Include="Application.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Base\InputFocusInfo.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Base\StatisticInfo.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseLayout\Attribute.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseLayout\BaseLayout.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseLayout\WrapsAttribute.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FileSystemInfo\FileSystemInfo.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ItemBox\BaseCellView.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ItemBox\BaseItemBox.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ItemBox\ItemDropInfo.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\MessageBox\MessageBox.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\MessageBox\MessageBoxStyle.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PanelView\BasePanelView.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PanelView\BasePanelViewCell.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PanelView\BasePanelViewItem.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Tools\Dialog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Tools\DialogManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Tools\OpenSaveFileDialog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinManager.h">
+      <Filter>Source\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinControl.h">
+      <Filter>Source\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinItem.h">
+      <Filter>Source\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinListControl.h">
+      <Filter>Source\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinTextureControl.h">
+      <Filter>Source\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="SkinPropertyControl.h">
+      <Filter>Source\Skin</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureBrowseControl.h">
+      <Filter>Source\TextureBrowse</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureBrowseCell.h">
+      <Filter>Source\TextureBrowse</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Input\PointerManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Input\ResourceW32Pointer.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Property.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyAdvisor.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyAlignControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyBoolControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyColourControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyInt2Control.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyInt4Control.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyRegionTypeControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertySet.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyIntControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyTexturesControl.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="RecentFilesManager.h">
+      <Filter>Source\Property</Filter>
+    </ClInclude>
+    <ClInclude Include="SeparatorTextureControl.h">
+      <Filter>Source\Separator</Filter>
+    </ClInclude>
+    <ClInclude Include="SeparatorControl.h">
+      <Filter>Source\Separator</Filter>
+    </ClInclude>
+    <ClInclude Include="SeparatorItem.h">
+      <Filter>Source\Separator</Filter>
+    </ClInclude>
+    <ClInclude Include="SeparatorListControl.h">
+      <Filter>Source\Separator</Filter>
+    </ClInclude>
+    <ClInclude Include="SeparatorPropertyControl.h">
+      <Filter>Source\Separator</Filter>
+    </ClInclude>
+    <ClInclude Include="StateTextureControl.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateControl.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateController.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateItem.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateListControl.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StateManager.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StatePropertyControl.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="TestState.h">
+      <Filter>Source\State</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionTextureControl.h">
+      <Filter>Source\Region</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionControl.h">
+      <Filter>Source\Region</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionItem.h">
+      <Filter>Source\Region</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionListControl.h">
+      <Filter>Source\Region</Filter>
+    </ClInclude>
+    <ClInclude Include="RegionPropertyControl.h">
+      <Filter>Source\Region</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsWindow.h">
+      <Filter>Source\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsManager.h">
+      <Filter>Source\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsResourcePathsControl.h">
+      <Filter>Source\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsResourcesControl.h">
+      <Filter>Source\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsSector.h">
+      <Filter>Source\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="HorizontalSelectorControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="HorizontalSelectorBlackControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="VerticalSelectorControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="VerticalSelectorBlackControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectorControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionSelectorControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="PositionSelectorBlackControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsGeneralControl.h">
+      <Filter>Source\Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureToolControl.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureControl.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="TextFieldControl.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="TestWindow.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBoxManager.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBoxFadeControl.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MainPane.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuControl.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ExportManager.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="EditorState.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourPanel.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ColourManager.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandManager.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundControl.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionManager.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="AreaSelectorControl.h">
+      <Filter>Source\SelectorControl</Filter>
+    </ClInclude>
+    <ClInclude Include="Binary.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="HotKeyCommand.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="HotKeyManager.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHolder.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Localise.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MyGUI_FilterNoneSkin.h">
+      <Filter>Source\Misc</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{9c8d2b91-77ab-4d16-9e5a-161029e78fd5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{3f11a17c-45e3-4c41-8a91-11642a5ec8d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Skin">
+      <UniqueIdentifier>{95b15864-926a-4f78-a744-4fd909a103ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\TextureBrowse">
+      <UniqueIdentifier>{c244f782-7186-473c-a68c-294dd9f8a998}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Property">
+      <UniqueIdentifier>{807bf87c-95fa-49d3-8ed5-9bde84746348}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Separator">
+      <UniqueIdentifier>{bea5d9aa-7eed-4786-bd49-b1c318bda843}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\State">
+      <UniqueIdentifier>{774425b2-29b5-4670-8211-732ef85a5536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Region">
+      <UniqueIdentifier>{e1f8f074-7668-4b20-88e2-f905298de8b4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Setting">
+      <UniqueIdentifier>{e52e9e5a-e5db-4ba8-bda9-95d605080854}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\SelectorControl">
+      <UniqueIdentifier>{6b76e3d2-f407-4e1e-8a8a-dfb4bdb3df52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Misc">
+      <UniqueIdentifier>{4a15ad83-4b47-4d1b-a7a3-83528466d311}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SkinEditor.rc" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{FEEF6BF6-9C9C-40D4-921A-C4A6C4C60312}</ProjectGuid>
+    <RootNamespace>SkinEditor</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;./Common</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>../bin/Debug/SkinEditor.exe</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
+      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="ActionManager.cpp" />
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AreaSelectorControl.cpp" />
+    <ClCompile Include="BackgroundControl.cpp" />
+    <ClCompile Include="ColourManager.cpp" />
+    <ClCompile Include="ColourPanel.cpp" />
+    <ClCompile Include="CommandManager.cpp" />
+    <ClCompile Include="Common\Input\PointerManager.cpp" />
+    <ClCompile Include="Common\Tools\Dialog.cpp" />
+    <ClCompile Include="Common\Tools\DialogManager.cpp" />
+    <ClCompile Include="Common\Tools\OpenSaveFileDialog.cpp" />
+    <ClCompile Include="EditorState.cpp" />
+    <ClCompile Include="ExportManager.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="HorizontalSelectorBlackControl.cpp" />
+    <ClCompile Include="HorizontalSelectorControl.cpp" />
+    <ClCompile Include="HotKeyManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuControl.cpp" />
+    <ClCompile Include="MainPane.cpp" />
+    <ClCompile Include="MessageBoxFadeControl.cpp" />
+    <ClCompile Include="MessageBoxManager.cpp" />
+    <ClCompile Include="MyGUI_FilterNoneSkin.cpp" />
+    <ClCompile Include="PositionSelectorBlackControl.cpp" />
+    <ClCompile Include="PositionSelectorControl.cpp" />
+    <ClCompile Include="Precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="Property.cpp" />
+    <ClCompile Include="PropertyAlignControl.cpp" />
+    <ClCompile Include="PropertyBoolControl.cpp" />
+    <ClCompile Include="PropertyColourControl.cpp" />
+    <ClCompile Include="PropertyControl.cpp" />
+    <ClCompile Include="PropertyInt2Control.cpp" />
+    <ClCompile Include="PropertyInt4Control.cpp" />
+    <ClCompile Include="PropertyIntControl.cpp" />
+    <ClCompile Include="PropertyRegionTypeControl.cpp" />
+    <ClCompile Include="PropertySet.cpp" />
+    <ClCompile Include="PropertyTexturesControl.cpp" />
+    <ClCompile Include="RecentFilesManager.cpp" />
+    <ClCompile Include="RegionControl.cpp" />
+    <ClCompile Include="RegionItem.cpp" />
+    <ClCompile Include="RegionListControl.cpp" />
+    <ClCompile Include="RegionPropertyControl.cpp" />
+    <ClCompile Include="RegionTextureControl.cpp" />
+    <ClCompile Include="SelectorControl.cpp" />
+    <ClCompile Include="SeparatorControl.cpp" />
+    <ClCompile Include="SeparatorItem.cpp" />
+    <ClCompile Include="SeparatorListControl.cpp" />
+    <ClCompile Include="SeparatorPropertyControl.cpp" />
+    <ClCompile Include="SeparatorTextureControl.cpp" />
+    <ClCompile Include="SettingsGeneralControl.cpp" />
+    <ClCompile Include="SettingsManager.cpp" />
+    <ClCompile Include="SettingsResourcePathsControl.cpp" />
+    <ClCompile Include="SettingsResourcesControl.cpp" />
+    <ClCompile Include="SettingsSector.cpp" />
+    <ClCompile Include="SettingsWindow.cpp" />
+    <ClCompile Include="SkinControl.cpp" />
+    <ClCompile Include="SkinItem.cpp" />
+    <ClCompile Include="SkinListControl.cpp" />
+    <ClCompile Include="SkinManager.cpp" />
+    <ClCompile Include="SkinPropertyControl.cpp" />
+    <ClCompile Include="SkinTextureControl.cpp" />
+    <ClCompile Include="StateControl.cpp" />
+    <ClCompile Include="StateItem.cpp" />
+    <ClCompile Include="StateListControl.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="StatePropertyControl.cpp" />
+    <ClCompile Include="StateTextureControl.cpp" />
+    <ClCompile Include="TestState.cpp" />
+    <ClCompile Include="TestWindow.cpp" />
+    <ClCompile Include="TextFieldControl.cpp" />
+    <ClCompile Include="TextureBrowseCell.cpp" />
+    <ClCompile Include="TextureBrowseControl.cpp" />
+    <ClCompile Include="TextureControl.cpp" />
+    <ClCompile Include="TextureToolControl.cpp" />
+    <ClCompile Include="VerticalSelectorBlackControl.cpp" />
+    <ClCompile Include="VerticalSelectorControl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ActionManager.h" />
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="AreaSelectorControl.h" />
+    <ClInclude Include="BackgroundControl.h" />
+    <ClInclude Include="Binary.h" />
+    <ClInclude Include="ColourManager.h" />
+    <ClInclude Include="ColourPanel.h" />
+    <ClInclude Include="CommandManager.h" />
+    <ClInclude Include="Common\BaseLayout\Attribute.h" />
+    <ClInclude Include="Common\BaseLayout\BaseLayout.h" />
+    <ClInclude Include="Common\BaseLayout\WrapsAttribute.h" />
+    <ClInclude Include="Common\Base\InputFocusInfo.h" />
+    <ClInclude Include="Common\Base\StatisticInfo.h" />
+    <ClInclude Include="Common\FileSystemInfo\FileSystemInfo.h" />
+    <ClInclude Include="Common\Input\PointerManager.h" />
+    <ClInclude Include="Common\Input\ResourceW32Pointer.h" />
+    <ClInclude Include="Common\ItemBox\BaseCellView.h" />
+    <ClInclude Include="Common\ItemBox\BaseItemBox.h" />
+    <ClInclude Include="Common\ItemBox\ItemDropInfo.h" />
+    <ClInclude Include="Common\MessageBox\MessageBox.h" />
+    <ClInclude Include="Common\MessageBox\MessageBoxStyle.h" />
+    <ClInclude Include="Common\PanelView\BasePanelView.h" />
+    <ClInclude Include="Common\PanelView\BasePanelViewCell.h" />
+    <ClInclude Include="Common\PanelView\BasePanelViewItem.h" />
+    <ClInclude Include="Common\Tools\Dialog.h" />
+    <ClInclude Include="Common\Tools\DialogManager.h" />
+    <ClInclude Include="Common\Tools\OpenSaveFileDialog.h" />
+    <ClInclude Include="EditorState.h" />
+    <ClInclude Include="ExportManager.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="HorizontalSelectorBlackControl.h" />
+    <ClInclude Include="HorizontalSelectorControl.h" />
+    <ClInclude Include="HotKeyCommand.h" />
+    <ClInclude Include="HotKeyManager.h" />
+    <ClInclude Include="ItemHolder.h" />
+    <ClInclude Include="Localise.h" />
+    <ClInclude Include="MainMenuControl.h" />
+    <ClInclude Include="MainPane.h" />
+    <ClInclude Include="MessageBoxFadeControl.h" />
+    <ClInclude Include="MessageBoxManager.h" />
+    <ClInclude Include="MyGUI_FilterNoneSkin.h" />
+    <ClInclude Include="PositionSelectorBlackControl.h" />
+    <ClInclude Include="PositionSelectorControl.h" />
+    <ClInclude Include="Precompiled.h" />
+    <ClInclude Include="Property.h" />
+    <ClInclude Include="PropertyAdvisor.h" />
+    <ClInclude Include="PropertyAlignControl.h" />
+    <ClInclude Include="PropertyBoolControl.h" />
+    <ClInclude Include="PropertyColourControl.h" />
+    <ClInclude Include="PropertyControl.h" />
+    <ClInclude Include="PropertyInt2Control.h" />
+    <ClInclude Include="PropertyInt4Control.h" />
+    <ClInclude Include="PropertyIntControl.h" />
+    <ClInclude Include="PropertyRegionTypeControl.h" />
+    <ClInclude Include="PropertySet.h" />
+    <ClInclude Include="PropertyTexturesControl.h" />
+    <ClInclude Include="RecentFilesManager.h" />
+    <ClInclude Include="RegionControl.h" />
+    <ClInclude Include="RegionItem.h" />
+    <ClInclude Include="RegionListControl.h" />
+    <ClInclude Include="RegionPropertyControl.h" />
+    <ClInclude Include="RegionTextureControl.h" />
+    <ClInclude Include="SelectorControl.h" />
+    <ClInclude Include="SeparatorControl.h" />
+    <ClInclude Include="SeparatorItem.h" />
+    <ClInclude Include="SeparatorListControl.h" />
+    <ClInclude Include="SeparatorPropertyControl.h" />
+    <ClInclude Include="SeparatorTextureControl.h" />
+    <ClInclude Include="SettingsGeneralControl.h" />
+    <ClInclude Include="SettingsManager.h" />
+    <ClInclude Include="SettingsResourcePathsControl.h" />
+    <ClInclude Include="SettingsResourcesControl.h" />
+    <ClInclude Include="SettingsSector.h" />
+    <ClInclude Include="SettingsWindow.h" />
+    <ClInclude Include="SkinControl.h" />
+    <ClInclude Include="SkinItem.h" />
+    <ClInclude Include="SkinListControl.h" />
+    <ClInclude Include="SkinManager.h" />
+    <ClInclude Include="SkinPropertyControl.h" />
+    <ClInclude Include="SkinTextureControl.h" />
+    <ClInclude Include="StateControl.h" />
+    <ClInclude Include="StateController.h" />
+    <ClInclude Include="StateItem.h" />
+    <ClInclude Include="StateListControl.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="StatePropertyControl.h" />
+    <ClInclude Include="StateTextureControl.h" />
+    <ClInclude Include="TestState.h" />
+    <ClInclude Include="TestWindow.h" />
+    <ClInclude Include="TextFieldControl.h" />
+    <ClInclude Include="TextureBrowseCell.h" />
+    <ClInclude Include="TextureBrowseControl.h" />
+    <ClInclude Include="TextureControl.h" />
+    <ClInclude Include="TextureToolControl.h" />
+    <ClInclude Include="VerticalSelectorBlackControl.h" />
+    <ClInclude Include="VerticalSelectorControl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="SkinEditor.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

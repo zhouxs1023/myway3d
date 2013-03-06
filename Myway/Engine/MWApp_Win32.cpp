@@ -9,6 +9,9 @@ App_Win32::App_Win32()
 
     mhInst = NULL;
     mhWnd = NULL;
+
+	mResourceConfig = "resource.ini";
+	mPluginConfig = "plugin.ini";
 }
 
 App_Win32::~App_Win32()
@@ -44,7 +47,7 @@ bool App_Win32::Init()
     dp.RefreshRate = 0;
     dp.bNVPerfHUD = TRUE;
 
-    Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
+    Engine::Instance()->Init(&dp, mResourceConfig.c_str(), mPluginConfig.c_str());
 
     return true;
 }

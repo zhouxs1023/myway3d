@@ -44,11 +44,11 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../ThirdParty/Newton;../ThirdParty/MyGui/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>myway_d.lib;MyGuiEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
       <OutputFile>../bin/Debug/test_MyGui.exe</OutputFile>
     </Link>
@@ -76,21 +76,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MGUI_Input.cpp" />
-    <ClCompile Include="MGUI_RenderSystem.cpp" />
-    <ClCompile Include="MGUI_System.cpp" />
-    <ClCompile Include="MGUI_Texture.cpp" />
-    <ClCompile Include="MGUI_VertexBuffer.cpp" />
-    <ClCompile Include="MGUI_DataManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MGUI_Input.h" />
-    <ClInclude Include="MGUI_RenderSystem.h" />
-    <ClInclude Include="MGUI_System.h" />
-    <ClInclude Include="MGUI_Texture.h" />
-    <ClInclude Include="MGUI_VertexBuffer.h" />
-    <ClInclude Include="MGUI_DataManager.h" />
-    <ClInclude Include="MGUI_Entry.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -40,6 +40,9 @@
     <Filter Include="Demo_Themes">
       <UniqueIdentifier>{ab559c29-b6cd-443a-b167-8963cd2bfdc9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="SkinEditor">
+      <UniqueIdentifier>{5f56b0f6-237c-4505-93c3-e51d7deaf4ba}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Demo_Colour\ColourPanel.cpp">
@@ -152,6 +155,204 @@
     </ClCompile>
     <ClCompile Include="..\Demo_Themes\DemoKeeper.cpp">
       <Filter>Demo_Themes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\ColourManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\ColourPanel.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\CommandManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\EditorState.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\ExportManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\Grid.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\HorizontalSelectorBlackControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\HorizontalSelectorControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\HotKeyManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\MainMenuControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\MainPane.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\MessageBoxFadeControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\MessageBoxManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\MyGUI_FilterNoneSkin.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PositionSelectorBlackControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PositionSelectorControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\Property.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyAlignControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyBoolControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyColourControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyInt2Control.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyInt4Control.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyIntControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyRegionTypeControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertySet.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\PropertyTexturesControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\RecentFilesManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\RegionControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\RegionItem.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\RegionListControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\RegionPropertyControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\RegionTextureControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SelectorControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SeparatorControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SeparatorItem.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SeparatorListControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SeparatorPropertyControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SeparatorTextureControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SettingsGeneralControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SettingsManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SettingsResourcePathsControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SettingsResourcesControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SettingsSector.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SettingsWindow.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SkinControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SkinItem.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SkinListControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SkinManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SkinPropertyControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\SkinTextureControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\StateControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\StateItem.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\StateListControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\StateManager.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\StatePropertyControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\StateTextureControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TestState.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TestWindow.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TextFieldControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TextureBrowseCell.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TextureBrowseControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TextureControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\TextureToolControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\VerticalSelectorBlackControl.cpp">
+      <Filter>SkinEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Tools\SkinEditor\VerticalSelectorControl.cpp">
+      <Filter>SkinEditor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -281,5 +482,223 @@
     <ClInclude Include="..\Demo_Themes\DemoKeeper.h">
       <Filter>Demo_Themes</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\ColourManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\ColourPanel.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\CommandManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\EditorState.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\ExportManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\Grid.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\HorizontalSelectorBlackControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\HorizontalSelectorControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\HotKeyCommand.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\HotKeyManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\ItemHolder.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\Localise.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\MainMenuControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\MainPane.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\MessageBoxFadeControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\MessageBoxManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\MyGUI_FilterNoneSkin.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PositionSelectorBlackControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PositionSelectorControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\Property.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyAdvisor.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyAlignControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyBoolControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyColourControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyInt2Control.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyInt4Control.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyIntControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyRegionTypeControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertySet.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\PropertyTexturesControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\RecentFilesManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\RegionControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\RegionItem.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\RegionListControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\RegionPropertyControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\RegionTextureControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SelectorControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SeparatorControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SeparatorItem.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SeparatorListControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SeparatorPropertyControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SeparatorTextureControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SettingsGeneralControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SettingsManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SettingsResourcePathsControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SettingsResourcesControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SettingsSector.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SettingsWindow.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SkinControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SkinItem.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SkinListControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SkinManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SkinPropertyControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\SkinTextureControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StateControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StateController.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StateItem.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StateListControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StateManager.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StatePropertyControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\StateTextureControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TestState.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TestWindow.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TextFieldControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TextureBrowseCell.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TextureBrowseControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TextureControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\TextureToolControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\VerticalSelectorBlackControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Tools\SkinEditor\VerticalSelectorControl.h">
+      <Filter>SkinEditor</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\Tools\SkinEditor\TODO.txt">
+      <Filter>SkinEditor</Filter>
+    </None>
   </ItemGroup>
 </Project>

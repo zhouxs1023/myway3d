@@ -30,9 +30,16 @@ public:
 
     void Run(HINSTANCE hInstance);
 
+
+	void SetResourceConfig(const char * resource) { mResourceConfig = resource; }
+	void SetPluginConfig(const char * plugin) { mPluginConfig = plugin; }
+
 protected:
     HINSTANCE mhInst;
     HWND mhWnd;
+
+	TString128 mResourceConfig;
+	TString128 mPluginConfig;
 };
 
 }

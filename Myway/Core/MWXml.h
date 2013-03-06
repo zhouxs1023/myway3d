@@ -16,6 +16,8 @@ class MW_ENTRY XmlHelper
 {
 public:
 	static char * LoadXmlFromFile(xml_doc & doc, const char * filename);
+	static void XmlFree(char * data);
+
 	static void LoadXmlFromMem(xml_doc & doc, char * data);
 
 	static bool GetAttribute(xml_attri * attri, int & x);

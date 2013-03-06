@@ -2,20 +2,5 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="MGUI_VertexBuffer.cpp" />
-    <ClCompile Include="MGUI_Texture.cpp" />
-    <ClCompile Include="MGUI_DataManager.cpp" />
-    <ClCompile Include="MGUI_RenderSystem.cpp" />
-    <ClCompile Include="MGUI_System.cpp" />
-    <ClCompile Include="MGUI_Input.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MGUI_VertexBuffer.h" />
-    <ClInclude Include="MGUI_Texture.h" />
-    <ClInclude Include="MGUI_DataManager.h" />
-    <ClInclude Include="MGUI_Entry.h" />
-    <ClInclude Include="MGUI_RenderSystem.h" />
-    <ClInclude Include="MGUI_System.h" />
-    <ClInclude Include="MGUI_Input.h" />
   </ItemGroup>
 </Project>

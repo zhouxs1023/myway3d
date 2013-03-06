@@ -75,7 +75,7 @@ void xApp::Run()
 
 				RECT rc;
 
-				GetWindowRect(mhWnd, &rc);
+				GetClientRect(mhWnd, &rc);
 
 				int width = rc.right - rc.left;
 				int height = rc.bottom - rc.top;

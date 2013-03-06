@@ -31,6 +31,13 @@ namespace Myway
         return NULL;
     }
 
+	void XmlHelper::XmlFree(char * data)
+	{
+		d_assert (data);
+
+		free_m(data);
+	}
+
     void XmlHelper::LoadXmlFromMem(xml_doc & doc, char * data)
     {
         doc.parse<0>(data);
