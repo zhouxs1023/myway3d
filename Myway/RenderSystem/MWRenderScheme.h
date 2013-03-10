@@ -11,7 +11,6 @@ namespace Myway
 class MW_ENTRY RenderScheme
 {
     DECLARE_ALLOC();
-    DECLARE_SINGLETON(RenderScheme);
 
 public:
     RenderScheme();
@@ -23,6 +22,7 @@ public:
 	virtual Texture * GetMaterialTexture() = 0;
 
     virtual void DoRender() = 0;
+	virtual void Resize(int w, int h) = 0;
 };
 
 

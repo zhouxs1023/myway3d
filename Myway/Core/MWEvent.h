@@ -21,6 +21,8 @@ public:
 protected:
     EventListener * prev;
     EventListener * next;
+
+	Event * evt;
 };
 
 class MW_ENTRY Event
@@ -61,43 +63,19 @@ template <class T>
 class tEventListener : public EventListener
 {
 	typedef void (T::*F)(Event * sender);
+
 public:
 	tEventListener(T * p, F f) : listener(p), func(f)
 	{
-		evt = NULL;
 	}
 
-	tEventListener(Event * e, T * p, F f) : listener(p), func(f)
+	tEventListener(Event & e, T * p, F f) : listener(p), func(f)
 	{
-		evt = NULL;
-		Attach(e);
+		e += this;
 	}
 
 	~tEventListener()
 	{
-		Detach();
-	}
-
-	void Attach(Event * e)
-	{
-		d_assert (e != NULL);
-
-		if (evt == e)
-			return ;
-
-		Detach();
-
-		evt = e;
-
-		(*evt) += this;
-	}
-
-	void Detach()
-	{
-		if (evt)
-			(*evt) -= this;
-
-		evt = NULL;
 	}
 
 	virtual void OnCall(Event * sender)
@@ -107,7 +85,6 @@ public:
 	}
 
 protected:
-	Event * evt;
 	T * listener;
 	F func;
 };

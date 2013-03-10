@@ -6,7 +6,7 @@ namespace Myway {
 	namespace Newton {
 
 		tDebugger::tDebugger(tBody * body)
-			: OnTransform(&body->OnTransform, this, &tDebugger::_OnTransform)
+			: OnTransform(body->OnTransform, this, &tDebugger::_OnTransform)
 		{
 			d_assert (0);
 		}

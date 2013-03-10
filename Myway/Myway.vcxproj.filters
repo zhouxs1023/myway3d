@@ -55,9 +55,6 @@
     <Filter Include="Myway\RenderSystem\RenderScheme">
       <UniqueIdentifier>{dd080074-ba79-4077-91ec-ee7597756085}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\RenderScheme\PreZ">
-      <UniqueIdentifier>{e766590d-17d4-4779-b8c3-8ca1fb0a5f08}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Myway\RenderSystem\Primitive">
       <UniqueIdentifier>{0804c624-be4d-45d8-af23-5bbd72168315}</UniqueIdentifier>
     </Filter>
@@ -72,33 +69,6 @@
     </Filter>
     <Filter Include="Myway\App">
       <UniqueIdentifier>{814556e8-b544-42f2-8350-57a475a5ecee}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment">
-      <UniqueIdentifier>{4a817d6d-2513-46b0-91c0-3fd9ac9ae7cb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\geometry">
-      <UniqueIdentifier>{15f494b5-7880-4833-9722-055a50e23cbe}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\geometry\Terrain">
-      <UniqueIdentifier>{635875b9-d7f4-4cf2-96f2-13cba7888470}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\geometry\Sky">
-      <UniqueIdentifier>{59a8d53b-c038-4309-99eb-044269e5394a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\geometry\Sky\VCloud">
-      <UniqueIdentifier>{7426833e-d47a-4e9f-9e48-0f7fd3d69464}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\geometry\Water">
-      <UniqueIdentifier>{4b4bbb49-7a2c-4b63-8a33-722c5ce3c9a2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\Misc">
-      <UniqueIdentifier>{13a4106c-8aa4-4061-9b43-2e268b5f4e0a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\Shaders">
-      <UniqueIdentifier>{f9cf6936-7133-4bae-a56a-54f427a85880}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Myway\RenderSystem\Environment\Effect">
-      <UniqueIdentifier>{82586316-f423-4982-a9e8-635d5dc5552b}</UniqueIdentifier>
     </Filter>
     <Filter Include="Myway\AudioSystem">
       <UniqueIdentifier>{6c415a54-c836-424e-8dcb-94f2fa6c7c9e}</UniqueIdentifier>
@@ -459,75 +429,6 @@
     <ClInclude Include="RenderSystem\MWRenderScheme.h">
       <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderLoopMain_Prz.h">
-      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWRenderScheme_Prz.h">
-      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShaderProvider_Prz.h">
-      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWEnvironment.h">
-      <Filter>Myway\RenderSystem\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWEvKeyFrame.h">
-      <Filter>Myway\RenderSystem\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrain.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainLod.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWTerrainSection.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Terrain</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWCloud.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWMoon.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSky.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWStarfield.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSun.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWUnderWater.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWWater.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWAstronomy.h">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWBrightStarCatalogue.h">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFFT.h">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWPerlin.h">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWColorSharp.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWFog.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWGodRay.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWHDR.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClInclude>
     <ClInclude Include="RenderSystem\MWMover.h">
       <Filter>Myway\RenderSystem\Primitive</Filter>
     </ClInclude>
@@ -579,23 +480,8 @@
     <ClInclude Include="Physics\MWKDTree.h">
       <Filter>Myway\Physics</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWOcean.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWWaterManager.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWProjectionGrid.h">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClInclude>
     <ClInclude Include="Math\MWCurve.h">
       <Filter>Myway\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWShadow.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSSAO.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClInclude>
     <ClInclude Include="Physics\MWPhysics.h">
       <Filter>Myway\Physics</Filter>
@@ -605,9 +491,6 @@
     </ClInclude>
     <ClInclude Include="RenderSystem\MWColMesh.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem\MWSoftLeaf.h">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -688,108 +571,6 @@
     </None>
     <None Include="RenderSystem\MWTexture.inl">
       <Filter>Myway\RenderSystem\RenderSystem</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Base.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Base.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\BlurH.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\BlurV.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Clear.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\CloudLighting.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\CloudLighting.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\CloudShading.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\CloudShading.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\ColorSharp.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\DownSampler2x.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\DownSampler4x.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Environment.ShaderLib">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Fog.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Frush.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\GodRay.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\GodRayBlend.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\HDR_Bright.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\HDR_LumAdapted.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\HDR_LumFinal.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\HDR_LumInitial.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\HDR_ToneMap.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Moon.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Moon.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\PZ_Main.ShaderLib">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Quad.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Sky.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Sky.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Star.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Star.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Sun.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Sun.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Terrain.ps">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
-    </None>
-    <None Include="..\bin\Core\Shaders\Terrain.vs">
-      <Filter>Myway\RenderSystem\Environment\Shaders</Filter>
     </None>
     <None Include="Core\MWSocket.inl">
       <Filter>Myway\Net</Filter>
@@ -1060,75 +841,6 @@
     <ClCompile Include="RenderSystem\MWRenderScheme.cpp">
       <Filter>Myway\RenderSystem\RenderScheme</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWRenderLoopMain_Prz.cpp">
-      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWRenderScheme_Prz.cpp">
-      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWShaderProvider_Prz.cpp">
-      <Filter>Myway\RenderSystem\RenderScheme\PreZ</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWEnvironment.cpp">
-      <Filter>Myway\RenderSystem\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWEvKeyFrame.cpp">
-      <Filter>Myway\RenderSystem\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrain.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainLod.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWTerrainSection.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Terrain</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWCloud.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWMoon.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSky.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWStarfield.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSun.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Sky</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWUnderWater.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWWater.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWAstronomy.cpp">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWBrightStarCatalogue.cpp">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFFT.cpp">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWPerlin.cpp">
-      <Filter>Myway\RenderSystem\Environment\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWColorSharp.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWFog.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWGodRay.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWHDR.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClCompile>
     <ClCompile Include="RenderSystem\MWMover.cpp">
       <Filter>Myway\RenderSystem\Primitive</Filter>
     </ClCompile>
@@ -1166,23 +878,8 @@
       <Filter>Myway\App</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RenderSystem\MWOcean.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWWaterManager.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWProjectionGrid.cpp">
-      <Filter>Myway\RenderSystem\Environment\geometry\Water</Filter>
-    </ClCompile>
     <ClCompile Include="Math\MWCurve.cpp">
       <Filter>Myway\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWShadow.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSSAO.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClCompile>
     <ClCompile Include="Physics\MWPhysics.cpp">
       <Filter>Myway\Physics</Filter>
@@ -1195,9 +892,6 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWColMesh.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderSystem\MWSoftLeaf.cpp">
-      <Filter>Myway\RenderSystem\Environment\Effect</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

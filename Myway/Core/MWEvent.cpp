@@ -5,11 +5,13 @@ namespace Myway {
     EventListener::EventListener()
     {
         prev = next = NULL;
+		evt = NULL;
     }
 
     EventListener::~EventListener()
     {
-        prev = next = NULL;
+		if (evt)
+			(*evt) -= this;
     }
 
 
@@ -142,17 +144,21 @@ namespace Myway {
 
     void Event::operator += (EventListener * p)
     {
-        d_assert (p->prev == NULL && p->next == NULL);
+        d_assert (p->prev == NULL && p->next == NULL && p->evt == NULL);
 
         if (head)
             head->prev = p;
 
         p->next = head;
         head = p;
+
+		p->evt = this;
     }
 
     void Event::operator -= (EventListener * p)
     {
+		d_assert (p->evt && p->evt == this);
+
         if (head == p)
         {
             head = p->next;
@@ -167,5 +173,6 @@ namespace Myway {
         }
 
         p->prev = p->next = NULL;
+		p->evt = NULL;
     }
 }

@@ -1,0 +1,251 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8F0685F9-47AB-4E6C-B92A-6E5EE8A01E16}</ProjectGuid>
+    <RootNamespace>LayoutEditor</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;./Common</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>../bin/Debug/LayoutEditor.exe</OutputFile>
+      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="AreaSelectorControl.cpp" />
+    <ClCompile Include="BackgroundControl.cpp" />
+    <ClCompile Include="BackwardCompatibilityManager.cpp" />
+    <ClCompile Include="CodeGenerator.cpp" />
+    <ClCompile Include="ColourManager.cpp" />
+    <ClCompile Include="ColourPanel.cpp" />
+    <ClCompile Include="CommandManager.cpp" />
+    <ClCompile Include="Common\Input\PointerManager.cpp" />
+    <ClCompile Include="Common\Tools\Dialog.cpp" />
+    <ClCompile Include="Common\Tools\DialogManager.cpp" />
+    <ClCompile Include="Common\Tools\OpenSaveFileDialog.cpp" />
+    <ClCompile Include="EditorState.cpp" />
+    <ClCompile Include="EditorToolTip.cpp" />
+    <ClCompile Include="EditorWidgets.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="GroupMessage.cpp" />
+    <ClCompile Include="HotKeyManager.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuControl.cpp" />
+    <ClCompile Include="MainPaneControl.cpp" />
+    <ClCompile Include="MainWorkspaceControl.cpp" />
+    <ClCompile Include="MessageBoxFadeControl.cpp" />
+    <ClCompile Include="MessageBoxManager.cpp" />
+    <ClCompile Include="MyGUI_FilterNoneSkin.cpp" />
+    <ClCompile Include="MyGUI_RTTLayer.cpp" />
+    <ClCompile Include="PanelControllers.cpp" />
+    <ClCompile Include="PanelExtensionProperties.cpp" />
+    <ClCompile Include="PanelItems.cpp" />
+    <ClCompile Include="PanelMainProperties.cpp" />
+    <ClCompile Include="PanelProperties.cpp" />
+    <ClCompile Include="PanelTemplateProperties.cpp" />
+    <ClCompile Include="PanelUserData.cpp" />
+    <ClCompile Include="Parse.cpp" />
+    <ClCompile Include="PositionSelectorControl.cpp" />
+    <ClCompile Include="Precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ProjectControl.cpp" />
+    <ClCompile Include="PropertiesPanelView.cpp" />
+    <ClCompile Include="PropertyFieldAlpha.cpp" />
+    <ClCompile Include="PropertyFieldColour.cpp" />
+    <ClCompile Include="PropertyFieldComboBox.cpp" />
+    <ClCompile Include="PropertyFieldEditBox.cpp" />
+    <ClCompile Include="PropertyFieldFileName.cpp" />
+    <ClCompile Include="PropertyFieldFont.cpp" />
+    <ClCompile Include="PropertyFieldManager.cpp" />
+    <ClCompile Include="PropertyFieldName.cpp" />
+    <ClCompile Include="PropertyFieldNumeric.cpp" />
+    <ClCompile Include="PropertyFieldPosition.cpp" />
+    <ClCompile Include="PropertyFieldSkin.cpp" />
+    <ClCompile Include="PropertyFieldType.cpp" />
+    <ClCompile Include="RecentFilesManager.cpp" />
+    <ClCompile Include="SelectorControl.cpp" />
+    <ClCompile Include="SeparatorPartControl.cpp" />
+    <ClCompile Include="SettingsGeneralControl.cpp" />
+    <ClCompile Include="SettingsManager.cpp" />
+    <ClCompile Include="SettingsResourcePathsControl.cpp" />
+    <ClCompile Include="SettingsResourcesControl.cpp" />
+    <ClCompile Include="SettingsSector.cpp" />
+    <ClCompile Include="SettingsUpdateResourcesControl.cpp" />
+    <ClCompile Include="SettingsWidgetsControl.cpp" />
+    <ClCompile Include="SettingsWindow.cpp" />
+    <ClCompile Include="StateManager.cpp" />
+    <ClCompile Include="TestState.cpp" />
+    <ClCompile Include="TextFieldControl.cpp" />
+    <ClCompile Include="TextureControl.cpp" />
+    <ClCompile Include="TextureToolControl.cpp" />
+    <ClCompile Include="ToolsControl.cpp" />
+    <ClCompile Include="UndoManager.cpp" />
+    <ClCompile Include="WidgetContainer.cpp" />
+    <ClCompile Include="WidgetCreatorManager.cpp" />
+    <ClCompile Include="WidgetSelectorManager.cpp" />
+    <ClCompile Include="WidgetsWindow.cpp" />
+    <ClCompile Include="WidgetTypes.cpp" />
+    <ClCompile Include="WorkspaceControl.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="AreaSelectorControl.h" />
+    <ClInclude Include="BackgroundControl.h" />
+    <ClInclude Include="BackwardCompatibilityManager.h" />
+    <ClInclude Include="CodeGenerator.h" />
+    <ClInclude Include="ColourManager.h" />
+    <ClInclude Include="ColourPanel.h" />
+    <ClInclude Include="CommandManager.h" />
+    <ClInclude Include="Common.h" />
+    <ClInclude Include="Common\BaseLayout\Attribute.h" />
+    <ClInclude Include="Common\BaseLayout\BaseLayout.h" />
+    <ClInclude Include="Common\BaseLayout\WrapsAttribute.h" />
+    <ClInclude Include="Common\Base\InputFocusInfo.h" />
+    <ClInclude Include="Common\Base\StatisticInfo.h" />
+    <ClInclude Include="Common\FileSystemInfo\FileSystemInfo.h" />
+    <ClInclude Include="Common\Input\PointerManager.h" />
+    <ClInclude Include="Common\Input\ResourceW32Pointer.h" />
+    <ClInclude Include="Common\ItemBox\BaseCellView.h" />
+    <ClInclude Include="Common\ItemBox\BaseItemBox.h" />
+    <ClInclude Include="Common\ItemBox\ItemDropInfo.h" />
+    <ClInclude Include="Common\MessageBox\MessageBox.h" />
+    <ClInclude Include="Common\MessageBox\MessageBoxStyle.h" />
+    <ClInclude Include="Common\PanelView\BasePanelView.h" />
+    <ClInclude Include="Common\PanelView\BasePanelViewCell.h" />
+    <ClInclude Include="Common\PanelView\BasePanelViewItem.h" />
+    <ClInclude Include="Common\Tools\Dialog.h" />
+    <ClInclude Include="Common\Tools\DialogManager.h" />
+    <ClInclude Include="Common\Tools\OpenSaveFileDialog.h" />
+    <ClInclude Include="CyclicBuffer.h" />
+    <ClInclude Include="EditorState.h" />
+    <ClInclude Include="EditorToolTip.h" />
+    <ClInclude Include="EditorWidgets.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="GroupMessage.h" />
+    <ClInclude Include="HotKeyCommand.h" />
+    <ClInclude Include="HotKeyManager.h" />
+    <ClInclude Include="IPropertyField.h" />
+    <ClInclude Include="Localise.h" />
+    <ClInclude Include="MainMenuControl.h" />
+    <ClInclude Include="MainPaneControl.h" />
+    <ClInclude Include="MainWorkspaceControl.h" />
+    <ClInclude Include="MessageBoxFadeControl.h" />
+    <ClInclude Include="MessageBoxManager.h" />
+    <ClInclude Include="MyGUI_FilterNoneSkin.h" />
+    <ClInclude Include="MyGUI_RTTLayer.h" />
+    <ClInclude Include="PanelControllers.h" />
+    <ClInclude Include="PanelExtensionProperties.h" />
+    <ClInclude Include="PanelItems.h" />
+    <ClInclude Include="PanelMainProperties.h" />
+    <ClInclude Include="PanelProperties.h" />
+    <ClInclude Include="PanelTemplateProperties.h" />
+    <ClInclude Include="PanelUserData.h" />
+    <ClInclude Include="PanelView.h" />
+    <ClInclude Include="PanelViewCell.h" />
+    <ClInclude Include="Parse.h" />
+    <ClInclude Include="PositionSelectorControl.h" />
+    <ClInclude Include="PossibleValue.h" />
+    <ClInclude Include="Precompiled.h" />
+    <ClInclude Include="ProjectControl.h" />
+    <ClInclude Include="PropertiesPanelView.h" />
+    <ClInclude Include="PropertyFieldAlpha.h" />
+    <ClInclude Include="PropertyFieldColour.h" />
+    <ClInclude Include="PropertyFieldComboBox.h" />
+    <ClInclude Include="PropertyFieldEditBox.h" />
+    <ClInclude Include="PropertyFieldFileName.h" />
+    <ClInclude Include="PropertyFieldFont.h" />
+    <ClInclude Include="PropertyFieldManager.h" />
+    <ClInclude Include="PropertyFieldName.h" />
+    <ClInclude Include="PropertyFieldNumeric.h" />
+    <ClInclude Include="PropertyFieldPosition.h" />
+    <ClInclude Include="PropertyFieldSkin.h" />
+    <ClInclude Include="PropertyFieldType.h" />
+    <ClInclude Include="RecentFilesManager.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="SelectorControl.h" />
+    <ClInclude Include="SeparatorPartControl.h" />
+    <ClInclude Include="SettingsGeneralControl.h" />
+    <ClInclude Include="SettingsManager.h" />
+    <ClInclude Include="SettingsResourcePathsControl.h" />
+    <ClInclude Include="SettingsResourcesControl.h" />
+    <ClInclude Include="SettingsSector.h" />
+    <ClInclude Include="SettingsUpdateResourcesControl.h" />
+    <ClInclude Include="SettingsWidgetsControl.h" />
+    <ClInclude Include="SettingsWindow.h" />
+    <ClInclude Include="SkinInfo.h" />
+    <ClInclude Include="StateController.h" />
+    <ClInclude Include="StateManager.h" />
+    <ClInclude Include="TestState.h" />
+    <ClInclude Include="TextFieldControl.h" />
+    <ClInclude Include="TextureControl.h" />
+    <ClInclude Include="TextureToolControl.h" />
+    <ClInclude Include="ToolsControl.h" />
+    <ClInclude Include="UndoManager.h" />
+    <ClInclude Include="WidgetContainer.h" />
+    <ClInclude Include="WidgetCreatorManager.h" />
+    <ClInclude Include="WidgetSelectorManager.h" />
+    <ClInclude Include="WidgetStyle.h" />
+    <ClInclude Include="WidgetsWindow.h" />
+    <ClInclude Include="WidgetTypes.h" />
+    <ClInclude Include="WorkspaceControl.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

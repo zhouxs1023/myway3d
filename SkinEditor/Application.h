@@ -35,6 +35,8 @@ namespace tools
 		typedef std::vector<std::wstring> VectorWString;
 		const VectorWString& getParams();
 
+		virtual void OnPreCreateWindow(WNDCLASS & wc, LPTSTR tile, DWORD & style, POINT & pt, SIZE & sz);
+
 
 		virtual bool Init()
 		{
@@ -89,6 +91,8 @@ namespace tools
 
 			mUISystem.InjectMouseEvent();
 
+			Sleep(5);
+
 			//Point2f mousePt = IMouse::Instance()->GetPositionUnit();
 
 			//if (mousePt.x >= 0 && mousePt.x <= 1.0f &&
@@ -103,7 +107,8 @@ namespace tools
 		}
 
 	protected:
-		virtual void injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text);
+		void _OnKeyPress(Event * sender);
+		void command_QuitApp(const MyGUI::UString& _commandName, bool& _result);
 
 	private:
 		MGUI_System mUISystem;
@@ -114,6 +119,8 @@ namespace tools
 
 		std::string mLocale;
 		VectorWString mParams;
+
+		tEventListener<Application> OnKeyPress;
 	};
 
 } // namespace tools

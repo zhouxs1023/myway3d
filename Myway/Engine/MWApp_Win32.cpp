@@ -111,14 +111,14 @@ void App_Win32::Run(HINSTANCE hInstance)
     wc.lpszMenuName = NULL;
     wc.style = CS_HREDRAW | CS_VREDRAW;
 
+	TCHAR tile[128] = "Window";
+	DWORD style = WS_OVERLAPPEDWINDOW;
+	POINT pt = { CW_USEDEFAULT, CW_USEDEFAULT };
+	SIZE sz = { CW_USEDEFAULT, CW_USEDEFAULT };
+
+	OnPreCreateWindow(wc, tile, style, pt, sz);
+
     RegisterClass(&wc);
-
-    TCHAR tile[128] = "Window";
-    DWORD style = WS_OVERLAPPEDWINDOW;
-    POINT pt = { CW_USEDEFAULT, CW_USEDEFAULT };
-    SIZE sz = { CW_USEDEFAULT, CW_USEDEFAULT };
-
-    OnPreCreateWindow(wc, tile, style, pt, sz);
 
     HWND hWnd = CreateWindow(WIN32_CLASS_NAME, tile, style, 
         pt.x, pt.y, sz.cx, sz.cy,

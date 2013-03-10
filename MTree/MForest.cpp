@@ -1019,12 +1019,12 @@ namespace Myway {
 	MForestListener gForestListener;
 
 	MForestListener::MForestListener()
-		: OnInit(&RenderEvent::OnEngineInit, this, &MForestListener::_init)
-		, OnShutdown(&RenderEvent::OnEngineShutdown, this, &MForestListener::_shutdown)
-		, OnUpdate(&RenderEvent::OnPostUpdateScene, this, &MForestListener::_update)
-		, OnRender(&RenderEvent::OnAfterRenderSolid, this, &MForestListener::_render)
-		, OnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &MForestListener::_preVisibleCull)
-		, OnRenderDepth(&Shadow::OnRenderDepth, this, &MForestListener::_renderDepth)
+		: OnInit(RenderEvent::OnEngineInit, this, &MForestListener::_init)
+		, OnShutdown(RenderEvent::OnEngineShutdown, this, &MForestListener::_shutdown)
+		, OnUpdate(RenderEvent::OnPostUpdateScene, this, &MForestListener::_update)
+		, OnRender(RenderEvent::OnAfterRenderSolid, this, &MForestListener::_render)
+		, OnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &MForestListener::_preVisibleCull)
+		, OnRenderDepth(Shadow::OnRenderDepth, this, &MForestListener::_renderDepth)
 	{
 	}
 

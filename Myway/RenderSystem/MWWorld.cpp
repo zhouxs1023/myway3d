@@ -3,7 +3,6 @@
 #include "MWSceneOctree.h"
 #include "Engine.h"
 #include "MWRenderEvent.h"
-#include "MWEnvironment.h"
 
 #pragma warning(disable : 4291)
 
@@ -23,14 +22,10 @@ World::World()
 
     mMainCameraNode = CreateSceneNode("Core_MainCameraNode");
     mMainCameraNode->Attach(mMainCamera);
-
-    mEnvironment = new Environment();
 }
 
 World::~World()
 {
-    safe_delete (mEnvironment);
-
     safe_delete (mSceneManager);
 
     DestroyAllLight();
@@ -609,12 +604,12 @@ void World::UpdateFrame()
 
     render->SetTime(Engine::Instance()->GetTime());
 
-    RenderScheme::Instance()->DoRender();
+	RenderScheme * scheme = Engine::Instance()->GetRenderScheme();
 
-	RenderEvent::OnRenderGUI1();
-	RenderEvent::OnRenderGUI2();
-	RenderEvent::OnRenderGUI3();
-    
+	d_assert (scheme != NULL);
+
+	scheme->DoRender();
+
     render->EndScene();
 }
 

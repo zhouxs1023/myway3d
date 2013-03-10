@@ -9,8 +9,8 @@ namespace Myway {
 	{
 	public:
 		MVegetationHelper()
-			: OnInit(&RenderEvent::OnEngineInit, this, &MVegetationHelper::_Init)
-			, OnShutdown(&RenderEvent::OnEngineShutdown, this, &MVegetationHelper::_Shutdown)
+			: OnInit(RenderEvent::OnEngineInit, this, &MVegetationHelper::_Init)
+			, OnShutdown(RenderEvent::OnEngineShutdown, this, &MVegetationHelper::_Shutdown)
 		{
 		}
 

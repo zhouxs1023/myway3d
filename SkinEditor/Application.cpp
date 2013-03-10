@@ -19,6 +19,7 @@
 #include "ColourManager.h"
 #include "Localise.h"
 #include "Grid.h"
+#include "resource1.h"
 
 template <> tools::Application* MyGUI::Singleton<tools::Application>::msInstance = nullptr;
 template <> const char* MyGUI::Singleton<tools::Application>::mClassTypeName("Application");
@@ -26,9 +27,11 @@ template <> const char* MyGUI::Singleton<tools::Application>::mClassTypeName("Ap
 namespace tools
 {
 
-	Application::Application() :
-		mEditorState(nullptr),
-		mTestState(nullptr)
+	Application::Application()
+		: mUISystem()
+		, mEditorState(nullptr)
+		, mTestState(nullptr)
+		, OnKeyPress(&mUISystem.OnKeyPress, this, &Application::_OnKeyPress)
 	{
 	}
 
@@ -36,6 +39,11 @@ namespace tools
 	{
 	}
 
+	void Application::OnPreCreateWindow(WNDCLASS & wc, LPTSTR tile, DWORD & style, POINT & pt, SIZE & sz)
+	{
+		wc.hIcon = LoadIcon(mhInst, MAKEINTRESOURCE(IDI_ICON1));
+		strcpy(tile, "SkinEditor");
+	}
 
 	void Application::createScene()
 	{
@@ -178,37 +186,38 @@ namespace tools
 		return false;
 	}
 
-	void Application::injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text)
+	void Application::_OnKeyPress(Event * sender)
 	{
-		if (MyGUI::Gui::getInstancePtr() == nullptr)
-			return;
+		bool & _inject = *(bool *)sender->GetParam(0);
+		MyGUI::KeyCode _key = *(MyGUI::KeyCode *)sender->GetParam(1);
+		MyGUI::Char _text = *(MyGUI::Char *)sender->GetParam(2);
 
 		MyGUI::InputManager& input = MyGUI::InputManager::getInstance();
 
-		if (!HotKeyManager::getInstance().onKeyEvent(true, input.isShiftPressed(), input.isControlPressed(), _key))
-			input.injectKeyPress(_key, _text);
+		_inject = !HotKeyManager::getInstance().onKeyEvent(true, input.isShiftPressed(), input.isControlPressed(), _key);
 	}
 
-	/*void Application::command_QuitApp(const MyGUI::UString& _commandName, bool& _result)
-	{
-	if (DialogManager::getInstance().getAnyDialog())
-	{
-	DialogManager::getInstance().endTopDialog();
-	}
-	else
-	{
-	if (MessageBoxManager::getInstance().hasAny())
-	{
-	MessageBoxManager::getInstance().endTop(MyGUI::MessageBoxStyle::Cancel);
-	}
-	else
-	{
-	CommandManager::getInstance().executeCommand("Command_Quit");
-	}
-	}
 
-	_result = true;
-	}*/
+	void Application::command_QuitApp(const MyGUI::UString& _commandName, bool& _result)
+	{
+		if (DialogManager::getInstance().getAnyDialog())
+		{
+			DialogManager::getInstance().endTopDialog();
+		}
+		else
+		{
+			if (MessageBoxManager::getInstance().hasAny())
+			{
+				MessageBoxManager::getInstance().endTop(MyGUI::MessageBoxStyle::Cancel);
+			}
+			else
+			{
+				CommandManager::getInstance().executeCommand("Command_Quit");
+			}
+		}
+
+		_result = true;
+	}
 
 
 	const Application::VectorWString& Application::getParams()

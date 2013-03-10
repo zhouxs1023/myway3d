@@ -7,8 +7,8 @@ namespace Myway {
 	IMP_SLN(MGUI_System);
 
 	MGUI_System::MGUI_System()
-		: OnResize(&RenderEvent::OnResize, this, &MGUI_System::_OnResize)
-		, OnRender(&RenderEvent::OnRenderGUI1, this, &MGUI_System::_OnRender)
+		: OnResize(RenderEvent::OnResize, this, &MGUI_System::_OnResize)
+		, OnRender(RenderEvent::OnRenderGUI1, this, &MGUI_System::_OnRender)
 	{
 		INIT_SLN;
 
@@ -187,6 +187,13 @@ namespace Myway {
 		if (!mGui)
 			return;
 
+		bool _inject = true;
+
+		OnMouseMove(&_inject, &_absx, &_absy, &_absz);
+
+		if (!_inject)
+			return ;
+
 		MyGUI::InputManager::getInstance().injectMouseMove(_absx, _absy, _absz);
 	}
 
@@ -194,6 +201,13 @@ namespace Myway {
 	{
 		if (!mGui)
 			return;
+
+		bool _inject = true;
+
+		OnMousePress(&_inject, &_absx, &_absy, &_id);
+
+		if (!_inject)
+			return ;
 
 		MyGUI::InputManager::getInstance().injectMousePress(_absx, _absy, _id);
 	}
@@ -203,6 +217,13 @@ namespace Myway {
 		if (!mGui)
 			return;
 
+		bool _inject = true;
+
+		OnMouseRelease(&_inject, &_absx, &_absy, &_id);
+
+		if (!_inject)
+			return ;
+
 		MyGUI::InputManager::getInstance().injectMouseRelease(_absx, _absy, _id);
 	}
 
@@ -211,6 +232,13 @@ namespace Myway {
 		if (!mGui)
 			return;
 
+		bool _inject = true;
+
+		OnKeyPress(&_inject, &_key, &_text);
+
+		if (!_inject)
+			return ;
+
 		MyGUI::InputManager::getInstance().injectKeyPress(_key, _text);
 	}
 
@@ -218,6 +246,13 @@ namespace Myway {
 	{
 		if (!mGui)
 			return;
+
+		bool _inject = true;
+
+		OnKeyRelease(&_inject, &_key);
+
+		if (!_inject)
+			return ;
 
 		MyGUI::InputManager::getInstance().injectKeyRelease(_key);
 	}

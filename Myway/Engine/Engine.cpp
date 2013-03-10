@@ -57,7 +57,6 @@ void Engine::Init(const DeviceProperty * pDeviceProperty,
     mWorld = new World();
 
     mRenderHelper = new RenderHelper();
-    mRenderScheme = new RS_Scheme();
 
 	RenderEvent::OnEngineInit(NULL, NULL);
 }
@@ -66,7 +65,6 @@ void Engine::Shutdown()
 {
 	RenderEvent::OnEngineShutdown(NULL, NULL);
 
-    safe_delete(mRenderScheme);
     safe_delete(mRenderHelper);
 
     safe_delete(mWorld);
@@ -75,6 +73,7 @@ void Engine::Shutdown()
     safe_delete(mShaderLibManager);
 
 	mPhyWorld = NULL;
+	mRenderScheme = NULL;
 	mInputSystem = NULL;
 	mAudioSystem = NULL;
 	mRenderSystem = NULL;
@@ -125,6 +124,11 @@ void Engine::SetAudioSystem(AudioSystem * pAudioSystem)
     d_assert (!mAudioSystem);
 
     mAudioSystem = pAudioSystem;
+}
+
+void Engine::SetRenderScheme(RenderScheme * scheme)
+{
+	mRenderScheme = scheme;
 }
 
 void Engine::ParseConfig(const char * sFileName)

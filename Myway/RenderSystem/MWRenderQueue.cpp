@@ -1,5 +1,4 @@
 #include "MWRenderQueue.h"
-#include "MWShadowRender.h"
 #include "MWRenderSystem.h"
 
 

@@ -1,0 +1,201 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="1. Environment">
+      <UniqueIdentifier>{cacf15fc-6f00-4532-9c6a-84245fba4576}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Environment\Misc">
+      <UniqueIdentifier>{0cafdf08-e288-4437-9719-3d374211e083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Environment\Geometry">
+      <UniqueIdentifier>{33d8736d-e96c-4941-9173-5d6f881f3ae5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="1. Environment\Effect">
+      <UniqueIdentifier>{4f8bd530-66ac-40a4-ad3d-a09c85ded45b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="2. Render">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="MWEnvironment.cpp">
+      <Filter>1. Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="MWEvKeyFrame.cpp">
+      <Filter>1. Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="MWAstronomy.cpp">
+      <Filter>1. Environment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MWBrightStarCatalogue.cpp">
+      <Filter>1. Environment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MWCloud.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWColorSharp.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWFFT.cpp">
+      <Filter>1. Environment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MWFog.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWHDR.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWGodRay.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWPerlin.cpp">
+      <Filter>1. Environment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MWProjectionGrid.cpp">
+      <Filter>1. Environment\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MWShadow.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWStarfield.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWSSAO.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWSoftLeaf.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWSun.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWSky.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWOcean.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWMoon.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWTerrain.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWTerrainSection.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWWater.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWWaterManager.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWTerrainLod.cpp">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWUnderWater.cpp">
+      <Filter>1. Environment\Effect</Filter>
+    </ClCompile>
+    <ClCompile Include="MWShaderProvider.cpp">
+      <Filter>2. Render</Filter>
+    </ClCompile>
+    <ClCompile Include="MWRenderLoop.cpp">
+      <Filter>2. Render</Filter>
+    </ClCompile>
+    <ClCompile Include="MWDeferredRenderer.cpp">
+      <Filter>2. Render</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MWEnvironment.h">
+      <Filter>1. Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="MWEvKeyFrame.h">
+      <Filter>1. Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="MWAstronomy.h">
+      <Filter>1. Environment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MWBrightStarCatalogue.h">
+      <Filter>1. Environment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MWCloud.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWColorSharp.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWFFT.h">
+      <Filter>1. Environment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MWFog.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWHDR.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWGodRay.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWPerlin.h">
+      <Filter>1. Environment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MWProjectionGrid.h">
+      <Filter>1. Environment\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MWShadow.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWStarfield.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWSSAO.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWSoftLeaf.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWSun.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWSky.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWOcean.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWMoon.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWTerrain.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWTerrainSection.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWWater.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWWaterManager.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWTerrainLod.h">
+      <Filter>1. Environment\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWUnderWater.h">
+      <Filter>1. Environment\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="MWShaderProvider.h">
+      <Filter>2. Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MWRenderLoop.h">
+      <Filter>2. Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MWDeferredRenderer.h">
+      <Filter>2. Render</Filter>
+    </ClInclude>
+    <ClInclude Include="MRenderEntry.h" />
+  </ItemGroup>
+</Project>

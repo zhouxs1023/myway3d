@@ -13,11 +13,11 @@ namespace Myway {
 	MActorManager gActorManager;
 
 	MActorManager::MActorManager()
-		: OnInit(&RenderEvent::OnEngineInit, this, &MActorManager::_Init)
-		, OnShutdown(&RenderEvent::OnEngineShutdown, this, &MActorManager::_Shutdown)
-		, OnPreVisibleCull(&RenderEvent::OnPreVisibleCull, this, &MActorManager::_PreVisibleCull)
-		, OnRender(&RenderEvent::OnRenderSolid2, this, &MActorManager::_Render)
-		, OnRenderDepth(&Shadow::OnRenderDepth, this, &MActorManager::_RenderDepth)
+		: OnInit(RenderEvent::OnEngineInit, this, &MActorManager::_Init)
+		, OnShutdown(RenderEvent::OnEngineShutdown, this, &MActorManager::_Shutdown)
+		, OnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &MActorManager::_PreVisibleCull)
+		, OnRender(RenderEvent::OnRenderSolid2, this, &MActorManager::_Render)
+		, OnRenderDepth(Shadow::OnRenderDepth, this, &MActorManager::_RenderDepth)
 		, mUId(0)
 	{
 		INIT_SLN;

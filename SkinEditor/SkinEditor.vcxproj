@@ -209,6 +209,7 @@
     <ClInclude Include="RegionListControl.h" />
     <ClInclude Include="RegionPropertyControl.h" />
     <ClInclude Include="RegionTextureControl.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="SelectorControl.h" />
     <ClInclude Include="SeparatorControl.h" />
     <ClInclude Include="SeparatorItem.h" />
@@ -243,6 +244,9 @@
     <ClInclude Include="TextureToolControl.h" />
     <ClInclude Include="VerticalSelectorBlackControl.h" />
     <ClInclude Include="VerticalSelectorControl.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SkinEditor.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SkinEditor.rc" />

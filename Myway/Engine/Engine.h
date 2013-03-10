@@ -11,7 +11,6 @@
 #include "MWResourceManager.h"
 
 #include "MWRenderScheme.h"
-#include "MWRenderScheme_Prz.h"
 #include "MWRenderHelper.h"
 
 #include "MWInputSystem.h"
@@ -19,9 +18,6 @@
 #include "MWRenderSystem.h"
 #include "MWRenderEvent.h"
 #include "MWPhysics.h"
-
-#include "MWEnvironment.h"
-
 
 namespace Myway
 {
@@ -54,6 +50,9 @@ public:
     void SetRenderSystem(RenderSystem * pRenderSystem);
     void SetInputSystem(InputSystem * pInputSystem);
     void SetAudioSystem(AudioSystem * pAudioSystem);
+
+	void SetRenderScheme(RenderScheme * scheme);
+	RenderScheme * GetRenderScheme() { return mRenderScheme; }
 
 	void SetPhyWorld(IPhyWorld * phyWorld) { mPhyWorld = phyWorld; }
 	IPhyWorld * GetPhyWorld() { return mPhyWorld; }

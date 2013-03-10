@@ -31,6 +31,7 @@ namespace Myway
 		virtual const std::string& getName() const;
 
 		virtual void createManual(int _width, int _height, MyGUI::TextureUsage _usage, MyGUI::PixelFormat _format);
+		virtual void createFromTexture(TexturePtr tex);
 		virtual void loadFromFile(const std::string& _filename);
 		virtual void saveToFile(const std::string& _filename) { }
 
@@ -59,6 +60,7 @@ namespace Myway
 		MyGUI::PixelFormat mPixelFormat;
 		size_t mNumElemBytes;
 		bool mLock;
+		bool mNoLock;
 		MyGUI::IRenderTarget* mRenderTarget;
 	};
 

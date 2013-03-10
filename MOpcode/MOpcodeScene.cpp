@@ -1,6 +1,5 @@
 #include "MOpcodeScene.h"
 #include "MWWorld.h"
-#include "MWEnvironment.h"
 
 namespace Myway {
 

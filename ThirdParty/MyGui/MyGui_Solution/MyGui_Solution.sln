@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DirectXPlatform", "..\Direc
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Demos", "..\Demos\Demos\Demos.vcxproj", "{CB52108E-2EB2-4F75-B01B-F9A8910CE7B6}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LayoutEditor", "LayoutEditor\LayoutEditor.vcxproj", "{EEF999A6-5C22-43AB-9B93-873387C9D9D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{CB52108E-2EB2-4F75-B01B-F9A8910CE7B6}.Debug|Win32.Build.0 = Debug|Win32
 		{CB52108E-2EB2-4F75-B01B-F9A8910CE7B6}.Release|Win32.ActiveCfg = Release|Win32
 		{CB52108E-2EB2-4F75-B01B-F9A8910CE7B6}.Release|Win32.Build.0 = Release|Win32
+		{EEF999A6-5C22-43AB-9B93-873387C9D9D9}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EEF999A6-5C22-43AB-9B93-873387C9D9D9}.Debug|Win32.Build.0 = Debug|Win32
+		{EEF999A6-5C22-43AB-9B93-873387C9D9D9}.Release|Win32.ActiveCfg = Release|Win32
+		{EEF999A6-5C22-43AB-9B93-873387C9D9D9}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

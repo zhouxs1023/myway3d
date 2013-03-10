@@ -1,5 +1,4 @@
 #include "MOpcodeTerrain.h"
-#include "MWEnvironment.h"
 
 namespace Myway {
 
@@ -19,9 +18,6 @@ namespace Myway {
 
 	void MOpcodeTerrain::Build()
 	{
-		Terrain * terrain = Environment::Instance()->GetTerrain();
-
-		d_assert (terrain);
 	}
 
 }

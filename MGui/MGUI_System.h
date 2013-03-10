@@ -12,6 +12,7 @@
 #pragma once
 
 #include "MGUI_Entry.h"
+#include "MGUI_Texture.h"
 #include "MGUI_RenderSystem.h"
 #include "MGUI_DataManager.h"
 #include "MGUI_Input.h"
@@ -22,6 +23,13 @@ namespace Myway {
 	{
 		DECLARE_ALLOC();
 		DECLARE_SINGLETON(MGUI_System);
+
+	public:
+		Event OnMouseMove;
+		Event OnMousePress;
+		Event OnMouseRelease;
+		Event OnKeyPress;
+		Event OnKeyRelease;
 
 	public:
 		MGUI_System();

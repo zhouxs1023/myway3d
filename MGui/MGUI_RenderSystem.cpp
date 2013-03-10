@@ -95,6 +95,8 @@ namespace Myway {
 		if (gui == nullptr)
 			return;
 
+		RS_RenderEvent(RenderUI);
+
 		static MGUI_Timer timer;
 		static unsigned long last_time = timer.getMilliseconds();
 		unsigned long now_time = timer.getMilliseconds();

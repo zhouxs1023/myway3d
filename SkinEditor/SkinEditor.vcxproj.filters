@@ -513,6 +513,7 @@
     <ClInclude Include="MyGUI_FilterNoneSkin.h">
       <Filter>Source\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="resource1.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Source">
@@ -548,6 +549,9 @@
     <Filter Include="Source\Misc">
       <UniqueIdentifier>{4a15ad83-4b47-4d1b-a7a3-83528466d311}</UniqueIdentifier>
     </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="SkinEditor.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="SkinEditor.rc" />

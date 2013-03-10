@@ -269,6 +269,10 @@ void D3D9RenderSystem::SetRenderState(const RenderState & state)
         mD3DDevice->SetRenderState(D3DRS_ZENABLE, TRUE);
         mD3DDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
         break;
+
+	case DCM_NONE:
+		mD3DDevice->SetRenderState(D3DRS_ZENABLE, FALSE);
+		break;
     }
 
     switch (state.blendMode)

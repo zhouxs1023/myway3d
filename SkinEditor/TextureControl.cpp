@@ -67,6 +67,9 @@ namespace tools
 
 	void TextureControl::setTextureRegion(const MyGUI::IntCoord& _value)
 	{
+		if (mTextureRegion == _value)
+			return ;
+
 		mTextureRegion = _value;
 		mTexture->setImageCoord(mTextureRegion);
 		mTexture->setImageTile(mTextureRegion.size());

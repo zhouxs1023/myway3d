@@ -9,6 +9,7 @@ namespace Myway
 		, mNumElemBytes(0)
 		, mLock(false)
 		, mRenderTarget(nullptr)
+		, mNoLock(false)
 	{
 	}
 
@@ -76,8 +77,67 @@ namespace Myway
 			mpTexture = VideoBufferManager::Instance()->CreateTextureRT(mName.c_str(),
 				mSize.width, mSize.height, format);
 		}
-		
+
 		d_assert (mpTexture != NULL);
+	}
+
+	void MGUI_Texture::createFromTexture(TexturePtr tex)
+	{
+		destroy();
+
+		int _width = tex->GetWidth();
+		int _height = tex->GetHeight();
+		MyGUI::TextureUsage _usage = MyGUI::TextureUsage::Static;
+		MyGUI::PixelFormat _format = MyGUI::PixelFormat::R8G8B8A8;
+		
+		if (tex->GetUsage() == USAGE_DYNAMIC)
+			_usage = MyGUI::TextureUsage::Dynamic;
+
+		mSize.set(_width, _height);
+		mTextureUsage = _usage;
+		mPixelFormat = _format;
+
+		TEXTURE_TYPE type = TEXTYPE_2D;
+		USAGE usage = USAGE_STATIC;
+		FORMAT format = FMT_A8R8G8B8;
+
+		mNoLock = mTextureUsage == MyGUI::TextureUsage::RenderTarget;
+
+		if (mTextureUsage == MyGUI::TextureUsage::RenderTarget)
+			type = TEXTYPE_RENDERTARGET;
+		else if (mTextureUsage == MyGUI::TextureUsage::Dynamic)
+			usage = USAGE_DYNAMIC;
+		else if (mTextureUsage == MyGUI::TextureUsage::Stream)
+			usage = USAGE_DYNAMIC;
+
+		if (mPixelFormat == MyGUI::PixelFormat::R8G8B8A8)
+		{
+			format = FMT_A8R8G8B8;
+			mNumElemBytes = 4;
+		}
+		else if (mPixelFormat == MyGUI::PixelFormat::R8G8B8)
+		{
+			format = FMT_R8G8B8;
+			mNumElemBytes = 3;
+		}
+		else if (mPixelFormat == MyGUI::PixelFormat::L8A8)
+		{
+			format = FMT_A8L8;
+			mNumElemBytes = 2;
+		}
+		else if (mPixelFormat == MyGUI::PixelFormat::L8)
+		{
+			format = FMT_L8;
+			mNumElemBytes = 1;
+		}
+		else
+		{
+			d_assert (0 && "Creating texture with unknown pixel formal.");
+		}
+
+		mNoLock = true;
+
+		mpTexture = tex;
 	}
 
 	void MGUI_Texture::loadFromFile(const std::string& _filename)
@@ -126,6 +186,8 @@ namespace Myway
 		}
 
 		mpTexture = nullptr;
+
+		mNoLock = false;
 	}
 
 	int MGUI_Texture::getWidth()
@@ -229,14 +291,14 @@ namespace Myway
 		mpBackRT = RenderSystem::Instance()->GetRenderTarget(0);
 
 		RenderSystem::Instance()->SetRenderTarget(0, mpRenderTarget.c_ptr());
-		RenderSystem::Instance()->ClearBuffer(NULL, true, false, false);
+		RenderSystem::Instance()->ClearBuffer(NULL, true, false, false, Color(0, 0, 0, 0));
 
-		RenderSystem::Instance()->BeginScene();
+		//RenderSystem::Instance()->BeginScene();
 	}
 
 	void MGUI_RenderTarget::end()
 	{
-		RenderSystem::Instance()->EndScene();
+		//RenderSystem::Instance()->EndScene();
 
 		RenderSystem::Instance()->SetRenderTarget(0, mpBackRT);
 		mpBackRT = NULL;

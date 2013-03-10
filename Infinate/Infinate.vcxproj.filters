@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Common\PointerManager.cpp">
+      <Filter>MyGUI Common</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundPane.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPane.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWorkSpace.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="Shape.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="xSerializer.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="xEvent.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="xScene.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="xLight.cpp">
+      <Filter>Shapes\Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="xMesh.cpp">
+      <Filter>Shapes\Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="xOcean.cpp">
+      <Filter>Shapes\Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrain.cpp">
+      <Filter>Shapes\Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="xTree.cpp">
+      <Filter>Shapes\Extern</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="xEnvironment.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="xForest.cpp">
+      <Filter>Shapes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneDialog.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Common\BaseLayout.h">
+      <Filter>MyGUI Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PointerManager.h">
+      <Filter>MyGUI Common</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundPane.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainPane.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWorkSpace.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="Shape.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="xSerializer.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="Infinite.h" />
+    <ClInclude Include="xEvent.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="xScene.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="xLight.h">
+      <Filter>Shapes\Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="xMesh.h">
+      <Filter>Shapes\Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="xOcean.h">
+      <Filter>Shapes\Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrain.h">
+      <Filter>Shapes\Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="xTree.h">
+      <Filter>Shapes\Extern</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="xEnvironment.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="xForest.h">
+      <Filter>Shapes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneDialog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MainPane">
+      <UniqueIdentifier>{bdcd7ddf-3214-4008-966a-011586d8649f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes">
+      <UniqueIdentifier>{06afa1c1-acbf-4e87-a286-3f0f317df180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shapes\Extern">
+      <UniqueIdentifier>{13ec5fe5-8d38-43d1-9ee1-8dd250f87a10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MyGUI Common">
+      <UniqueIdentifier>{13efbf6d-3004-4b98-8c65-2c2c738654a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{269c1b67-d472-4cfa-898b-b34da770c934}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -25,7 +25,7 @@ namespace Myway {
 		if (mActorParts[part] == pActor)
 			return ;
 
-		OnActorLoaded.Detach();
+		//OnActorLoaded.Detach();
 
 		mActorParts[part] = pActor;
 
@@ -37,7 +37,7 @@ namespace Myway {
 		if (pActor == NULL)
 			return ;
 
-		OnActorLoaded.Attach(&pActor->OnResourceLoaded);
+		//pActor->OnResourceLoaded += &OnActorLoaded;
 
 		if (pActor->GetLoadState() == Resource::LOADED)
 		{

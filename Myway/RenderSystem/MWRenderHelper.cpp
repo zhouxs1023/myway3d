@@ -7,7 +7,7 @@ namespace Myway
 {
     IMP_SLN(RenderHelper);
     RenderHelper::RenderHelper()
-		: OnReisze(&RenderEvent::OnResize, this, &RenderHelper::_resize)
+		: OnReisze(RenderEvent::OnResize, this, &RenderHelper::_resize)
     {  
         INIT_SLN;
 
