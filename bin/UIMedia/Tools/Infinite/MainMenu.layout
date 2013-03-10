@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" position="95 90 475 25" align="Stretch" layer="Overlapped" name="_Main">
+        <UserString key="SnapTo" value="Stretch"/>
+        <Widget type="MenuBar" skin="MenuBar" position="0 0 475 25" align="Stretch" name="MainMenu">
+            <Widget type="MenuItem" skin="" position="0 0 60 21">
+                <Property key="Caption" value="Scene"/>
+                <Property key="MenuItemId" value="Scene"/>
+                <Property key="MenuItemType" value="Popup"/>
+            </Widget>
+            <Widget type="MenuItem" skin="" position="66 0 45 21">
+                <Property key="Caption" value="Edit"/>
+                <Property key="MenuItemId" value="Edit"/>
+                <Property key="MenuItemType" value="Popup"/>
+            </Widget>
+            <Widget type="MenuItem" skin="" position="117 0 68 21">
+                <Property key="Caption" value="Setting"/>
+                <Property key="MenuItemId" value="Setting"/>
+                <Property key="MenuItemType" value="Popup"/>
+            </Widget>
+            <Widget type="MenuItem" skin="" position="191 0 50 21">
+                <Property key="Caption" value="View"/>
+                <Property key="MenuItemId" value="View"/>
+                <Property key="MenuItemType" value="Popup"/>
+            </Widget>
+            <Widget type="MenuItem" skin="" position="247 0 58 21">
+                <Property key="Caption" value="About"/>
+                <Property key="MenuItemId" value="About"/>
+            </Widget>
+        </Widget>
+    </Widget>
+</MyGUI>
