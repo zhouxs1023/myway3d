@@ -93,6 +93,9 @@
     <ClCompile Include="TerrainCreateDlg.cpp" />
     <ClCompile Include="TerrainPane.cpp" />
     <ClCompile Include="xBaseOperator.cpp" />
+    <ClCompile Include="xEditTerrainHeight.cpp" />
+    <ClCompile Include="xEditTerrainLayer.cpp" />
+    <ClCompile Include="xEditTerrainVeg.cpp" />
     <ClCompile Include="xEnvironment.cpp" />
     <ClCompile Include="xEvent.cpp" />
     <ClCompile Include="xForest.cpp" />
@@ -137,6 +140,9 @@
     <ClInclude Include="TerrainCreateDlg.h" />
     <ClInclude Include="TerrainPane.h" />
     <ClInclude Include="xBaseOperator.h" />
+    <ClInclude Include="xEditTerrainHeight.h" />
+    <ClInclude Include="xEditTerrainLayer.h" />
+    <ClInclude Include="xEditTerrainVeg.h" />
     <ClInclude Include="xEnvironment.h" />
     <ClInclude Include="xEvent.h" />
     <ClInclude Include="xForest.h" />

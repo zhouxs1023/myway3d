@@ -12,6 +12,7 @@
 #include "BaseLayout.h"
 #include "PropertyGrid.h"
 #include "EnvironmentPane.h"
+#include "TerrainPane.h"
 
 namespace Infinite {
 
@@ -142,6 +143,7 @@ namespace Infinite {
 		PropertyGrid * mPropery;
 		PropertyGrid * mRenderSetting;
 		EnvironmentPane * mEnvironmentPane;
+		TerrainPane * mTerrainPane;
 
 		MyGUI::Button * mCurrentObject;
 	};

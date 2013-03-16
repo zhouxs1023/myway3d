@@ -369,6 +369,7 @@ namespace Infinite {
 		assignBase(mPropery, "Property");
 		assignBase(mRenderSetting, "RenderSetting");
 		assignBase(mEnvironmentPane, "Environment");
+		assignBase(mTerrainPane, "Terrain");
 
 		INIT_SLN;
 	}
@@ -387,7 +388,6 @@ namespace Infinite {
 			if (p->getCaption() == name)
 				return p;
 		}
-
 
 		MyGUI::TabItem * page = mTabControl->addItem(name);
 

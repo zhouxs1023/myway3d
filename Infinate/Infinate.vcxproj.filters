@@ -100,6 +100,15 @@
     <ClCompile Include="TerrainPane.cpp">
       <Filter>Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="xEditTerrainHeight.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainLayer.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainVeg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -210,6 +219,15 @@
       <Filter>Terrain</Filter>
     </ClInclude>
     <ClInclude Include="TerrainPane.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainHeight.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainLayer.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainVeg.h">
       <Filter>Terrain</Filter>
     </ClInclude>
   </ItemGroup>
