@@ -41,7 +41,7 @@ class xOceanFactoryListener
 {
 public:
 	xOceanFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xOceanFactoryListener::_Init)
+		: OnInit(xEvent::OnInit, this, &xOceanFactoryListener::_Init)
 	{
 	}
 

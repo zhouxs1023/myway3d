@@ -53,7 +53,7 @@ namespace Myway {
     UnderWaterNoise::UnderWaterNoise()
     {
         mTech = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWaterNoise");
-        mTexture = VideoBufferManager::Instance()->Load2DTexture("UnderwaterDistortion.jpg", "UnderwaterDistortion.jpg");
+        mTexture = VideoBufferManager::Instance()->Load2DTexture("Water\\UnderwaterDistortion.jpg", "Water\\UnderwaterDistortion.jpg");
         d_assert (mTech);
     }
 
@@ -451,7 +451,7 @@ namespace Myway {
         TString128 texName = "";
         for (int i = 0; i < nFrames; ++i)
         {
-            texName.Format("Caustics_%d.bmp", i);
+            texName.Format("Water\\Caustics_%d.bmp", i);
             mCausticsTex[i] = VideoBufferManager::Instance()->Load2DTexture(texName, texName);
         }
     }
@@ -577,8 +577,8 @@ namespace Myway {
             mRender.rState.depthCheck = DCM_LESS;
         }
 
-        mTex_Bubble0 = VideoBufferManager::Instance()->Load2DTexture("Bubble0.dds", "bubble.dds");
-        mTex_Bubble1 = VideoBufferManager::Instance()->Load2DTexture("Bubble1.dds", "bubble_2.dds");
+        mTex_Bubble0 = VideoBufferManager::Instance()->Load2DTexture("Water\\Bubble0.dds", "Water\\bubble.dds");
+        mTex_Bubble1 = VideoBufferManager::Instance()->Load2DTexture("Water\\Bubble1.dds", "Water\\bubble_2.dds");
 
         mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Bubble");
     }

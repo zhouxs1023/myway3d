@@ -154,7 +154,7 @@ void Terrain::_init()
 	}
 
 	// load default detail map
-	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("TerrainDefault.png", "TerrainDefault.png");
+	mDefaultDetailMap = VideoBufferManager::Instance()->Load2DTexture("Terrain\\TerrainDefault.png", "Terrain\\TerrainDefault.png");
 	mDefaultNormalMap = RenderHelper::Instance()->GetDefaultNormalTexture();
 
 	for (int i = 0; i < kMaxLayers; ++i)

@@ -9,9 +9,9 @@ int xBaseOp::OP_Command = 2000;
 int xBaseOp::OP_Id = 2012;
 
 xBaseOp::xBaseOp()
-	: mOnCommand(&xEvent::OnOperatorBarChecked, this, &xBaseOp::OnCommand)
+	: mOnCommand(xEvent::OnOperatorBarChecked, this, &xBaseOp::OnCommand)
 	, mOperatorId(OP_Command++)
-	, mOnInit(&xEvent::OnInit, this, &xBaseOp::Init)
+	, mOnInit(xEvent::OnInit, this, &xBaseOp::Init)
 {
 }
 

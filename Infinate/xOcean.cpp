@@ -64,7 +64,9 @@ Shape * xOceanFactory::Create(const char * name)
 {
 	if (WaterManager::Instance()->GetOcean())
 	{
-		MessageBox(NULL, "Ocean has created!", "Error", MB_OK);
+		HWND hWnd = Engine::Instance()->GetDeviceProperty()->hWnd;
+
+		MessageBox(hWnd, "Ocean has created!", "Error", MB_OK);
 
 		return NULL;
 	}

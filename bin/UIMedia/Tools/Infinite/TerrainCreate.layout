@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="65 80 400 295" name="_Main">
+        <Property key="Caption" value="Terrain Create"/>
+        <Widget type="TextBox" skin="TextBox" position="35 45 140 25">
+            <Property key="Caption" value="x szie:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="35 85 140 25">
+            <Property key="Caption" value="z szie:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="35 125 140 25">
+            <Property key="Caption" value="x vertex:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="35 165 140 25">
+            <Property key="Caption" value="z vertex:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 45 160 25" name="xSize"/>
+        <Widget type="EditBox" skin="EditBox" position="195 85 160 25" name="zSize"/>
+        <Widget type="ComboBox" skin="ComboBox" position="195 125 160 25" name="xVertSize"/>
+        <Widget type="ComboBox" skin="ComboBox" position="195 165 160 25" name="zVertSize"/>
+        <Widget type="Button" skin="Button" position="145 225 100 25" name="Ok">
+            <Property key="Caption" value="Ok"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="250 225 100 25" name="Cancel">
+            <Property key="Caption" value="Cancel"/>
+        </Widget>
+    </Widget>
+</MyGUI>

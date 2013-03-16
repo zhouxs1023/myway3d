@@ -26,14 +26,14 @@ IMP_SLN(xTerrainPane);
 
 xTerrainPane::xTerrainPane()
 	: IDockPane("Terrain") 
-	, OnCreatePane(&xEvent::OnCreatePane, this, &xTerrainPane::_Create)
-	, OnInit(&xEvent::OnInitUI, this, &xTerrainPane::_Init)
-	, OnShutdown(&xEvent::OnShutdown, this, &xTerrainPane::_Shutdown)
-	, OnUpdate(&xEvent::OnUpdate, this, &xTerrainPane::_Update)
-	, OnRender(&RenderEvent::OnAfterDefferedShading, this, &xTerrainPane::_Render)
-	, OnRenderUI(&RenderEvent::OnAfterRender, this, &xTerrainPane::_RenderUI)
-	, OnUnLoadScene(&xEvent::OnUnloadScene, this, &xTerrainPane::_UnloadScene)
-	, OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xTerrainPane::_AfterloadScene)
+	, OnCreatePane(xEvent::OnCreatePane, this, &xTerrainPane::_Create)
+	, OnInit(xEvent::OnInitUI, this, &xTerrainPane::_Init)
+	, OnShutdown(xEvent::OnShutdown, this, &xTerrainPane::_Shutdown)
+	, OnUpdate(xEvent::OnUpdate, this, &xTerrainPane::_Update)
+	, OnRender(RenderEvent::OnAfterDefferedShading, this, &xTerrainPane::_Render)
+	, OnRenderUI(RenderEvent::OnAfterRender, this, &xTerrainPane::_RenderUI)
+	, OnUnLoadScene(xEvent::OnUnloadScene, this, &xTerrainPane::_UnloadScene)
+	, OnAfterLoadScene(xEvent::OnAfterLoadScene, this, &xTerrainPane::_AfterloadScene)
 {
 	INIT_SLN;
 }

@@ -128,7 +128,7 @@ public:
 IMPLEMENT_SERIAL(xResourceViewMenuButton, CMFCToolBarMenuButton, 1)
 
 xResourceView::xResourceView()
-	: OnInit(&xEvent::OnInit, this, &xResourceView::_Init)
+	: OnInit(xEvent::OnInit, this, &xResourceView::_Init)
 {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
 }

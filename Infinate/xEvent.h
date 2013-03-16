@@ -18,6 +18,8 @@ public:
 	static Event OnUpdateGame;
 	static Event OnAppModeChanged;
 
+	static Event OnOperatorChanged;		// param0: old op, param1: new op.
+
 	static Event OnDragFile;
 
 	static Event OnObjCreated;

@@ -23,5 +23,6 @@ namespace Myway {
 	protected:
 		eSmaaType::enum_t mType;
 		SMAA * mSMAA;
+		int mWidth, mHeight;
 	};
 }

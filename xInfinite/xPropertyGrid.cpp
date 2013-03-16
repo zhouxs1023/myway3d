@@ -20,8 +20,8 @@ IMP_SLN (xPropertyGrid);
 
 xPropertyGrid::xPropertyGrid()
 	: IDockPane("Property")
-	, OnSelectObj(&xEvent::OnSelectObj, this, &xPropertyGrid::_OnSelect)
-	, OnUnSelectObj(&xEvent::OnUnSelectObj, this, &xPropertyGrid::_OnUnSelect)
+	, OnSelectObj(xEvent::OnSelectObj, this, &xPropertyGrid::_OnSelect)
+	, OnUnSelectObj(xEvent::OnUnSelectObj, this, &xPropertyGrid::_OnUnSelect)
 {
 	INIT_SLN;
 }

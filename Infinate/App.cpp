@@ -60,6 +60,8 @@ namespace Infinite
 		InputSystem::Instance()->Update();
 
 		mUISystem.InjectMouseEvent();
+
+		mEditor.Update();
 	}
 
 	void App::OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)

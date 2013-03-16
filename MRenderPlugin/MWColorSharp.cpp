@@ -17,15 +17,7 @@ namespace Myway {
 
     void ColorSharp::Render(Texture * tex, Texture * texDepth)
     {
-		static bool btest = true;
-
-		if (IKeyboard::Instance()->KeyUp(KC_5))
-			btest = !btest;
-
-		if (!btest)
-			return ;
-
-		RenderSystem::Instance()->_BeginEvent("ColorSharp");
+		RS_RenderEvent(ColorSharp);
 
 		float colorSharpScale = Environment::Instance()->GetEvParam()->ColorSharpScale;
 		float colorSharpFadeStart = Environment::Instance()->GetGlobalParam()->ColorSharpFadeStart;
@@ -43,7 +35,5 @@ namespace Myway {
         RenderSystem::Instance()->SetTexture(1, state, texDepth);
 
         RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech);
-
-		RenderSystem::Instance()->_EndEvent();
     }
 }

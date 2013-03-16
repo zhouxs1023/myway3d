@@ -233,8 +233,8 @@ void xPreViewer::OnWaveArm()
 xPreViewerListener gPreViewerListener;
 
 xPreViewerListener::xPreViewerListener()
-	: OnAppModeChanged(&xEvent::OnAppModeChanged, this, &xPreViewerListener::_OnAppModeChanged)
-	, OnUpdate(&xEvent::OnUpdateGame, this, &xPreViewerListener::_OnUpdate)
+	: OnAppModeChanged(xEvent::OnAppModeChanged, this, &xPreViewerListener::_OnAppModeChanged)
+	, OnUpdate(xEvent::OnUpdateGame, this, &xPreViewerListener::_OnUpdate)
 {
 }
 

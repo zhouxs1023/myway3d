@@ -2,6 +2,7 @@
 
 #include "Shape.h"
 #include "Editor.h"
+#include "TerrainCreateDlg.h"
 
 namespace Infinite {
 
@@ -28,13 +29,21 @@ protected:
 class xTerrainFactory : public ShapeFactory
 {
 public:
-	xTerrainFactory() {};
-	virtual ~xTerrainFactory() {};
+	xTerrainFactory();
+	virtual ~xTerrainFactory();
 
 	virtual Shape * Create(const char * name);
 
 	virtual const char * GetGroupName() { return "Terrain"; }
 	virtual const char * GetTypeName() { return "Terrain"; }
+
+protected:
+	void _OnOK(Event * sender);
+
+protected:
+	tEventListener<xTerrainFactory> OnOK; 
+
+	TerrainCreateDlg * mTerrainCreateDlg;
 };
 
 }

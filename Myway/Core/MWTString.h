@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MWAllocator.h"
+#include "MWCharSet.h"
 
 namespace Myway
 {
@@ -347,6 +348,15 @@ public:
     {
         return mStr;
     }
+
+	const wchar_t * c_wstr() const
+	{
+		static wchar_t buffer[Size];
+
+		CharSet::AnsiToUnicode(buffer, Size, mStr);
+
+		return buffer;
+	}
 
     char * c_str()
     {

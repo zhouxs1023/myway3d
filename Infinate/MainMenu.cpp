@@ -66,7 +66,7 @@ namespace Infinite {
 	void MainMenu::OnLoad()
 	{
 		mMode = eOnLoad;
-		mSceneDialog->DoModel();
+		mSceneDialog->DoModal();
 	}
 
 	void MainMenu::OnSave()

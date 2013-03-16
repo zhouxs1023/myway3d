@@ -66,8 +66,8 @@ class xPrefabFactoryListener
 {
 public:
 	xPrefabFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xPrefabFactoryListener::_Init)
-		, OnDragFile(&xEvent::OnDragFile, this, &xPrefabFactoryListener::_OnDragFile)
+		: OnInit(xEvent::OnInit, this, &xPrefabFactoryListener::_Init)
+		, OnDragFile(xEvent::OnDragFile, this, &xPrefabFactoryListener::_OnDragFile)
 	{
 	}
 

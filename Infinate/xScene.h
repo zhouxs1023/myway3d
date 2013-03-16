@@ -26,9 +26,12 @@ public:
 
 	bool IsLoading() { return mIsLoading; }
 
+	void DirtLoadChunk() { mDirtLoadChunk = true; }
+
 protected:
 	TString128 mFloder;
 	TString128 mFilename;
 	bool mDirt;
 	bool mIsLoading;
+	bool mDirtLoadChunk;
 };

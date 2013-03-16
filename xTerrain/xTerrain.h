@@ -40,7 +40,7 @@ class xTerrainFactoryListener
 {
 public:
 	xTerrainFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xTerrainFactoryListener::_Init)
+		: OnInit(xEvent::OnInit, this, &xTerrainFactoryListener::_Init)
 	{
 	}
 

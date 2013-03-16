@@ -5,15 +5,26 @@
 #include "xScene.h"
 #include "xForest.h"
 #include "xEnvironment.h"
+#include "xRenderSetting.h"
+#include "Gizmo.h"
+#include "xUndoRedo.h"
+#include "xObjBound.h"
+
+#include "ColourPanel.h"
+#include "MessageBox.h"
 
 namespace Infinite {
 
-	enum eTransformOperator
+	enum eOperator
 	{
-		eTO_Unknown,
-		eTO_Move,
-		eTO_Rotate,
-		eTO_Scale,
+		eOP_Unknown,
+		eOP_Pick,
+		eOP_Move,
+		eOP_Rotate,
+		eOP_Scale,
+		eOP_Terrain,
+
+		MW_ALIGN_ENUM(eOperator)
 	};
 
 	enum ePick
@@ -31,6 +42,7 @@ namespace Infinite {
 
 		void Init();
 		void Shutdown();
+		void Update();
 
 		ShaderLib * GetHelperShaderLib() { return mHelperShaderLib; }
 
@@ -41,7 +53,15 @@ namespace Infinite {
 
 		Vec3 GetHitPosition(float fx, float fy);
 
+		void SetOperator(eOperator op);
+		eOperator GetOperator() { return mOperator; }
+
 	protected:
+		void _unloadScene(Event * sender);
+
+	protected:
+		tEventListener<Editor> OnUnloadScene;
+
 		ShaderLib * mHelperShaderLib;
 
 		Array<Shape*> mSelectedShapes;
@@ -50,6 +70,16 @@ namespace Infinite {
 		xScene mScene;
 		xForest mForest;
 		xEnvironment mEnvironment;
+		xRenderSetting mRenderSetting;
+
+		ColourPanel * mColorPanel;
+		MMessageBox * mMessageBox;
+
+		eOperator mOperator;
+
+		Gizmo mGizmo;
+		xUndoRedoManager mUndoRedoManager;
+		xObjBound mObjBound;
 	};
 
 }

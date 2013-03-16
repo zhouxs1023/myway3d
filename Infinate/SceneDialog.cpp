@@ -17,14 +17,14 @@ namespace Infinite {
 		mFloderList->eventListChangePosition += MyGUI::newDelegate(this, &SceneDialog::OnFloderListSelChanged);
 		mSceneList->eventListChangePosition += MyGUI::newDelegate(this, &SceneDialog::OnSceneListSelChanged);
 		mOK->eventMouseButtonClick += MyGUI::newDelegate(this, &SceneDialog::OnOK);
-		mCancel->eventMouseButtonClick += MyGUI::newDelegate(this, &SceneDialog::OnOK);
+		mCancel->eventMouseButtonClick += MyGUI::newDelegate(this, &SceneDialog::OnCancel);
 	}
 
 	SceneDialog::~SceneDialog()
 	{
 	}
 
-	void SceneDialog::DoModel()
+	void SceneDialog::DoModal()
 	{
 		MyGUI::InputManager::getInstance().addWidgetModal(mMainWidget);
 		MyGUI::LayerManager::getInstance().upLayerItem(mMainWidget);

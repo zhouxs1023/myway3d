@@ -110,8 +110,15 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LayoutEditor", "LayoutEdito
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Infinite", "Infinate\Infinate.vcxproj", "{9739C466-B902-42CD-9F18-36ACC35F2863}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BAC843B-74DF-4312-95E2-C7DA9F1EE439} = {0BAC843B-74DF-4312-95E2-C7DA9F1EE439}
+		{5BB20FA9-256F-48FF-899E-CC648315552B} = {5BB20FA9-256F-48FF-899E-CC648315552B}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MRender", "MRenderPlugin\MRenderPlugin.vcxproj", "{0BAC843B-74DF-4312-95E2-C7DA9F1EE439}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1470171E-7B11-4D7D-B470-8D9EDD9BAFA6} = {1470171E-7B11-4D7D-B470-8D9EDD9BAFA6}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

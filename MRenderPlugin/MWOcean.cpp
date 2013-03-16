@@ -46,10 +46,10 @@ namespace Myway {
 	{
 		mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Water");
 		mTech_UnderWater = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWater");
-		mTex_Wave = VideoBufferManager::Instance()->Load2DTexture("waves2.dds", "waves2.dds");
-		mTex_Fresnel = VideoBufferManager::Instance()->Load2DTexture("Fresnel.bmp", "Fresnel.bmp");
-		mTex_Normal0 = VideoBufferManager::Instance()->Load2DTexture("WaterNormal1.tga", "WaterNormal1.tga");
-		mTex_Normal1 = VideoBufferManager::Instance()->Load2DTexture("WaterNormal2.tga", "WaterNormal2.tga");
+		mTex_Wave = VideoBufferManager::Instance()->Load2DTexture("Water\\waves2.dds", "Water\\waves2.dds");
+		mTex_Fresnel = VideoBufferManager::Instance()->Load2DTexture("Water\\Fresnel.bmp", "Water\\Fresnel.bmp");
+		mTex_Normal0 = VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal1.tga", "Water\\WaterNormal1.tga");
+		mTex_Normal1 = VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal2.tga", "Water\\WaterNormal2.tga");
 
 		d_assert (mTech != NULL && mTex_Normal0 != NULL && mTech_UnderWater != NULL);
 

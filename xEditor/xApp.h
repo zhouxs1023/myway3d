@@ -9,6 +9,7 @@
 #include "xUndoRedo.h"
 #include "xDebugRender.h"
 #include "IDockPane.h"
+#include "MWDeferredRenderer.h"
 
 enum eTransformOperator
 {
@@ -84,6 +85,7 @@ protected:
 
 protected:
 	Engine * mEngine;
+	DeferredRenderer * mRenderer;
 	ShaderLib * mHelperShaderLib;
 	Thread mThread;
 	bool mQuit;

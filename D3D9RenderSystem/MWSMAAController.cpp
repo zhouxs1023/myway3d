@@ -8,6 +8,8 @@ namespace Myway {
 	{
 		mSMAA = NULL;
 		mType = eSmaaType::SMAA_NONE;
+		mWidth = 0;
+		mHeight = 0;
 	}
 
 	SMAAController::~SMAAController()
@@ -17,8 +19,6 @@ namespace Myway {
 
 	void SMAAController::Init()
 	{
-		Shutdown();
-
 		if (mType == eSmaaType::SMAA_NONE)
 			return ;
 
@@ -43,10 +43,14 @@ namespace Myway {
 			break;
 		}
 
-		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+		RenderScheme * scheme = Engine::Instance()->GetRenderScheme();
+
+		mWidth = scheme->GetColorTexture()->GetWidth();
+		mHeight = scheme->GetColorTexture()->GetHeight();
+
 		IDirect3DDevice9 * device = ((D3D9RenderSystem *)RenderSystem::Instance())->GetD3DDevice();
 
-		mSMAA = new SMAA(device, dp->Width, dp->Height, preset);
+		mSMAA = new SMAA(device, mWidth, mHeight, preset);
 	}
 
 	void SMAAController::Shutdown()
@@ -58,15 +62,30 @@ namespace Myway {
 	{
 		if (mType != type)
 		{
+			Shutdown();
+
 			mType = type;
-			Init();
 		}
 	}
 
 	void SMAAController::Do(RenderTarget * rt, Texture * colorTex)
 	{
-		if (!mSMAA)
+		if (mType == eSmaaType::SMAA_NONE)
 			return ;
+
+		if (mSMAA)
+		{
+			RenderScheme * scheme = Engine::Instance()->GetRenderScheme();
+
+			int width = scheme->GetColorTexture()->GetWidth();
+			int height = scheme->GetColorTexture()->GetHeight();
+
+			if (width != mWidth || height != mHeight)
+				Shutdown();
+		}
+
+		if (!mSMAA)
+			Init();
 
 		D3D9Texture * d3dTex = (D3D9Texture *)colorTex;
 		D3D9RenderTarget * d3dRt = (D3D9RenderTarget *)rt;

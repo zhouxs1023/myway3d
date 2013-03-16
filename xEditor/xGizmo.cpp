@@ -4,10 +4,10 @@
 #include "xBaseOperator.h"
 
 xGizmo::xGizmo()
-	: OnInit(&xEvent::OnInit, this, &xGizmo::Init)
-	, OnShutdown(&xEvent::OnShutdown, this, &xGizmo::Shutdown)
-	, OnRender(&RenderEvent::OnAfterRender, this, &xGizmo::Render)
-	, OnUpdate(&xEvent::OnUpdate, this, &xGizmo::Update)
+	: OnInit(xEvent::OnInit, this, &xGizmo::Init)
+	, OnShutdown(xEvent::OnShutdown, this, &xGizmo::Shutdown)
+	, OnRender(RenderEvent::OnAfterRender, this, &xGizmo::Render)
+	, OnUpdate(xEvent::OnUpdate, this, &xGizmo::Update)
 	, mPicked(false)
 	, mPickedAxis(-1)
 {

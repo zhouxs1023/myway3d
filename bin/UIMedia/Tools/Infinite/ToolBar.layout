@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelSkin" position="20 15 42 700" align="Stretch" layer="Overlapped" name="_Main">
+      <UserString key="SnapTo" value="Stretch"/>
+      <Widget type="ImageBox" skin="ImageBox" position="5 5 30 30" name="Pick">
+        <Property key="ImageName" value="iPick.png"/>
+      </Widget>
+      <Widget type="ImageBox" skin="ImageBox" position="5 40 30 30" name="Move">
+        <Property key="ImageName" value="iMove.png"/>
+      </Widget>
+      <Widget type="ImageBox" skin="ImageBox" position="5 75 30 30" name="Rotate">
+        <Property key="ImageName" value="iRotate.png"/>
+      </Widget>
+      <Widget type="ImageBox" skin="ImageBox" position="5 110 30 30" name="Scale">
+        <Property key="ImageName" value="iScale.png"/>
+      </Widget>
+      <Widget type="ImageBox" skin="ImageBox" position="5 145 30 30" name="Terrain">
+        <Property key="ImageName" value="iTerrain.png"/>
+      </Widget>
+    </Widget>
+</MyGUI>

@@ -120,12 +120,12 @@ IMPLEMENT_SERIAL(xExplorerMenuButton, CMFCToolBarMenuButton, 1)
 
 xExplorer::xExplorer()
 : IDockPane("Explorer")
-, OnInit(&xEvent::OnInit, this, &xExplorer::_Init)
-, OnUnloadScene(&xEvent::OnUnloadScene, this, &xExplorer::_UnloadScene)
-, OnSerialize(&xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
-, OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)
-, OnObjCreated(&xEvent::OnObjCreated, this, &xExplorer::_ObjCreated)
-, OnObjDistroy(&xEvent::OnObjDistroy, this, &xExplorer::_ObjDistroy)
+, OnInit(xEvent::OnInit, this, &xExplorer::_Init)
+, OnUnloadScene(xEvent::OnUnloadScene, this, &xExplorer::_UnloadScene)
+, OnSerialize(xEvent::OnSerialize, this, &xExplorer::_OnSerialize)
+, OnAfterLoadScene(xEvent::OnAfterLoadScene, this, &xExplorer::_AfterLoadScene)
+, OnObjCreated(xEvent::OnObjCreated, this, &xExplorer::_ObjCreated)
+, OnObjDistroy(xEvent::OnObjDistroy, this, &xExplorer::_ObjDistroy)
 , mViewTree(this)
 {
 	m_nCurrSort = ID_SORTING_GROUPBYTYPE;
@@ -340,7 +340,7 @@ void xExplorer::_OnSerialize(Event * sender)
 
 	if (Serializer.IsSave())
 	{
-		Serializer << K_ChunkId;
+		/*Serializer << K_ChunkId;
 		Serializer << K_Version;
 
 		int size = mItems.Size();
@@ -348,7 +348,7 @@ void xExplorer::_OnSerialize(Event * sender)
 		Serializer << size;
 
 		for (int i = 0; i < size; ++i)
-			_SaveItem(*mItems[i], Serializer);
+			_SaveItem(*mItems[i], Serializer);*/
 	}
 	else
 	{

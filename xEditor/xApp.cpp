@@ -28,7 +28,7 @@ _Locker::~_Locker()
 xApp::xApp()
 	: mObjMgr()
 	, mOpToolBar()
-	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xApp::_unloadScene)
+	, OnUnloadScene(xEvent::OnUnloadScene, this, &xApp::_unloadScene)
 {
     INIT_SLN;
 
@@ -81,6 +81,7 @@ void xApp::Run()
 				int height = rc.bottom - rc.top;
 
 				mEngine->Resize(width, height);
+				mRenderer->Resize(width, height);
 
 				mNeedResize = false;
 			}
@@ -130,22 +131,22 @@ void xApp::_input()
 {
     SceneNode * cam = World::Instance()->MainCameraNode();
 
-    if (IKeyboard::Instance()->KeyPressed(KC_W))
-    {
-        cam->Move(5.0f);
-    }
-    else if (IKeyboard::Instance()->KeyPressed(KC_S))
-    {
-        cam->Move(-5.0f);
-    }
-    else if (IKeyboard::Instance()->KeyPressed(KC_A))
-    {
-        cam->Right(-5.0f);
-    }
-    else if (IKeyboard::Instance()->KeyPressed(KC_D))
-    {
-        cam->Right(5.0f);
-    }
+	if (IKeyboard::Instance()->KeyPressed(KC_W))
+	{
+		cam->Move(5.0f);
+	}
+	else if (IKeyboard::Instance()->KeyPressed(KC_S))
+	{
+		cam->Move(-5.0f);
+	}
+	else if (IKeyboard::Instance()->KeyPressed(KC_A))
+	{
+		cam->Right(-5.0f);
+	}
+	else if (IKeyboard::Instance()->KeyPressed(KC_D))
+	{
+		cam->Right(5.0f);
+	}
 	else if (IKeyboard::Instance()->KeyUp(KC_DELETE))
 	{
 		for (int i = 0; i < mSelectedObjs.Size(); ++i)
@@ -299,6 +300,10 @@ void xApp::_InitEngine()
 
 		Engine::Instance()->Init(&dp, "resource.ini", "plugin.ini");
 
+		mRenderer = new DeferredRenderer();
+
+		mEngine->SetRenderScheme(mRenderer);
+
 		//Environment::Instance()->LoadTerrain("Terrain.terrain");
 		//Environment::Instance()->InitEv();
 		//Environment::Instance()->SetKey(EVKT_Noon);
@@ -345,6 +350,8 @@ void xApp::Shutdown()
     xEvent::OnShutdown(NULL, NULL);
 
 	xPluginManager::Instance()->Shutdown();
+
+	delete mRenderer;
 
     mEngine->Shutdown();
     delete mEngine;

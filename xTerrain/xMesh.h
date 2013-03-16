@@ -73,8 +73,8 @@ class xMeshFactoryListener
 {
 public:
 	xMeshFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xMeshFactoryListener::_Init)
-		, OnDragFile(&xEvent::OnDragFile, this, &xMeshFactoryListener::_OnDragFile)
+		: OnInit(xEvent::OnInit, this, &xMeshFactoryListener::_Init)
+		, OnDragFile(xEvent::OnDragFile, this, &xMeshFactoryListener::_OnDragFile)
 	{
 	}
 

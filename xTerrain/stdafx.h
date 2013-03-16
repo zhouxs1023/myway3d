@@ -40,6 +40,7 @@
 
 
 #include "Myway.h"
+#include "MWDeferredRenderer.h"
 using namespace Myway;
 
 

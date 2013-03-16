@@ -3,8 +3,8 @@
 namespace Myway
 {
 
-#define DEFAULT_SKY_TEXTURE "Sky.png"
-#define DEFAULT_MOON_TEXTURE "Moon.dds"
+#define DEFAULT_SKY_TEXTURE "Sky\\Sky.png"
+#define DEFAULT_MOON_TEXTURE "Sky\\Moon.dds"
 
     DF_PROPERTY_BEGIN(EvKeyFrame)
         DF_PROPERTY(EvKeyFrame, SkyLum, "Sky", "SkyLum", PT_Float, 4)

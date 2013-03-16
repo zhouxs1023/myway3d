@@ -11,8 +11,8 @@ DF_PROPERTY_END();
 
 xMesh::xMesh(const TString128 & name)
     : xObj(name)
-	, OnUpdate(&xEvent::OnUpdate, this, &xMesh::_Update)
-	, OnRenderSkel(&RenderEvent::OnAfterDefferedShading, this, &xMesh::_renderSkel)
+	, OnUpdate(xEvent::OnUpdate, this, &xMesh::_Update)
+	, OnRenderSkel(RenderEvent::OnAfterDefferedShading, this, &xMesh::_renderSkel)
 {
 	MeshFile = "";
 	Position = Vec3::Zero;
@@ -282,8 +282,8 @@ xSkeletonRenderer gSkelRender;
 IMP_SLN (xSkeletonRenderer);
 
 xSkeletonRenderer::xSkeletonRenderer()
-	: OnInit(&xEvent::OnInit, this, &xSkeletonRenderer::_init)
-	, OnShutdown(&xEvent::OnShutdown, this, &xSkeletonRenderer::_shutdown)
+	: OnInit(xEvent::OnInit, this, &xSkeletonRenderer::_init)
+	, OnShutdown(xEvent::OnShutdown, this, &xSkeletonRenderer::_shutdown)
 {
 	INIT_SLN;
 }

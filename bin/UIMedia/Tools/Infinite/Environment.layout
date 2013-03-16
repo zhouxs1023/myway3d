@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" position="25 25 510 315" align="Stretch" name="_Main">
+        <UserString key="SnapTo" value="Stretch"/>
+        <Widget type="TabControl" skin="TabControl" position="5 0 500 315" align="Stretch" name="TabControl">
+            <Widget type="TabItem" skin="" position="2 24 494 287">
+                <Property key="Caption" value="Night"/>
+                <Widget type="Widget" skin="PanelEmpty" position="0 0 494 287" align="Stretch" name="Night"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 494 287" name="Morning">
+                <Property key="Caption" value="Morning"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 494 287" name="Noon">
+                <Property key="Caption" value="Noon"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 494 287" name="Evening">
+                <Property key="Caption" value="Evening"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 494 287" name="Global">
+                <Property key="Caption" value="Global"/>
+            </Widget>
+        </Widget>
+    </Widget>
+</MyGUI>

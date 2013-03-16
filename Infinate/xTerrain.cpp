@@ -70,13 +70,27 @@ bool xTerrain::OnPropertyChanged(const Property * p)
 
 
 
+xTerrainFactory::xTerrainFactory()
+	: OnOK(this, &xTerrainFactory::_OnOK)
+{
+	mTerrainCreateDlg = NULL;
+}
 
+xTerrainFactory::~xTerrainFactory()
+{
+	if (mTerrainCreateDlg)
+		mTerrainCreateDlg->Event_OnOK -= &OnOK;
+
+	safe_delete (mTerrainCreateDlg);
+}
 
 Shape * xTerrainFactory::Create(const char * name)
 {
 	if (Environment::Instance()->GetTerrain())
 	{
-		MessageBox(NULL, "Terrain has created!", "Error", MB_OK);
+		HWND hWnd = Engine::Instance()->GetDeviceProperty()->hWnd;
+
+		MessageBox(hWnd, "Terrain has created!", "Error", MB_OK);
 
 		return NULL;
 	}
@@ -89,28 +103,33 @@ Shape * xTerrainFactory::Create(const char * name)
 	}
 	else
 	{
-		d_assert (0);
-		/*xTerrainCreateDlg dlg;
-
-		if (dlg.DoModal() == IDOK)
+		if (mTerrainCreateDlg == NULL)
 		{
-		Terrain::Config config;
+			mTerrainCreateDlg = new TerrainCreateDlg;
 
-		config.xSize = dlg.GetSizeX();
-		config.zSize = dlg.GetSizeZ();
+			mTerrainCreateDlg->Event_OnOK += &OnOK;
+		}
 
-		config.xVertexCount = dlg.GetVertX();
-		config.zVertexCount = dlg.GetVertZ();
-
-		xTerrain * obj = new xTerrain();
-
-		obj->_create(config);
-
-		return obj;
-		}*/
+		mTerrainCreateDlg->DoModal();
 	}
 	
 	return NULL;
 }
+
+void xTerrainFactory::_OnOK(Event * sender)
+{
+	Terrain::Config config;
+
+	config.xSize = mTerrainCreateDlg->GetXSize();
+	config.zSize = mTerrainCreateDlg->GetZSize();
+
+	config.xVertexCount = mTerrainCreateDlg->GetXVertSize();
+	config.zVertexCount = mTerrainCreateDlg->GetZVertSize();
+
+	xTerrain * obj = new xTerrain();
+
+	obj->_create(config);
+}
+
 
 }

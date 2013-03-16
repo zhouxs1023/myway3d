@@ -2,10 +2,11 @@
 #include "xEnvironment.h"
 #include "xEvent.h"
 #include "xSerializer.h"
+#include "xScene.h"
 
 namespace Infinite {
 
-xEnvironment gEnvironment;
+Event xEnvironment::OnChanged;
 
 xEnvironment::xEnvironment()
 	: OnNewScene(xEvent::OnNewScene, this, &xEnvironment::_OnNewScene)
@@ -23,7 +24,7 @@ void xEnvironment::_OnNewScene(Event * sender)
 {
 	Environment::Instance()->InitEv();
 
-	//xEnvironmentPane::Instance()->_Frush();
+	OnChanged();
 }
 
 void xEnvironment::_OnLoadScene(Event * sender)
@@ -89,7 +90,9 @@ void xEnvironment::_OnSerialize(Event * sender)
 		_LoadPropertyObj(kEvening, Serializer);
 		_LoadPropertyObj(kGlobal, Serializer);
 
-		//xEnvironmentPane::Instance()->_Frush();
+		xScene::Instance()->DirtLoadChunk();
+
+		OnChanged();
 	}
 }
 

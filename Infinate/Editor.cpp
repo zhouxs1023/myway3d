@@ -14,8 +14,11 @@ namespace Infinite {
 	IMP_SLN(Editor);
 
 	Editor::Editor()
+		: OnUnloadScene(xEvent::OnUnloadScene, this, &Editor::_unloadScene)
 	{
 		INIT_SLN;
+
+		mOperator = eOP_Unknown;
 	}
 
 	Editor::~Editor()
@@ -29,19 +32,21 @@ namespace Infinite {
 
 		cam->SetPosition(0, 200, 0);
 
-		Quat q; 
-		q.FromAxis(Vec3::UnitX, Vec3::UnitZ, Vec3::NegUnitY);
-		cam->SetOrientation(q);
-
 		World::Instance()->Resize(2048, 2048, 2048);
 
-		mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Helper", "Helper.ShaderLib");
+		mHelperShaderLib = ShaderLibManager::Instance()->LoadShaderLib(
+			"Shaders\\Helper.ShaderLib", "Shaders\\Helper.ShaderLib");
+
+		d_assert (mHelperShaderLib);
 
 		mShapeMgr.AddFactory(new xMeshFactory);
 		mShapeMgr.AddFactory(new xPointLightFactory);
 		mShapeMgr.AddFactory(new xTreeFactory);
 		mShapeMgr.AddFactory(new xOceanFactory);
 		mShapeMgr.AddFactory(new xTerrainFactory);
+
+		mColorPanel = new ColourPanel();
+		mMessageBox = new MMessageBox();
 
 		xEvent::OnInit(NULL, NULL);
 		xEvent::OnInitUI(NULL, NULL);
@@ -50,8 +55,15 @@ namespace Infinite {
 	void Editor::Shutdown()
 	{
 		xEvent::OnShutdown(NULL, NULL);
+
+		delete mColorPanel;
+		delete mMessageBox;
 	}
 
+	void Editor::Update()
+	{
+		xEvent::OnUpdate();
+	}
 
 	void Editor::SetSelectedShape(Shape * obj)
 	{
@@ -99,5 +111,22 @@ namespace Infinite {
 
 		return pos;
 	}
+
+	void Editor::SetOperator(eOperator op)
+	{
+		if (mOperator == op)
+			return ;
+
+		eOperator old = mOperator;
+		mOperator = op;
+
+		xEvent::OnOperatorChanged(&old, &op);
+	}
+
+	void Editor::_unloadScene(Event * sender)
+	{
+		SetSelectedShape(NULL);
+	}
+
 
 }

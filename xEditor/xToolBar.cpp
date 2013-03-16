@@ -6,10 +6,10 @@
 IMP_SLN(xOpToolBar);
 
 xOpToolBar::xOpToolBar()
-	: mOnInitUI(&xEvent::OnInitUI, this, &xOpToolBar::Init)
-	, mOnRender(&RenderEvent::OnAfterRender, this, &xOpToolBar::Render)
-	, mOnShutdown(&xEvent::OnShutdown, this, &xOpToolBar::Shutdown)
-	, mOnUpdate(&xEvent::OnUpdate, this, &xOpToolBar::Update)
+	: mOnInitUI(xEvent::OnInitUI, this, &xOpToolBar::Init)
+	, mOnRender(RenderEvent::OnAfterRender, this, &xOpToolBar::Render)
+	, mOnShutdown(xEvent::OnShutdown, this, &xOpToolBar::Shutdown)
+	, mOnUpdate(xEvent::OnUpdate, this, &xOpToolBar::Update)
 {
 	INIT_SLN;
 	mNumButtons = 0;

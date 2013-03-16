@@ -7,10 +7,10 @@
 xEnvironment gEnvironment;
 
 xEnvironment::xEnvironment()
-	: OnNewScene(&xEvent::OnNewScene, this, &xEnvironment::_OnNewScene)
-	, OnLoadScene(&xEvent::OnLoadScene, this, &xEnvironment::_OnLoadScene)
-	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xEnvironment::_OnUnloadScene)
-	, OnSerialize(&xEvent::OnSerialize, this, &xEnvironment::_OnSerialize)
+	: OnNewScene(xEvent::OnNewScene, this, &xEnvironment::_OnNewScene)
+	, OnLoadScene(xEvent::OnLoadScene, this, &xEnvironment::_OnLoadScene)
+	, OnUnloadScene(xEvent::OnUnloadScene, this, &xEnvironment::_OnUnloadScene)
+	, OnSerialize(xEvent::OnSerialize, this, &xEnvironment::_OnSerialize)
 {
 }
 

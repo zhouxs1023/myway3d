@@ -22,8 +22,8 @@ xRenderSettingPane gRenderSettingPane;
 
 xRenderSettingPane::xRenderSettingPane()
 	: IDockPane("RenderSetting")
-	, OnCreatePane(&xEvent::OnCreatePane, this, &xRenderSettingPane::_Create)
-	, OnAfterLoadScene(&xEvent::OnAfterLoadScene, this, &xRenderSettingPane::_AfterLoadScene)
+	, OnCreatePane(xEvent::OnCreatePane, this, &xRenderSettingPane::_Create)
+	, OnAfterLoadScene(xEvent::OnAfterLoadScene, this, &xRenderSettingPane::_AfterLoadScene)
 {
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Common\\BaseLayout.h"
+#include "BaseLayout.h"
 
 namespace Infinite {
 
@@ -13,7 +13,7 @@ namespace Infinite {
 		SceneDialog();
 		~SceneDialog();
 
-		void DoModel();
+		void DoModal();
 
 		const char * GetSceneFloder();
 		const char * GetSceneName();

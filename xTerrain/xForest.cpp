@@ -9,10 +9,10 @@
 xForest gForest;
 
 xForest::xForest()
-	: OnNewScene(&xEvent::OnNewScene, this, &xForest::_OnNewScene)
-	, OnLoadScene(&xEvent::OnLoadScene, this, &xForest::_OnLoadScene)
-	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xForest::_OnUnloadScene)
-	, OnSerialize(&xEvent::OnSerialize, this, &xForest::_OnSerialize)
+	: OnNewScene(xEvent::OnNewScene, this, &xForest::_OnNewScene)
+	, OnLoadScene(xEvent::OnLoadScene, this, &xForest::_OnLoadScene)
+	, OnUnloadScene(xEvent::OnUnloadScene, this, &xForest::_OnUnloadScene)
+	, OnSerialize(xEvent::OnSerialize, this, &xForest::_OnSerialize)
 {
 }
 

@@ -107,10 +107,10 @@ IMP_SLN(xEnvironmentPane);
 
 xEnvironmentPane::xEnvironmentPane()
 	: IDockPane("Environment") 
-	, OnInit(&xEvent::OnInitUI, this, &xEnvironmentPane::_Init)
-	, OnShutdown(&xEvent::OnShutdown, this, &xEnvironmentPane::_Shutdown)
-	, OnCreatePane(&xEvent::OnCreatePane, this, &xEnvironmentPane::_Create)
-	, OnUpdate(&xEvent::OnUpdate, this, &xEnvironmentPane::_Update)
+	, OnInit(xEvent::OnInitUI, this, &xEnvironmentPane::_Init)
+	, OnShutdown(xEvent::OnShutdown, this, &xEnvironmentPane::_Shutdown)
+	, OnCreatePane(xEvent::OnCreatePane, this, &xEnvironmentPane::_Create)
+	, OnUpdate(xEvent::OnUpdate, this, &xEnvironmentPane::_Update)
 {
 	INIT_SLN;
 }

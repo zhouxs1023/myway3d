@@ -5,6 +5,9 @@ namespace Infinite {
 	class xEnvironment
 	{
 	public:
+		static Event OnChanged;
+
+	public:
 		xEnvironment();
 		~xEnvironment();
 

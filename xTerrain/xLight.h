@@ -68,7 +68,7 @@ class xLightFactoryListener
 {
 public:
 	xLightFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xLightFactoryListener::_Init)
+		: OnInit(xEvent::OnInit, this, &xLightFactoryListener::_Init)
 	{
 	}
 

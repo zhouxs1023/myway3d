@@ -62,8 +62,8 @@ class xActorFactoryListener
 {
 public:
 	xActorFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xActorFactoryListener::_Init)
-		, OnDragFile(&xEvent::OnDragFile, this, &xActorFactoryListener::_OnDragFile)
+		: OnInit(xEvent::OnInit, this, &xActorFactoryListener::_Init)
+		, OnDragFile(xEvent::OnDragFile, this, &xActorFactoryListener::_OnDragFile)
 	{
 	}
 

@@ -20,7 +20,7 @@ DF_PROPERTY_BEGIN(xRenderSetting)
 DF_PROPERTY_END()
 
 xRenderSetting::xRenderSetting()
-	: OnSerialize(&xEvent::OnSerialize, this, &xRenderSetting::_OnSerialize) 
+	: OnSerialize(xEvent::OnSerialize, this, &xRenderSetting::_OnSerialize) 
 	, SSAOEnable(false)
 	, GodRayEnable(false)
 	, ShadowEnable(false)

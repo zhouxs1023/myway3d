@@ -42,7 +42,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../xEditor;../MTree;../MActor;../Myway/Physics;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../xEditor;../MTree;../MActor;../Myway/Physics;../MRenderPlugin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>_AFXDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
@@ -50,7 +50,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>../bin/Debug/xPlugin/xPulgin_d.dll</OutputFile>
       <AdditionalLibraryDirectories>../bin/lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>myway_d.lib;xEditor_d.lib;MTree_d.lib;MActor_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myway_d.lib;xEditor_d.lib;MTree_d.lib;MActor_d.lib;MRender_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>../bin/lib/xPlugin_d.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>

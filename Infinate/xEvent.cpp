@@ -10,7 +10,10 @@ Event xEvent::OnSelectObj;
 Event xEvent::OnUnSelectObj;
 Event xEvent::OnUpdate;
 Event xEvent::OnUpdateGame;
+
 Event xEvent::OnAppModeChanged;
+Event xEvent::OnOperatorChanged;
+
 Event xEvent::OnDragFile;
 Event xEvent::OnObjCreated;
 Event xEvent::OnObjDistroy;

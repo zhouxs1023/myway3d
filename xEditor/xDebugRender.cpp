@@ -5,9 +5,9 @@
 #include "xDebugRender.h"
 
 xDebugRender::xDebugRender()
-	: OnInit(&xEvent::OnInit, this, &xDebugRender::_init)
-	, OnShutdown(&xEvent::OnShutdown, this, &xDebugRender::_shutdown)
-	, OnRender(&RenderEvent::OnDebugRender, this, &xDebugRender::_render)
+	: OnInit(xEvent::OnInit, this, &xDebugRender::_init)
+	, OnShutdown(xEvent::OnShutdown, this, &xDebugRender::_shutdown)
+	, OnRender(RenderEvent::OnDebugRender, this, &xDebugRender::_render)
 {
 	mMode = K_Default;
 }
@@ -31,7 +31,7 @@ void xDebugRender::_render(Event * sender)
 {
 	if (mMode == K_DisplayNormal)
 	{
-		Texture * tex = RenderScheme::Instance()->GetNormalTexture();
+		Texture * tex = Engine::Instance()->GetRenderScheme()->GetNormalTexture();
 
 		SamplerState state;
 		state.Address = TEXA_CLAMP;

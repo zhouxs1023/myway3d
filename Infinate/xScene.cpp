@@ -65,13 +65,22 @@ bool xScene::Load(const char * filename, const char * floder)
 
 	d_assert (magic == Magic);
 
+
+	int chunkId = -1;
+	Serializer >> chunkId;
+
 	while (!Serializer.eof())
 	{
-		int chunkId = -1;
+		mDirtLoadChunk = false;
+
+		{
+			xEvent::OnSerialize(&chunkId, &Serializer);
+			d_assert (mDirtLoadChunk);
+		}
+
+		mDirtLoadChunk = false;
 
 		Serializer >> chunkId;
-
-		xEvent::OnSerialize(&chunkId, &Serializer);
 	}
 
 	xEvent::OnAfterLoadScene(NULL, NULL);

@@ -221,8 +221,6 @@ void D3D9RenderWindow::ResetDevice()
     mVideoBufferManager->ResetDevice();
 
 	device->CreateQuery(D3DQUERYTYPE_OCCLUSION, &mRenderSystem->mD3DQuery);
-
-	mSMAAController->Init();
 }
 
 void D3D9RenderWindow::SaveScreenShot(const TString128 & sFile, IMAGE_FILE_FORMAT iff)

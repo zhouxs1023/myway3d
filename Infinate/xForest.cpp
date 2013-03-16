@@ -7,8 +7,6 @@
 
 namespace Infinite {
 
-	xForest gForest;
-
 	xForest::xForest()
 		: OnNewScene(xEvent::OnNewScene, this, &xForest::_OnNewScene)
 		, OnLoadScene(xEvent::OnLoadScene, this, &xForest::_OnLoadScene)
@@ -63,6 +61,8 @@ namespace Infinite {
 			sceneFile += ".vegetation";
 
 			MForest::Instance()->LoadVeg(sceneFile);
+
+			xScene::Instance()->DirtLoadChunk();
 		}
 	}
 

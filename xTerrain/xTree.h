@@ -71,8 +71,8 @@ class xTreeFactoryListener
 {
 public:
 	xTreeFactoryListener()
-		: OnInit(&xEvent::OnInit, this, &xTreeFactoryListener::_Init)
-		, OnDragFile(&xEvent::OnDragFile, this, &xTreeFactoryListener::_OnDragFile)
+		: OnInit(xEvent::OnInit, this, &xTreeFactoryListener::_Init)
+		, OnDragFile(xEvent::OnDragFile, this, &xTreeFactoryListener::_OnDragFile)
 	{
 	}
 

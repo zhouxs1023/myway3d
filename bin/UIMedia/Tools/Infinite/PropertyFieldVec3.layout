@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" position="40 70 265 85" align="HStretch Top" name="_Main">
+        <Widget type="TextBox" skin="TextBox" position="0 0 122 26" align="Left Top" name="Text">
+            <Property key="Caption" value="Vec3"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="Widget" skin="PanelEmpty" position="126 0 140 75" align="Stretch">
+            <Widget type="EditBox" skin="EditBox" position="0 0 140 25" align="HStretch Top" name="FieldX"/>
+            <Widget type="EditBox" skin="EditBox" position="0 25 140 25" align="HStretch Top" name="FieldY"/>
+            <Widget type="EditBox" skin="EditBox" position="0 50 140 25" align="HStretch Top" name="FieldZ"/>
+        </Widget>
+    </Widget>
+</MyGUI>

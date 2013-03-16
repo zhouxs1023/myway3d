@@ -40,21 +40,65 @@
     <ClCompile Include="xOcean.cpp">
       <Filter>Shapes\Extern</Filter>
     </ClCompile>
-    <ClCompile Include="xTerrain.cpp">
-      <Filter>Shapes\Extern</Filter>
-    </ClCompile>
     <ClCompile Include="xTree.cpp">
       <Filter>Shapes\Extern</Filter>
     </ClCompile>
     <ClCompile Include="Editor.cpp" />
-    <ClCompile Include="xEnvironment.cpp">
-      <Filter>Shapes</Filter>
-    </ClCompile>
-    <ClCompile Include="xForest.cpp">
-      <Filter>Shapes</Filter>
-    </ClCompile>
     <ClCompile Include="SceneDialog.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="xRenderSetting.cpp">
+      <Filter>RenderSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="xEnvironment.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="xForest.cpp">
+      <Filter>Forest</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyGroup.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\IPropertyField.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldColour.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldComboBox.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldEditBox.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyGrid.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="EnvironmentPane.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ColourPanel.cpp">
+      <Filter>MyGUI Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Infinite.cpp" />
+    <ClCompile Include="Gizmo.cpp" />
+    <ClCompile Include="xUndoRedo.cpp" />
+    <ClCompile Include="xBaseOperator.cpp" />
+    <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="PropertyFieldVector.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBox.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainCreateDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrain.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainPane.cpp">
+      <Filter>Terrain</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -100,21 +144,73 @@
     <ClInclude Include="xOcean.h">
       <Filter>Shapes\Extern</Filter>
     </ClInclude>
-    <ClInclude Include="xTerrain.h">
-      <Filter>Shapes\Extern</Filter>
-    </ClInclude>
     <ClInclude Include="xTree.h">
       <Filter>Shapes\Extern</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h" />
-    <ClInclude Include="xEnvironment.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
-    <ClInclude Include="xForest.h">
-      <Filter>Shapes</Filter>
-    </ClInclude>
     <ClInclude Include="SceneDialog.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="xRenderSetting.h">
+      <Filter>RenderSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="xEnvironment.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="xForest.h">
+      <Filter>Forest</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyGroup.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelView.h">
+      <Filter>MyGUI Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelViewCell.h">
+      <Filter>MyGUI Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelViewItem.h">
+      <Filter>MyGUI Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\IPropertyField.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldColour.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldComboBox.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldEditBox.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyGrid.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvironmentPane.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ColourPanel.h">
+      <Filter>MyGUI Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Gizmo.h" />
+    <ClInclude Include="xUndoRedo.h" />
+    <ClInclude Include="xBaseOperator.h" />
+    <ClInclude Include="xObjBound.h" />
+    <ClInclude Include="PropertyFieldVector.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBox.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainCreateDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrain.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainPane.h">
+      <Filter>Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -132,6 +228,21 @@
     </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{269c1b67-d472-4cfa-898b-b34da770c934}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderSetting">
+      <UniqueIdentifier>{b03c859a-f386-44f9-af5c-166eb9a640f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{48d7af9a-cbb2-45d4-9a16-08143f6d016b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Forest">
+      <UniqueIdentifier>{f347584d-e286-4a20-974d-edf296245e77}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PropertyGrid">
+      <UniqueIdentifier>{3b31abbd-95fb-4999-8951-451e12c1b2e8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{9fc8bb92-12c9-43e6-b5bc-a2e097a4ebdf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

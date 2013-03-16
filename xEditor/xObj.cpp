@@ -41,9 +41,9 @@ void xObj::Serialize(xSerializer & Serializer)
 IMP_SLN(xObjManager);
 
 xObjManager::xObjManager()
-	: OnShutdown(&xEvent::OnShutdown, this, &xObjManager::_Shutdown)
-	, OnSerialize(&xEvent::OnSerialize, this, &xObjManager::_Serialize)
-	, OnUnloadScene(&xEvent::OnUnloadScene, this, &xObjManager::_UnloadScene)
+	: OnShutdown(xEvent::OnShutdown, this, &xObjManager::_Shutdown)
+	, OnSerialize(xEvent::OnSerialize, this, &xObjManager::_Serialize)
+	, OnUnloadScene(xEvent::OnUnloadScene, this, &xObjManager::_UnloadScene)
 {
 	INIT_SLN;
 }

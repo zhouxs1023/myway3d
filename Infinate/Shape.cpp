@@ -78,6 +78,7 @@ void ShapeManager::_Serialize(Event * sender)
 	else if (CHUNK_ID == chunkId)
 	{
 		_Load(Serializer);
+		xScene::Instance()->DirtLoadChunk();
 	}
 }
 

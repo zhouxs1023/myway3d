@@ -8,4 +8,5 @@
 	<List file="MyGUI_Pointers.xml"/>
 	<List file="MyGUI_Layers.xml"/>
   <List file="EditorLayers.xml"/>
+  <List file="FrameworkSkin.xml"/>
 </MyGUI>
