@@ -1,10 +1,10 @@
 #include "stdafx.h"
 
-#include "xApp.h"
-#include "xTerrainOp.h"
 #include "xEditTerrainLayer.h"
 #include "MWTerrainSection.h"
+#include "Editor.h"
 
+namespace Infinite {
 
 xEditTerrainLayer::xEditTerrainLayer()
 {
@@ -25,24 +25,24 @@ void xEditTerrainLayer::SetBrush(const TString128 & tex)
 	d_assert (mBrush.texture != NULL && mBrush.image != NULL);
 }
 
-void xEditTerrainLayer::_Init(Event * sender)
+void xEditTerrainLayer::_Init()
 {
-	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
-	mTech_Layer = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainLayer");
+	mTech_Brush = Editor::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
+	mTech_Layer = Editor::Instance()->GetHelperShaderLib()->GetTechnique("TerrainLayer");
 
 	d_assert (mTech_Brush != NULL && mTech_Layer != NULL);
 }
 
-void xEditTerrainLayer::_Update(Event * sender)
+void xEditTerrainLayer::_Update()
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
-	int op = xApp::Instance()->GetOperator();
+	int op = Editor::Instance()->GetOperator();
 
-	if (op != xTerrainOp::eOp_Terrain)
+	if (op != eOP_Terrain)
 		return ;
 
-	Point2f pt = IMouse::Instance()->GetPositionUnit();
+	Point2f pt = Editor::Instance()->GetMousePosition();
 
 	if (pt.x < 0 || pt.y < 0 || pt.x > 1 || pt.y > 1)
 		return ;
@@ -53,28 +53,28 @@ void xEditTerrainLayer::_Update(Event * sender)
 	if (!IMouse::Instance()->KeyPressed(MKC_BUTTON0))
 		return ;
 
-	if (!terrain || mLayer == -1)
+	if (!terrain || mLayer == -1 || !Editor::Instance()->IsFoucs())
 		return ;
 
 	_UpdateWeightMap();
 }
 
-void xEditTerrainLayer::_Shutdown(Event * sender)
+void xEditTerrainLayer::_Shutdown()
 {
 	mBrush.texture = NULL;
 	mBrush.image = NULL;
 }
 
-void xEditTerrainLayer::_Render(Event * sender)
+void xEditTerrainLayer::_Render()
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
 	if (!terrain)
 		return ;
 
-	int op = xApp::Instance()->GetOperator();
+	int op = Editor::Instance()->GetOperator();
 
-	if (op != xTerrainOp::eOp_Terrain)
+	if (op != eOP_Terrain)
 		return ;
 
 	// render brush
@@ -298,4 +298,6 @@ void xEditTerrainLayer::_RenderSectionLayer()
 		RenderSystem::Instance()->SetTexture(0, state, brushMap.c_ptr());
 		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, mTech_Layer);
 	}
+}
+
 }

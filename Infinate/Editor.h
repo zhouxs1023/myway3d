@@ -56,6 +56,19 @@ namespace Infinite {
 		void SetOperator(eOperator op);
 		eOperator GetOperator() { return mOperator; }
 
+		void _SetMousePosition(const Point2f & pt) { mMousePosition = pt; }
+		Point2f GetMousePosition() { return mMousePosition; }
+
+		void SetFoucs(bool b) { mFoucs = b; }
+		bool IsFoucs() { return mFoucs; }
+
+		int MessageBox(const char * text, const char * caption, UINT type)
+		{
+			const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+
+			return ::MessageBox(dp->hWnd, text, caption, type);
+		}
+
 	protected:
 		void _unloadScene(Event * sender);
 
@@ -80,6 +93,9 @@ namespace Infinite {
 		Gizmo mGizmo;
 		xUndoRedoManager mUndoRedoManager;
 		xObjBound mObjBound;
+
+		Point2f mMousePosition;
+		bool mFoucs;
 	};
 
 }

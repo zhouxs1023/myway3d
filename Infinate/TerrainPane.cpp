@@ -5,74 +5,11 @@
 
 namespace Infinite {
 
-	TerrainHeightDlg::TerrainHeightDlg(MyGUI::Widget * _parent)
-		: BaseLayout("TerrainHeight.layout", _parent)
-		
-	{
-		assignWidget(mBrushSize, "BrushSize");
-		assignWidget(mBrushDensity, "BrushDensity");
-		assignWidget(mBrushType, "BrushType");
-		assignWidget(mBrushOperator, "BrushOperator");
-
-		mBrushOperator->insertItemAt(0, "Up");
-		mBrushOperator->insertItemAt(1, "Down");
-		mBrushOperator->insertItemAt(2, "Smooth");
-		mBrushOperator->setIndexSelected(0);
-
-		FileSystem fs("../Core/Terrain/Brushes");
-
-		fs.Load();
-
-		Archive::FileInfoVisitor v = fs.GetFileInfos();
-
-		while (!v.Endof())
-		{
-			const Archive::FileInfo & info = v.Cursor()->second;
-
-			if (info.type == Archive::FILE_ARCHIVE)
-			{
-				TString128 base = File::RemoveExternName(info.name);
-				TString128 ext = File::GetExternName(info.name);
-
-				if (ext == "png")
-					mBrushType->addItem(base.c_wstr());
-			}
-
-			++v;
-		}
-
-		mBrushType->setIndexSelected(0);
-
-		mBrushSize->setScrollRange(200);
-		mBrushSize->setScrollPosition(50);
-
-		mBrushDensity->setScrollRange(200);
-		mBrushDensity->setScrollPosition(100);
-
-		mBrushSize->eventScrollChangePosition += MyGUI::newDelegate(this, &TerrainHeightDlg::notifyBrushSizeDensityChanged);
-		mBrushDensity->eventScrollChangePosition += MyGUI::newDelegate(this, &TerrainHeightDlg::notifyBrushSizeDensityChanged);
-	}
-
-	TerrainHeightDlg::~TerrainHeightDlg()
-	{
-	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 	#define xHeightPage 0
 	#define xLayerPage 1
 	#define xVegPage 2
+
+	IMP_SLN(TerrainPane);
 
 	TerrainPane::TerrainPane(MyGUI::Widget * _parent)
 		: BaseLayout("Terrain.layout", _parent)
@@ -84,25 +21,31 @@ namespace Infinite {
 		, OnUnLoadScene(xEvent::OnUnloadScene, this, &TerrainPane::_UnloadScene)
 		, OnAfterLoadScene(xEvent::OnAfterLoadScene, this, &TerrainPane::_AfterloadScene)
 	{
+		INIT_SLN;
+
 		assignWidget(mTabControl, "TabControl");
+		assignBase(mHeightDlg, "Height");
+		assignBase(mLayerDlg, "Layer");
+		assignBase(mVegDlg, "Vegetation");
 	}
 
 	TerrainPane::~TerrainPane()
 	{
+		SHUT_SLN;
 	}
 
 	void TerrainPane::_Init(Event * sender)
 	{
-		mEditHeight._Init(NULL);
-		mEditLayer._Init(NULL);
-		mEditVeg._Init(NULL);
+		mEditHeight._Init();
+		mEditLayer._Init();
+		mEditVeg._Init();
 	}
 
 	void TerrainPane::_Shutdown(Event * sender)
 	{
-		mEditHeight._Shutdown(NULL);
-		mEditLayer._Shutdown(NULL);
-		mEditVeg._Shutdown(NULL);
+		mEditHeight._Shutdown();
+		mEditLayer._Shutdown();
+		mEditVeg._Shutdown();
 	}
 
 	void TerrainPane::_Update(Event * sender)
@@ -112,22 +55,22 @@ namespace Infinite {
 		if (op != eOP_Terrain)
 			return ;
 
-		/*int layerId = mLayerDlg.GetCurLayer();
-		mEditLayer.SetLayer(layerId);*/
+		int layerId = mLayerDlg->GetCurLayer();
+		mEditLayer.SetLayer(layerId);
 
 		int isel = mTabControl->getIndexSelected();
 
 		if (isel == xHeightPage)
 		{
-			mEditHeight._Update(NULL);
+			mEditHeight._Update();
 		}
 		else if (isel == xLayerPage)
 		{
-			mEditLayer._Update(NULL);
+			mEditLayer._Update();
 		}
 		else if (isel == xVegPage)
 		{
-			mEditVeg._Update(NULL);
+			mEditVeg._Update();
 		}
 	}
 
@@ -142,15 +85,15 @@ namespace Infinite {
 
 		if (isel == xHeightPage)
 		{
-			mEditHeight._Render(NULL);
+			mEditHeight._Render();
 		}
 		else if (isel == xLayerPage)
 		{
-			mEditLayer._Render(NULL);
+			mEditLayer._Render();
 		}
 		else if (isel == xVegPage)
 		{
-			mEditVeg._Render(NULL);
+			mEditVeg._Render();
 		}
 	}
 
@@ -175,15 +118,17 @@ namespace Infinite {
 	void TerrainPane::_UnloadScene(Event * sender)
 	{
 		mEditLayer.SetLayer(-1);
-		//mLayerDlg._UnloadScene(NULL);
-		//mVegDlg._UnloadScene(NULL);
+
+		mLayerDlg->_UnloadScene(NULL);
+		mVegDlg->_UnloadScene(NULL);
 	}
 
 	void TerrainPane::_AfterloadScene(Event * sender)
 	{
 		mEditLayer.SetLayer(-1);
-		//mLayerDlg._AfterLoadScene(NULL);
-		//mVegDlg._AfterLoadScene(NULL);
+
+		mLayerDlg->_AfterLoadScene(NULL);
+		mVegDlg->_AfterLoadScene(NULL);
 	}
 
 }

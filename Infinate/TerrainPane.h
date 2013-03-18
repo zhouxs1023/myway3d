@@ -13,32 +13,23 @@
 #include "xEditTerrainHeight.h"
 #include "xEditTerrainLayer.h"
 #include "xEditTerrainVeg.h"
+#include "TerrainHeightDlg.h"
+#include "TerrainLayerDlg.h"
+#include "TerrainVegDlg.h"
 
 namespace Infinite {
 
-	class TerrainHeightDlg : public wraps::BaseLayout
-	{
-	public:
-		TerrainHeightDlg(MyGUI::Widget * _parent);
-		virtual ~TerrainHeightDlg();
-
-
-	protected:
-		void notifyBrushSizeDensityChanged(MyGUI::ScrollBar* _sender, size_t _position);
-
-	protected:
-		MyGUI::ScrollBar * mBrushSize;
-		MyGUI::ScrollBar * mBrushDensity;
-		MyGUI::ComboBox * mBrushType;
-		MyGUI::ComboBox * mBrushOperator;
-	};
-
-
 	class TerrainPane : public wraps::BaseLayout
 	{
+		DECLARE_SINGLETON(TerrainPane);
+
 	public:
 		TerrainPane(MyGUI::Widget * _parent);
 		virtual ~TerrainPane();
+
+		TerrainHeightDlg * GetTerrainHeightDlg() { return mHeightDlg; }
+		TerrainLayerDlg * GetTerrainLayerDlg() { return mLayerDlg; }
+		TerrainVegDlg * GetTerrainVegDlg() { return mVegDlg; }
 
 		xEditTerrainHeight * GetTerrainHeight() { return &mEditHeight; }
 		xEditTerrainLayer * GetTerrainLayer() { return &mEditLayer; }
@@ -67,5 +58,8 @@ namespace Infinite {
 		xEditTerrainVeg mEditVeg;
 
 		MyGUI::TabControl * mTabControl;
+		TerrainHeightDlg * mHeightDlg;
+		TerrainLayerDlg * mLayerDlg;
+		TerrainVegDlg * mVegDlg;
 	};
 }

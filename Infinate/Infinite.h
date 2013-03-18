@@ -101,6 +101,35 @@ namespace Infinite {
 
 			return false;
 		}
+
+
+		static const char * ToString(float f)
+		{
+			static char buffer[32];
+			
+			sprintf_s(buffer, 32, "%2f", f);
+
+			return buffer;
+		}
+
+		static const char * ToString(int i)
+		{
+			static char buffer[32];
+
+			sprintf_s(buffer, 32, "%d", i);
+
+			return buffer;
+		}
+
+		static float ToFloat(const char * str)
+		{
+			return (float)atof(str);
+		}
+
+		static int ToInt(const char * str)
+		{
+			return atoi(str);
+		}
 	};
 
 }

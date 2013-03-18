@@ -32,7 +32,7 @@ namespace Infinite {
 		mMainWidget->setVisible(true);
 	}
 
-	const char * SceneDialog::GetSceneFloder()
+	TString128 SceneDialog::GetSceneFloder()
 	{
 		size_t index = mFloderList->getIndexSelected();
 
@@ -42,9 +42,9 @@ namespace Infinite {
 		return mFloderList->getItemNameAt(index).asUTF8_c_str();
 	}
 
-	const char * SceneDialog::GetSceneName()
+	TString128 SceneDialog::GetSceneName()
 	{
-		return mSceneName->getCaption().asUTF8_c_str();
+		return mSceneName->getOnlyText().asUTF8_c_str();
 	}
 
 	void SceneDialog::EndDialog()

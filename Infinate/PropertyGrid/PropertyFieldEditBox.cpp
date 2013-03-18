@@ -39,9 +39,9 @@ namespace Infinite
 
 	void PropertyFieldInt::notifyTextChanged(MyGUI::EditBox* _sender)
 	{
-		const char * sval = mField->getCaption().asUTF8_c_str();
+		TString128 sval = mField->getOnlyText().asUTF8_c_str();
 
-		int ival = atoi(sval);
+		int ival = atoi(sval.c_str());
 
 		mObject->SetPropertyData(mProperty, &ival);
 
@@ -109,9 +109,9 @@ namespace Infinite
 
 	void PropertyFieldFloat::notifyTextChanged(MyGUI::EditBox* _sender)
 	{
-		const char * sval = mField->getCaption().asUTF8_c_str();
+		TString128 sval = mField->getOnlyText().asUTF8_c_str();
 
-		float fval = (float)atof(sval);
+		float fval = (float)atof(sval.c_str());
 
 		mObject->SetPropertyData(mProperty, &fval);
 
@@ -176,7 +176,7 @@ namespace Infinite
 
 	void PropertyFieldString::notifyTextChanged(MyGUI::EditBox* _sender)
 	{
-		TString128 val = mField->getCaption().asUTF8_c_str();
+		TString128 val = mField->getOnlyText().asUTF8_c_str();
 
 		mObject->SetPropertyData(mProperty, &val);
 

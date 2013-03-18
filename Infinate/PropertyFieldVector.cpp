@@ -59,11 +59,11 @@ namespace Infinite {
 	{
 		Vec2 v;
 
-		const char * xval = mFieldX->getCaption().asUTF8_c_str();
-		const char * yval = mFieldY->getCaption().asUTF8_c_str();
+		TString128 xval = mFieldX->getOnlyText().asUTF8_c_str();
+		TString128 yval = mFieldY->getOnlyText().asUTF8_c_str();
 
-		v.x = (float)atof(xval);
-		v.y = (float)atof(yval);
+		v.x = (float)atof(xval.c_str());
+		v.y = (float)atof(yval.c_str());
 
 		mObject->SetPropertyData(mProperty, &v);
 		mObject->OnPropertyChanged(mProperty);
@@ -137,13 +137,13 @@ namespace Infinite {
 	{
 		Vec3 v;
 
-		const char * xval = mFieldX->getCaption().asUTF8_c_str();
-		const char * yval = mFieldY->getCaption().asUTF8_c_str();
-		const char * zval = mFieldZ->getCaption().asUTF8_c_str();
+		TString128 xval = mFieldX->getOnlyText().asUTF8_c_str();
+		TString128 yval = mFieldY->getOnlyText().asUTF8_c_str();
+		TString128 zval = mFieldZ->getOnlyText().asUTF8_c_str();
 
-		v.x = (float)atof(xval);
-		v.y = (float)atof(yval);
-		v.z = (float)atof(zval);
+		v.x = (float)atof(xval.c_str());
+		v.y = (float)atof(yval.c_str());
+		v.z = (float)atof(zval.c_str());
 
 		mObject->SetPropertyData(mProperty, &v);
 
@@ -230,15 +230,15 @@ namespace Infinite {
 	{
 		Vec4 v;
 
-		const char * xval = mFieldX->getCaption().asUTF8_c_str();
-		const char * yval = mFieldY->getCaption().asUTF8_c_str();
-		const char * zval = mFieldZ->getCaption().asUTF8_c_str();
-		const char * wval = mFieldW->getCaption().asUTF8_c_str();
+		TString128 xval = mFieldX->getOnlyText().asUTF8_c_str();
+		TString128 yval = mFieldY->getOnlyText().asUTF8_c_str();
+		TString128 zval = mFieldZ->getOnlyText().asUTF8_c_str();
+		TString128 wval = mFieldW->getOnlyText().asUTF8_c_str();
 
-		v.x = (float)atof(xval);
-		v.y = (float)atof(yval);
-		v.z = (float)atof(zval);
-		v.w = (float)atof(wval);
+		v.x = (float)atof(xval.c_str());
+		v.y = (float)atof(yval.c_str());
+		v.z = (float)atof(zval.c_str());
+		v.w = (float)atof(wval.c_str());
 
 		mObject->SetPropertyData(mProperty, &v);
 

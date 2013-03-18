@@ -1,5 +1,8 @@
 #pragma once
 
+namespace Infinite {
+
+
 class xEditTerrainVeg
 {
 	struct Brush
@@ -16,10 +19,10 @@ public:
 	void SetBrushDensity(int density) { mBrushDensity = density; }
 	void SetBrushOp(bool bAdd) { mBrushOp_Add = bAdd; }
 
-	void _Init(Event * sender);
-	void _Shutdown(Event * sender);
-	void _Update(Event * sender);
-	void _Render(Event * sender);
+	void _Init();
+	void _Shutdown();
+	void _Update();
+	void _Render();
 
 protected:
 	float mBrushSize;
@@ -29,3 +32,5 @@ protected:
 	Brush mBrush;
 	Technique * mTech_Brush;
 };
+
+}

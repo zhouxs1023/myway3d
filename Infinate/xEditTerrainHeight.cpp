@@ -1,8 +1,9 @@
 #include "stdafx.h"
 #include "xEditTerrainHeight.h"
-#include "xTerrainOp.h"
 #include "MWTerrainSection.h"
-#include "xApp.h"
+#include "Editor.h"
+
+namespace Infinite {
 
 xEditTerrainHeight::xEditTerrainHeight()
 {
@@ -22,24 +23,24 @@ void xEditTerrainHeight::SetBrush(const TString128 & tex)
 	d_assert (mBrush.texture != NULL && mBrush.image != NULL);
 }
 
-void xEditTerrainHeight::_Init(Event * sender)
+void xEditTerrainHeight::_Init()
 {
-	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
+	mTech_Brush = Editor::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
 }
 
-void xEditTerrainHeight::_Update(Event * sender)
+void xEditTerrainHeight::_Update()
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
 	if (!terrain)
 		return ;
 
-	int op = xApp::Instance()->GetOperator();
+	int op = Editor::Instance()->GetOperator();
 
-	if (op != xTerrainOp::eOp_Terrain)
+	if (op != eOP_Terrain)
 		return ;
 
-	Point2f pt = IMouse::Instance()->GetPositionUnit();
+	Point2f pt = Editor::Instance()->GetMousePosition();
 
 	if (pt.x < 0 || pt.y < 0 || pt.x > 1 || pt.y > 1)
 		return ;
@@ -53,22 +54,22 @@ void xEditTerrainHeight::_Update(Event * sender)
 	_UpdateGeometry();
 }
 
-void xEditTerrainHeight::_Shutdown(Event * sender)
+void xEditTerrainHeight::_Shutdown()
 {
 	mBrush.texture = NULL;
 	mBrush.image = NULL;
 }
 
-void xEditTerrainHeight::_Render(Event * sender)
+void xEditTerrainHeight::_Render()
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
 	if (!terrain)
 		return ;
 
-	int op = xApp::Instance()->GetOperator();
+	int op = Editor::Instance()->GetOperator();
 
-	if (op != xTerrainOp::eOp_Terrain)
+	if (op != eOP_Terrain)
 		return ;
 
 	// render brush
@@ -123,10 +124,10 @@ void xEditTerrainHeight::_UpdateGeometry()
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
-	if (!terrain)
+	if (!terrain || !Editor::Instance()->IsFoucs())
 		return ;
 
-	int op = xApp::Instance()->GetOperator();
+	int op = Editor::Instance()->GetOperator();
 
 	Vec3 center = mBrush.position;
 	float size = mBrush.size;
@@ -226,4 +227,6 @@ void xEditTerrainHeight::_UpdateGeometry()
 	}
 
 	terrain->UnlockHeight();
+}
+
 }

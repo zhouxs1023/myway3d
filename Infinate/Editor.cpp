@@ -7,7 +7,7 @@
 #include "xOcean.h"
 #include "xTerrain.h"
 #include "xTree.h"
-
+#include "MainWorkSpace.h"
 
 namespace Infinite {
 
@@ -19,6 +19,8 @@ namespace Infinite {
 		INIT_SLN;
 
 		mOperator = eOP_Unknown;
+		mFoucs = true;
+		mMousePosition = Point2f(0, 0);
 	}
 
 	Editor::~Editor()
@@ -62,6 +64,7 @@ namespace Infinite {
 
 	void Editor::Update()
 	{
+		RenderWindow::Instance()->Update();
 		xEvent::OnUpdate();
 	}
 

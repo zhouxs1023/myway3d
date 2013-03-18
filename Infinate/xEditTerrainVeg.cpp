@@ -3,9 +3,12 @@
 #include "xEditTerrainVeg.h"
 #include "MVegetation.h"
 #include "MForest.h"
-#include "xTerrainPane.h"
-#include "xApp.h"
 #include "MWTerrainSection.h"
+
+#include "TerrainPane.h"
+#include "Editor.h"
+
+namespace Infinite {
 
 xEditTerrainVeg::xEditTerrainVeg()
 {
@@ -15,24 +18,24 @@ xEditTerrainVeg::~xEditTerrainVeg()
 {
 }
 
-void xEditTerrainVeg::_Init(Event * sender)
+void xEditTerrainVeg::_Init()
 {
-	mTech_Brush = xApp::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
+	mTech_Brush = Editor::Instance()->GetHelperShaderLib()->GetTechnique("TerrainBrush");
 }
 
-void xEditTerrainVeg::_Shutdown(Event * sender)
+void xEditTerrainVeg::_Shutdown()
 {
 }
 
-void xEditTerrainVeg::_Update(Event * sender)
+void xEditTerrainVeg::_Update()
 {
-	float brushSize = xTerrainPane::Instance()->GetTerrainVegDlg()->BrushSize();
-	int brushDensity = xTerrainPane::Instance()->GetTerrainVegDlg()->BrushDensity();
-	float minSize = xTerrainPane::Instance()->GetTerrainVegDlg()->MinSize();
-	float maxSize = xTerrainPane::Instance()->GetTerrainVegDlg()->MaxSize();
-	float minLum = xTerrainPane::Instance()->GetTerrainVegDlg()->MinLum();
-	float maxLum = xTerrainPane::Instance()->GetTerrainVegDlg()->MaxLum();
-	bool addMode = xTerrainPane::Instance()->GetTerrainVegDlg()->IsAddMode();
+	float brushSize = TerrainPane::Instance()->GetTerrainVegDlg()->BrushSize();
+	int brushDensity = TerrainPane::Instance()->GetTerrainVegDlg()->BrushDensity();
+	float minSize = TerrainPane::Instance()->GetTerrainVegDlg()->MinSize();
+	float maxSize = TerrainPane::Instance()->GetTerrainVegDlg()->MaxSize();
+	float minLum = TerrainPane::Instance()->GetTerrainVegDlg()->MinLum();
+	float maxLum = TerrainPane::Instance()->GetTerrainVegDlg()->MaxLum();
+	bool addMode = TerrainPane::Instance()->GetTerrainVegDlg()->IsAddMode();
 
 	minSize = Math::ClampPositive(minSize);
 	maxSize = Math::ClampPositive(maxSize);
@@ -42,11 +45,11 @@ void xEditTerrainVeg::_Update(Event * sender)
 
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
-	if (!terrain)
+	if (!terrain || !Editor::Instance()->IsFoucs())
 		 return ;
 
-	float x = IMouse::Instance()->GetPositionUnit().x;
-	float y = IMouse::Instance()->GetPositionUnit().y;
+	float x = Editor::Instance()->GetMousePosition().x;
+	float y = Editor::Instance()->GetMousePosition().y;
 
 	if (x <= 0 || x >= 1 ||
 		y <= 0 || y >= 1)
@@ -62,7 +65,7 @@ void xEditTerrainVeg::_Update(Event * sender)
 	if (!IMouse::Instance()->KeyUp(MKC_BUTTON0))
 		return ;
 
-	MVegetation * veg = xTerrainPane::Instance()->GetTerrainVegDlg()->GetCurVeg();
+	MVegetation * veg = TerrainPane::Instance()->GetTerrainVegDlg()->GetCurVeg();
 
 	if (!veg || brushDensity <= 0 || brushSize < 0)
 		return ;
@@ -110,16 +113,16 @@ void xEditTerrainVeg::_Update(Event * sender)
 	}
 }
 
-void xEditTerrainVeg::_Render(Event * sender)
+void xEditTerrainVeg::_Render()
 {
 	Terrain * terrain = Environment::Instance()->GetTerrain();
 
 	if (!terrain)
 		return ;
 
-	int op = xApp::Instance()->GetOperator();
+	int op = Editor::Instance()->GetOperator();
 
-	if (op != xTerrainOp::eOp_Terrain)
+	if (op != eOP_Terrain)
 		return ;
 
 	// render brush
@@ -168,4 +171,6 @@ void xEditTerrainVeg::_Render(Event * sender)
 			rop->rState = oldState;
 		}
 	}
+}
+
 }

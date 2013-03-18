@@ -1,6 +1,8 @@
 #pragma once
 
 
+namespace Infinite {
+
 class xEditTerrainHeight
 {
 	struct Brush
@@ -37,10 +39,10 @@ public:
 	void SetOperator(Op op) { mOp = op; }
 	Op GetOperator() { return mOp; }
 
-	void _Init(Event * sender);
-	void _Shutdown(Event * sender);
-	void _Update(Event * sender);
-	void _Render(Event * sender);
+	void _Init();
+	void _Shutdown();
+	void _Update();
+	void _Render();
 
 protected:
 	
@@ -51,3 +53,5 @@ protected:
 	Brush mBrush;
 	Technique * mTech_Brush;
 };
+
+}

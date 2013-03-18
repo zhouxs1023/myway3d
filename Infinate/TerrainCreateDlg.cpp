@@ -44,16 +44,16 @@ namespace Infinite {
 
 	float TerrainCreateDlg::GetXSize()
 	{
-		const char * txt = mXSize->getCaption().asUTF8_c_str();
+		TString128 txt = mXSize->getOnlyText().asUTF8_c_str();
 
-		return (float)atof(txt);
+		return (float)atof(txt.c_str());
 	}
 
 	float TerrainCreateDlg::GetZSize()
 	{
-		const char * txt = mZSize->getCaption().asUTF8_c_str();
+		TString128 txt = mZSize->getOnlyText().asUTF8_c_str();
 
-		return (float)atof(txt);
+		return (float)atof(txt.c_str());
 	}
 
 	int TerrainCreateDlg::GetXVertSize()
@@ -62,9 +62,9 @@ namespace Infinite {
 
 		d_assert (isel >= 0);
 
-		const char * txt = mXVertSize->getItemNameAt(isel).asUTF8_c_str();
+		TString128 txt = mXVertSize->getItemNameAt(isel).asUTF8_c_str();
 
-		return atoi(txt);
+		return atoi(txt.c_str());
 	}
 
 	int TerrainCreateDlg::GetZVertSize()
@@ -73,9 +73,9 @@ namespace Infinite {
 
 		d_assert (isel >= 0);
 
-		const char * txt = mZVertSize->getItemNameAt(isel).asUTF8_c_str();
+		TString128 txt = mZVertSize->getItemNameAt(isel).asUTF8_c_str();
 
-		return atoi(txt);
+		return atoi(txt.c_str());
 	}
 
 	void TerrainCreateDlg::DoModal()

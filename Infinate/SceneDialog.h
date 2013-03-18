@@ -15,8 +15,8 @@ namespace Infinite {
 
 		void DoModal();
 
-		const char * GetSceneFloder();
-		const char * GetSceneName();
+		TString128 GetSceneFloder();
+		TString128 GetSceneName();
 
 	protected:
 		void OnInit();

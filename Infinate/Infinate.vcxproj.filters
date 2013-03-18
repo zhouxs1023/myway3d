@@ -40,9 +40,6 @@
     <ClCompile Include="xOcean.cpp">
       <Filter>Shapes\Extern</Filter>
     </ClCompile>
-    <ClCompile Include="xTree.cpp">
-      <Filter>Shapes\Extern</Filter>
-    </ClCompile>
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="SceneDialog.cpp">
       <Filter>Common</Filter>
@@ -109,6 +106,24 @@
     <ClCompile Include="xEditTerrainVeg.cpp">
       <Filter>Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="TerrainHeightDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainLayerDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainVegDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainLayerInfoDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainVegInfoDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xTree.cpp">
+      <Filter>Forest</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -151,9 +166,6 @@
       <Filter>Shapes\Extern</Filter>
     </ClInclude>
     <ClInclude Include="xOcean.h">
-      <Filter>Shapes\Extern</Filter>
-    </ClInclude>
-    <ClInclude Include="xTree.h">
       <Filter>Shapes\Extern</Filter>
     </ClInclude>
     <ClInclude Include="Editor.h" />
@@ -229,6 +241,24 @@
     </ClInclude>
     <ClInclude Include="xEditTerrainVeg.h">
       <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainHeightDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainLayerDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainVegDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainLayerInfoDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainVegInfoDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xTree.h">
+      <Filter>Forest</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="270 205 485 310" align="Center" layer="Overlapped" name="_Main">
+        <Property key="Caption" value="Terrain Vegetation"/>
+        <Widget type="Button" skin="Button" position="225 240 100 25" name="Ok">
+            <Property key="Caption" value="Ok"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="330 240 100 25" name="Cancel">
+            <Property key="Caption" value="Cancel"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 125 115 25">
+            <Property key="Caption" value="DiffuseMap:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 160 115 25">
+            <Property key="Caption" value="NormalMap:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 195 115 25">
+            <Property key="Caption" value="SpecularMap:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 20 115 25">
+            <Property key="Caption" value="Name:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 125 235 25" name="DiffuseMap">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 160 235 25" name="NormalMap">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 195 235 25" name="SpecularMap">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 20 235 25" name="Name">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 55 115 25">
+            <Property key="Caption" value="Type:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="ComboBox" skin="ComboBox" position="195 55 235 25" name="Type">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 90 115 25">
+            <Property key="TextAlign" value="Left VCenter"/>
+            <Property key="Caption" value="Mesh:"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 90 235 25" name="Mesh">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+    </Widget>
+</MyGUI>

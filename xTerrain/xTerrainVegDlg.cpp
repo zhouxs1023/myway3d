@@ -169,7 +169,7 @@ void xTerrainVegDlg::OnEdit()
 				veg->pMesh = NULL;
 
 			veg->DiffuseMap = VideoBufferManager::Instance()->Load2DTexture(dlg.DiffuseMap(), dlg.DiffuseMap());
-			
+
 			if (dlg.NormalMap() != "")
 				veg->NormalMap = VideoBufferManager::Instance()->Load2DTexture(dlg.NormalMap(), dlg.NormalMap());
 			else

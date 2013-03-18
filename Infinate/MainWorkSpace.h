@@ -26,6 +26,7 @@ namespace Infinite {
 
 		void Init();
 		void Shutdown();
+		void Update();
 
 	protected:
 		void OnMouseSetFocus(MyGUI::Widget* _sender, MyGUI::Widget* _old);
@@ -39,16 +40,12 @@ namespace Infinite {
 		void OnKeyDown(MyGUI::Widget* _sender, MyGUI::KeyCode _key, MyGUI::Char _char);
 		void OnKeyUp(MyGUI::Widget* _sender, MyGUI::KeyCode _key);
 
-	protected:
-		void _OnUpdate(Event * _sender);
 
 	protected:
 		MyGUI::ImageBox * mRenderWindow;
 		MGUI_Texture * mRenderTexture;
 
 		bool mFocus;
-
-		tEventListener<RenderWindow> OnUpdate;
 	};
 
 	

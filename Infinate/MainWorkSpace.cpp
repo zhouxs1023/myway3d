@@ -11,7 +11,6 @@ namespace Infinite {
 	IMP_SLN(RenderWindow);
 
 	RenderWindow::RenderWindow(MyGUI::ImageBox * _window)
-		: OnUpdate(xEvent::OnUpdate, this, &RenderWindow::_OnUpdate)
 	{
 		INIT_SLN;
 
@@ -75,11 +74,13 @@ namespace Infinite {
 	void RenderWindow::OnMouseSetFocus(MyGUI::Widget* _sender, MyGUI::Widget* _old)
 	{
 		mFocus = true;
+		Editor::Instance()->SetFoucs(true);
 	}
 
 	void RenderWindow::OnMouseLostFocus(MyGUI::Widget* _sender, MyGUI::Widget* _new)
 	{
 		mFocus = false;
+		Editor::Instance()->SetFoucs(false);
 	}
 
 	void RenderWindow::OnKeySetFocus(MyGUI::Widget* _sender, MyGUI::Widget* _old)
@@ -106,7 +107,7 @@ namespace Infinite {
 	{
 	}
 
-	void RenderWindow::_OnUpdate(Event * _sender)
+	void RenderWindow::Update()
 	{
 		if (!mFocus || !xScene::Instance()->IsInited())
 			return ;
@@ -198,6 +199,8 @@ namespace Infinite {
 		Point2i mousePt = IMouse::Instance()->GetPosition();
 		float mouseX = (mousePt.x - pt.left) / (float)rc.width;
 		float mouseY = (mousePt.y - pt.top) / (float)rc.height;
+
+		Editor::Instance()->_SetMousePosition(Point2f(mouseX, mouseY));
 
 		// pick
 		eOperator op = Editor::Instance()->GetOperator();
@@ -381,7 +384,7 @@ namespace Infinite {
 
 	MyGUI::TabItem * ToolControl::GetPage(const char * name)
 	{
-		for (int i = 0; i < mTabControl->getItemCount(); ++i)
+		for (int i = 0; i < (int)mTabControl->getItemCount(); ++i)
 		{
 			MyGUI::TabItem * p = mTabControl->getItemAt(i);
 

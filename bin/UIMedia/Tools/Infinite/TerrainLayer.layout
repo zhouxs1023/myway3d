@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelSkin" position="80 40 280 660" align="Stretch" name="_Main">
+        <UserString key="SnapTo" value="Stretch"/>
+        <Widget type="TextBox" skin="TextBox" position="20 25 90 25">
+            <Property key="Caption" value="Size:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="20 70 90 25">
+            <Property key="Caption" value="Density:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="20 115 90 25">
+            <Property key="Caption" value="Type:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="ScrollBar" skin="SliderH" position="125 30 135 20" name="BrushSize"/>
+        <Widget type="ScrollBar" skin="SliderH" position="125 75 135 20" name="BrushDensity"/>
+        <Widget type="ComboBox" skin="ComboBox" position="125 115 135 25" name="BrushType"/>
+        <Widget type="ListBox" skin="ListBox" position="20 180 140 295" name="LayerList"/>
+        <Widget type="Button" skin="Button" position="175 180 95 25" name="Add">
+            <Property key="Caption" value="Add"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="175 215 95 25" name="Remove">
+            <Property key="Caption" value="Remove"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="175 250 95 25" name="Edit">
+            <Property key="Caption" value="Edit"/>
+        </Widget>
+    </Widget>
+</MyGUI>

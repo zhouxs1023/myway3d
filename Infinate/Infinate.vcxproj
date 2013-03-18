@@ -91,7 +91,12 @@
     </ClCompile>
     <ClCompile Include="Shape.cpp" />
     <ClCompile Include="TerrainCreateDlg.cpp" />
+    <ClCompile Include="TerrainHeightDlg.cpp" />
+    <ClCompile Include="TerrainLayerDlg.cpp" />
+    <ClCompile Include="TerrainLayerInfoDlg.cpp" />
     <ClCompile Include="TerrainPane.cpp" />
+    <ClCompile Include="TerrainVegDlg.cpp" />
+    <ClCompile Include="TerrainVegInfoDlg.cpp" />
     <ClCompile Include="xBaseOperator.cpp" />
     <ClCompile Include="xEditTerrainHeight.cpp" />
     <ClCompile Include="xEditTerrainLayer.cpp" />
@@ -138,7 +143,12 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Shape.h" />
     <ClInclude Include="TerrainCreateDlg.h" />
+    <ClInclude Include="TerrainHeightDlg.h" />
+    <ClInclude Include="TerrainLayerDlg.h" />
+    <ClInclude Include="TerrainLayerInfoDlg.h" />
     <ClInclude Include="TerrainPane.h" />
+    <ClInclude Include="TerrainVegDlg.h" />
+    <ClInclude Include="TerrainVegInfoDlg.h" />
     <ClInclude Include="xBaseOperator.h" />
     <ClInclude Include="xEditTerrainHeight.h" />
     <ClInclude Include="xEditTerrainLayer.h" />

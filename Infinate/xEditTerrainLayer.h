@@ -1,5 +1,6 @@
 #pragma once
 
+namespace Infinite {
 
 class xEditTerrainLayer
 {
@@ -28,10 +29,10 @@ public:
 	float GetBrushSize() { return mBrush.size; }
 	float GetBrushDensity() { return mBrush.density; }
 
-	void _Init(Event * sender);
-	void _Shutdown(Event * sender);
-	void _Update(Event * sender);
-	void _Render(Event * sender);
+	void _Init();
+	void _Shutdown();
+	void _Update();
+	void _Render();
 
 	void _RenderSectionLayer();
 
@@ -44,3 +45,5 @@ protected:
 	Technique * mTech_Layer;
 	int mLayer;
 };
+
+}

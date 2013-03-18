@@ -88,7 +88,7 @@ namespace Infinite {
 	{
 		if (mMode == eOnLoad)
 		{
-			xScene::Instance()->Load(mSceneDialog->GetSceneName(), mSceneDialog->GetSceneFloder());
+			xScene::Instance()->Load(mSceneDialog->GetSceneName().c_str(), mSceneDialog->GetSceneFloder().c_str());
 		}
 	}
 }

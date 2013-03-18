@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="277 359 470 305" align="Center" layer="Overlapped" name="_Main">
+        <Property key="Caption" value="Terrain Layer"/>
+        <Widget type="Button" skin="Button" position="215 215 100 25" name="Ok">
+            <Property key="Caption" value="Ok"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="330 215 100 25" name="Cancel">
+            <Property key="Caption" value="Cancel"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 35 115 25">
+            <Property key="Caption" value="DiffuseMap:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 70 115 25">
+            <Property key="Caption" value="NormalMap:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 105 115 25">
+            <Property key="Caption" value="SpecularMap:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 140 115 25">
+            <Property key="Caption" value="UVScale:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 175 115 25">
+            <Property key="Caption" value="MaterialId:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 35 235 25" name="DiffuseMap">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 70 235 25" name="NormalMap">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 105 235 25" name="SpecularMap">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 140 235 25" name="UVScale">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="195 175 235 25" name="MaterialId">
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+    </Widget>
+</MyGUI>
