@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "MainMenu.h"
+#include "Editor.h"
 #include "xScene.h"
 
 namespace Infinite {
@@ -72,6 +73,11 @@ namespace Infinite {
 	void MainMenu::OnSave()
 	{
 		mMode = eOnSave;
+		
+		if (xScene::Instance()->IsInited())
+		{
+			xScene::Instance()->Save();
+		}
 	}
 
 	void MainMenu::OnExport()
@@ -82,6 +88,11 @@ namespace Infinite {
 	void MainMenu::OnNew()
 	{
 		mMode = eOnNew;
+
+		if (!xScene::Instance()->IsInited())
+		{
+			mSceneDialog->DoModal();
+		}
 	}
 
 	void MainMenu::_OnDialogOK(Event * sender)
@@ -89,6 +100,17 @@ namespace Infinite {
 		if (mMode == eOnLoad)
 		{
 			xScene::Instance()->Load(mSceneDialog->GetSceneName().c_str(), mSceneDialog->GetSceneFloder().c_str());
+		}
+		else if (mMode == eOnNew)
+		{
+			if (!ResourceManager::Instance()->Exist(mSceneDialog->GetSceneName().c_str()))
+			{
+				xScene::Instance()->New(mSceneDialog->GetSceneName().c_str(), mSceneDialog->GetSceneFloder().c_str());
+			}
+			else
+			{
+				MMessageBox::Instance()->DoModal("Scene File Exit!", "Error");
+			}
 		}
 	}
 }

@@ -32,6 +32,8 @@ bool xScene::New(const char * filename, const char * floder)
 
 	xEvent::OnNewScene(NULL, NULL);
 
+	xEvent::OnAfterLoadScene(NULL, NULL);
+
 	Save();
 
 	return true;

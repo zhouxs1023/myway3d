@@ -28,6 +28,8 @@ namespace Infinite {
 		void Shutdown();
 		void Update();
 
+		void OnDragFile(const char * file);
+
 	protected:
 		void OnMouseSetFocus(MyGUI::Widget* _sender, MyGUI::Widget* _old);
 		void OnMouseLostFocus(MyGUI::Widget* _sender, MyGUI::Widget* _new);
@@ -74,7 +76,21 @@ namespace Infinite {
 
 
 
+	//
+	//
+	class StatusBar : public wraps::BaseLayout
+	{
+	public:
+		StatusBar(MyGUI::Widget * _parent);
+		virtual ~StatusBar();
 
+	protected:
+		void _OnUpdateText(Event * _sender);
+
+	protected:
+		MyGUI::TextBox * mText;
+		tEventListener<StatusBar> OnUpdateText;
+	};
 
 
 
@@ -92,6 +108,7 @@ namespace Infinite {
 		MyGUI::ImageBox * mImageBox;
 		RenderWindow * mRenderWindow;
 		ToolBar * mToolBar;
+		StatusBar * mStatusBar;
 	};
 
 
@@ -164,8 +181,27 @@ namespace Infinite {
 		virtual ~MainWorkSpace();
 
 	protected:
+		void notifyMouseButtonPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+		void notifyMouseButtonReleased(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+		void notifyMouseDrag(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id);
+
+	protected:
 		ToolControl * mToolControl;
 		WorkspaceControl * mWorkspaceControl;
+
+		MyGUI::Widget* mLeftPanel;
+		MyGUI::Widget* mRightPanel;
+		MyGUI::Widget* mSeparatorH;
+
+		int mMinSizeLeft;
+		int mMinSizeRight;
+
+		MyGUI::IntCoord mStartLeftPanel;
+		MyGUI::IntCoord mStartRightPanel;
+		MyGUI::IntCoord mStartSeparatorH;
+
+		MyGUI::IntPoint mStartMousePosition;
+		bool mNeedResize;
 	};
 
 }

@@ -20,6 +20,8 @@ namespace Infinite
 
 		App_Win32::Init();
 
+		DragAcceptFiles(mhWnd, TRUE);
+
 		mRenderer = new DeferredRenderer();
 
 		Engine::Instance()->SetRenderScheme(mRenderer);
@@ -77,6 +79,18 @@ namespace Infinite
 				RenderWindow::Instance()->Shutdown();
 				Engine::Instance()->Resize(rc.right - rc.left, rc.bottom - rc.top);
 				RenderWindow::Instance()->Init();
+			}
+		}
+
+		if (mhWnd == hWnd && iMsg == WM_DROPFILES)
+		{
+			TCHAR meshFile[MAX_PATH] = { 0 };
+			HDROP hDrop = (HDROP)wParam;
+			int len = DragQueryFile(hDrop, 0, meshFile, MAX_PATH);
+
+			if (len > 0)
+			{
+				RenderWindow::Instance()->OnDragFile(meshFile);
 			}
 		}
 

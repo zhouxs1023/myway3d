@@ -254,6 +254,31 @@ namespace Infinite {
 		}
 	}
 
+	void RenderWindow::OnDragFile(const char * file)
+	{
+		MyGUI::IntCoord rc = mRenderWindow->getClientCoord();
+		MyGUI::IntPoint pt = mRenderWindow->getAbsolutePosition();
+
+		Point2i mousePt = IMouse::Instance()->GetPosition();
+		float mouseX = (mousePt.x - pt.left) / (float)rc.width;
+		float mouseY = (mousePt.y - pt.top) / (float)rc.height;
+
+		if (mouseX <= 0 || mouseX >= 1 || mouseY <= 0 || mouseY >= 1 ||
+			!xScene::Instance()->IsInited())
+			return ;
+
+		TString128 fileName = file;
+
+		xEvent::OnDragFile(&Point2f(mouseX, mouseY), fileName.c_str());
+	}
+
+
+
+
+
+
+
+
 
 
 
@@ -331,10 +356,39 @@ namespace Infinite {
 
 
 
+	StatusBar::StatusBar(MyGUI::Widget * _parent)
+		: BaseLayout("StatusBar.layout", _parent)
+		, OnUpdateText(RenderEvent::OnAfterRender, this, &StatusBar::_OnUpdateText)
+	{
+		assignWidget(mText, "Text");
+	}
+
+	StatusBar::~StatusBar()
+	{
+	}
+
+	void StatusBar::_OnUpdateText(Event * _sender)
+	{
+		float fps = Engine::Instance()->GetFPS();
+		int tc = Engine::Instance()->GetPrimitiveCount();
+		int bc = Engine::Instance()->GetBatchCount();
+
+		char buffer[128];
+
+		sprintf_s(buffer, 128, "FPS: %.2f, TC: %d, BC: %d.", fps, tc, bc);
+
+		mText->setCaption(buffer);
+	}
+
+
+
+
+
 	WorkspaceControl::WorkspaceControl(MyGUI::Widget * _parent)
 		: BaseLayout("Workspace.layout", _parent)
 	{
 		assignBase(mToolBar, "ToolBar");
+		assignBase(mStatusBar, "StatusBar");
 		assignWidget(mImageBox, "RenderWindow");
 
 		mRenderWindow = new RenderWindow(mImageBox);
@@ -350,6 +404,9 @@ namespace Infinite {
 	void WorkspaceControl::Resize()
 	{
 	}
+
+
+
 
 
 
@@ -500,11 +557,90 @@ namespace Infinite {
 	MainWorkSpace::MainWorkSpace(MyGUI::Widget * _parent)
 		: BaseLayout("MainWorkSpace.layout", _parent)
 	{
+		assignWidget(mLeftPanel, "Left");
+		assignWidget(mRightPanel, "Right");
+		assignWidget(mSeparatorH, "SeparatorH");
+
 		assignBase(mToolControl, "ToolsControl");
 		assignBase(mWorkspaceControl, "WorkspaceControl");
+
+		mMinSizeLeft = MyGUI::utility::parseValue<int>(mLeftPanel->getUserString("MinSize"));
+		mMinSizeRight = MyGUI::utility::parseValue<int>(mRightPanel->getUserString("MinSize"));
+
+		mSeparatorH->eventMouseButtonPressed += MyGUI::newDelegate(this, &MainWorkSpace::notifyMouseButtonPressed);
+		mSeparatorH->eventMouseButtonReleased += MyGUI::newDelegate(this, &MainWorkSpace::notifyMouseButtonReleased);
+		mSeparatorH->eventMouseDrag += MyGUI::newDelegate(this, &MainWorkSpace::notifyMouseDrag);
+
+		mNeedResize = false;
 	}
 
 	MainWorkSpace::~MainWorkSpace()
 	{
 	}
+
+	void MainWorkSpace::notifyMouseButtonPressed(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+	{
+		if (_id == MyGUI::MouseButton::Left)
+		{
+			mStartLeftPanel = mLeftPanel->getCoord();
+			mStartRightPanel = mRightPanel->getCoord();
+			mStartSeparatorH = mSeparatorH->getCoord();
+			mStartMousePosition = MyGUI::InputManager::getInstance().getMousePosition();
+			mNeedResize = false;
+		}
+	}
+
+	void MainWorkSpace::notifyMouseButtonReleased(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+	{
+		if (_id == MyGUI::MouseButton::Left)
+		{
+			RenderWindow::Instance()->Shutdown();
+			RenderWindow::Instance()->Init();
+
+			mNeedResize = false;
+		}
+	}
+
+	void MainWorkSpace::notifyMouseDrag(MyGUI::Widget* _sender, int _left, int _top, MyGUI::MouseButton _id)
+	{
+		if (_id == MyGUI::MouseButton::Left)
+		{
+			MyGUI::IntPoint mousePosition = MyGUI::InputManager::getInstance().getMousePosition();
+			int delta = mousePosition.left - mStartMousePosition.left;
+
+			MyGUI::IntCoord leftPanel = mStartLeftPanel;
+			MyGUI::IntCoord rightPanel = mStartRightPanel;
+			MyGUI::IntCoord separatorHPanel = mStartSeparatorH;
+
+			leftPanel.width += delta;
+			separatorHPanel.left += delta;
+			rightPanel.left += delta;
+			rightPanel.width -= delta;
+
+			int diffLeft = mMinSizeLeft - leftPanel.width;
+			if (diffLeft > 0)
+			{
+				leftPanel.width += diffLeft;
+				separatorHPanel.left += diffLeft;
+				rightPanel.left += diffLeft;
+				rightPanel.width -= diffLeft;
+			}
+
+			int diffRight = mMinSizeRight - rightPanel.width;
+			if (diffRight > 0)
+			{
+				leftPanel.width -= diffRight;
+				separatorHPanel.left -= diffRight;
+				rightPanel.left -= diffRight;
+				rightPanel.width += diffRight;
+			}
+
+			mLeftPanel->setCoord(leftPanel);
+			mRightPanel->setCoord(rightPanel);
+			mSeparatorH->setCoord(separatorHPanel);
+
+			mNeedResize = true;
+		}
+	}
+
 }
