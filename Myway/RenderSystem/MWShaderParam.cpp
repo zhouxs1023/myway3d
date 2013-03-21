@@ -330,6 +330,10 @@ void ShaderParamTable::Update()
                 param->SetColor(reg->GetFogColor());
                 break;
 
+			case SPBT_MIRROR_COLOR:
+				param->SetColor(reg->GetMirrorColor());
+				break;;
+
             case SPBT_MATERIAL_AMBIENT:
                 param->SetColor(reg->GetMaterialAmbient());
                 break;

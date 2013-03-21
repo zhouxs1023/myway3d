@@ -13,6 +13,11 @@ namespace Myway {
 const int K_Terrain_Version = 0;
 const int K_Terrain_Magic = 'TRN0';
 
+#define _POSITION    0
+#define _HEIGHT		 1
+#define _NORMAL      2
+#define _MORPH       3
+
 Terrain::Terrain(const Config & config)
 	: tOnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &Terrain::OnPreVisibleCull)
 {
@@ -25,8 +30,17 @@ Terrain::Terrain(const Config & config)
 	for (int i = 0; i < kMaxDetailLevel; ++i)
 	{
 		mTech[i] = Environment::Instance()->GetShaderLib()->GetTechnique(TString128("TerrainL") + (i + 1));
-		d_assert (mTech[i]);
+		mTechMirror[i] = Environment::Instance()->GetShaderLib()->GetTechnique(TString128("TerrainM") + (i + 1));
+		
+		d_assert (mTech[i] && mTechMirror[i]);
 	}
+
+	mVertexDecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	mVertexDecl->AddElement(_POSITION, 0,  DT_FLOAT2, DU_POSITION, 0);
+	mVertexDecl->AddElement(_HEIGHT, 0,  DT_FLOAT1, DU_TEXCOORD, 0);
+	mVertexDecl->AddElement(_NORMAL, 0,  DT_COLOR, DU_NORMAL, 0);
+	mVertexDecl->AddElement(_MORPH, 0, DT_FLOAT1, DU_BLENDWEIGHT, 0);
+	mVertexDecl->Init();
 
 	_Create(config);
 }
@@ -43,8 +57,17 @@ Terrain::Terrain(const char * source)
 	for (int i = 0; i < kMaxDetailLevel; ++i)
 	{
 		mTech[i] = Environment::Instance()->GetShaderLib()->GetTechnique(TString128("TerrainL") + (i + 1));
-		d_assert (mTech[i]);
+		mTechMirror[i] = Environment::Instance()->GetShaderLib()->GetTechnique(TString128("TerrainM") + (i + 1));
+
+		d_assert (mTech[i] && mTechMirror[i]);
 	}
+
+	mVertexDecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
+	mVertexDecl->AddElement(_POSITION, 0,  DT_FLOAT2, DU_POSITION, 0);
+	mVertexDecl->AddElement(_HEIGHT, 0,  DT_FLOAT1, DU_TEXCOORD, 0);
+	mVertexDecl->AddElement(_NORMAL, 0,  DT_COLOR, DU_NORMAL, 0);
+	mVertexDecl->AddElement(_MORPH, 0, DT_FLOAT1, DU_BLENDWEIGHT, 0);
+	mVertexDecl->Init();
 
 	_Load(source);
 }
@@ -618,12 +641,12 @@ Color Terrain::_getNormal(int x, int z)
 
 void Terrain::Render()
 {
-    RenderSystem * render = RenderSystem::Instance();
+	RenderSystem * render = RenderSystem::Instance();
 
-    for (int i = 0; i < mVisibleSections.Size(); ++i)
-    {
-        mVisibleSections[i]->UpdateLod();
-    }
+	for (int i = 0; i < mVisibleSections.Size(); ++i)
+	{
+		mVisibleSections[i]->UpdateLod();
+	}
 
 	ShaderParam * uTransform[kMaxDetailLevel];
 	ShaderParam * uUVParam[kMaxDetailLevel];
@@ -731,6 +754,88 @@ int	Terrain::_getTechId(int layer0, int layer1, int layer2, int layer3)
 
 void Terrain::RenderInMirror()
 {
+	RenderSystem * render = RenderSystem::Instance();
+
+	ShaderParam * uTransform[kMaxDetailLevel];
+	ShaderParam * uUVParam[kMaxDetailLevel];
+	ShaderParam * uUVScale[kMaxDetailLevel];
+	ShaderParam * uMorph[kMaxDetailLevel];
+
+	for (int i = 0; i < kMaxDetailLevel; ++i)
+	{
+		uTransform[i] = mTechMirror[i]->GetVertexShaderParamTable()->GetParam("gTransform");
+		uUVParam[i] = mTechMirror[i]->GetVertexShaderParamTable()->GetParam("gUVParam");
+		uUVScale[i] = mTechMirror[i]->GetVertexShaderParamTable()->GetParam("gUVScale");
+		uMorph[i] = mTechMirror[i]->GetVertexShaderParamTable()->GetParam("gMorph");
+	}
+
+	float xInvSectionSize = 1 / mConfig.xSectionSize;
+	float zInvSectionSize = 1 / mConfig.zSectionSize;
+	float xInvSize = 1 / mConfig.xSize;
+	float zInvSize = 1 / mConfig.zSize;
+
+	for (int i = 0; i < mVisibleSections.Size(); ++i)
+	{
+		TerrainSection * section = mVisibleSections[i];
+		int x = section->GetSectionX();
+		int z = section->GetSectionZ();
+		int layer0 = section->GetLayer(0);
+		int layer1 = section->GetLayer(1);
+		int layer2 = section->GetLayer(2);
+		int layer3 = section->GetLayer(3);
+		float xOff = section->GetOffX();
+		float zOff = section->GetOffZ();
+
+		int techId = _getTechId(layer0, layer1, layer2, layer3);
+
+		layer0 = Math::Maximum(0, layer0);
+		layer1 = Math::Maximum(0, layer1);
+		layer2 = Math::Maximum(0, layer2);
+		layer3 = Math::Maximum(0, layer3);
+
+		TexturePtr weightMap = GetWeightMap(x, z);
+		TexturePtr detailMap0 = _getDetailMap(layer0);
+		TexturePtr detailMap1 = _getDetailMap(layer1);
+		TexturePtr detailMap2 = _getDetailMap(layer2);
+		TexturePtr detailMap3 = _getDetailMap(layer3);
+
+		float uvScale0 = mLayer[layer0].scale;
+		float uvScale1 = mLayer[layer1].scale;
+		float uvScale2 = mLayer[layer2].scale;
+		float uvScale3 = mLayer[layer3].scale;
+
+		SamplerState state;
+		state.Address = TEXA_CLAMP;
+
+		if (techId > 0)
+			render->SetTexture(0, state, weightMap.c_ptr());
+
+		state.Address = TEXA_WRAP;
+		render->SetTexture(1, state, detailMap0.c_ptr());
+
+		if (techId > 0)
+		{
+			render->SetTexture(2, state, detailMap1.c_ptr());
+		}
+
+		if (techId > 1)
+		{
+			render->SetTexture(3, state, detailMap2.c_ptr());
+		}
+
+		if (techId > 2)
+		{
+			render->SetTexture(4, state, detailMap3.c_ptr());
+		}
+
+		uTransform[techId]->SetUnifom(xOff, 0, zOff, 0);
+		uUVParam[techId]->SetUnifom(xInvSectionSize, zInvSectionSize, xInvSize, zInvSize);
+		uUVScale[techId]->SetUnifom(uvScale0, uvScale1, uvScale2, uvScale3);
+
+		section->PreRender();
+
+		render->Render(mTechMirror[techId], &section->mRender);
+	}
 }
 
 

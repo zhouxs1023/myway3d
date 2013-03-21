@@ -1,0 +1,33 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+    float2 tcoord0		: TEXCOORD0;
+    float4 tcoord12		: TEXCOORD1;
+    float4 tcoord34		: TEXCOORD2;
+};
+
+struct PS_OUT
+{
+    float4 color	: COLOR0;
+};
+
+uniform sampler2D tex_detail0 : register(s1);
+
+uniform float4 gMirrorColor;
+
+PS_OUT main(PS_IN In)
+{
+    PS_OUT Out = (PS_OUT)0;
+    
+    Out.color = tex2D(tex_detail0, In.tcoord12.xy);
+
+	Out.color *= gMirrorColor;
+
+    return Out;
+}
+
+

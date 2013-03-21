@@ -8,10 +8,21 @@ namespace Myway
         mShaderPrivder = new ShaderProvider();
         mRenderLoop = new RenderLoop(this);
 		mEnvironment = new Environment();
+
+		mMirrorRenderQueue = new MirrorRenderQueue();
+		mMirrorRenderLoop = new MirrorRenderLoop(this);
+
+		mMirrorCamera = World::Instance()->CreateCamera("Core_Water_Refl");
+		World::Instance()->CreateSceneNode("Core_Water_Refl_Node")->Attach(mMirrorCamera);
     }
 
     DeferredRenderer::~DeferredRenderer()
     {
+		World::Instance()->DestroyCamera(mMirrorCamera);
+
+		delete mMirrorRenderLoop;
+		delete mMirrorRenderQueue;
+
 		delete mEnvironment;
         delete mRenderLoop;
         delete mShaderPrivder;
@@ -29,15 +40,48 @@ namespace Myway
 
         // render color
         Camera * cam = World::Instance()->MainCamera();
-        mMainResult.nodes.Clear();
-        mMainResult.lights.Clear();
-        World::Instance()->ImpVisibleCull(mMainResult, cam, true, true);
+		mMainResult.nodes.Clear();
+		mMainResult.lights.Clear();
+		World::Instance()->ImpVisibleCull(mMainResult, cam, true, true);
 
-        mRenderQueue.Clear();
-        mRenderQueue.PushRenderer(mMainResult.nodes);
+		mRenderQueue.Clear();
+		mRenderQueue.PushRenderer(mMainResult.nodes);
 
         mRenderLoop->DoRender();
 
         RenderEvent::OnPostRenderEvent(NULL, NULL);
     }
+
+	void DeferredRenderer::RenderInMirror(const Plane & mirrorPlane)
+	{
+		Camera * mainCam = World::Instance()->MainCamera();
+
+		mMirrorCamera->SetPosition(mainCam->GetPosition());
+		mMirrorCamera->SetOrientation(mainCam->GetOrientation());
+		mMirrorCamera->SetMirrorPlane(mirrorPlane);
+		mMirrorCamera->EnableMirror(true);
+		mMirrorCamera->SetNearClip(mainCam->GetNearClip());
+		mMirrorCamera->SetFarClip(mainCam->GetFarClip());
+		mMirrorCamera->SetAspect(mainCam->GetAspect());
+		mMirrorCamera->SetFov(mainCam->GetFov());
+
+		RenderSystem * render = RenderSystem::Instance();
+
+		mMainResult.nodes.Clear();
+		mMainResult.lights.Clear();
+
+		World::Instance()->ImpVisibleCull(mMainResult, mMirrorCamera, false, false);
+
+		mMirrorRenderQueue->Clear();
+		mMirrorRenderQueue->PushRenderer(mMainResult.nodes);
+
+		render->SetViewTransform(mMirrorCamera->GetViewMatrix());
+		render->SetProjTransform(mMirrorCamera->GetProjMatrix());
+
+		RenderRegister::Instance()->SetClipPlane(mMirrorCamera->GetNearClip(), mMirrorCamera->GetFarClip());
+
+		render->SetFlipCullMode(true);
+		mMirrorRenderLoop->DoRender(mMirrorCamera);
+		render->SetFlipCullMode(false);
+	}
 }

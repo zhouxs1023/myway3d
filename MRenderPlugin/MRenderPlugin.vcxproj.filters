@@ -107,6 +107,9 @@
       <Filter>2. Render</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MWMirrorRenderer.cpp">
+      <Filter>2. Render</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MWEnvironment.h">
@@ -197,5 +200,8 @@
       <Filter>2. Render</Filter>
     </ClInclude>
     <ClInclude Include="MRenderEntry.h" />
+    <ClInclude Include="MWMirrorRenderer.h">
+      <Filter>2. Render</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

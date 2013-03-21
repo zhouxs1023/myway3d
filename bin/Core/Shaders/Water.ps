@@ -126,7 +126,7 @@ float CalcuSmoothFactor(float2 projUV, float3 vpos)
 	float d1 = vpos.z;
 	float d2 = tex2D(gTex_Depth, projUV).r * gFarClip.x;
 
-	float s = saturate((d2 - d1) / 2);
+	float s = saturate((d2 - d1) / 10);
 
 	float k = saturate((d2 - 200) / (1000 - 200));
 
@@ -159,11 +159,12 @@ float4 main(PS_IN In) : COLOR
 	float2 rNoiseUV = CalcuNoiseIncUV(projUV, normal.xz * 0.04f, In.viewPos.xyz);
 
 	float4 refrColor = tex2D(gTex_Refr, projUV + rNoiseUV * smooth);
-	float4 reflColor = tex2D(gTex_Refl, projUV + normal.xz * 0.04f);
+	float4 reflColor = tex2D(gTex_Refl, projUV + normal.xz * 0.065f * smooth);
 
 	float fresnel = CalcuFresnel(normal, eyeDir);
 	
 	refrColor = lerp(refrColor, gDeepColor, wgt);
+	reflColor = reflColor;
 
 	float4 col = lerp(refrColor, reflColor, fresnel * smooth);
 	

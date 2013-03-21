@@ -31,6 +31,10 @@ namespace Myway {
 	Event RenderEvent::OnAfterDefferedShading;
 	Event RenderEvent::OnAfterTerrainRender;
 
+	Event RenderEvent::OnMirrorRenderSolid1;
+	Event RenderEvent::OnMirrorRenderSolid2;
+	Event RenderEvent::OnMirrorRenderSolid3;
+
 	Event RenderEvent::OnAfterRender;
 	Event RenderEvent::OnDebugRender;
 

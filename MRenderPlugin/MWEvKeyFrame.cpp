@@ -60,7 +60,8 @@ namespace Myway
         DF_PROPERTY(EvKeyFrame, CloudAmbientScale, "Cloud", "AmbientScale", PT_Float, 4)
         DF_PROPERTY(EvKeyFrame, CloudDiffuseScale, "Cloud", "DiffuseScale", PT_Float, 4)
 
-        DF_PROPERTY(EvKeyFrame, DeepColor, "Water", "DeepColor", PT_Color, 16)
+		DF_PROPERTY(EvKeyFrame, DeepColor, "Water", "DeepColor", PT_Color, 16)
+        DF_PROPERTY(EvKeyFrame, ReflColor, "Water", "ReflColor", PT_Color, 16)
         DF_PROPERTY(EvKeyFrame, UnderWaterFogColor, "Water", "fogColor", PT_Color, 16)
         DF_PROPERTY(EvKeyFrame, UnderWaterFogStart, "Water", "fogStart", PT_Float, 4)
         DF_PROPERTY(EvKeyFrame, UnderWaterFogEnd, "Water", "fogEnd", PT_Float, 4)
@@ -126,6 +127,7 @@ namespace Myway
         CloudDiffuseScale = 1.5f;
 
         DeepColor = Color4(18.0f / 255.0f, 22.0f / 255.0f, 36.0f / 255.0f, 1);
+		ReflColor = Color4::White;
         UnderWaterFogColor = Color4(29.0f / 255.0f, 57.0f / 255.0f, 68.0f / 255.0f, 1);
         UnderWaterFogStart = 20;
         UnderWaterFogEnd = 120;
@@ -162,6 +164,7 @@ namespace Myway
     EvWaterParam::EvWaterParam()
     {
         deepColor = Color4(18.0f / 255.0f, 22.0f / 255.0f, 36.0f / 255.0f, 1);
+		reflColor = Color4::White;
         fogColor = Color4(29.0f / 255.0f, 57.0f / 255.0f, 68.0f / 255.0f, 1);
         fogStart = 20;
         fogEnd = 120;

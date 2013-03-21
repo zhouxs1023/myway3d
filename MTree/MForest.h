@@ -74,6 +74,7 @@ namespace Myway {
 
 		void _render();
 		void _renderDepthForShadow(int layer);
+		void _renderInMirror(Camera * camera);
 		void _preVisibleCull();
 
 		void _drawMeshVeg();
@@ -89,6 +90,10 @@ namespace Myway {
 		void _drawBranchDepth();
 		void _drawFrondDepth();
 		void _drawLeafDepth();
+
+		void _drawBranchMirror();
+		void _drawFrondMirror();
+		void _drawLeafMirror();
 
 		void _setupWindMatrix(float accTime);
 
@@ -122,6 +127,10 @@ namespace Myway {
 		Technique * mTech_FrondDepth;
 		Technique * mTech_LeafDepth;
 
+		Technique * mTech_BranchMirror;
+		Technique * mTech_FrondMirror;
+		Technique * mTech_LeafMirror;
+
 		// wind
 		float mWindStrength;
 		Mat4 mWindMatrix[MTreeGlobal::K_NumWindMatrix];
@@ -140,6 +149,7 @@ namespace Myway {
 
 		void _render(Event * sender);
 		void _renderDepth(Event * sender);
+		void _renderInMirror(Event * sender);
 
 		void _preVisibleCull(Event * sender);
 
@@ -150,6 +160,7 @@ namespace Myway {
 		tEventListener<MForestListener> OnPreVisibleCull;
 		tEventListener<MForestListener> OnRender;
 		tEventListener<MForestListener> OnRenderDepth;
+		tEventListener<MForestListener> OnRenderInMirror;
 
 		MForest * mForest;
 	};

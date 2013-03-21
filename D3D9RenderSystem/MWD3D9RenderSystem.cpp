@@ -231,7 +231,17 @@ void D3D9RenderSystem::SetBlendTransform(const Mat4 * forms, int count)
 
 void D3D9RenderSystem::SetRenderState(const RenderState & state)
 {
-    mD3DDevice->SetRenderState(D3DRS_CULLMODE, state.cullMode);
+	DWORD cullMode = state.cullMode;
+
+	if (mFlipCullMode)
+	{
+		if (cullMode == D3DCULL_CCW)
+			cullMode = D3DCULL_CW;
+		else if (cullMode == D3DCULL_CW)
+			cullMode = D3DCULL_CCW;
+	}
+
+    mD3DDevice->SetRenderState(D3DRS_CULLMODE, cullMode);
     mD3DDevice->SetRenderState(D3DRS_FILLMODE, state.fillMode);
 
     mD3DDevice->SetRenderState(D3DRS_COLORWRITEENABLE, state.colorWrite);

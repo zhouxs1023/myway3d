@@ -263,18 +263,18 @@ namespace Myway {
 		}
     }
 
-    void RenderLoop::_renderSolidObjects(bool deffered)
-    {
-        RenderSystem * render = RenderSystem::Instance();
-        RenderQueue * rq = mScheme->GetRenderQueue();
+	void RenderLoop::_renderSolidObjects(bool deffered)
+	{
+		RenderSystem * render = RenderSystem::Instance();
+		RenderQueue * rq = mScheme->GetRenderQueue();
 
 		render->_BeginEvent("RenderSolidObjects");
 
-        const Array<Renderer *> & objs = rq->GetSolidRender();
+		const Array<Renderer *> & objs = rq->GetSolidRender();
 
-        for (int i = 0; i < objs.Size(); ++i)
-        {
-            Renderer * rd = objs[i];
+		for (int i = 0; i < objs.Size(); ++i)
+		{
+			Renderer * rd = objs[i];
 
 			if (rd->IsUsingDefferedShading() == deffered)
 			{
@@ -286,10 +286,10 @@ namespace Myway {
 
 				render->Render(tech, rd);
 			}
-        }
+		}
 
 		render->_EndEvent();
-    }
+	}
 
 	void RenderLoop::_randerTransObjects()
 	{
@@ -375,4 +375,16 @@ namespace Myway {
 			++whr;
 		}
 	}
+
+
+
+
+
+
+
+
+
+
+
+
 }

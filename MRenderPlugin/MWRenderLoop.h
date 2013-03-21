@@ -11,6 +11,8 @@ namespace Myway
     {
 		friend class DeferredRenderer;
 
+		DECLARE_ALLOC();
+
     public:
         RenderLoop(DeferredRenderer * sch);
         ~RenderLoop();
@@ -47,4 +49,5 @@ namespace Myway
         TexturePtr mTex_Depth;
     };
 
+	
 }

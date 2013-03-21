@@ -46,14 +46,7 @@ void TerrainSection::Init()
 	const float * pHeights = mTerrain->GetHeights();
     const Color * pNormals = mTerrain->GetNormals();
 
-   //create vertex declaration
-    VertexDeclarationPtr pVertexDecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-	pVertexDecl->AddElement(_POSITION, 0,  DT_FLOAT2, DU_POSITION, 0);
-    pVertexDecl->AddElement(_HEIGHT, 0,  DT_FLOAT1, DU_TEXCOORD, 0);
-    pVertexDecl->AddElement(_NORMAL, 0,  DT_COLOR, DU_NORMAL, 0);
-    pVertexDecl->AddElement(_MORPH, 0, DT_FLOAT1, DU_BLENDWEIGHT, 0);
-    pVertexDecl->Init();
-
+    VertexDeclarationPtr pVertexDecl = mTerrain->GetVertexDecl();
     //create vertex buffer
     VideoBufferManager & mgr = *VideoBufferManager::Instance();
 

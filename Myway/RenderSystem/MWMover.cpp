@@ -15,7 +15,8 @@ Mover::Mover(const TString128 & name)
   mSphLocal(Sphere::Zero),
   mSphWorld(Sphere::Zero),
   mVisible(true),
-  mCastShadow(true)
+  mCastShadow(true),
+  mMirrorEnable(true)
 {
 }
 
@@ -169,4 +170,14 @@ void Mover::SetCastShadow(bool cast)
 bool Mover::IsCastShadow() const
 {
     return mCastShadow;
+}
+
+void Mover::SetMirrorEnable(bool enable)
+{
+	mMirrorEnable = enable;
+}
+
+bool Mover::IsMirrorEnable() const
+{
+	return mMirrorEnable;
 }

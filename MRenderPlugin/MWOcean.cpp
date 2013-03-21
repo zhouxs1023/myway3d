@@ -18,9 +18,6 @@ namespace Myway {
     Ocean::~Ocean()
     {
 		delete mProjGrid;
-
-		World::Instance()->DestroyCamera(mCamera);
-		World::Instance()->DestroySceneNode(mCameraNode);
     }
 
 	void Ocean::Resize(int w, int h)
@@ -52,10 +49,6 @@ namespace Myway {
 		mTex_Normal1 = VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal2.tga", "Water\\WaterNormal2.tga");
 
 		d_assert (mTech != NULL && mTex_Normal0 != NULL && mTech_UnderWater != NULL);
-
-		mCamera = World::Instance()->CreateCamera("Core_Water_Refl");
-		mCameraNode = World::Instance()->CreateSceneNode("Core_Water_Refl_Node");
-		mCameraNode->Attach(mCamera);
 
 		_initRT();
 	}
@@ -241,46 +234,17 @@ namespace Myway {
 
     void Ocean::_renderRelfection()
     {
-        Camera * mainCam = World::Instance()->MainCamera();
+		RenderSystem * render = RenderSystem::Instance();
 
-        const Vec3 & pos = mainCam->GetPosition();
-        const Quat & ort = mainCam->GetOrientation();
-     
-        mCameraNode->SetPosition(pos);
-        mCameraNode->SetOrientation(ort);
+		Plane mirrorPlane = Plane(Vec3(0, 1, 0), mPosition);
 
-        Plane mirrorPlane = Plane(Vec3(0, 1, 0), mPosition);
-
-        mCamera->SetMirrorPlane(mirrorPlane);
-        mCamera->EnableMirror(true);
-        mCamera->SetNearClip(mainCam->GetNearClip());
-        mCamera->SetFarClip(mainCam->GetFarClip());
-        mCamera->SetAspect(mainCam->GetAspect());
-        mCamera->SetFov(mainCam->GetFov());
-
-        Vec3 p0 = mPosition;
-        Vec3 p1 = p0 + Vec3(1, 0, 0);
-        Vec3 p2 = p0 + Vec3(0, 0, 1);
-
-		/*mCullResult.lights.Clear();
-		mCullResult.nodes.Clear();
-
-		World::Instance()->ImpVisibleCull(mCullResult, mainCam, false);
-
-		mRenderQueue.Clear();
-		mRenderQueue.PushRenderer(mCullResult.nodes);*/
-
-        RenderSystem * render = RenderSystem::Instance();
-        //RenderQueue * rq = &mRenderQueue;
+		if (mProjGrid)
+		{
+			mirrorPlane = mProjGrid->GetUpperPlane();
+		}
 
         RenderTarget * oldRT = render->GetRenderTarget(0);
         DepthStencil * oldDS = render->GetDepthStencil();
-
-        render->SetViewTransform(mCamera->GetViewMatrix());
-        render->SetProjTransform(mCamera->GetProjMatrix());
-
-        RenderRegister::Instance()->SetClipPlane(mCamera->GetNearClip(), mCamera->GetFarClip());
-
 
         // ---> Bind RenderTarget
         render->SetRenderTarget(0, mRT_Refl.c_ptr());
@@ -292,25 +256,11 @@ namespace Myway {
         // ---> clear buffer
         render->ClearBuffer(NULL, true, true, false, Color::Black, 1, 0);
 
-        // --->render terrain
-        /*if (Environment::Instance()->GetTerrain())
-            Environment::Instance()->GetTerrain()->RenderInMirror();*/
+		Color4 deepColor = Environment::Instance()->GetEvParam()->WaterParam.reflColor;
 
-        // ---> render sky
-        if (Environment::Instance()->GetSky2())
-            Environment::Instance()->GetSky2()->RenderReflection(mirrorPlane);
+		RenderRegister::Instance()->SetMirrorColor(deepColor);
 
-        // ---> render sun
-        /*if (Environment::Instance()->GetSun())
-            Environment::Instance()->GetSun()->Render();*/
-
-        // ---> render moons
-        if (Environment::Instance()->GetMoon())
-            Environment::Instance()->GetMoon()->Render();
-
-        // ---> render cloud
-        //if (Environment::Instance()->GetCloud())
-            //Environment::Instance()->GetCloud()->Render(false);
+		Engine::Instance()->GetRenderScheme()->RenderInMirror(mirrorPlane);
 
         mRT_Refl->Stretch(mTex_Refl.c_ptr());
 

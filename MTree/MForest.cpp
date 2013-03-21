@@ -51,6 +51,15 @@ namespace Myway {
 		mTech_FrondDepth = mTech_BranchDepth;
 		mTech_LeafDepth = mShaderLib->GetTechnique("LeafDepth");
 
+		d_assert (mTech_BranchDepth && mTech_FrondDepth && mTech_LeafDepth);
+
+		mTech_BranchMirror = mShaderLib->GetTechnique("BranchMirror");
+		mTech_FrondMirror = mTech_BranchMirror;
+		mTech_LeafMirror = mShaderLib->GetTechnique("LeafMirror");
+
+		d_assert (mTech_BranchMirror && mTech_FrondMirror && mTech_LeafMirror);
+
+
 		CSpeedTreeRT::SetNumWindMatrices(MTreeGlobal::K_NumWindMatrix);
 	}
 
@@ -206,7 +215,8 @@ namespace Myway {
 		stream->Read(&xBlockCount, sizeof(int));
 		stream->Read(&zBlockCount, sizeof(int));
 
-		CreateVegetationBlocks(rect, xBlockCount, zBlockCount);
+		if (xBlockCount > 0 && zBlockCount > 0)
+			CreateVegetationBlocks(rect, xBlockCount, zBlockCount);
 
 		for (int j = 0; j < zBlockCount; ++j)
 		{
@@ -550,6 +560,26 @@ namespace Myway {
 		_drawBranchDepth();
 		_drawFrondDepth();
 		_drawLeafDepth();
+	}
+
+	void MForest::_renderInMirror(Camera * camera)
+	{
+		Camera * cam = camera;
+		const Mat4 & matVP = World::Instance()->MainCamera()->GetViewProjMatrix();
+
+		float afDirection[3];
+		afDirection[0] = matVP.m[0][2];
+		afDirection[1] = matVP.m[1][2];
+		afDirection[2] = matVP.m[2][2];
+
+		CSpeedTreeRT::SetCamera((const float *)&cam->GetPosition(), afDirection);
+
+		if (mVisbleTreeInstances.Size() == 0)
+			return ;
+
+		_drawBranchMirror();
+		_drawFrondMirror();
+		_drawLeafMirror();
 	}
 
 	void MForest::_drawMeshVeg()
@@ -1005,6 +1035,157 @@ namespace Myway {
 		RenderSystem::Instance()->_EndEvent();
 	}
 
+	void MForest::_drawBranchMirror()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Branch Mirror");
+
+		ShaderParam * uWindMatrixOffset = mTech_BranchMirror->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_BranchMirror->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+		ShaderParam * uTranslateScale = mTech_BranchMirror->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_BranchMirror->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+
+		ShaderParam * uDiffuseColor = mTech_BranchMirror->GetPixelShaderParamTable()->GetParam("gDiffuseColor");
+
+		uDiffuseColor->SetColor(RenderRegister::Instance()->GetMirrorColor());
+
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
+
+			if (tree)
+			{
+				MTree::Material * mtl = tree->_getBranchMaterial();
+				RenderOp * rop = tree->_getBranchRenderOp(0);
+
+				if (rop)
+				{
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_BranchMirror, rop);
+				}
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
+
+	void MForest::_drawFrondMirror()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Frond Mirror");
+
+		ShaderParam * uWindMatrixOffset = mTech_FrondMirror->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_FrondMirror->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+		ShaderParam * uTranslateScale = mTech_FrondMirror->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_FrondMirror->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
+
+			if (tree)
+			{
+				MTree::Material * mtl = tree->_getFrondMaterial();
+				RenderOp * rop = tree->_getFrondRenderOp(0);
+
+				if (rop != NULL)
+				{
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_FrondMirror, rop);
+				}
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
+
+	void MForest::_drawLeafMirror()
+	{
+		RenderSystem::Instance()->_BeginEvent("Draw Leaf Mirror");
+
+		ShaderParam * uWindMatrixOffset = mTech_LeafMirror->GetVertexShaderParamTable()->GetParam("gWindMatrixOffset");
+		ShaderParam * uWindMatrix = mTech_LeafMirror->GetVertexShaderParamTable()->GetParam("gWindMatrices");
+
+		ShaderParam * uTranslateScale = mTech_LeafMirror->GetVertexShaderParamTable()->GetParam("gTranslateScale");
+		ShaderParam * uRotationMatrix = mTech_LeafMirror->GetVertexShaderParamTable()->GetParam("gRotationMatrix");
+
+		ShaderParam * uBillboardTable = mTech_LeafMirror->GetVertexShaderParamTable()->GetParam("gBillboardTable");
+
+		uWindMatrix->SetMatrix(mWindMatrix, MTreeGlobal::K_NumWindMatrix);
+
+		ShaderParam * uDiffuseColor = mTech_LeafMirror->GetPixelShaderParamTable()->GetParam("gDiffuseColor");
+
+		uDiffuseColor->SetColor(RenderRegister::Instance()->GetMirrorColor());
+
+		for (int i = 0; i < mVisbleTreeInstances.Size(); ++i)
+		{
+			MTreeInstance * inst = mVisbleTreeInstances[i];
+			MTree * tree = inst->GetTree().c_ptr();
+			Node * pNode = inst->GetAttachNode();
+
+			Vec3 Position = pNode->GetWorldPosition();
+			Quat Orientation = pNode->GetWorldOrientation();
+			Vec3 Scale = pNode->GetWorldScale();
+
+			uWindMatrixOffset->SetUnifom(inst->GetWindMatrixOffset(), 0, 0, 0);
+			uTranslateScale->SetUnifom(Position.x, Position.y, Position.z, Scale.x);
+			uRotationMatrix->SetMatrix(Orientation.ToMatrix());
+
+			if (tree)
+			{
+				RenderOp * rop = tree->_getLeafRenderOp(0);
+
+				if (rop)
+				{
+					MTree::Material * mtl = tree->_getLeafMaterial();
+
+					tree->SetupLeafBillboard(uBillboardTable);
+
+					rop->xform = inst->GetAttachNode()->GetWorldMatrix();
+
+					SamplerState state;
+					RenderSystem::Instance()->SetTexture(0, state, mtl->DiffuseMap.c_ptr());
+
+					RenderSystem::Instance()->Render(mTech_LeafMirror, rop);
+				}
+			}
+		}
+
+		RenderSystem::Instance()->_EndEvent();
+	}
+
+
+
 
 
 
@@ -1025,6 +1206,7 @@ namespace Myway {
 		, OnRender(RenderEvent::OnAfterRenderSolid, this, &MForestListener::_render)
 		, OnPreVisibleCull(RenderEvent::OnPreVisibleCull, this, &MForestListener::_preVisibleCull)
 		, OnRenderDepth(Shadow::OnRenderDepth, this, &MForestListener::_renderDepth)
+		, OnRenderInMirror(RenderEvent::OnMirrorRenderSolid1, this, &MForestListener::_renderInMirror)
 	{
 	}
 
@@ -1061,6 +1243,12 @@ namespace Myway {
 	{
 		int layer = *(int *)sender->GetParam(1);
 		mForest->_renderDepthForShadow(layer);
+	}
+
+	void MForestListener::_renderInMirror(Event * sender)
+	{
+		Camera * cam = (Camera *) sender->GetParam(0);
+		mForest->_renderInMirror(cam);
 	}
 
 }

@@ -32,6 +32,9 @@ RenderRegister::RenderRegister()
     mFogParam = Vec4(10.0f, 300.0f, 1.0f, 0.0f);
     mFogColor = Color4::White;
 
+	//mirror
+	mMirrorColor = Color4::White;
+
     //material
     mMtrlAmbient = Color4::White;
     mMtrlEmissive = Color4::Black;

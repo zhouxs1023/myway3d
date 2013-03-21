@@ -1,0 +1,323 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Common\ColourPanel.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PointerManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\IPropertyField.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldColour.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldComboBox.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldEditBox.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyGrid.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyGroup.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="PropertyGrid\PropertyFieldVector.cpp">
+      <Filter>PropertyGrid</Filter>
+    </ClCompile>
+    <ClCompile Include="xRenderSetting.cpp">
+      <Filter>RenderSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="Shape.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="xLight.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="xMesh.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="xObjBound.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainCreateDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainHeightDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainLayerDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainLayerInfoDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainPane.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainVegDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainVegInfoDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xTerrain.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPane.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWorkSpace.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainHeight.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainLayer.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xEditTerrainVeg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="xForest.cpp">
+      <Filter>Forest</Filter>
+    </ClCompile>
+    <ClCompile Include="xTree.cpp">
+      <Filter>Forest</Filter>
+    </ClCompile>
+    <ClCompile Include="xOcean.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="xUndoRedo.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="xSerializer.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="xScene.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="xEvent.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="xBaseOperator.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneDialog.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBox.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="xEnvironment.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="Gizmo.cpp">
+      <Filter>Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="BackgroundPane.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="EnvironmentPane.cpp">
+      <Filter>Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="Infinite.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Common\Attribute.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseLayout.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelView.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelViewCell.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelViewItem.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ColourPanel.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PointerManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\WrapsAttribute.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\IPropertyField.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldColour.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldComboBox.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldEditBox.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyGrid.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyGroup.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="PropertyGrid\PropertyFieldVector.h">
+      <Filter>PropertyGrid</Filter>
+    </ClInclude>
+    <ClInclude Include="xRenderSetting.h">
+      <Filter>RenderSetting</Filter>
+    </ClInclude>
+    <ClInclude Include="Shape.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="xLight.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="xMesh.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="xObjBound.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainCreateDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainHeightDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainLayerDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainLayerInfoDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainPane.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainVegDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainVegInfoDlg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xTerrain.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainPane.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWorkSpace.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainHeight.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainLayer.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainVeg.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xForest.h">
+      <Filter>Forest</Filter>
+    </ClInclude>
+    <ClInclude Include="xTree.h">
+      <Filter>Forest</Filter>
+    </ClInclude>
+    <ClInclude Include="xOcean.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="xUndoRedo.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="xSerializer.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="xScene.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="xEvent.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="xBaseOperator.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneDialog.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBox.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="xEnvironment.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="App.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="Gizmo.h">
+      <Filter>Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="BackgroundPane.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="EnvironmentPane.h">
+      <Filter>Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Infinite.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Common">
+      <UniqueIdentifier>{bbabfa10-2c47-4117-833f-1ef7764ddf67}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Environment">
+      <UniqueIdentifier>{60a28f7e-e142-4a91-9e3b-3d0d49aa473a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Forest">
+      <UniqueIdentifier>{b5a57d37-1e55-4ba0-939b-99b744f04cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PropertyGrid">
+      <UniqueIdentifier>{947ce244-844a-41a9-846e-40d687a8b1d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RenderSetting">
+      <UniqueIdentifier>{b05fabfc-6773-4d13-98fb-2885b911de57}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Shape">
+      <UniqueIdentifier>{b130ec5d-0644-486a-8874-5baba1e252e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{6d17fd9f-e9db-42e8-9d21-49e945918ade}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Misc">
+      <UniqueIdentifier>{195cff18-8b6a-4ce4-9d9e-a180a673ec7d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MainPane">
+      <UniqueIdentifier>{af5b4c16-d6b8-4b78-bfbc-6458b46afbe6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

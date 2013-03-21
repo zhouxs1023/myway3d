@@ -14,8 +14,8 @@ Camera::Camera(const TString128 & name)
 , mNeedUpdate(true)
 , mProjType(PROJTYPE_PROJECTION)
 , mMirrorPlane(0, 1, 0, 0)
-, mEnableMirror(false)
 {
+	mMirrorEnable = false;
 }
 
 Camera::~Camera()
@@ -202,7 +202,7 @@ void Camera::Update()
         else if (mProjType == PROJTYPE_ORTHO)
             Math::MatOrthoLH(mMatProj, mOrthoWidth, mOrthoHeight, mNear, mFar);
 
-        if (mEnableMirror)
+        if (mMirrorEnable)
         {
             Mat4 matMirror;
             matMirror.MakeReflect(mMirrorPlane);
@@ -224,7 +224,7 @@ void Camera::Update()
         Math::MatMultiply(mMatViewProj, mMatView, mMatProj);
         Math::FrustumFromMatrix(mFrustum, mMatViewProj);
 
-        if (mEnableMirror)
+        if (mMirrorEnable)
             _makeClipProjMatrix();
 
         mNeedUpdate = false;
@@ -280,61 +280,131 @@ Camera::Visibility Camera::GetVisibility(const Sphere & sph)
 {
     Update();
 
-    const Plane * planes = (const Plane *)&mFrustum;
-    bool full = true;
+	if (mMirrorEnable)
+	{
+		Aabb abb;
 
-    for (int i = 0; i < 6; ++i)
-    {
-        Plane::Side side = Math::PlaneSide(planes[i], sph);
+		abb.minimum = sph.center - sph.radius;
+		abb.maximum = sph.center + sph.radius;
 
-        if (side == Plane::NEGATIVE)
-            return VB_NONE;
-        else if (side == Plane::BOTH)
-            full = FALSE;
-    }
+		return GetVisibility(abb);
+	}
+	else
+	{
+		const Plane * planes = (const Plane *)&mFrustum;
+		bool full = true;
 
-    return full ? VB_FULL : VB_PARTIAL;
+		for (int i = 0; i < 6; ++i)
+		{
+			Plane::Side side = Math::PlaneSide(planes[i], sph);
+
+			if (side == Plane::NEGATIVE)
+				return VB_NONE;
+			else if (side == Plane::BOTH)
+				full = FALSE;
+		}
+
+		return full ? VB_FULL : VB_PARTIAL;
+	}
 }
 
 Camera::Visibility Camera::GetVisibility(const Vec3 & point)
 {
     Update();
 
-    const Plane * planes = (const Plane *)&mFrustum;
+	Vec3 pt = point * mMatViewProj;
 
-    for (int i = 0; i < 6; ++i)
-    {
-        Plane::Side side = Math::PlaneSide(planes[i], point);
+	if (pt.x > -1 && pt.x < 1 &&
+		pt.y > -1 && pt.y < 1 &&
+		pt.z > 0 && pt.z < 1)
+		return VB_FULL;
 
-        if (side == Plane::NEGATIVE)
-            return VB_NONE;
-        else if (side == Plane::NONE)
-            return VB_FULL;
-    }
-
-    return VB_FULL;
+	return VB_NONE;
 }
 
 Camera::Visibility Camera::GetVisibility(const Aabb & box)
 {
     Update();
 
-    const Plane * planes = (const Plane *)&mFrustum;
-    Vec3 center = box.GetCenter();
-    Vec3 half = box.GetHalfSize();
-    bool full = true;
+	if (mMirrorEnable)
+	{
+		Vec3 points[8];
+		box.GetPoints(points);
 
-    for (int i = 0; i < 6; ++i)
-    {
-        Plane::Side side = Math::PlaneSide(planes[i], center, half);
+		int vb_count = 0;
 
-        if (side == Plane::NEGATIVE)
-            return VB_NONE;
-        else if (side == Plane::BOTH)
-            full = FALSE;
-    }
+		Math::VecTransform(points, points, mMatViewProj, 8);
 
-    return full ? VB_FULL : VB_PARTIAL;
+		for (int i = 0; i < 8; ++i)
+		{
+			const Vec3 & pt = points[i];
+
+			if (pt.x > -1 && pt.x < 1 &&
+				pt.y > -1 && pt.y < 1 &&
+				pt.z > 0 && pt.z < 1)
+				++vb_count;
+		}
+
+		if (vb_count == 8)
+			return VB_FULL;
+		else if (vb_count > 0)
+			return VB_PARTIAL;
+		else
+		{
+			// left
+			int vb_count[6] = { 0 };
+
+			for (int i = 0; i < 8; ++ i)
+			{
+				const Vec3 & pt = points[i];
+
+				if (pt.x <= -1)
+					++vb_count[0];
+				else if (pt.x >= +1)
+					++vb_count[1];
+
+				if (pt.y <= -1)
+					++vb_count[2];
+				else if (pt.y >= +1)
+					++vb_count[3];
+
+				if (pt.z <= 0)
+					++vb_count[4];
+				else if (pt.z >= 1)
+					++vb_count[5];
+			}
+
+			if (vb_count[0] == 8 ||
+				vb_count[1] == 8 ||
+				vb_count[2] == 8 ||
+				vb_count[3] == 8 ||
+				vb_count[4] == 8 ||
+				vb_count[5] == 8)
+				return VB_NONE;
+
+			return VB_PARTIAL;
+		}
+	}
+	else
+	{
+		const Plane * planes = (const Plane *)&mFrustum;
+		Vec3 center = box.GetCenter();
+		Vec3 half = box.GetHalfSize();
+		bool full = true;
+
+		for (int i = 0; i < 6; ++i)
+		{
+			Plane::Side side = Math::PlaneSide(planes[i], center, half);
+
+			if (side == Plane::NEGATIVE)
+				return VB_NONE;
+			else if (side == Plane::BOTH)
+				full = FALSE;
+		}
+
+		return full ? VB_FULL : VB_PARTIAL;
+	}
+    
 }
 
 bool Camera::IsVisible(const Aabb & box)
@@ -426,11 +496,11 @@ const Plane & Camera::GetMirrorPlane()
 
 void Camera::EnableMirror(bool b)
 {
-    mEnableMirror = b;
+    mMirrorEnable = b;
     mNeedUpdate = true;
 }
 
 bool Camera::IsEnableMirror()
 {
-    return mEnableMirror;
+    return mMirrorEnable;
 }

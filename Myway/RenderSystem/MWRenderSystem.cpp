@@ -7,6 +7,8 @@ namespace Myway
     RenderSystem::RenderSystem()
     {
         INIT_SLN;
+		
+		mFlipCullMode = false;
     }
 
     RenderSystem::~RenderSystem()

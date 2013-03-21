@@ -20,8 +20,24 @@
     </Shader>
 
 		<Shader name = "TerrainL4PS" language = "cg" profile = "ps30" source = "TerrainL4.ps" >
-			  <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
-		</Shader>
+      <param name = "gClipPlane" type = "float4" btype = "clipPlane" />
+    </Shader>
+
+    <Shader name = "TerrainM1PS" language = "cg" profile = "ps30" source = "TerrainM1.ps" >
+      <param name = "gMirrorColor" type = "float4" btype = "mirrorColor" />
+    </Shader>
+
+    <Shader name = "TerrainM2PS" language = "cg" profile = "ps30" source = "TerrainM2.ps" >
+      <param name = "gMirrorColor" type = "float4" btype = "mirrorColor" />
+    </Shader>
+
+    <Shader name = "TerrainM3PS" language = "cg" profile = "ps30" source = "TerrainM3.ps" >
+      <param name = "gMirrorColor" type = "float4" btype = "mirrorColor" />
+    </Shader>
+
+    <Shader name = "TerrainM4PS" language = "cg" profile = "ps30" source = "TerrainM4.ps" >
+      <param name = "gMirrorColor" type = "float4" btype = "mirrorColor" />
+    </Shader>
 
 
 		<Shader name = "SunVS" language = "cg" profile = "vs30" source = "Sun.vs" >
@@ -214,6 +230,18 @@
 
 		<Technique name = "TerrainL4" vs = "TerrainVS" ps = "TerrainL4PS">
 		</Technique>
+
+    <Technique name = "TerrainM1" vs = "TerrainVS" ps = "TerrainM1PS">
+    </Technique>
+
+    <Technique name = "TerrainM2" vs = "TerrainVS" ps = "TerrainM2PS">
+    </Technique>
+
+    <Technique name = "TerrainM3" vs = "TerrainVS" ps = "TerrainM3PS">
+    </Technique>
+
+    <Technique name = "TerrainM4" vs = "TerrainVS" ps = "TerrainM4PS">
+    </Technique>
 
 		<Technique name = "Sun" vs = "SunVS" ps = "SunPS">
 		</Technique>

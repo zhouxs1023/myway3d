@@ -56,6 +56,9 @@ public:
             void                    SetCastShadow(bool cast);
             bool                    IsCastShadow() const;
 
+			void					SetMirrorEnable(bool enable);
+			bool					IsMirrorEnable() const;
+
 protected:
     TString128                      mName;
     Node *                          mNode;
@@ -69,6 +72,7 @@ protected:
     bool                            mVisible;
 
     bool                            mCastShadow;
+	bool							mMirrorEnable;
 };
 
 }

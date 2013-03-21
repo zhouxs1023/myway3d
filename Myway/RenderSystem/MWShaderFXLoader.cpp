@@ -34,6 +34,9 @@ namespace Myway
         else if (strcmp(type, "matBlend") == 0)
             return SPBT_BLEND_MATRIX;
 
+		else if (strcmp(type, "mirrorColor") == 0)
+			return SPBT_MIRROR_COLOR;
+
         else if (strcmp(type, "fogParam") == 0)
             return SPBT_FOG_PARAM;
         else if (strcmp(type, "fogColor") == 0)

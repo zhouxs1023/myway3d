@@ -1,0 +1,25 @@
+///////////////////////////////////////////////////////////////////////  
+//  BranchPS
+//
+
+struct PS_IN
+{
+    float2 UV : TEXCOORD0;
+};
+
+struct PS_OUT
+{
+    float4 color	: COLOR0;
+};
+
+uniform sampler2D tex_diffuse : register(s0);
+uniform float4 gDiffuseColor;
+
+PS_OUT main(PS_IN In)
+{
+	PS_OUT Out = (PS_OUT)0;
+
+    Out.color = tex2D(tex_diffuse, In.UV.xy) * gDiffuseColor;
+    
+    return Out;
+}

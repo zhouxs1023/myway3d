@@ -87,6 +87,10 @@ public:
     void            GetUserData(int offset, void * data, int size);
     const void *    GetUserData(int offset);
 
+	// mirror
+	void			SetMirrorColor(const Color4 & clr)  { mMirrorColor = clr; }
+	const Color4 &  GetMirrorColor() const  { return mMirrorColor; }
+
 protected:
     Mat4            mWorldMatrix;
     Mat4            mViewMatrix;
@@ -115,6 +119,9 @@ protected:
     Color4          mMtrlEmissive;
     Color4          mMtrlDiffuse;
     Color4          mMtrlSpecular;
+
+	// mirror
+	Color4			mMirrorColor;
 
     //light
     Color4          mLightDiffuse[MAX_LIGHTS];

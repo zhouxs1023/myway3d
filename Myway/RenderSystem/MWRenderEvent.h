@@ -36,6 +36,10 @@ namespace Myway {
 		static Event OnAfterDefferedShading;
 		static Event OnAfterTerrainRender;
 
+		static Event OnMirrorRenderSolid1;
+		static Event OnMirrorRenderSolid2;
+		static Event OnMirrorRenderSolid3;
+
 		static Event OnRenderGUI1;
 		static Event OnRenderGUI2;
 		static Event OnRenderGUI3;

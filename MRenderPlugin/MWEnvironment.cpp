@@ -374,7 +374,8 @@ namespace Myway {
         p.CloudParam.ambientScale = Math::Lerp(kf0.CloudAmbientScale, kf1.CloudAmbientScale, d);
         p.CloudParam.diffuseScale = Math::Lerp(kf0.CloudDiffuseScale, kf1.CloudDiffuseScale, d);
         
-        p.WaterParam.deepColor = Math::Lerp(kf0.DeepColor, kf1.DeepColor, d);
+		p.WaterParam.deepColor = Math::Lerp(kf0.DeepColor, kf1.DeepColor, d);
+        p.WaterParam.reflColor = Math::Lerp(kf0.ReflColor, kf1.ReflColor, d);
         p.WaterParam.fogColor = Math::Lerp(kf0.UnderWaterFogColor, kf1.UnderWaterFogColor, d);
         p.WaterParam.fogStart = Math::Lerp(kf0.UnderWaterFogStart, kf1.UnderWaterFogStart, d);
         p.WaterParam.fogEnd = Math::Lerp(kf0.UnderWaterFogEnd, kf1.UnderWaterFogEnd, d);

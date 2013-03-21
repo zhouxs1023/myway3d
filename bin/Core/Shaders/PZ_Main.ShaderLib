@@ -18,6 +18,10 @@
       <param name = "mtlDiffuse" type = "float4" btype = "mtlDiffuse" />
 		</Shader>
 
+    <Shader name = "mirrorPS" language = "cg" profile = "ps30" source = "baseMirror.ps" >
+      <param name = "gMirrorColor" type = "float4" btype = "mirrorColor" />
+    </Shader>
+
 		<Shader name = "QuadVS" language = "cg" profile = "vs30" source = "Quad.vs" >
 		</Shader>
 
@@ -40,6 +44,14 @@
 		<Technique name = "baseSkined" vs = "baseSkinedVS" ps = "basePS">
 			<sampler index = "0" btype = "diffuse" />
 		</Technique>
+
+    <Technique name = "mirror" vs = "baseVS" ps = "mirrorPS">
+      <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
+    </Technique>
+
+    <Technique name = "mirrorSkined" vs = "baseSkinedVS" ps = "mirrorPS">
+      <sampler index = "0" btype = "diffuse" />
+    </Technique>
 
 		<Technique name = "Frush" vs = "QuadVS" ps = "FrushPS">
 		</Technique>

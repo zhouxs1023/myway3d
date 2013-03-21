@@ -97,7 +97,6 @@ protected:
     PROJECTION_TYPE mProjType;
 
     Plane mMirrorPlane;
-    bool mEnableMirror;
 };
 
 }

@@ -56,6 +56,9 @@ namespace Myway {
 
         RenderOp * GetRender() { return &mRender; }
 
+		const Plane & GetUpperPlane() { return mUpperBound; }
+		const Plane & GetLowerPlane() { return mLowerBound; }
+
     protected:
         void _init();
         void _initGeo();

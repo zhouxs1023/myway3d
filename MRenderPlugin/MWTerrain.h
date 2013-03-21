@@ -141,6 +141,7 @@ public:
 protected:
     void                OnPreVisibleCull(Event * sender);
 	VertexBufferPtr		GetXYVertexBuffer() { return mXYStream; }
+	VertexDeclarationPtr GetVertexDecl() { return mVertexDecl; }
 
 	void				_Create(const Config & config);
 	void				_Load(const char * filename);
@@ -161,7 +162,9 @@ protected:
 
     TerrainLod * mLod;
     Technique * mTech[kMaxDetailLevel];
+	Technique * mTechMirror[kMaxDetailLevel];
 	VertexBufferPtr mXYStream;
+	VertexDeclarationPtr mVertexDecl;
 
 	float * mHeights;
 	Color * mNormals;

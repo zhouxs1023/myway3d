@@ -54,10 +54,6 @@ namespace Myway {
 		Technique * mTech_UnderWater;
 
 		Vec3 mPosition;
-		Camera * mCamera;
-		SceneNode * mCameraNode;
-		VisibleCullResult mCullResult;
-		RenderQueue mRenderQueue;
 
 		ProjectedGrid * mProjGrid;
 	};

@@ -22,6 +22,7 @@ public:
 	virtual Texture * GetMaterialTexture() = 0;
 
     virtual void DoRender() = 0;
+	virtual void RenderInMirror(const Plane & mirrorPlane) = 0;
 	virtual void Resize(int w, int h) = 0;
 };
 

@@ -1,0 +1,177 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{325E36A4-B1D1-4F9F-9B18-5879967153BA}</ProjectGuid>
+    <RootNamespace>Infinite_Core</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;..\MRenderPlugin;..\MTree;..\MActor;.\</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>INFI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <OutputFile>../bin/Debug/Infinite_Core_d.dll</OutputFile>
+      <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
+      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;MRender_d.lib;MTree_d.lib;MActor_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ImportLibrary>../bin/lib/Infinite_Core_d.lib</ImportLibrary>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="BackgroundPane.cpp" />
+    <ClCompile Include="Common\ColourPanel.cpp" />
+    <ClCompile Include="Common\PointerManager.cpp" />
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="EnvironmentPane.cpp" />
+    <ClCompile Include="Gizmo.cpp" />
+    <ClCompile Include="Infinite.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
+    <ClCompile Include="MainPane.cpp" />
+    <ClCompile Include="MainWorkSpace.cpp" />
+    <ClCompile Include="MessageBox.cpp" />
+    <ClCompile Include="PropertyGrid\IPropertyField.cpp" />
+    <ClCompile Include="PropertyGrid\PropertyFieldColour.cpp" />
+    <ClCompile Include="PropertyGrid\PropertyFieldComboBox.cpp" />
+    <ClCompile Include="PropertyGrid\PropertyFieldEditBox.cpp" />
+    <ClCompile Include="PropertyGrid\PropertyFieldVector.cpp" />
+    <ClCompile Include="PropertyGrid\PropertyGrid.cpp" />
+    <ClCompile Include="PropertyGrid\PropertyGroup.cpp" />
+    <ClCompile Include="SceneDialog.cpp" />
+    <ClCompile Include="Shape.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TerrainCreateDlg.cpp" />
+    <ClCompile Include="TerrainHeightDlg.cpp" />
+    <ClCompile Include="TerrainLayerDlg.cpp" />
+    <ClCompile Include="TerrainLayerInfoDlg.cpp" />
+    <ClCompile Include="TerrainPane.cpp" />
+    <ClCompile Include="TerrainVegDlg.cpp" />
+    <ClCompile Include="TerrainVegInfoDlg.cpp" />
+    <ClCompile Include="xBaseOperator.cpp" />
+    <ClCompile Include="xEditTerrainHeight.cpp" />
+    <ClCompile Include="xEditTerrainLayer.cpp" />
+    <ClCompile Include="xEditTerrainVeg.cpp" />
+    <ClCompile Include="xEnvironment.cpp" />
+    <ClCompile Include="xEvent.cpp" />
+    <ClCompile Include="xForest.cpp" />
+    <ClCompile Include="xLight.cpp" />
+    <ClCompile Include="xMesh.cpp" />
+    <ClCompile Include="xObjBound.cpp" />
+    <ClCompile Include="xOcean.cpp" />
+    <ClCompile Include="xRenderSetting.cpp" />
+    <ClCompile Include="xScene.cpp" />
+    <ClCompile Include="xSerializer.cpp" />
+    <ClCompile Include="xTerrain.cpp" />
+    <ClCompile Include="xTree.cpp" />
+    <ClCompile Include="xUndoRedo.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="BackgroundPane.h" />
+    <ClInclude Include="Common\Attribute.h" />
+    <ClInclude Include="Common\BaseLayout.h" />
+    <ClInclude Include="Common\BasePanelView.h" />
+    <ClInclude Include="Common\BasePanelViewCell.h" />
+    <ClInclude Include="Common\BasePanelViewItem.h" />
+    <ClInclude Include="Common\ColourPanel.h" />
+    <ClInclude Include="Common\PointerManager.h" />
+    <ClInclude Include="Common\WrapsAttribute.h" />
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="EnvironmentPane.h" />
+    <ClInclude Include="Gizmo.h" />
+    <ClInclude Include="Infinite.h" />
+    <ClInclude Include="MainMenu.h" />
+    <ClInclude Include="MainPane.h" />
+    <ClInclude Include="MainWorkSpace.h" />
+    <ClInclude Include="MessageBox.h" />
+    <ClInclude Include="PropertyGrid\IPropertyField.h" />
+    <ClInclude Include="PropertyGrid\PropertyFieldColour.h" />
+    <ClInclude Include="PropertyGrid\PropertyFieldComboBox.h" />
+    <ClInclude Include="PropertyGrid\PropertyFieldEditBox.h" />
+    <ClInclude Include="PropertyGrid\PropertyFieldVector.h" />
+    <ClInclude Include="PropertyGrid\PropertyGrid.h" />
+    <ClInclude Include="PropertyGrid\PropertyGroup.h" />
+    <ClInclude Include="SceneDialog.h" />
+    <ClInclude Include="Shape.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TerrainCreateDlg.h" />
+    <ClInclude Include="TerrainHeightDlg.h" />
+    <ClInclude Include="TerrainLayerDlg.h" />
+    <ClInclude Include="TerrainLayerInfoDlg.h" />
+    <ClInclude Include="TerrainPane.h" />
+    <ClInclude Include="TerrainVegDlg.h" />
+    <ClInclude Include="TerrainVegInfoDlg.h" />
+    <ClInclude Include="xBaseOperator.h" />
+    <ClInclude Include="xEditTerrainHeight.h" />
+    <ClInclude Include="xEditTerrainLayer.h" />
+    <ClInclude Include="xEditTerrainVeg.h" />
+    <ClInclude Include="xEnvironment.h" />
+    <ClInclude Include="xEvent.h" />
+    <ClInclude Include="xForest.h" />
+    <ClInclude Include="xLight.h" />
+    <ClInclude Include="xMesh.h" />
+    <ClInclude Include="xObjBound.h" />
+    <ClInclude Include="xOcean.h" />
+    <ClInclude Include="xRenderSetting.h" />
+    <ClInclude Include="xScene.h" />
+    <ClInclude Include="xSerializer.h" />
+    <ClInclude Include="xTerrain.h" />
+    <ClInclude Include="xTree.h" />
+    <ClInclude Include="xUndoRedo.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -112,6 +112,11 @@ public:
 
     virtual int             GetAdapterCount() = 0;
     virtual TString128      GetAdapterName(int adapter) = 0;
+
+			void			SetFlipCullMode(bool enable) { mFlipCullMode = enable; }
+
+protected:
+	bool mFlipCullMode;
 };
 
 

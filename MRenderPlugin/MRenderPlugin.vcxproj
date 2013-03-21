@@ -78,6 +78,7 @@
     <ClCompile Include="MWFog.cpp" />
     <ClCompile Include="MWGodRay.cpp" />
     <ClCompile Include="MWHDR.cpp" />
+    <ClCompile Include="MWMirrorRenderer.cpp" />
     <ClCompile Include="MWMoon.cpp" />
     <ClCompile Include="MWOcean.cpp" />
     <ClCompile Include="MWPerlin.cpp" />
@@ -110,6 +111,7 @@
     <ClInclude Include="MWFog.h" />
     <ClInclude Include="MWGodRay.h" />
     <ClInclude Include="MWHDR.h" />
+    <ClInclude Include="MWMirrorRenderer.h" />
     <ClInclude Include="MWMoon.h" />
     <ClInclude Include="MWOcean.h" />
     <ClInclude Include="MWPerlin.h" />

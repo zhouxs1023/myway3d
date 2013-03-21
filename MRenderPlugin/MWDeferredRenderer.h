@@ -7,6 +7,7 @@
 
 #include "MWShaderProvider.h"
 #include "MWRenderLoop.h"
+#include "MWMirrorRenderer.h"
 #include "MWEnvironment.h"
 
 namespace Myway
@@ -21,11 +22,15 @@ namespace Myway
 
 		virtual void Resize(int w, int h);
         virtual void DoRender();
+		virtual void RenderInMirror(const Plane & mirrorPlane);
 
         ShaderProvider * GetMainShaderProvider() { return mShaderPrivder; }
         RenderLoop * GetRenderLoopMain() { return mRenderLoop; }
         RenderQueue * GetRenderQueue() { return &mRenderQueue; }
 		VisibleCullResult * GetCullResult() { return &mMainResult; }
+
+		MirrorRenderQueue * GetMirrorRenderQueue() { return mMirrorRenderQueue; }
+		MirrorRenderLoop * GetMirrorRenderLoop() { return mMirrorRenderLoop; }
 
 		virtual Texture * GetDepthTexture() { return mRenderLoop->mTex_Depth.c_ptr(); };
 		virtual Texture * GetColorTexture() { return mRenderLoop->mTex_Color.c_ptr(); };
@@ -38,6 +43,11 @@ namespace Myway
         RenderLoop * mRenderLoop;
         RenderQueue mRenderQueue;
 		Environment * mEnvironment;
+
+		MirrorRenderQueue  * mMirrorRenderQueue;
+		MirrorRenderLoop  * mMirrorRenderLoop;
+		Camera * mMirrorCamera;
+		Plane mMirrorPlane;
     };
 
 }

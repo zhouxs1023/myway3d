@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Layout" version="3.2.0">
-    <Widget type="Window" skin="WindowC" position="65 80 400 295" name="_Main">
+    <Widget type="Window" skin="WindowC" position="65 80 400 295" layer="Overlapped" name="_Main">
         <Property key="Caption" value="Terrain Create"/>
         <Widget type="TextBox" skin="TextBox" position="35 45 140 25">
             <Property key="Caption" value="x szie:"/>

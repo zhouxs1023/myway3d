@@ -63,6 +63,7 @@ namespace Myway
         float CloudDiffuseScale;
 
         Color4 DeepColor;
+		Color4 ReflColor;
         Color4 UnderWaterFogColor;
         float UnderWaterFogStart;
         float UnderWaterFogEnd;
@@ -131,6 +132,7 @@ namespace Myway
         EvWaterParam();
 
         Color4 deepColor;
+		Color4 reflColor;
         Color4 fogColor;
         float fogStart;
         float fogEnd;
