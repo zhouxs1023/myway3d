@@ -1,6 +1,10 @@
-#include "stdafx.h"
+#include "Myway.h"
+#include "MGUI_System.h"
+
+using namespace Myway;
 
 #include "App.h"
+
 
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
