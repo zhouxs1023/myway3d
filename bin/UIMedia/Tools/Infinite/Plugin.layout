@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="312 344 400 335" align="Center" layer="Overlapped" name="_Main">
+        <Property key="Caption" value="Plugins"/>
+        <Widget type="Button" skin="Button" position="65 250 130 25" name="Ok">
+            <Property key="Caption" value="Ok"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="210 250 130 25" name="Cancel">
+            <Property key="Caption" value="Cancel"/>
+        </Widget>
+        <Widget type="ListBox" skin="ListBox" position="65 15 275 210" name="List"/>
+    </Widget>
+</MyGUI>
