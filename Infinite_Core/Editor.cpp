@@ -21,6 +21,11 @@ namespace Infinite {
 		mOperator = eOP_Unknown;
 		mFoucs = true;
 		mMousePosition = Point2f(0, 0);
+
+		mColorPanel = NULL;
+		mMessageBox = NULL;
+		mFileDialog = NULL;
+		mPuginDialog = NULL;
 	}
 
 	Editor::~Editor()
@@ -52,14 +57,18 @@ namespace Infinite {
 
 		xEvent::OnInit(NULL, NULL);
 		xEvent::OnInitUI(NULL, NULL);
+
+		_loadPlugin();
 	}
 
 	void Editor::Shutdown()
 	{
 		xEvent::OnShutdown(NULL, NULL);
 
-		delete mColorPanel;
-		delete mMessageBox;
+		safe_delete (mColorPanel);
+		safe_delete (mMessageBox);
+		safe_delete (mFileDialog);
+		safe_delete (mPuginDialog);
 	}
 
 	void Editor::Update()
@@ -131,5 +140,68 @@ namespace Infinite {
 		SetSelectedShape(NULL);
 	}
 
+	int Editor::MessageBox(const char * text, const char * caption, UINT type)
+	{
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
 
+		return ::MessageBox(dp->hWnd, text, caption, type);
+	}
+
+
+
+	ColourPanel * Editor::getColorPanel()
+	{
+		if (mColorPanel == NULL)
+			mColorPanel = new ColourPanel();
+
+		return mColorPanel;
+	}
+
+	FileDialog * Editor::getFileDialog()
+	{
+		if (mFileDialog == NULL)
+			mFileDialog = new FileDialog();
+
+		return mFileDialog;
+	}
+
+	MMessageBox * Editor::getMessageBox()
+	{
+		if (mMessageBox == NULL)
+			mMessageBox = new MMessageBox();
+
+		return mMessageBox;
+	}
+
+	PluginDialog * Editor::getPluginDialog()
+	{
+		if (mPuginDialog == NULL)
+			mPuginDialog = new PluginDialog();
+
+		return mPuginDialog;
+	}
+
+	void Editor::_loadPlugin()
+	{
+		FileSystem fs("Infinite_Pugin");
+
+		fs.Load();
+
+		Archive::FileInfoVisitor v = fs.GetFileInfos();
+
+		while (!v.Endof())
+		{
+			TString128 plugin = v.Cursor()->second.name;
+
+			if (File::GetExternName(plugin) == "dll")
+			{
+				Dll dll("Infinite_Pugin\\" + plugin);
+
+				dll.Load();
+				//DllManager::Instance()->Load();
+			}
+
+			++v;
+		}
+	}
 }

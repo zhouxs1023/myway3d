@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="xmdl.cpp" />
+    <ClCompile Include="zone.cpp" />
+    <ClCompile Include="terrain.cpp" />
+    <ClCompile Include="SettingDlg.cpp" />
+    <ClCompile Include="plugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="xmdl.h" />
+    <ClInclude Include="zone.h" />
+    <ClInclude Include="terrain.h" />
+    <ClInclude Include="SettingDlg.h" />
+    <ClInclude Include="plugin.h" />
+  </ItemGroup>
+</Project>

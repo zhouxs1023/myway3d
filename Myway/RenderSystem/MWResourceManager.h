@@ -61,7 +61,7 @@ public:
     void RemoveArchiveFactory(const TString128 & type);
     ArchiveFactory * GetArchiveFactory(const TString128 & type);
 
-    void AddArchive(const TString128 & name, const TString128 & type);
+    Archive * AddArchive(const TString128 & name, const TString128 & type);
     bool Exist(const TString128 & name) const;
     Archive * GetArchive(const TString128 & name);
 
@@ -70,7 +70,7 @@ public:
 	void GetFileInfosByFloder(Archive::FileInfoList & list, const TString128 & floder) const;
     void GetFileInfosByKey(Archive::FileInfoList & list, const TString128 & key) const;
 
-    DataStreamPtr OpenResource(const char * source);
+    DataStreamPtr OpenResource(const char * source, bool _notInFileSystem = false);
 
     void SetResourceLoader(ResourceLoader * loader);
     ResourceLoader * GetResourceLoader();

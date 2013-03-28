@@ -9,6 +9,7 @@
 //
 #pragma once
 
+namespace Infinite {
 
 class xRenderSetting : public IPropertyObj
 {
@@ -36,3 +37,5 @@ protected:
 protected:
 	tEventListener<xRenderSetting> OnSerialize;
 };
+
+}

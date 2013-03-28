@@ -20,7 +20,11 @@
 #include "xObjBound.h"
 
 #include "Common\\ColourPanel.h"
+#include "Common\\FileDialog.h"
 #include "MessageBox.h"
+#include "Editor.h"
+#include "Plugin.h"
+#include "PluginDialog.h"
 
 namespace Infinite {
 
@@ -71,12 +75,19 @@ namespace Infinite {
 		void SetFoucs(bool b) { mFoucs = b; }
 		bool IsFoucs() { return mFoucs; }
 
-		int MessageBox(const char * text, const char * caption, UINT type)
-		{
-			const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+		void AddPlugin(iPlugin * plugin) { mPlugins.PushBack(plugin); }
+		int GetPluginCount() { return mPlugins.Size(); }
+		iPlugin * GetPlugin(int i) { return mPlugins[i]; }
 
-			return ::MessageBox(dp->hWnd, text, caption, type);
-		}
+		int MessageBox(const char * text, const char * caption, UINT type);
+		
+		ColourPanel * getColorPanel();
+		FileDialog * getFileDialog();
+		MMessageBox * getMessageBox();
+		PluginDialog * getPluginDialog();
+
+	protected:
+		void _loadPlugin();
 
 	protected:
 		void _unloadScene(Event * sender);
@@ -95,7 +106,9 @@ namespace Infinite {
 		xRenderSetting mRenderSetting;
 
 		ColourPanel * mColorPanel;
+		FileDialog * mFileDialog;
 		MMessageBox * mMessageBox;
+		PluginDialog * mPuginDialog;
 
 		eOperator mOperator;
 
@@ -105,6 +118,8 @@ namespace Infinite {
 
 		Point2f mMousePosition;
 		bool mFoucs;
+
+		Array<iPlugin *> mPlugins;
 	};
 
 }

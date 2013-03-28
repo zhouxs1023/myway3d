@@ -1,5 +1,6 @@
 #include "MWFile.h"
 #include "MWDebug.h"
+#include <io.h>
 
 #ifdef MW_PLATFORM_WIN32
 #include "Windows.h"
@@ -24,9 +25,47 @@ File::~File()
     Close();
 }
 
+void _makeDir(const char * filedir)
+{
+#ifdef WIN32
+
+	TString128 dir = filedir;
+
+	if (dir == "")
+		return ;
+
+	SECURITY_ATTRIBUTES attribute;
+	attribute.nLength = sizeof(attribute);
+	attribute.lpSecurityDescriptor = NULL;
+	attribute.bInheritHandle = FALSE;
+
+	if (!File::Exist(dir))
+	{
+		TString128 _dir = File::GetFileDir(dir);
+		_makeDir(_dir.c_str());
+
+		BOOL hr = CreateDirectory(dir.c_str(), &attribute);
+
+		d_assert (hr == TRUE);
+	}
+
+#else
+
+#error "not support!"
+
+#endif
+}
+
 bool File::Open(const char * file, OPEN_MODE mode)
 {
 	Close();
+
+	if (mode == OM_WRITE ||
+		mode == OM_WRITE_BINARY)
+	{
+		_makeDir(GetFileDir(file).c_str());
+	}
+
 	switch (mode)
 	{
 	case OM_READ:
@@ -244,6 +283,9 @@ TString128 File::GetFileDir(const TString128 & file)
 
 	dir[len] = 0;
 
+	if (len > 0)
+		dir[len - 1] = 0;
+
 	return dir;
 }
 
@@ -336,5 +378,11 @@ TString128 File::GetAbsoluteFileName(const TString128 & file)
 		return absFile;
 	}
 }
+
+bool File::Exist(const TString128 & file)
+{
+	return ::_access(file.c_str(), 0) != -1;
+}
+
 
 #pragma warning(pop)

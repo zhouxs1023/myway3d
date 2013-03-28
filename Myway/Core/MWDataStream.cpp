@@ -57,12 +57,14 @@ int MemoryStream::Read(void * data, int esize, int count)
 {
 	int size = esize * count;
 
+	d_assert (size > 0);
+
     if (!mEndof)
     {
-        int count = mSize - mCursor;
+        int _count = mSize - mCursor;
 
-        if (size > count)
-            size = count; 
+        if (size > _count)
+            size = _count; 
 
         Memcpy(data, &mData[mCursor], size);
 
@@ -70,7 +72,7 @@ int MemoryStream::Read(void * data, int esize, int count)
 
         mEndof = (mCursor >= mSize);
 
-        return count;
+        return size / esize;
     }
 
     return 0;

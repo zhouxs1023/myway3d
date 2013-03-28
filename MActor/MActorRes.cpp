@@ -39,7 +39,7 @@ namespace Myway {
 
 				d_assert (motionPath != "");
 
-				motionPath += "Motion\\";
+				motionPath += "\\Motion\\";
 
 				Archive::FileInfoList motionList; 
 
@@ -250,7 +250,7 @@ namespace Myway {
 
 		mMaterials = new SMtl[mMaterialCount];
 
-		TString128 sSourceDir = File::GetFileDir(mSourceName) + "texture\\";
+		TString128 sSourceDir = File::GetFileDir(mSourceName) + "\\texture\\";
 
 		for (int i = 0; i < mMaterialCount; ++i)
 		{

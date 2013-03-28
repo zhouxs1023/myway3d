@@ -3,8 +3,9 @@
 using namespace Myway;
 
 Archive::Archive(const TString128 & name, const TString128 & type)
-: mName(name),
-  mType(type)
+: mName(name)
+, mType(type)
+, mUseBaseName(false)
 {
 }
 

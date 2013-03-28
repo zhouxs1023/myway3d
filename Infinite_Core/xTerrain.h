@@ -15,7 +15,7 @@
 
 namespace Infinite {
 
-class xTerrain : public Shape
+class INFI_ENTRY xTerrain : public Shape
 {
 public:
 	xTerrain();
@@ -23,6 +23,8 @@ public:
 
 	void _create(const Terrain::Config & config);
 	void _load(const char * source);
+
+	Terrain * _getTerrain() { return mTerrain; }
 
 	virtual void Serialize(xSerializer & Serializer);
 

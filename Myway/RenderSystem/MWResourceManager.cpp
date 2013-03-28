@@ -222,7 +222,7 @@ void ResourceManager::RemoveArchiveFactory(const TString128 & type)
     }
 }
 
-void ResourceManager::AddArchive(const TString128 & name, const TString128 & type)
+Archive * ResourceManager::AddArchive(const TString128 & name, const TString128 & type)
 {
     FactoryMap::Iterator fwhr = mFactorys.Find(type);
     FactoryMap::Iterator fend = mFactorys.End();
@@ -230,6 +230,8 @@ void ResourceManager::AddArchive(const TString128 & name, const TString128 & typ
     Archive * archive = fwhr->second->CreateInstance(name);
 
     mResourceGroup.AddArchive(archive);
+
+	return archive;
 }
 
 bool ResourceManager::Exist(const TString128 & name) const
@@ -257,9 +259,17 @@ void ResourceManager::GetFileInfosByKey(Archive::FileInfoList & list, const TStr
 	mResourceGroup.GetFileInfosByKey(list, key.LowerR());
 }
 
-DataStreamPtr ResourceManager::OpenResource(const char * source)
+DataStreamPtr ResourceManager::OpenResource(const char * source, bool _notInFileSystem)
 {
-    return mResourceGroup.Open(source);
+	if (!_notInFileSystem)
+		return mResourceGroup.Open(source);
+	else
+	{
+		if (File::Exist(source))
+			return DataStreamPtr(new FileStream(source));
+		else
+			return NULL;
+	}
 }
 
 void ResourceManager::SetResourceLoader(ResourceLoader * loader)

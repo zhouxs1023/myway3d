@@ -11,6 +11,10 @@
 
 #include "Infinite.h"
 
+namespace Infinite {
+
+class FileDialog;
+
 class INFI_ENTRY xScene
 {
 	DECLARE_SINGLETON (xScene)
@@ -22,6 +26,8 @@ public:
 	bool New(const char * filename, const char * floder);
 	bool Load(const char * filename, const char * floder);
 	void Save();
+
+	void Import(const char * filename, const char * floder);
 
 	void Export();
 
@@ -38,9 +44,18 @@ public:
 	void DirtLoadChunk() { mDirtLoadChunk = true; }
 
 protected:
+	void notifyImport(FileDialog * _sender, bool _ok);
+
+protected:
 	TString128 mFloder;
 	TString128 mFilename;
 	bool mDirt;
 	bool mIsLoading;
 	bool mDirtLoadChunk;
+
+
+	TString128 mImportFilename;
+	TString128 mImportFloder;
 };
+
+}

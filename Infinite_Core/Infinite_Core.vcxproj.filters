@@ -31,7 +31,7 @@
       <Filter>PropertyGrid</Filter>
     </ClCompile>
     <ClCompile Include="xRenderSetting.cpp">
-      <Filter>RenderSetting</Filter>
+      <Filter>PropertyGrid\RenderSetting</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
       <Filter>Shape</Filter>
@@ -114,9 +114,6 @@
     <ClCompile Include="SceneDialog.cpp">
       <Filter>Misc</Filter>
     </ClCompile>
-    <ClCompile Include="MessageBox.cpp">
-      <Filter>Misc</Filter>
-    </ClCompile>
     <ClCompile Include="xEnvironment.cpp">
       <Filter>Environment</Filter>
     </ClCompile>
@@ -136,6 +133,18 @@
       <Filter>Environment</Filter>
     </ClCompile>
     <ClCompile Include="Infinite.cpp" />
+    <ClCompile Include="Plugin.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="MessageBox.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="PluginDialog.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\FileDialog.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -185,7 +194,7 @@
       <Filter>PropertyGrid</Filter>
     </ClInclude>
     <ClInclude Include="xRenderSetting.h">
-      <Filter>RenderSetting</Filter>
+      <Filter>PropertyGrid\RenderSetting</Filter>
     </ClInclude>
     <ClInclude Include="Shape.h">
       <Filter>Shape</Filter>
@@ -268,9 +277,6 @@
     <ClInclude Include="SceneDialog.h">
       <Filter>Misc</Filter>
     </ClInclude>
-    <ClInclude Include="MessageBox.h">
-      <Filter>Misc</Filter>
-    </ClInclude>
     <ClInclude Include="xEnvironment.h">
       <Filter>Environment</Filter>
     </ClInclude>
@@ -290,6 +296,21 @@
       <Filter>Environment</Filter>
     </ClInclude>
     <ClInclude Include="Infinite.h" />
+    <ClInclude Include="Plugin.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FileSystemInfo.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageBox.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="PluginDialog.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FileDialog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Common">
@@ -304,9 +325,6 @@
     <Filter Include="PropertyGrid">
       <UniqueIdentifier>{947ce244-844a-41a9-846e-40d687a8b1d4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="RenderSetting">
-      <UniqueIdentifier>{b05fabfc-6773-4d13-98fb-2885b911de57}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Shape">
       <UniqueIdentifier>{b130ec5d-0644-486a-8874-5baba1e252e4}</UniqueIdentifier>
     </Filter>
@@ -318,6 +336,12 @@
     </Filter>
     <Filter Include="MainPane">
       <UniqueIdentifier>{af5b4c16-d6b8-4b78-bfbc-6458b46afbe6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin">
+      <UniqueIdentifier>{3e03b9c7-1a32-499a-94fe-bd1b0790ad6b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="PropertyGrid\RenderSetting">
+      <UniqueIdentifier>{b05fabfc-6773-4d13-98fb-2885b911de57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

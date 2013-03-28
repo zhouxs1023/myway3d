@@ -1,6 +1,9 @@
-#include "Myway.h"
+#include "stdafx.h"
+
 #include "MWApp_Win32.h"
 #include <stdio.h>
+#include "xmdl.h"
+#include "zone.h"
 
 using namespace Myway;
 
@@ -29,6 +32,7 @@ const char * GetCommand(const char * cmd)
 class MyApp : public App_Win32
 {
 	char cmpLine[2048];
+	DeferredRenderer * mRender;
 
 public:
 	MyApp()
@@ -42,6 +46,10 @@ public:
 	virtual bool Init()
 	{
 		App_Win32::Init();
+
+		mRender = new DeferredRenderer();
+
+		Engine::Instance()->SetRenderScheme(mRender);
 
 		DragAcceptFiles(mhWnd, TRUE);
 
@@ -57,20 +65,15 @@ public:
 		return true;
 	}
 
-	void LookMesh(const char * filename)
+	void Shutdown()
 	{
-		TString128 meshFile = filename;
-		TString128 base, path;
+		delete mRender;
 
-		meshFile.SplitFileNameR(base, path); 
+		App_Win32::Shutdown();
+	}
 
-		TString128 externName;
-
-		externName = File::GetExternName(base);
-
-		if (externName != "mesh")
-			return ;
-
+	void createMesh(const char * filename)
+	{
 		if (mEntity)
 		{
 			World::Instance()->DestroyEntity(mEntity);
@@ -82,7 +85,7 @@ public:
 			World::Instance()->DestroySceneNode(mSceneNode);
 		}
 
-		mEntity = World::Instance()->CreateEntity("xxx", base);
+		mEntity = World::Instance()->CreateEntity("xxx", filename);
 
 		mSceneNode = World::Instance()->CreateSceneNode();
 
@@ -99,7 +102,64 @@ public:
 		Camera * pCamera = World::Instance()->MainCamera();
 		pCamera->SetPosition(bound.GetCenter() + Vec3(0, 0, -1.5f) * size);
 		pCamera->LookAt(bound.GetCenter());
+	}
 
+	void createXMDL(const char * filename)
+	{
+		xmdl::t_xmdl mdl;
+
+		mdl.load(filename);
+		
+		MeshPtr mesh = mdl.build();
+
+		createMesh(filename);
+	}
+
+	void createStage(const char * filename)
+	{
+		if (mEntity)
+		{
+			World::Instance()->DestroyEntity(mEntity);
+			mEntity = NULL;
+		}
+
+		if (mSceneNode)
+		{
+			World::Instance()->DestroySceneNode(mSceneNode);
+		}
+
+		xmdl::t_scene scene("E:\\Work\\Project\\overlord_src\\client\\xmdl\\scene");
+
+		scene.load(filename);
+
+		Camera * pCamera = World::Instance()->MainCamera();
+		pCamera->SetPosition(Vec3(0, 1000.0f, 0));
+		pCamera->LookAt(Vec3(100, 0, 100));
+	}
+
+	void LookMesh(const char * filename)
+	{
+		TString128 meshFile = filename;
+		TString128 base, path;
+
+		meshFile.SplitFileNameR(base, path); 
+
+		TString128 externName;
+
+		externName = File::GetExternName(base);
+
+		if (externName == "mesh")
+		{
+			createMesh(base.c_str());
+		}
+		else if (externName == "xmdl")
+		{
+			createXMDL(filename);
+		}
+		else if (externName == "stg")
+		{
+			createStage(filename);
+		}
 	}
 
 	virtual void OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
@@ -164,86 +224,8 @@ protected:
 	SceneNode * mSceneNode;
 };
 
-
-#include <map>
-#include <vector>
-
-void __test()
-{
-	std::map<int, std::string> mapNpc, mapNpcHead;
-	std::vector<int> vecNpcId;
-	std::vector<std::string> vecNpc;
-
-	xml_doc doc;
-
-	XmlHelper::LoadXmlFromFile(doc, "Npc.xml");
-
-	xml_node * root = doc.first_node("enum");
-	xml_node * node = root->first_node("item");
-	
-	while (node)
-	{
-		const char * sId = node->first_attribute("ID")->value();
-		const char * sName = node->first_attribute("name")->value();
-
-		int id = atoi(sId);
-
-		mapNpc.insert(std::pair<int, std::string>(id, sName));
-
-		node = node->next_sibling();
-	}
-
-	xml_doc doc1;
-
-	XmlHelper::LoadXmlFromFile(doc, "NpcÍ·Ïñ.xml");
-
-	root = doc.first_node("Root");
-	node = root->first_node("item");
-
-	while (node)
-	{
-		const char * sId = node->first_attribute("ID")->value();
-		const char * sName = node->first_attribute("File")->value();
-
-		int id = atoi(sId);
-
-		mapNpcHead.insert(std::pair<int, std::string>(id, sName));
-
-		node = node->next_sibling();
-	}
-
-	std::map<int, std::string>::iterator whr = mapNpc.begin();
-
-	while (whr != mapNpc.end())
-	{
-		int id = whr->first;
-
-		if (mapNpcHead.find(id) == mapNpcHead.end())
-		{
-			vecNpcId.push_back(id);
-			vecNpc.push_back(whr->second);
-		}
-
-		++whr;
-	}
-
-	std::ofstream file;
-
-	file.open("NpcHead.txt", std::ios_base::binary);
-
-	for (int i = 0; i < vecNpc.size(); ++i)
-	{
-		file << "<item ID = \"" << TString128(vecNpcId[i]).c_str() << "\" File = \"" << vecNpc[i].c_str() << "\" />\r\n";
-	}
-
-	file.close();
-}
-
 INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
 {
-	//Test();
-	__test();
-
 	char sFileName[1024];
 	GetModuleFileName(GetModuleHandle(NULL), sFileName, 1024);
 

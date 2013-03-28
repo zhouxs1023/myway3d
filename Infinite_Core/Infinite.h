@@ -136,6 +136,7 @@ namespace Infinite {
 		{
 			return atoi(str);
 		}
+
 	};
 
 }

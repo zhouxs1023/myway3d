@@ -39,7 +39,7 @@ namespace Myway {
         void InitEv();
         void DeInitEv();
 		
-		void CreateTerrain(const Terrain::Config & config);
+		Terrain * CreateTerrain(const Terrain::Config & config);
         void LoadTerrain(const char * source);
         void UnloadTerrain();
 

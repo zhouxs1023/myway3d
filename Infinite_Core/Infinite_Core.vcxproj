@@ -70,6 +70,7 @@
     <ClCompile Include="App.cpp" />
     <ClCompile Include="BackgroundPane.cpp" />
     <ClCompile Include="Common\ColourPanel.cpp" />
+    <ClCompile Include="Common\FileDialog.cpp" />
     <ClCompile Include="Common\PointerManager.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="EnvironmentPane.cpp" />
@@ -80,6 +81,8 @@
     <ClCompile Include="MainPane.cpp" />
     <ClCompile Include="MainWorkSpace.cpp" />
     <ClCompile Include="MessageBox.cpp" />
+    <ClCompile Include="Plugin.cpp" />
+    <ClCompile Include="PluginDialog.cpp" />
     <ClCompile Include="PropertyGrid\IPropertyField.cpp" />
     <ClCompile Include="PropertyGrid\PropertyFieldColour.cpp" />
     <ClCompile Include="PropertyGrid\PropertyFieldComboBox.cpp" />
@@ -126,6 +129,8 @@
     <ClInclude Include="Common\BasePanelViewCell.h" />
     <ClInclude Include="Common\BasePanelViewItem.h" />
     <ClInclude Include="Common\ColourPanel.h" />
+    <ClInclude Include="Common\FileSystemInfo.h" />
+    <ClInclude Include="Common\FileDialog.h" />
     <ClInclude Include="Common\PointerManager.h" />
     <ClInclude Include="Common\WrapsAttribute.h" />
     <ClInclude Include="Editor.h" />
@@ -136,6 +141,8 @@
     <ClInclude Include="MainPane.h" />
     <ClInclude Include="MainWorkSpace.h" />
     <ClInclude Include="MessageBox.h" />
+    <ClInclude Include="Plugin.h" />
+    <ClInclude Include="PluginDialog.h" />
     <ClInclude Include="PropertyGrid\IPropertyField.h" />
     <ClInclude Include="PropertyGrid\PropertyFieldColour.h" />
     <ClInclude Include="PropertyGrid\PropertyFieldComboBox.h" />

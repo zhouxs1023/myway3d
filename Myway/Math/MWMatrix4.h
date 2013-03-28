@@ -109,6 +109,8 @@ public:
     void    MakeReflect(const Plane & p);
 
     Mat4    Lerp(const Mat4 & m, float t);
+
+	void	Decompose(Vec3 & pos, Quat & orient, Vec3 & scale) const;
 };
 
 }

@@ -82,7 +82,7 @@ ShaderProgram * D3D9ShaderProgramManager::CreateShader(const TString128 & name,
     d_assert (stream != NULL);
     _StreamException(stream, source);
 
-	gLoadCurrentPath = File::GetFileDir(source);
+	gLoadCurrentPath = File::GetFileDir(source) + "\\";
 
     if (!IsSupported(profile))
     {

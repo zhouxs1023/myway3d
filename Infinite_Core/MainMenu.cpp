@@ -45,6 +45,7 @@ namespace Infinite {
 			ctrl->addItem("Load ...",  MyGUI::MenuItemType::Normal, "CTRL_Menu_Load");
 			ctrl->addItem("New",  MyGUI::MenuItemType::Normal, "CTRL_Menu_New");
 			ctrl->addItem("Save",  MyGUI::MenuItemType::Normal, "CTRL_Menu_Save");
+			ctrl->addItem("Import",  MyGUI::MenuItemType::Normal, "CTRL_Menu_Import");
 			ctrl->addItem("Export",  MyGUI::MenuItemType::Normal, "CTRL_Menu_Export");
 		}
 	}
@@ -58,6 +59,8 @@ namespace Infinite {
 			OnLoad();
 		else if (id == "CTRL_Menu_Save")
 			OnSave();
+		else if (id == "CTRL_Menu_Import")
+			OnImport();
 		else if (id == "CTRL_Menu_Export")
 			OnExport();
 		else if (id == "CTRL_Menu_New")
@@ -77,6 +80,16 @@ namespace Infinite {
 		if (xScene::Instance()->IsInited())
 		{
 			xScene::Instance()->Save();
+		}
+	}
+
+	void MainMenu::OnImport()
+	{
+		mMode = eOnImport;
+
+		if (!xScene::Instance()->IsInited())
+		{
+			mSceneDialog->DoModal();
 		}
 	}
 
@@ -101,6 +114,7 @@ namespace Infinite {
 		{
 			xScene::Instance()->Load(mSceneDialog->GetSceneName().c_str(), mSceneDialog->GetSceneFloder().c_str());
 		}
+
 		else if (mMode == eOnNew)
 		{
 			if (!ResourceManager::Instance()->Exist(mSceneDialog->GetSceneName().c_str()))
@@ -112,5 +126,11 @@ namespace Infinite {
 				MMessageBox::Instance()->DoModal("Scene File Exit!", "Error");
 			}
 		}
+
+		else if (mMode == eOnImport)
+		{
+			xScene::Instance()->Import(mSceneDialog->GetSceneName().c_str(), mSceneDialog->GetSceneFloder().c_str());
+		}
 	}
+
 }

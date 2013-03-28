@@ -462,7 +462,7 @@ void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 
 	stream->Read(&iVersion, sizeof(int));
 
-	d_assert (iVersion == K_Skeleton_Version);
+	d_assert (iVersion == K_SubMesh_Version);
 
 	stream->Read(&iVertexCount, sizeof(int));
 	stream->Read(&iIndexCount, sizeof(int));
@@ -555,6 +555,7 @@ void MeshLoader_v1::ReadMaterial(SubMesh * sm, DataStreamPtr & stream)
 	}
 
 	mtl->SetBlendMode((BLEND_MODE)blendMode);
+	mtl->SetAlphaTestRef(0.5f);
 
 	mtl->SetEmissive(emissive);
 	mtl->SetAmbient(ambient);
@@ -668,13 +669,14 @@ void MeshLoader_v1::ReadSkelAnim(MeshPtr mesh, DataStreamPtr & stream)
 
 void MeshLoader_v1::ReadBounds(MeshPtr mesh, DataStreamPtr & stream)
 {
-	const int K_Version = 0;
-
 	int iVerison;
 	Vec3 vMin, vMax, vCenter;
 	float fRadius;
 
 	stream->Read(&iVerison, sizeof(int));
+
+	d_assert (iVerison == K_Bound_Version);
+
 	stream->Read(&vMin, sizeof(Vec3));
 	stream->Read(&vMax, sizeof(Vec3));
 

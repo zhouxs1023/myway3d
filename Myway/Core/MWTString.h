@@ -235,7 +235,7 @@ public:
         return strcmp(mStr, rk) == 0;
     }
 
-    friend TString operator ==(const char * lk, const TString & rk)
+    friend bool operator ==(const char * lk, const TString & rk)
     {
         return rk == lk;
     }
@@ -263,6 +263,11 @@ public:
     {
         return strcmp(mStr, rk) != 0;
     }
+
+	friend bool operator !=(const char * lk, const TString & rk)
+	{
+		return rk != lk;
+	}
 
     void Trim()
     {
@@ -635,6 +640,20 @@ public:
 
         return mid;
     }
+
+	static TString FromUtf8(const char * str)
+	{
+		TString r;
+		CharSet::Utf8ToAnsi(r.mStr, Size, str);
+		return r;
+	}
+
+	static TString FromUnicode(const wchar_t * str)
+	{
+		TString r;
+		CharSet::UnicodeToAnsi(r.mStr, Size, str);
+		return r;
+	}
 
 protected:
     char mStr[Size];

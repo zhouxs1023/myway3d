@@ -170,7 +170,8 @@ namespace Myway
 
 			TString128 path = File::GetFileDir(lib->GetSource());
 
-			source = path + source;
+			if (path != "")
+				source = path + "\\" + source;
 
             ShaderProgram * shader = lib->AddShader(name, lan, pro, source.c_str(), entry, &params);
             d_assert (shader);

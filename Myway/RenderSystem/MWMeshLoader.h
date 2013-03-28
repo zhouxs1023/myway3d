@@ -120,6 +120,7 @@ protected:
 
 class MeshLoader_v1
 {
+public:
 	struct chunk
 	{
 		int id;
@@ -146,6 +147,7 @@ public:
 	
 	static const int K_SubMesh_Version = 0;
 	static const int K_Material_Version = 0;
+	static const int K_Bound_Version = 0;
 	static const int K_Skeleton_Version = 0;
 	static const int K_SkelAnim_Version = 0;
 

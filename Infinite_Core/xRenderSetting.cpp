@@ -5,6 +5,8 @@
 #include "xScene.h"
 #include "xSerializer.h"
 
+namespace Infinite {
+
 IMP_SLN(xRenderSetting);
 
 DF_PROPERTY_BEGIN(xRenderSetting)
@@ -75,4 +77,6 @@ void xRenderSetting::_OnSerialize(Event * sender)
 
 		xScene::Instance()->DirtLoadChunk();
 	}
+}
+
 }

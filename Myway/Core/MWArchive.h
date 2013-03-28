@@ -39,6 +39,9 @@ public:
     const TString128 & GetName() const;
     const TString128 & GetType() const;
 
+	void SetUseBaseName(bool b) { mUseBaseName = b; }
+	bool IsUseBaseName() const { return mUseBaseName; }
+
 	void GetFileInfosByFloder(Archive::FileInfoList & list, const TString128 & floder) const;
     void GetFileInfosByKey(FileInfoList & files, const TString128 & key) const;
     bool Exist(const TString128 & name) const;
@@ -54,6 +57,7 @@ protected:
     TString128 mName;
     TString128 mType;
     FileInfoMap mFiles;
+	bool mUseBaseName;
 };
 
 class MW_ENTRY ArchiveFactory : public Factory<Archive>

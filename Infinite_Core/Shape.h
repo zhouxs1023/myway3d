@@ -11,6 +11,8 @@
 
 #include "xSerializer.h"
 
+namespace Infinite {
+
 #define xPropertyChanged(prop) OnPropertyChanged(GetProperty(#prop))
 
 class INFI_ENTRY Shape : public IPropertyObj
@@ -81,9 +83,9 @@ public:
 	Shape * Get(const char * name);
 	Shape * Get(SceneNode * node);
 
-protected:
 	Shape * _Create(const TString128 & name, const TString128 & type);
 
+protected:
 	void _Shutdown(Event * sender);
 	void _Serialize(Event * sender);
 	void _UnloadScene(Event * sender);
@@ -100,3 +102,4 @@ protected:
 	tEventListener<ShapeManager> OnSerialize;
 };
     
+}

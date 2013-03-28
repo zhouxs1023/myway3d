@@ -151,11 +151,13 @@ namespace Myway {
 		}
 	}
 
-	void Environment::CreateTerrain(const Terrain::Config & config)
+	Terrain * Environment::CreateTerrain(const Terrain::Config & config)
 	{
 		UnloadTerrain();
 
 		mTerrain = new Terrain(config);
+		
+		return mTerrain;
 	}
 
 	void Environment::LoadTerrain(const char * source)

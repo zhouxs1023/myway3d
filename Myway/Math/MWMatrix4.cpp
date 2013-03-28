@@ -369,6 +369,102 @@ Mat4 Mat4::Lerp(const Mat4 & m, float t)
     return mat;
 }
 
+void QDUDecompose(Mat4 & kQ, Vec3 & kD, Vec3 & kU, const Mat4 & mat)
+{
+	Mat4 m = mat.Transpose();
+
+	float fInvLength = m[0][0]*m[0][0] + m[1][0]*m[1][0] + m[2][0]*m[2][0];
+	if (fabs(fInvLength) > 0.0001f)
+		fInvLength = 1 / Math::Sqrt(fInvLength);
+
+	kQ[0][0] = m[0][0]*fInvLength;
+	kQ[1][0] = m[1][0]*fInvLength;
+	kQ[2][0] = m[2][0]*fInvLength;
+
+	float fDot = kQ[0][0]*m[0][1] + kQ[1][0]*m[1][1] +
+		kQ[2][0]*m[2][1];
+	kQ[0][1] = m[0][1]-fDot*kQ[0][0];
+	kQ[1][1] = m[1][1]-fDot*kQ[1][0];
+	kQ[2][1] = m[2][1]-fDot*kQ[2][0];
+	fInvLength = kQ[0][1]*kQ[0][1] + kQ[1][1]*kQ[1][1] + kQ[2][1]*kQ[2][1];
+	if (fabs(fInvLength) > 0.0001f)
+		fInvLength = 1 / Math::Sqrt(fInvLength);
+
+	kQ[0][1] *= fInvLength;
+	kQ[1][1] *= fInvLength;
+	kQ[2][1] *= fInvLength;
+
+	fDot = kQ[0][0]*m[0][2] + kQ[1][0]*m[1][2] +
+		kQ[2][0]*m[2][2];
+	kQ[0][2] = m[0][2]-fDot*kQ[0][0];
+	kQ[1][2] = m[1][2]-fDot*kQ[1][0];
+	kQ[2][2] = m[2][2]-fDot*kQ[2][0];
+	fDot = kQ[0][1]*m[0][2] + kQ[1][1]*m[1][2] +
+		kQ[2][1]*m[2][2];
+	kQ[0][2] -= fDot*kQ[0][1];
+	kQ[1][2] -= fDot*kQ[1][1];
+	kQ[2][2] -= fDot*kQ[2][1];
+	fInvLength = kQ[0][2]*kQ[0][2] + kQ[1][2]*kQ[1][2] + kQ[2][2]*kQ[2][2];
+	if (fabs(fInvLength) > 0.0001f)
+		fInvLength = 1 / Math::Sqrt(fInvLength);
+
+	kQ[0][2] *= fInvLength;
+	kQ[1][2] *= fInvLength;
+	kQ[2][2] *= fInvLength;
+
+	// guarantee that orthogonal matrix has determinant 1 (no reflections)
+	float fDet = kQ[0][0]*kQ[1][1]*kQ[2][2] + kQ[0][1]*kQ[1][2]*kQ[2][0] +
+		kQ[0][2]*kQ[1][0]*kQ[2][1] - kQ[0][2]*kQ[1][1]*kQ[2][0] -
+		kQ[0][1]*kQ[1][0]*kQ[2][2] - kQ[0][0]*kQ[1][2]*kQ[2][1];
+
+	if ( fDet < 0.0 )
+	{
+		for (size_t iRow = 0; iRow < 3; iRow++)
+			for (size_t iCol = 0; iCol < 3; iCol++)
+				kQ[iRow][iCol] = -kQ[iRow][iCol];
+	}
+
+	// build "right" matrix R
+	Mat3 kR;
+	kR[0][0] = kQ[0][0]*m[0][0] + kQ[1][0]*m[1][0] +
+		kQ[2][0]*m[2][0];
+	kR[0][1] = kQ[0][0]*m[0][1] + kQ[1][0]*m[1][1] +
+		kQ[2][0]*m[2][1];
+	kR[1][1] = kQ[0][1]*m[0][1] + kQ[1][1]*m[1][1] +
+		kQ[2][1]*m[2][1];
+	kR[0][2] = kQ[0][0]*m[0][2] + kQ[1][0]*m[1][2] +
+		kQ[2][0]*m[2][2];
+	kR[1][2] = kQ[0][1]*m[0][2] + kQ[1][1]*m[1][2] +
+		kQ[2][1]*m[2][2];
+	kR[2][2] = kQ[0][2]*m[0][2] + kQ[1][2]*m[1][2] +
+		kQ[2][2]*m[2][2];
+
+	// the scaling component
+	kD[0] = kR[0][0];
+	kD[1] = kR[1][1];
+	kD[2] = kR[2][2];
+
+	// the shear component
+	float fInvD0 = 1.0f/kD[0];
+	kU[0] = kR[0][1]*fInvD0;
+	kU[1] = kR[0][2]*fInvD0;
+	kU[2] = kR[1][2]/kD[1];
+
+	kQ = kQ.Transpose();
+}
+
+void Mat4::Decompose(Vec3 & pos, Quat & orient, Vec3 & scale) const
+{
+	pos = Vec3(m[3][0], m[3][1], m[3][2]);
+
+	Mat4 kQ;
+	Vec3 kD, kU;
+
+	QDUDecompose(kQ, kD, kU, *this);
+
+	orient.FromMatrix(kQ);
+	scale = kD;
+}
 
 
 }

@@ -41,7 +41,7 @@ public:
 DeclareSmartPtr(DataStream);
 
 
-class MemoryStream : public DataStream
+class MW_ENTRY MemoryStream : public DataStream
 {
 public:
     MemoryStream(int size);

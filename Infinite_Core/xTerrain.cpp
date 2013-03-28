@@ -23,6 +23,8 @@ void xTerrain::_create(const Terrain::Config & config)
 
 	Environment::Instance()->CreateTerrain(config);
 	mTerrain = Environment::Instance()->GetTerrain();
+
+	World::Instance()->Resize(config.xSize, 1024, config.zSize);
 }
 
 void xTerrain::_load(const char * source)
@@ -31,6 +33,8 @@ void xTerrain::_load(const char * source)
 
 	Environment::Instance()->LoadTerrain(source);
 	mTerrain = Environment::Instance()->GetTerrain();
+
+	World::Instance()->Resize(mTerrain->GetConfig().xSize, 2048, mTerrain->GetConfig().zSize);
 }
 
 void xTerrain::Serialize(xSerializer & Serializer)

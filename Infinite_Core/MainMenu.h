@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Common\\BaseLayout.h"
+#include "PluginDialog.h"
 
 #include "SceneDialog.h"
 
@@ -21,6 +22,7 @@ namespace Infinite {
 			eUnknown,
 			eOnLoad,
 			eOnSave,
+			eOnImport,
 			eOnExport,
 			eOnNew,
 		};
@@ -36,8 +38,9 @@ namespace Infinite {
 
 		void OnLoad();
 		void OnSave();
-		void OnExport();
 		void OnNew();
+		void OnImport();
+		void OnExport();
 
 		void _OnDialogOK(Event * sender);
 

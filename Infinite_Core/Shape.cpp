@@ -3,6 +3,8 @@
 #include "xEvent.h"
 #include "xScene.h"
 
+namespace Infinite {
+
 const Aabb Shape::K_DefaultBound = Aabb(-5, -5, -5, 5, 5, 5);
 const Sphere Shape::K_DefaultSphere = Sphere(0, 0, 0, 5);
 
@@ -254,4 +256,6 @@ Shape * ShapeManager::Get(SceneNode * node)
 	}
 
 	return NULL;
+}
+
 }

@@ -47,6 +47,8 @@ void FileSystem::_load(const TString128 & prex, const TString128 & dir)
 		if (file.cFileName[0] == '.')
 			continue;
 
+		DWORD nflag = FILE_ATTRIBUTE_HIDDEN | FILE_ATTRIBUTE_SYSTEM | FILE_ATTRIBUTE_TEMPORARY;
+
 		if (file.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
 		{
 			info.name = prex + file.cFileName;
@@ -58,9 +60,13 @@ void FileSystem::_load(const TString128 & prex, const TString128 & dir)
 
 			_load(prex, dir + "\\" + file.cFileName);
 		}
-		else if (file.dwFileAttributes & FILE_ATTRIBUTE_ARCHIVE)
+		else if (!(file.dwFileAttributes & nflag))
 		{
-			info.name = prex + file.cFileName;
+			if (!mUseBaseName)
+				info.name = prex + file.cFileName;
+			else
+				info.name = file.cFileName;
+
 			info.type = FILE_DIRECTORY;
 			info.type = FILE_ARCHIVE;
 			info.name.Lower();
