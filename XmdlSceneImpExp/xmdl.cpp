@@ -90,6 +90,16 @@ namespace xmdl {
 				file->Read(mTextures, sizeof(t_texture) * mTextureCount);
 			}
 
+			else if (ck.dwFlag == FXS_FLAG)
+			{
+				mFxCount = ck.dwChunkSize / sizeof(t_fx);
+				mFxs = new t_fx[mFxCount];
+
+				d_assert (mFxCount * sizeof(t_fx) == ck.dwChunkSize);
+
+				file->Read(mFxs, sizeof(t_fx) * mFxCount);
+			}
+
 			else if (ck.dwFlag == STR_FLAG)
 			{
 				mStrTableSize = ck.dwChunkSize;
@@ -272,127 +282,6 @@ namespace xmdl {
 		return -1;
 	}
 
-
-
-
-
-
-
-
-
-	MeshPtr t_xmdl::build()
-	{
-		struct Vertex {
-			Vec3 Position;
-			Vec3 Normal;
-			Vec2 UV;
-		};
-
-		d_assert (mFilename != "");
-
-		MeshPtr mesh = MeshManager::Instance()->Find(mFilename);
-
-		if (mesh != NULL || mMeshes.Size() == 0)
-			return mesh;
-
-		mesh = MeshManager::Instance()->CreateMesh(mFilename);
-
-		VertexDeclarationPtr decl = VideoBufferManager::Instance()->CreateVertexDeclaration();
-		decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
-		decl->AddElement(0, 12, DT_FLOAT3, DU_NORMAL, 0);
-		decl->AddElement(0, 24, DT_FLOAT2, DU_TEXCOORD, 0);
-		decl->Init();
-
-		for (int i = 0; i < mMeshes.Size(); ++i)
-		{
-			SubMesh * smesh = mesh->CreateSubMesh();
-			t_mesh * tmesh = mMeshes[i];
-
-			VertexStream * vstream = smesh->GetVertexStream();
-			IndexStream * istream = smesh->GetIndexStream();
-
-			int iVertexCount = tmesh->mVertexCount;
-			int iIndexCount = tmesh->mIndexCount;
-
-			vstream->SetDeclaration(decl);
-
-			VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vertex));
-
-			Vertex * vert = (Vertex *)vb->Lock(0, 0, LOCK_NORMAL);
-			for (int v = 0; v < iVertexCount; ++v)
-			{
-				vert->Position = tmesh->mVertex[v];
-
-				if (tmesh->mNormal)
-					vert->Normal = tmesh->mNormal[v];
-				else
-					vert->Normal = Vec3::UnitY;
-
-				if (tmesh->mUV)
-					vert->UV = tmesh->mUV[v];
-				else
-					vert->UV = Vec2::Zero;
-
-				++vert;
-			}
-			vb->Unlock();
-
-			vstream->Bind(0, vb, sizeof(Vertex));
-			vstream->SetCount(iVertexCount);
-
-			if (iIndexCount == 0)
-			{
-				smesh->SetPrimitiveCount(iVertexCount / 3);
-				smesh->SetPrimitiveType(PRIM_TRIANGLELIST);
-				continue;
-			}
-
-			IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * sizeof(WORD));
-
-			short * idx = (short *)ib->Lock(0, 0, LOCK_NORMAL);
-			{
-				memcpy(idx, tmesh->mIndex, iIndexCount * sizeof(WORD));
-			}
-			ib->Unlock();
-
-			istream->Bind(ib);
-			istream->SetCount(iIndexCount);
-
-			smesh->SetPrimitiveCount(iIndexCount / 3);
-			smesh->SetPrimitiveType(PRIM_TRIANGLELIST);
-
-			// material
-			if (tmesh->mTextureId != -1)
-			{
-				const char * texture = mStrTable + mTextures[tmesh->mTextureId].dwFileNameStr;
-
-				int iii = 0;
-				smesh->GetMaterial()->SetDiffuseMap("Texture\\" + TString128(texture) + ".dds");
-				smesh->GetMaterial()->SetBlendMode(BM_ALPHA_TEST);
-			}
-		}
-
-		Aabb bound;
-		bound.minimum = Vec3(mModel->bound.fMinimumExtent[0],
-							 mModel->bound.fMinimumExtent[1],
-							 mModel->bound.fMinimumExtent[2]);
-		bound.maximum = Vec3(mModel->bound.fMaximumExtent[0],
-							 mModel->bound.fMaximumExtent[1],
-							 mModel->bound.fMaximumExtent[2]);
-
-		Sphere sph;
-		sph.center = bound.GetCenter();
-		sph.radius = mModel->bound.fBoundsRadius;
-
-		mesh->SetAabb(bound);
-		mesh->SetBoundingSphere(sph);
-
-		return mesh;
-	}
-
-
-
-
 	void t_xmdl::save(const char * filename)
 	{
 		if (mMeshes.Size() == 0)
@@ -452,7 +341,7 @@ namespace xmdl {
 			file.Write(&MeshLoader_v1::K_Material_Version, sizeof(int));
 
 			int doubleSide = 0;
-			int blendMode = BM_ALPHA_TEST;
+			int blendMode = BM_OPATICY;
 			Color4 emissive = Color4::Black;
 			Color4 ambient = Color4::Gray;
 			Color4 diffuse = Color4::White;
@@ -468,6 +357,14 @@ namespace xmdl {
 				const char * texture = mStrTable + mTextures[mesh->mTextureId].dwFileNameStr;
 
 				diffuseMap = "Texture\\" + TString128(texture) + ".dds";
+			}
+
+			const char * strFxName = mStrTable + mFxs[mesh->mGeoset.byFxId].dwFileNameStr;
+
+			if (strstr(strFxName, "AlphaTest") != NULL)
+			{
+				blendMode = BM_ALPHA_TEST;
+				doubleSide = 1;
 			}
 
 			file.Write(&doubleSide, sizeof(int));

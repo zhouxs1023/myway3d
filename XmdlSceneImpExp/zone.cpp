@@ -145,6 +145,134 @@ namespace xmdl {
 
 
 
+	void CNameTable::Clear()
+	{
+		m_vecBuffer.clear();
+		m_vecStart.clear();
+	}
+
+	void CNameTable::Create(UINT nLen,TCHAR * lpszBuffer)
+	{
+		if(nLen>0)
+		{
+			m_vecBuffer.resize(nLen);
+			CopyMemory(&m_vecBuffer.front(),lpszBuffer,nLen * sizeof(TCHAR));
+
+			m_vecStart.push_back(0);
+			for(UINT n=0;n<nLen-1;n++)
+			{
+				if(m_vecBuffer[n] == _TCHAR('\0'))
+					m_vecStart.push_back(n+1);
+			}
+		}
+	}
+
+	UINT CNameTable::AddName(const TCHAR * lpszName)
+	{
+		UINT n = FindName(lpszName);
+		if(n != (UINT)-1)
+			return GetNameOffset(n);
+
+		UINT nStart = m_vecBuffer.size();
+		//if(nStart) //不需要这一句吧
+		{
+			m_vecStart.push_back(nStart);
+			m_vecBuffer.resize(m_vecBuffer.size() + lstrlen(lpszName) + 1);
+			CopyMemory(&m_vecBuffer.front()+nStart,lpszName,lstrlen(lpszName)+1);
+		}
+		return nStart;
+	}
+
+	UINT CNameTable::DelName(const TCHAR * lpszName)
+	{
+		UINT n = FindName(lpszName);
+		if(n != (UINT)-1)
+		{
+			UINT nStart = GetNameOffset(n);
+			UINT nEnd = GetNameOffset(n+1);
+			UINT nSize = nEnd - nStart;
+			std::vector<UINT>::iterator it = m_vecStart.begin();
+			for(; it != m_vecStart.end(); it++)
+			{
+				if(*it == nStart)
+				{
+					m_vecStart.erase(it);
+					break;
+				}
+			}
+
+			if(nEnd != (UINT)-1)
+			{
+				CopyMemory(&m_vecBuffer.front()+nStart,&m_vecBuffer.front()+nEnd,m_vecBuffer.size()-nEnd);
+				m_vecBuffer.resize(m_vecBuffer.size()-nSize);
+			}
+			else
+			{
+				m_vecBuffer.resize(nStart);
+			}
+		}
+
+		return -1;
+	}
+
+	UINT CNameTable::FindName(const TCHAR * lpszName)
+	{
+		for(UINT i=0;i<m_vecStart.size();i++)
+		{
+			const TCHAR * lpszDest = &m_vecBuffer.front() + m_vecStart[i];
+			if(!lstrcmp(lpszDest,lpszName))
+				return i;
+		}
+		return (UINT)-1;
+	}
+
+	UINT CNameTable::GetNameCount() const
+	{
+		return m_vecStart.size();
+	}
+
+	UINT CNameTable::GetNameOffset(UINT nIndex) const
+	{
+		if(nIndex>=0 && nIndex<m_vecStart.size())
+		{
+			return m_vecStart[nIndex];
+		}
+		return -1;
+	}
+
+	void CNameTable::SwapName(UINT nIndex0, UINT nIndex1)
+	{
+		if (nIndex0 < nIndex1 && nIndex1 - nIndex0 == 1)
+		{
+			UINT nOffset1 = GetNameOffset(nIndex0);
+			UINT nOffset2 = GetNameOffset(nIndex1);
+
+			TCHAR szName1[MAX_PATH];
+			_stprintf(szName1, _T("%s"), GetName(nOffset1));
+			TCHAR szName2[MAX_PATH];
+			_stprintf(szName2, _T("%s"), GetName(nOffset2));
+
+			UINT nStrLen1 = _tcslen(szName1)+1;
+			UINT nStrLen2 = _tcslen(szName2)+1;
+
+			UINT nOffset = nOffset1;
+			for (UINT n=nOffset; n<nOffset+nStrLen2; n++)
+			{
+				m_vecBuffer[n] = szName2[n-nOffset];
+			}
+			m_vecStart[nIndex0] = nOffset;
+
+			nOffset = nOffset1+nStrLen2;
+			for (UINT n=nOffset; n<nOffset+nStrLen1; n++)
+			{
+				m_vecBuffer[n] = szName1[n-nOffset];
+			}
+			m_vecStart[nIndex1] = nOffset;
+
+		}
+	}
+
+
 
 
 
@@ -153,11 +281,14 @@ namespace xmdl {
 	t_scene::t_scene()
 	{
 		mTerrain = NULL;
+
+		mNameTable = NULL;
 	}
 
 	t_scene::~t_scene()
 	{
 		safe_delete (mTerrain);
+		safe_delete_array (mNameTable);
 	}
 
 	void t_scene::load(const char * filename)
@@ -187,6 +318,13 @@ namespace xmdl {
 
 				file.Read(&mInfo, sizeof(t_scene_info));
 			}
+
+			else if (ck.dwFlag == STAGE_TEXTURE)
+			{
+				mNameTableSize = ck.dwChunkSize;
+				mNameTable = new char[mNameTableSize];
+			}
+
 			else
 			{
 				file.Skip(ck.dwChunkSize);
@@ -227,6 +365,8 @@ namespace xmdl {
 
 			World::Instance()->Resize((int)bound.GetWidth(), (int)bound.GetHeight(), (int)bound.GetDepth());
 		}
+
+		mTextureTable.Create(mNameTableSize, mNameTable);
 
 		mTerrain->import();
 	}

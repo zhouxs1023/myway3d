@@ -97,6 +97,25 @@ namespace xmdl {
 	};
 
 
+	class CNameTable
+	{
+		std::vector<TCHAR> m_vecBuffer;
+		std::vector<UINT> m_vecStart;
+	public:
+		void Clear();
+		void Create(UINT nLen,TCHAR * lpszBuffer);
+		const TCHAR * GetName(UINT nStart) const { return m_vecBuffer.size()?(&m_vecBuffer.front() + nStart):NULL; }
+		UINT AddName(const TCHAR * lpszName);
+		UINT DelName(const TCHAR * lpszName);
+		UINT FindName(const TCHAR * lpszName);
+		UINT GetNameCount() const;
+		UINT GetNameOffset(UINT nIndex) const;
+		UINT GetLen(){return (UINT)m_vecBuffer.size();}
+		const TCHAR * GetBuffer() const{return m_vecBuffer.size()?&m_vecBuffer.front():NULL;}
+		TCHAR* GetBuffer() {return m_vecBuffer.size()?&m_vecBuffer.front():NULL;}
+		void SwapName(UINT nIndex0, UINT nIndex1);
+	};
+
 	class t_scene
 	{
 	public:
@@ -107,9 +126,15 @@ namespace xmdl {
 
 		const t_scene_info * getInfo() { return &mInfo; }
 
+		const char * getTexture(int n) { return mTextureTable.GetName(mTextureTable.GetNameOffset(n)); }
+
 	protected:
 		t_scene_info mInfo;
 		t_terrain * mTerrain;
+
+		int mNameTableSize;
+		char * mNameTable;
+		CNameTable mTextureTable;
 
 	};
 

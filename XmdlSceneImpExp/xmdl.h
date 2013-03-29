@@ -91,6 +91,11 @@ namespace xmdl {
 		DWORD dwFileNameStr;
 	};
 
+	struct t_fx
+	{
+		DWORD dwFileNameStr;				// FX 文件名
+		int nVersion;						// Fx 版本
+	};
 
 	struct t_mesh
 	{
@@ -141,8 +146,6 @@ namespace xmdl {
 		void load(const char * filename);
 		void save(const char * filename);
 
-		MeshPtr build();
-
 	protected:
 		void _loadHead(DataStreamPtr & file);
 		void _loadGeoset(DataStreamPtr & file, int size);
@@ -159,6 +162,9 @@ namespace xmdl {
 
 		int mTextureCount;
 		t_texture * mTextures;
+
+		int mFxCount;
+		t_fx * mFxs;
 
 		Array<t_mesh *> mMeshes;
 	};

@@ -112,29 +112,9 @@ public:
 		
 		MeshPtr mesh = mdl.build();
 
+		d_assert (mesh != NULL);
+
 		createMesh(filename);
-	}
-
-	void createStage(const char * filename)
-	{
-		if (mEntity)
-		{
-			World::Instance()->DestroyEntity(mEntity);
-			mEntity = NULL;
-		}
-
-		if (mSceneNode)
-		{
-			World::Instance()->DestroySceneNode(mSceneNode);
-		}
-
-		xmdl::t_scene scene("E:\\Work\\Project\\overlord_src\\client\\xmdl\\scene");
-
-		scene.load(filename);
-
-		Camera * pCamera = World::Instance()->MainCamera();
-		pCamera->SetPosition(Vec3(0, 1000.0f, 0));
-		pCamera->LookAt(Vec3(100, 0, 100));
 	}
 
 	void LookMesh(const char * filename)
@@ -155,10 +135,6 @@ public:
 		else if (externName == "xmdl")
 		{
 			createXMDL(filename);
-		}
-		else if (externName == "stg")
-		{
-			createStage(filename);
 		}
 	}
 

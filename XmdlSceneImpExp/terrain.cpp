@@ -11,12 +11,17 @@ namespace xmdl {
 	t_terrain::t_terrain(t_scene * scene)
 		: mScene(scene)
 		, mHeights(NULL)
+		, mWeights(NULL)
 	{
 	}
 
 	t_terrain::~t_terrain()
 	{
+		for (int i = 0; i < mBlocks.Size(); ++i)
+			delete mBlocks[i];
+
 		safe_delete_array (mHeights);
+		safe_delete_array (mWeights);
 	}
 
 	void t_terrain::loadTile(File & file, int size)
@@ -69,6 +74,14 @@ namespace xmdl {
 
 				stream->Read(block->pHeights, ck.dwChunkSize);
 			}
+
+			else if (ck.dwFlag == TERRAIN_LAYER)
+			{
+				d_assert (block->nLayers < TERRAIN_MAX_LAYERS);
+
+				block->pLayers[block->nLayers++] = loadLayer(stream, ck.dwChunkSize);
+			}
+
 			else
 			{
 				stream->Skip(ck.dwChunkSize);
@@ -80,10 +93,53 @@ namespace xmdl {
 		block->xIndex = (block->info.bZoneX * mScene->getInfo()->nUnitsPreZone + block->info.bBlockX * TERRAIN_BLOCK_SIZE);
 		block->zIndex = (block->info.bZoneZ * mScene->getInfo()->nUnitsPreZone + block->info.bBlockZ * TERRAIN_BLOCK_SIZE);
 
+		int zoneW = mScene->getInfo()->nUnitsPreZone / TERRAIN_BLOCK_SIZE * TERRAIN_LAYER_SIZE;
+		block->xWeightIndex = block->info.bZoneX * zoneW + block->info.bBlockX * TERRAIN_LAYER_SIZE;
+		block->zWeightIndex = block->info.bZoneZ * zoneW + block->info.bBlockZ * TERRAIN_LAYER_SIZE;
+
 		mBlocks.PushBack(block);
 
 		d_assert (size == 0);
 	}
+
+	t_layer * t_terrain::loadLayer(DataStreamPtr stream, int size)
+	{
+		t_layer * layer = new t_layer();
+
+		t_chunk ck;
+
+		while (size > 0 && stream->Read(&ck, sizeof(ck)) == 1)
+		{
+			if (ck.dwFlag == TERRAIN_LAYERINFO)
+			{
+				layer->nLayerInfos = ck.dwChunkSize / sizeof(t_layerInfo);
+				layer->pLayerInfos = new t_layerInfo[layer->nLayerInfos];
+
+				d_assert (ck.dwChunkSize == sizeof(t_layerInfo) * layer->nLayerInfos);
+
+				stream->Read(layer->pLayerInfos, ck.dwChunkSize);
+			}
+			else if (ck.dwFlag == TERRAIN_LAYERALPHA)
+			{
+				layer->nOpacities = ck.dwChunkSize;
+
+				layer->pOpacities = new BYTE[layer->nOpacities];
+
+				stream->Read(layer->pOpacities, ck.dwChunkSize);
+			}
+			else
+			{
+				stream->Skip(ck.dwChunkSize);
+			}
+
+			size -= sizeof(ck) + ck.dwChunkSize;
+		}
+
+		d_assert (size == 0);
+
+		return layer;
+	}
+
 
 	void t_terrain::import()
 	{
@@ -150,6 +206,55 @@ namespace xmdl {
 			}
 		}
 		terrain->_getTerrain()->UnlockHeight();
+
+
+		// weight map.
+		/*	mWeights = new Color[TERRAIN_LAYER_SIZE * TERRAIN_LAYER_SIZE * mBlocks.Size()];
+
+		int xBlockCount = (mXVertSize - 1) / TERRAIN_BLOCK_SIZE;
+		int zBlockCount = (mZVertSize - 1) / TERRAIN_BLOCK_SIZE;
+		int xWeightMapSize = xBlockCount;
+		int zWeightMapSize = zBlockCount;
+
+		for (int i = 0; i < mBlocks.Size(); ++i)
+		{
+		t_block * block = mBlocks[i];
+
+		for (int z = 0; z <= TERRAIN_LAYER_SIZE; ++z)
+		{
+		for (int x = 0; x <= TERRAIN_LAYER_SIZE; ++x)
+		{
+		int nOffset = x + z * (TERRAIN_LAYER_SIZE);
+
+		BYTE a0 = block->pLayers[0] ? block->pLayers[0]->pOpacities[nOffset] : 0;
+		BYTE a1 = block->pLayers[1] ? block->pLayers[1]->pOpacities[nOffset] : 0;
+		BYTE a2 = block->pLayers[2] ? block->pLayers[2]->pOpacities[nOffset] : 0;
+		BYTE a3 = block->pLayers[3] ? block->pLayers[3]->pOpacities[nOffset] : 0;
+
+		float fa0 = a0 / 255.0f;
+		float fa1 = a1 / 255.0f;
+		float fa2 = a2 / 255.0f;
+		float fa3 = a3 / 255.0f;
+
+		float _fr = (1 - fa0) * (1 - fa1) * (1 - fa2);
+		float _fg = (1 - fa0) * (1 - fa1) * fa2;
+		float _fb = (1 - fa0) * a1;
+		float _fa = fa0;
+
+		int r = block->zWeightIndex + z;
+		int c = block->xWeightIndex + x;
+
+		int index = r * xWeightMapSize + c;
+
+		BYTE cr = BYTE(_fr * 255);
+		BYTE cg = BYTE(_fg * 255);
+		BYTE cb = BYTE(_fb * 255);
+		BYTE ca = BYTE(_fa * 255);
+
+		mWeights[index] = Color(cr, cg, cb, ca);
+		}
+		}
+		}*/
 	}
 
 	float t_terrain::getHeight(float x, float z)
