@@ -18,9 +18,9 @@ namespace Myway {
 		mDist[1] = 600;
 		mDist[2] = 1500;
 
-		mBias[0] = 0.001f;
-		mBias[1] = 0.002f;
-		mBias[2] = 0.003f;
+		mBias[0] = 0.0001f;
+		mBias[1] = 0.0002f;
+		mBias[2] = 0.0003f;
 
 		mOffset = 5000;
 
@@ -42,12 +42,12 @@ namespace Myway {
 
 	void Shadow::_initRT()
 	{
-		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_DepthTex", 2048, 2048, FMT_R16F);
+		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_DepthTex", 2048, 2048, FMT_R32F);
 		mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);
 
 		mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_Shadow_DepthStencil", 2048, 2048, FMT_D24S8, MSAA_NONE);
 
-		mTex_Shadow = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_Tex", -1, -1, FMT_R16F);
+		mTex_Shadow = VideoBufferManager::Instance()->CreateTextureRT("Core_Shadow_Tex", -1, -1, FMT_R32F);
 		mRT_Shadow = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Shadow);
 	}
 
