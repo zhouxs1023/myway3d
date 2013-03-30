@@ -272,4 +272,84 @@ void Quat::AxisXYZ(Vec3 & xAxis, Vec3 & yAxis, Vec3 & zAxis) const
     Math::QuatAxisXYZ(xAxis, yAxis, zAxis, *this);
 }
 
+
+float Quat::GetRoll(bool reprojectAxis) const
+{
+	if (reprojectAxis)
+	{
+		// roll = atan2(localx.y, localx.x)
+		// pick parts of xAxis() implementation that we need
+		//			float fTx  = 2.0*x;
+		float fTy  = 2.0f*y;
+		float fTz  = 2.0f*z;
+		float fTwz = fTz*w;
+		float fTxy = fTy*x;
+		float fTyy = fTy*y;
+		float fTzz = fTz*z;
+
+		// Vector3(1.0-(fTyy+fTzz), fTxy+fTwz, fTxz-fTwy);
+
+		return ::atan2f(fTxy+fTwz, 1.0f-(fTyy+fTzz));
+
+	}
+	else
+	{
+		return ::atan2f(2*(x*y + w*z), w*w + x*x - y*y - z*z);
+	}
+}
+//-----------------------------------------------------------------------
+float Quat::GetPitch(bool reprojectAxis) const
+{
+	if (reprojectAxis)
+	{
+		// pitch = atan2(localy.z, localy.y)
+		// pick parts of yAxis() implementation that we need
+		float fTx  = 2.0f*x;
+		//			float fTy  = 2.0f*y;
+		float fTz  = 2.0f*z;
+		float fTwx = fTx*w;
+		float fTxx = fTx*x;
+		float fTyz = fTz*y;
+		float fTzz = fTz*z;
+
+		// Vector3(fTxy-fTwz, 1.0-(fTxx+fTzz), fTyz+fTwx);
+		return ::atan2f(fTyz+fTwx, 1.0f-(fTxx+fTzz));
+	}
+	else
+	{
+		// internal version
+		return ::atan2f(2*(y*z + w*x), w*w - x*x - y*y + z*z);
+	}
+}
+
+//-----------------------------------------------------------------------
+float Quat::GetYaw(bool reprojectAxis) const
+{
+	if (reprojectAxis)
+	{
+		// yaw = atan2(localz.x, localz.z)
+		// pick parts of zAxis() implementation that we need
+		float fTx  = 2.0f*x;
+		float fTy  = 2.0f*y;
+		float fTz  = 2.0f*z;
+		float fTwy = fTy*w;
+		float fTxx = fTx*x;
+		float fTxz = fTz*x;
+		float fTyy = fTy*y;
+
+		// Vector3(fTxz+fTwy, fTyz-fTwx, 1.0-(fTxx+fTyy));
+
+		return ::atan2f(fTxz+fTwy, 1.0f-(fTxx+fTyy));
+
+	}
+	else
+	{
+		// internal version
+		return Math::ASin(-2*(x*z - w*y));
+	}
+}
+
+
+
+
 }

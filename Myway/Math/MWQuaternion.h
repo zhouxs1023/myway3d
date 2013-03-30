@@ -80,6 +80,10 @@ public:
     Vec3 AxisY() const;
     Vec3 AxisZ() const;
     void AxisXYZ(Vec3 & xAxis, Vec3 & yAxis, Vec3 & zAxis) const;
+
+	float GetYaw(bool reprojectAxis) const;
+	float GetPitch(bool reprojectAxis) const;
+	float GetRoll(bool reprojectAxis) const;
 };
 
 }

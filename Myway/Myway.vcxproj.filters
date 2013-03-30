@@ -19,9 +19,6 @@
     <Filter Include="Myway\Engine">
       <UniqueIdentifier>{8a2b064f-007d-43c5-a75f-8c940f45930a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\Gui">
-      <UniqueIdentifier>{215515f8-2d94-43e0-91c7-f92df998167b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Myway\Physics">
       <UniqueIdentifier>{881bd66c-7b38-4fad-a27a-fafb3c054b95}</UniqueIdentifier>
     </Filter>
