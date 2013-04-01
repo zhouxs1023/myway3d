@@ -87,6 +87,14 @@ namespace Myway
 
 		float ColorSharpFadeStart;
 		float ColorSharpFadeEnd;
+		
+		float OptimizeCullDist0;
+		float OptimizeCullDist1;
+		float OptimizeCullDist2;
+
+		float OptimizeCullSize0;
+		float OptimizeCullSize1;
+		float OptimizeCullSize2;
 
         EvGlobalParam();
     };

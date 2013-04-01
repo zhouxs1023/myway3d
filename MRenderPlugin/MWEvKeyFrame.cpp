@@ -184,9 +184,19 @@ namespace Myway
 
 
     DF_PROPERTY_BEGIN(EvGlobalParam)
+
 		DF_PROPERTY(EvGlobalParam, SunPicth, "Generic", "SunPicth", PT_Float, 4)
 		DF_PROPERTY(EvGlobalParam, ColorSharpFadeStart, "Generic", "SharpStart", PT_Float, 4)
 		DF_PROPERTY(EvGlobalParam, ColorSharpFadeEnd, "Generic", "SharpEnd", PT_Float, 4)
+
+		DF_PROPERTY(EvGlobalParam, OptimizeCullDist0, "Visible Cull", "CullDist0", PT_Float, 4)
+		DF_PROPERTY(EvGlobalParam, OptimizeCullDist1, "Visible Cull", "CullDist1", PT_Float, 4)
+		DF_PROPERTY(EvGlobalParam, OptimizeCullDist2, "Visible Cull", "CullDist2", PT_Float, 4)
+
+		DF_PROPERTY(EvGlobalParam, OptimizeCullSize0, "Visible Cull", "CullSize0", PT_Float, 4)
+		DF_PROPERTY(EvGlobalParam, OptimizeCullSize1, "Visible Cull", "CullSize1", PT_Float, 4)
+		DF_PROPERTY(EvGlobalParam, OptimizeCullSize2, "Visible Cull", "CullSize2", PT_Float, 4)
+
     DF_PROPERTY_END()
 
     EvGlobalParam::EvGlobalParam()
@@ -200,6 +210,14 @@ namespace Myway
 
 		ColorSharpFadeStart = 100;
 		ColorSharpFadeEnd = 200;
+
+		OptimizeCullDist0 = 500;
+		OptimizeCullDist1 = 1500;
+		OptimizeCullDist2 = 3000;
+
+		OptimizeCullSize0 = 20;
+		OptimizeCullSize1 = 50;
+		OptimizeCullSize2 = 100;
     }
 
 

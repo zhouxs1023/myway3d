@@ -7,6 +7,7 @@ namespace Myway {
 
     Environment::Environment()
 		: OnUpdate(RenderEvent::OnPostUpdateScene, this, &Environment::_update)
+		, OnOptimizeCullResult(RenderEvent::OnFilterCullResult, this, &Environment::_OnOptimizeCullResult)
     {
         INIT_SLN;
 
@@ -464,6 +465,63 @@ namespace Myway {
 		}
 
 		return dir;
+	}
+
+
+
+	void Environment::_OnOptimizeCullResult(Event * _sender)
+	{
+		VisibleCullResult * result = (VisibleCullResult *)_sender->GetParam(0);
+
+		SceneNodeList & list = result->nodes;
+
+		SceneNodeList::Iterator whr = list.Begin();
+		SceneNodeList::Iterator end = list.End();
+
+		const Vec3 & camPos = World::Instance()->MainCamera()->GetPosition();
+
+		float d0 = mGlobalParam.OptimizeCullDist0 * mGlobalParam.OptimizeCullDist0;
+		float d1 = mGlobalParam.OptimizeCullDist1 * mGlobalParam.OptimizeCullDist1;
+		float d2 = mGlobalParam.OptimizeCullDist2 * mGlobalParam.OptimizeCullDist2;
+
+		float s0 = mGlobalParam.OptimizeCullSize0;
+		float s1 = mGlobalParam.OptimizeCullSize1;
+		float s2 = mGlobalParam.OptimizeCullSize2;
+
+		while (whr != end)
+		{
+			SceneNode * node = *whr;
+
+			const Aabb & bound = node->GetWorldAabb();
+
+			Vec3 vSize = bound.GetSize();
+			Vec3 vPos = bound.GetCenter();
+
+			float kw = Math::Maximum(vSize.x, vSize.y);
+			kw = Math::Maximum(kw, vSize.z);
+
+			float distSq = camPos.DistanceSq(vPos);
+
+			node->_setVisibleMask(true);
+
+			if (distSq >= d2)
+			{
+				if (kw < s2)
+					node->_setVisibleMask(false);
+			}
+			else if (distSq >= d1)
+			{
+				if (kw < s1)
+					node->_setVisibleMask(false);
+			}
+			else if (distSq >= d0)
+			{
+				if (kw < s0)
+					node->_setVisibleMask(false);
+			}
+
+			++whr;
+		}
 	}
 
 }

@@ -112,6 +112,11 @@ public:
 			void					SetPhyData(void * phyData) { mPhyData = phyData; }
 			void *					GetPhyData() { return mPhyData; }
 
+			// this clear in begin render scene.
+			//
+			void					_setVisibleMask(bool visible) { mVisibleMask = visible; }
+			bool					_getVisibleMask() const { return mVisibleMask; }
+
 protected:
             void                    _NotifyAdded(SceneNode * node);   // when parent node add me.
             void                    _NotifyRemoved(); // when parent node removed me.
@@ -131,6 +136,7 @@ protected:
     Quat                            mWorldOrientation;
     Vec3                            mWorldScale;
 
+	bool                            mVisibleMask;
     bool                            mVisible;
     bool                            mNeedUpdate;
 

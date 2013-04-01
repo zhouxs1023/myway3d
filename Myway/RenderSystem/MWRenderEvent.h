@@ -19,6 +19,7 @@ namespace Myway {
 
         static Event OnPreVisibleCull;
         static Event OnPostVisibleCull;
+		static Event OnFilterCullResult;
 
         static Event OnLostDevice;
         static Event OnResetDevice;

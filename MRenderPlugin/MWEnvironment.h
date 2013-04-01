@@ -85,7 +85,7 @@ namespace Myway {
 		void SetSoftLeafEnable(bool b);
 
     protected:
-        void OnCall(Event * sender, void * data);
+		void _OnOptimizeCullResult(Event * _sender);
 
         float _getSkyU(float time);
         float _getSunRoll(float time);
@@ -131,5 +131,6 @@ namespace Myway {
         EvParam mParam;
 
 		tEventListener<Environment> OnUpdate;
+		tEventListener<Environment> OnOptimizeCullResult;
     };
 }

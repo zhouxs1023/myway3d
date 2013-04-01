@@ -44,6 +44,8 @@ namespace Myway
 		mMainResult.lights.Clear();
 		World::Instance()->ImpVisibleCull(mMainResult, cam, true, true);
 
+		RenderEvent::OnFilterCullResult(&mMainResult);
+
 		mRenderQueue.Clear();
 		mRenderQueue.PushRenderer(mMainResult.nodes);
 

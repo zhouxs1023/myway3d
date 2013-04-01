@@ -17,6 +17,7 @@ SceneNode::SceneNode(const TString128 & name)
   mSphWorld(Sphere::Zero),
   mNeedUpdate(true),
   mShowBound(false),
+  mVisibleMask(true),
   mVisible(true),
   mParent(NULL),
   mScene(NULL),

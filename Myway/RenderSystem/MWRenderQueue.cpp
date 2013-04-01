@@ -28,16 +28,19 @@ void RenderQueue::PushRenderer(const List<SceneNode *> & nodes)
 
 void RenderQueue::_pushRenderer(SceneNode * node)
 {
-	SceneNode::MoverVisitor vr = node->GetMovers();
-
-	while (!vr.Endof())
+	if (node->_getVisibleMask())
 	{
-		Mover * m = *vr.Cursor();
+		SceneNode::MoverVisitor vr = node->GetMovers();
 
-		if (m->IsVisible())
-			m->AddRenderQueue(this);
+		while (!vr.Endof())
+		{
+			Mover * m = *vr.Cursor();
 
-		++vr;
+			if (m->IsVisible())
+				m->AddRenderQueue(this);
+
+			++vr;
+		}
 	}
 }
 
