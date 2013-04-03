@@ -98,7 +98,17 @@ namespace Myway {
 	void WaterManager::RenderUnderGodRay()
 	{
 		if (IsUnderWater())
-			mGodRay->Render(mOcean->GetPosition());
+		{
+			Vec3 Position = Vec3::Zero;
+
+			if (mWater)
+				Position = Vec3(0, mWater->GetHeight(), 0);
+			else if (mOcean)
+				Position = mOcean->GetPosition();
+
+			mGodRay->Render(Position);
+
+		}
 	}
 
 	void WaterManager::RenderUnderCaustics(Texture * depthTex, Texture * colorTex)

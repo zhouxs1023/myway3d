@@ -75,6 +75,7 @@ namespace Myway
 		World::Instance()->ImpVisibleCull(mMainResult, mMirrorCamera, false, false);
 
 		RenderEvent::OnFilterCullResult(&mMainResult, mMirrorCamera);
+		RenderEvent::OnOptimizeMirrorCullResult(&mMainResult);
 
 		mMirrorRenderQueue->Clear();
 		mMirrorRenderQueue->PushRenderer(mMainResult.nodes);

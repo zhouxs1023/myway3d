@@ -14,6 +14,7 @@ namespace Myway {
     Event RenderEvent::OnPreVisibleCull;
     Event RenderEvent::OnPostVisibleCull;
 	Event RenderEvent::OnFilterCullResult;
+	Event RenderEvent::OnOptimizeMirrorCullResult;
 
     Event RenderEvent::OnLostDevice;
     Event RenderEvent::OnResetDevice;

@@ -158,7 +158,9 @@ namespace Myway {
 		: mData(NULL)
 		, mBlocks(NULL)
 		, mHeight(0)
+		, mRenderRefl(false)
 		, OnPreRender(RenderEvent::OnPreRenderEvent, this, &Water::_PreRender)
+		, OnOptimizeCull(RenderEvent::OnOptimizeMirrorCullResult, this, &Water::_OnOptimizeCullResult)
 	{
 	}
 
@@ -296,6 +298,29 @@ namespace Myway {
 		d_assert (i < mSizeX && j < mSizeZ && mData);
 
 		mData[j * mSizeX + i] = v;
+	}
+
+	void Water::MapCoord(int & _x, int & _z, float x, float z)
+	{
+		_x = int((x / mGridSize));
+		_z = int((z / mGridSize));
+	}
+
+	bool Water::HasWater(float x, float z)
+	{
+		int i = int((x / mGridSize));
+		int j = int((z / mGridSize));
+
+		if (i < 0 || i >= mSizeX ||
+			j < 0 || j >= mSizeZ)
+			return false;
+
+		i /= kBlockGridSize;
+		j /= kBlockGridSize;
+
+		WaterBlock * block = &mBlocks[j * mBlockCountX + i];
+
+		return block->mRenderOp != NULL;
 	}
 
 	void Water::NotifyChanged(const Rect & rc)
@@ -500,6 +525,11 @@ namespace Myway {
 
 	void Water::_renderRelfection()
 	{
+		if (WaterManager::Instance()->IsUnderWater())
+			return ;
+
+		mRenderRefl = true;
+
 		RenderSystem * render = RenderSystem::Instance();
 
 		Plane mirrorPlane = Plane(Vec3(0, 1, 0), -mHeight);
@@ -527,5 +557,29 @@ namespace Myway {
 
 		render->SetRenderTarget(0, oldRT);
 		render->SetDepthStencil(oldDS);
+
+		mRenderRefl = false;
+	}
+
+	void Water::_OnOptimizeCullResult(Event * _sender)
+	{
+		VisibleCullResult * result = (VisibleCullResult *)_sender->GetParam(0);
+
+		SceneNodeList & list = result->nodes;
+
+		SceneNodeList::Iterator whr = list.Begin();
+		SceneNodeList::Iterator end = list.End();
+
+		while (whr != end)
+		{
+			SceneNode * node = *whr;
+
+			Vec3 pos = node->GetWorldAabb().GetCenter();
+
+			if (!HasWater(pos.x, pos.z))
+				node->_setVisibleMask(false);
+
+			++whr;
+		}
 	}
 }

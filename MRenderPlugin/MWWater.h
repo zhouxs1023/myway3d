@@ -51,6 +51,9 @@ namespace Myway {
 		char GetData(int i, int j);
 		void SetData(int i, int j, char v);
 
+		void MapCoord(int & _x, int & _z, float x, float z);
+		bool HasWater(float x, float z);
+
 		void NotifyChanged(const Rect & rc);
 
 		VertexDeclarationPtr GetVertexDecl();
@@ -76,8 +79,11 @@ namespace Myway {
 
 		void _renderRelfection();
 
+		void _OnOptimizeCullResult(Event * _sender);
+
 	protected:
 		tEventListener<Water> OnPreRender;
+		tEventListener<Water> OnOptimizeCull;
 
 		float mHeight;
 	
@@ -93,7 +99,6 @@ namespace Myway {
 
 		VertexDeclarationPtr mVertexDecl;
 
-
 		TexturePtr mTex_Wave;
 		TexturePtr mTex_Fresnel;
 		TexturePtr mTex_Normal0;
@@ -105,6 +110,8 @@ namespace Myway {
 
 		Technique * mTech;
 		Technique * mTech_UnderWater;
+
+		bool mRenderRefl;
 	};
 
 }
