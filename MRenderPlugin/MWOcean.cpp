@@ -72,14 +72,14 @@ namespace Myway {
 
     void Ocean::_renderUpWater(Texture * depthTex, Texture * colorTex)
     {
-        float elapsedTime = Engine::Instance()->GetFrameTime();
+		float elapsedTime = Engine::Instance()->GetFrameTime();
 
 		mProjGrid->SetHeight(mPosition.y);
-        mProjGrid->Update(elapsedTime);
+		mProjGrid->Update(elapsedTime);
 
-        RenderSystem * render = RenderSystem::Instance();
-        Camera * cam = World::Instance()->MainCamera();
-        float time = Engine::Instance()->GetTime();
+		RenderSystem * render = RenderSystem::Instance();
+		Camera * cam = World::Instance()->MainCamera();
+		float time = Engine::Instance()->GetTime();
 
 		const Vec3 * worldCorner = cam->GetWorldCorner();
 		const Vec3 & camPos = cam->GetPosition();
@@ -94,44 +94,44 @@ namespace Myway {
 		Vec3 viewCornerRightDir = viewCorner[5] - viewCorner[4];
 		Vec3 viewCornerDownDir = viewCorner[6] - viewCorner[4];
 
-        ShaderParam * uPosition = mTech->GetVertexShaderParamTable()->GetParam("gPosition");
-        ShaderParam * uScale = mTech->GetVertexShaderParamTable()->GetParam("gScale");
+		ShaderParam * uPosition = mTech->GetVertexShaderParamTable()->GetParam("gPosition");
+		ShaderParam * uScale = mTech->GetVertexShaderParamTable()->GetParam("gScale");
 
-        ShaderParam * uFresnelParam = mTech->GetPixelShaderParamTable()->GetParam("gFresnelParam");
-        ShaderParam * uCamPos = mTech->GetPixelShaderParamTable()->GetParam("gCameraPos");
+		ShaderParam * uFresnelParam = mTech->GetPixelShaderParamTable()->GetParam("gFresnelParam");
+		ShaderParam * uCamPos = mTech->GetPixelShaderParamTable()->GetParam("gCameraPos");
 		ShaderParam * uWorldCornerLeftTop = mTech->GetPixelShaderParamTable()->GetParam("gWorldCornerLeftTop");
 		ShaderParam * uWorldCornerRightDir = mTech->GetPixelShaderParamTable()->GetParam("gWorldCornerRightDir");
 		ShaderParam * uWorldCornerDownDir = mTech->GetPixelShaderParamTable()->GetParam("gWorldCornerDownDir");
 		ShaderParam * uViewCornerLeftTop = mTech->GetPixelShaderParamTable()->GetParam("gViewCornerLeftTop");
 		ShaderParam * uViewCornerRightDir = mTech->GetPixelShaderParamTable()->GetParam("gViewCornerRightDir");
 		ShaderParam * uViewCornerDownDir = mTech->GetPixelShaderParamTable()->GetParam("gViewCornerDownDir");
-        ShaderParam * uDeepColor = mTech->GetPixelShaderParamTable()->GetParam("gDeepColor");
-        ShaderParam * uRefractionDist = mTech->GetPixelShaderParamTable()->GetParam("gRefractionDist");
+		ShaderParam * uDeepColor = mTech->GetPixelShaderParamTable()->GetParam("gDeepColor");
+		ShaderParam * uRefractionDist = mTech->GetPixelShaderParamTable()->GetParam("gRefractionDist");
 
-        ShaderParam * uSunDir = mTech->GetPixelShaderParamTable()->GetParam("gSunDir");
-        ShaderParam * uSunColor = mTech->GetPixelShaderParamTable()->GetParam("gSunColor");
-        ShaderParam * uSunLightParam = mTech->GetPixelShaderParamTable()->GetParam("gSunLightParam");
+		ShaderParam * uSunDir = mTech->GetPixelShaderParamTable()->GetParam("gSunDir");
+		ShaderParam * uSunColor = mTech->GetPixelShaderParamTable()->GetParam("gSunColor");
+		ShaderParam * uSunLightParam = mTech->GetPixelShaderParamTable()->GetParam("gSunLightParam");
 
-        ShaderParam * uNoiseScale = mTech->GetPixelShaderParamTable()->GetParam("gNoiseScale");
-        ShaderParam * uNoiseUVParam = mTech->GetPixelShaderParamTable()->GetParam("gNoiseUVParam");
+		ShaderParam * uNoiseScale = mTech->GetPixelShaderParamTable()->GetParam("gNoiseScale");
+		ShaderParam * uNoiseUVParam = mTech->GetPixelShaderParamTable()->GetParam("gNoiseUVParam");
 
-        ShaderParam * uNormalUVParam = mTech->GetPixelShaderParamTable()->GetParam("gNormalUVParam");
-        ShaderParam * uNormalWeight = mTech->GetPixelShaderParamTable()->GetParam("gNormalWeight");
+		ShaderParam * uNormalUVParam = mTech->GetPixelShaderParamTable()->GetParam("gNormalUVParam");
+		ShaderParam * uNormalWeight = mTech->GetPixelShaderParamTable()->GetParam("gNormalWeight");
 
 		ShaderParam * uInvScreenSize = mTech->GetPixelShaderParamTable()->GetParam("gInvScreenSize");
 		ShaderParam * uFarClip = mTech->GetPixelShaderParamTable()->GetParam("gFarClip");
 
-        Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
-        Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor;
-        Color4 deepColor = Environment::Instance()->GetEvParam()->WaterParam.deepColor;
+		Vec3 sunDir = Environment::Instance()->GetEvParam()->SunDir;
+		Color4 sunColor = Environment::Instance()->GetEvParam()->SunColor;
+		Color4 deepColor = Environment::Instance()->GetEvParam()->WaterParam.deepColor;
 
-        if (mProjGrid)
-        {
-            uPosition->SetUnifom(0, 0, 0, 0);
-            uScale->SetUnifom(1, 1, 1, 1);
-        }
-        
-        uCamPos->SetUnifom(camPos.x, camPos.y, camPos.z, 0);
+		if (mProjGrid)
+		{
+			uPosition->SetUnifom(0, 0, 0, 0);
+			uScale->SetUnifom(1, 1, 1, 1);
+		}
+
+		uCamPos->SetUnifom(camPos.x, camPos.y, camPos.z, 0);
 
 		uWorldCornerLeftTop->SetUnifom(worldCornerLeftTop.x, worldCornerLeftTop.y, worldCornerLeftTop.z, 0);
 		uWorldCornerRightDir->SetUnifom(worldCornerRightDir.x, worldCornerRightDir.y, worldCornerRightDir.z, 0);
@@ -141,27 +141,27 @@ namespace Myway {
 		uViewCornerRightDir->SetUnifom(viewCornerRightDir.x, viewCornerRightDir.y, viewCornerRightDir.z, 0);
 		uViewCornerDownDir->SetUnifom(viewCornerDownDir.x, viewCornerDownDir.y, viewCornerDownDir.z, 0);
 
-        uDeepColor->SetUnifom(deepColor.r, deepColor.g, deepColor.b, 1);
-        uRefractionDist->SetUnifom(40, 0, 0, 0);
+		uDeepColor->SetUnifom(deepColor.r, deepColor.g, deepColor.b, 1);
+		uRefractionDist->SetUnifom(40, 0, 0, 0);
 
-        uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, 0);
-        uSunDir->SetUnifom(-sunDir.x, -sunDir.y, -sunDir.z, 0);
-        uSunLightParam->SetUnifom(0.8f, 200, 0, 0);
+		uSunColor->SetUnifom(sunColor.r, sunColor.g, sunColor.b, 0);
+		uSunDir->SetUnifom(-sunDir.x, -sunDir.y, -sunDir.z, 0);
+		uSunLightParam->SetUnifom(0.8f, 200, 0, 0);
 
-        float uvNoiseScroll = time * 0.02f;
+		float uvNoiseScroll = time * 0.02f;
 
-        uNoiseUVParam->SetUnifom(0.01f, 0.01f, uvNoiseScroll, uvNoiseScroll);
-        uNoiseScale->SetUnifom(0.03f, 0, 0 , 0);
+		uNoiseUVParam->SetUnifom(0.01f, 0.01f, uvNoiseScroll, uvNoiseScroll);
+		uNoiseScale->SetUnifom(0.03f, 0, 0 , 0);
 
-        Vec4 uvNormalParam[4] = {
-            Vec4 (0.02f, 0.02f, time * 0.03f, time * 0.03f),
-            Vec4 (0.01f, 0.01f, time * 0.03f, time * 0.03f),
-            Vec4 (0.015f, 0.015f, time * 0.03f, time * 0.03f),
-            Vec4 (0.005f, 0.005f, time * 0.03f, time * 0.03f)
-        };
+		Vec4 uvNormalParam[4] = {
+			Vec4 (0.02f, 0.02f, time * 0.03f, time * 0.03f),
+			Vec4 (0.01f, 0.01f, time * 0.03f, time * 0.03f),
+			Vec4 (0.015f, 0.015f, time * 0.03f, time * 0.03f),
+			Vec4 (0.005f, 0.005f, time * 0.03f, time * 0.03f)
+		};
 
-        uNormalUVParam->SetVector(uvNormalParam, 4);
-        uNormalWeight->SetUnifom(0.08f, 0.1f, 0.06f, 0.1f);
+		uNormalUVParam->SetVector(uvNormalParam, 4);
+		uNormalWeight->SetUnifom(0.08f, 0.1f, 0.06f, 0.1f);
 
 		float screenW = (float)Engine::Instance()->GetDeviceProperty()->Width;
 		float screenH = (float)Engine::Instance()->GetDeviceProperty()->Height;
@@ -169,21 +169,21 @@ namespace Myway {
 		uInvScreenSize->SetUnifom(1 / screenW, 1 / screenW, 0, 0);
 		uFarClip->SetUnifom(cam->GetFarClip(), 0, 0, 0);
 
-        SamplerState state;
-        render->SetTexture(0, state, mTex_Wave.c_ptr());
-        state.Address = TEXA_CLAMP;
-        state.Filter = TEXF_POINT;
-        render->SetTexture(1, state, depthTex);
-        render->SetTexture(2, state, colorTex);
-        render->SetTexture(3, state, mTex_Refl.c_ptr());
+		SamplerState state;
+		render->SetTexture(0, state, mTex_Wave.c_ptr());
+		state.Address = TEXA_CLAMP;
+		state.Filter = TEXF_POINT;
+		render->SetTexture(1, state, depthTex);
+		render->SetTexture(2, state, colorTex);
+		render->SetTexture(3, state, mTex_Refl.c_ptr());
 		state.Filter = TEXF_LINEAR;
-        render->SetTexture(4, state, mTex_Fresnel.c_ptr());
+		render->SetTexture(4, state, mTex_Fresnel.c_ptr());
 
-        SamplerState state1;
-        render->SetTexture(5, state1, mTex_Wave.c_ptr());
-        render->SetTexture(6, state1, mTex_Wave.c_ptr());
+		SamplerState state1;
+		render->SetTexture(5, state1, mTex_Wave.c_ptr());
+		render->SetTexture(6, state1, mTex_Wave.c_ptr());
 
-        render->Render(mTech, mProjGrid->GetRender());
+		render->Render(mTech, mProjGrid->GetRender());
     }
 
     void Ocean::_renderUnderWater(Texture * depthTex, Texture * colorTex)

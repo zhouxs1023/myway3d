@@ -44,7 +44,7 @@ namespace Myway
 		mMainResult.lights.Clear();
 		World::Instance()->ImpVisibleCull(mMainResult, cam, true, true);
 
-		RenderEvent::OnFilterCullResult(&mMainResult);
+		RenderEvent::OnFilterCullResult(&mMainResult, cam);
 
 		mRenderQueue.Clear();
 		mRenderQueue.PushRenderer(mMainResult.nodes);
@@ -73,6 +73,8 @@ namespace Myway
 		mMainResult.lights.Clear();
 
 		World::Instance()->ImpVisibleCull(mMainResult, mMirrorCamera, false, false);
+
+		RenderEvent::OnFilterCullResult(&mMainResult, mMirrorCamera);
 
 		mMirrorRenderQueue->Clear();
 		mMirrorRenderQueue->PushRenderer(mMainResult.nodes);

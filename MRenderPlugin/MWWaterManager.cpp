@@ -48,13 +48,36 @@ namespace Myway {
 				return true;
 		}
 
+		if (mWater)
+		{
+			const Vec3 & position = World::Instance()->MainCamera()->GetPosition();
+
+			Terrain * terrain = Environment::Instance()->GetTerrain();
+
+			if (!terrain)
+				return false;
+
+			float gridSize = mWater->GetGridSize();
+
+			int x = int((position.x / gridSize));
+			int z = int((position.z / gridSize));
+
+			if (x >= 0 && x < mWater->GetSizeX() &&
+				z >= 0 && z < mWater->GetSizeZ() &&
+				mWater->GetData(x, z) == 1)
+			{
+				if (position.y < mWater->GetHeight())
+					return true;
+			}
+		}
+
 		return false;
 	}
 
 	void WaterManager::Render(Texture * depthTex, Texture * colorTex)
 	{
 		if (mWater)
-			mWater->Render();
+			mWater->Render(depthTex, colorTex);
 
 		if (mOcean)
 			mOcean->Render(depthTex, colorTex);
@@ -98,4 +121,13 @@ namespace Myway {
 
 		return mOcean;
 	}
+
+	void WaterManager::Resize(int w, int h)
+	{
+		mWater->Resize(w, h);
+
+		if (mOcean)
+			mOcean->Resize(w, h);
+	}
+
 }

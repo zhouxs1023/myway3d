@@ -31,6 +31,8 @@ namespace Myway {
 
 		Water * GetWater() { return mWater; }
 
+		void Resize(int w, int h);
+
 	protected:
 		Ocean * mOcean;
 		Water * mWater;

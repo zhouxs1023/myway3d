@@ -31,6 +31,8 @@ namespace Myway {
 	{
 		static const int K_Magic = 'wtr0';
 
+		DECLARE_ALLOC();
+
 	public:
 		Water();
 		~Water();
@@ -40,6 +42,8 @@ namespace Myway {
 
 		void Init();
 		void Shutdown();
+
+		void Resize(int w, int h);
 
 		void Load(const char * source);
 		void Save(const char * source);
@@ -57,13 +61,24 @@ namespace Myway {
 		int GetBlockCountZ() { return mBlockCountZ; }
 		float GetGridSize() { return mGridSize; }
 
-		void Render();
+		void Render(Texture * depthTex, Texture * colorTex);
 
 	protected:
 		void _allocBlock();
 		void _initBlock();
 
+		void _initRT();
+
+		void _PreRender(Event * sender);
+
+		void _renderUnderWater(WaterBlock * block, Texture * depthTex, Texture * colorTex);
+		void _renderUpWater(WaterBlock * block, Texture * depthTex, Texture * colorTex);
+
+		void _renderRelfection();
+
 	protected:
+		tEventListener<Water> OnPreRender;
+
 		float mHeight;
 	
 		int mSizeX;
@@ -78,7 +93,18 @@ namespace Myway {
 
 		VertexDeclarationPtr mVertexDecl;
 
+
+		TexturePtr mTex_Wave;
+		TexturePtr mTex_Fresnel;
+		TexturePtr mTex_Normal0;
+		TexturePtr mTex_Normal1;
+
+		RenderTargetPtr mRT_Refl;
+		TexturePtr mTex_Refl;
+		DepthStencilPtr mDepthStencil;
+
 		Technique * mTech;
+		Technique * mTech_UnderWater;
 	};
 
 }

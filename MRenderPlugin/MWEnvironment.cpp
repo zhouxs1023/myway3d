@@ -44,6 +44,23 @@ namespace Myway {
 
 	void Environment::_resize(int w, int h)
 	{
+		if (mCloud)
+			mCloud->Resize(w, h);
+
+		if (mWaterManager)
+			mWaterManager->Resize(w, h);
+
+		if (mGodRay)
+			mGodRay->Resize(w, h);
+
+		if (mHDR)
+			mHDR->Resize(w, h);
+
+		if (mSSAO)
+			mSSAO->Resize(w, h);
+
+		if (mSoftLeaf)
+			mSoftLeaf->Resize(w, h);
 	}
 
     void Environment::InitEv()
@@ -472,13 +489,14 @@ namespace Myway {
 	void Environment::_OnOptimizeCullResult(Event * _sender)
 	{
 		VisibleCullResult * result = (VisibleCullResult *)_sender->GetParam(0);
+		Camera * cam = (Camera *)_sender->GetParam(1);
 
 		SceneNodeList & list = result->nodes;
 
 		SceneNodeList::Iterator whr = list.Begin();
 		SceneNodeList::Iterator end = list.End();
 
-		const Vec3 & camPos = World::Instance()->MainCamera()->GetPosition();
+		const Vec3 & camPos = cam->GetPosition();
 
 		float d0 = mGlobalParam.OptimizeCullDist0 * mGlobalParam.OptimizeCullDist0;
 		float d1 = mGlobalParam.OptimizeCullDist1 * mGlobalParam.OptimizeCullDist1;

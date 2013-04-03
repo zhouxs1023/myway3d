@@ -7,7 +7,6 @@
 struct VS_IN
 {
     float4 pos   : POSITION;
-    float3 normal : NORMAL;
 };
 
 struct VS_OUT
@@ -33,7 +32,7 @@ VS_OUT main(VS_IN In)
 	worldPos.y = gHeight.x;
     
     Out.pos = mul(worldPos, matWVP);
-    Out.normal = In.normal;
+    Out.normal = float3(0, 1, 0);
     Out.worldPos = worldPos;
     Out.projPos = Out.pos;
     Out.viewPos = mul(worldPos, matWV).xyz;

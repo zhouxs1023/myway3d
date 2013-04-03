@@ -626,8 +626,6 @@ void World::UpdateScene()
         if (node->_NeedUpdate())
             node->_UpdateTransform();
 
-		node->_setVisibleMask(true);
-
         ++whr;
     }
 }
