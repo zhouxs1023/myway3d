@@ -2,8 +2,8 @@
 
 #include "MRenderEntry.h"
 #include "MWRenderSystem.h"
-
 #include "MWOcean.h"
+#include "MWWater.h"
 
 namespace Myway {
 
@@ -29,8 +29,11 @@ namespace Myway {
 		Ocean * CreateOcean();
 		Ocean * GetOcean() { return mOcean; }
 
+		Water * GetWater() { return mWater; }
+
 	protected:
 		Ocean * mOcean;
+		Water * mWater;
 
 		UnderWaterFog * mFog;
 		UnderWaterNoise * mNoise;

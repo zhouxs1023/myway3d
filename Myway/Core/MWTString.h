@@ -375,7 +375,7 @@ public:
 
     float ToFloat() const
     {
-        return atof(mStr);
+        return (float)atof(mStr);
     }
 
     double ToDouble() const

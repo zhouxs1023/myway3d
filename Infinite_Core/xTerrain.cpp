@@ -25,6 +25,8 @@ void xTerrain::_create(const Terrain::Config & config)
 	mTerrain = Environment::Instance()->GetTerrain();
 
 	World::Instance()->Resize(config.xSize, 1024, config.zSize);
+
+	Environment::Instance()->GetWaterManager()->GetWater()->Init();
 }
 
 void xTerrain::_load(const char * source)
@@ -35,6 +37,8 @@ void xTerrain::_load(const char * source)
 	mTerrain = Environment::Instance()->GetTerrain();
 
 	World::Instance()->Resize(mTerrain->GetConfig().xSize, 2048, mTerrain->GetConfig().zSize);
+
+	Environment::Instance()->GetWaterManager()->GetWater()->Init();
 }
 
 void xTerrain::Serialize(xSerializer & Serializer)

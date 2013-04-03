@@ -138,6 +138,14 @@
     <Shader name = "WaterPS" language = "cg" profile = "ps30" source = "Water.ps" >
     </Shader>
 
+    <Shader name = "OceanVS" language = "cg" profile = "vs30" source = "Ocean.vs" >
+      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+      <param name = "matWV" type = "float4x4" btype = "matView" />
+    </Shader>
+
+    <Shader name = "OceanPS" language = "cg" profile = "ps30" source = "Ocean.ps" >
+    </Shader>
+
 		<Shader name = "UnderWaterVS" language = "cg" profile = "vs30" source = "UnderWater.vs" >
         <param name = "matWVP" type = "float4x4" btype = "matWVP" />
     </Shader>
@@ -292,6 +300,9 @@
 		</Technique>
 
     <Technique name = "CloudLighting" vs = "QuadVS" ps = "CloudLightingPS">
+    </Technique>
+
+    <Technique name = "Ocean" vs = "OceanVS" ps = "OceanPS">
     </Technique>
 
 		<Technique name = "Water" vs = "WaterVS" ps = "WaterPS">

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelSkin" position="80 40 280 660" align="Stretch" name="_Main">
+        <UserString key="SnapTo" value="Stretch"/>
+        <Widget type="TextBox" skin="TextBox" position="20 25 90 25">
+            <Property key="Caption" value="Size:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="20 65 90 25">
+            <Property key="Caption" value="Operator:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="ScrollBar" skin="SliderH" position="125 30 135 20" name="BrushSize"/>
+        <Widget type="ComboBox" skin="ComboBox" position="125 65 135 25" name="BrushOperator"/>
+        <Widget type="EditBox" skin="EditBox" position="125 105 135 25" name="WaterHeight"/>
+        <Widget type="TextBox" skin="TextBox" position="20 105 90 25">
+            <Property key="Caption" value="Height:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+    </Widget>
+</MyGUI>

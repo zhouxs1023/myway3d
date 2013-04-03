@@ -41,7 +41,7 @@ namespace Myway {
 
 	void Ocean::_init()
 	{
-		mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Water");
+		mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Ocean");
 		mTech_UnderWater = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWater");
 		mTex_Wave = VideoBufferManager::Instance()->Load2DTexture("Water\\waves2.dds", "Water\\waves2.dds");
 		mTex_Fresnel = VideoBufferManager::Instance()->Load2DTexture("Water\\Fresnel.bmp", "Water\\Fresnel.bmp");

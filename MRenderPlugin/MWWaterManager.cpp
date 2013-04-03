@@ -18,6 +18,8 @@ namespace Myway {
 		mGodRay = new UnderWaterGodRay();
 		mCaustics = new UnderWaterCaustics();
 		mBubble = new UnderWaterBubble();
+
+		mWater = new Water();
 	}
 
 	WaterManager::~WaterManager()
@@ -31,6 +33,7 @@ namespace Myway {
 		delete mGodRay;
 		delete mCaustics;
 		delete mBubble;
+		delete mWater;
 	}
 
 	bool WaterManager::IsUnderWater()
@@ -50,6 +53,9 @@ namespace Myway {
 
 	void WaterManager::Render(Texture * depthTex, Texture * colorTex)
 	{
+		if (mWater)
+			mWater->Render();
+
 		if (mOcean)
 			mOcean->Render(depthTex, colorTex);
 	}

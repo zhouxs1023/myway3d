@@ -1,0 +1,175 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+
+struct PS_IN
+{
+	float3 normal : TEXCOORD1;
+	float3 worldPos : TEXCOORD2;
+    float4 projPos : TEXCOORD3;
+    float4 viewPos : TEXCOORD4;
+};
+
+uniform sampler2D gTex_Wave : register (s0);
+uniform sampler2D gTex_Depth : register (s1);
+uniform sampler2D gTex_Refr : register (s2);
+uniform sampler2D gTex_Refl : register (s3);
+uniform sampler2D gTex_Fresnel : register (s4);
+uniform sampler2D gTex_Normal0 : register (s5);
+uniform sampler2D gTex_Normal1 : register (s6);
+
+uniform float3 gCameraPos;
+
+uniform float4 gWorldCornerLeftTop;
+uniform float4 gWorldCornerRightDir;
+uniform float4 gWorldCornerDownDir;
+
+uniform float4 gViewCornerLeftTop;
+uniform float4 gViewCornerRightDir;
+uniform float4 gViewCornerDownDir;
+
+uniform float4 gDeepColor;
+uniform float gRefractionDist;
+
+uniform float3 gSunDir;
+uniform float3 gSunColor;
+uniform float4 gSunLightParam;
+
+uniform float gNoiseScale;
+uniform float4 gNoiseUVParam;
+
+uniform float4 gNormalUVParam[4];
+uniform float4 gNormalWeight;
+
+uniform float4 gInvScreenSize;
+uniform float4 gFarClip;
+
+float3 CalcuNoise(float3 pos)
+{
+	float2 uv0 = pos.xz * gNoiseUVParam.xy + gNoiseUVParam.zw;
+	
+	float3 noise = tex2D(gTex_Wave, uv0).rgb - 0.5;
+	
+	return gNoiseScale * noise;
+}
+
+float3 CalcuNormal(float3 pos, float3 normal, float3 noise)
+{
+	float2 uv0 = pos.xz * gNormalUVParam[0].xy + gNormalUVParam[0].zw + noise.xy;
+	float2 uv1 = pos.xz * gNormalUVParam[1].xy + gNormalUVParam[1].zw + noise.xy;
+	float2 uv2 = pos.xz * gNormalUVParam[2].xy + gNormalUVParam[2].zw + noise.xy;
+	float2 uv3 = pos.xz * gNormalUVParam[3].xy + gNormalUVParam[3].zw + noise.xy;
+
+	float3 nrm0 = (tex2D(gTex_Normal0, uv0).rgb * 2 - 1) * gNormalWeight.x;	
+	float3 nrm1 = (tex2D(gTex_Normal0, uv1).rgb * 2 - 1) * gNormalWeight.y;	
+	float3 nrm2 = (tex2D(gTex_Normal1, uv2).rgb * 2 - 1) * gNormalWeight.z;
+	float3 nrm3 = (tex2D(gTex_Normal1, uv3).rgb * 2 - 1) * gNormalWeight.w;
+	
+	float3 nrm = nrm0 + nrm1 + nrm2 + nrm3;
+	
+	normal = normalize(normal);
+
+	normal.xz += nrm.xy;
+	
+	return normalize(normal);
+}
+
+float CalcuDeepWeight(float2 projUV, float3 wpos, float3 vpos)
+{
+	float diff0, diff1;
+	float d = tex2D(gTex_Depth, projUV).r;
+
+	{
+		float4 p = gWorldCornerLeftTop + gWorldCornerRightDir * projUV.x + gWorldCornerDownDir * projUV.y;
+		float3 pos = gCameraPos + p.xyz * d;
+		diff0 = wpos.y - pos.y;
+	}
+	
+	{
+		float4 p = gViewCornerLeftTop + gViewCornerRightDir * projUV.x + gViewCornerDownDir * projUV.y;
+		float3 pos = p.xyz * d;
+		diff1 = length(pos) - length(vpos);
+	}
+	
+	float k0 = max(0, diff0 / gRefractionDist);
+	float k1 = max(0, diff1 / gRefractionDist);
+
+	float k = k0 * 0.5 + k1 * 0.5f;
+	float kv = min(1, (length(vpos) - 100) / (1000 - 100));
+	
+	k = min(1, k);
+	k = lerp(k, 1, kv);
+
+	return k;
+}
+
+float3 CalcuSunColor(float3 normal, float3 eyeDir)
+{
+	float3 reflV = reflect(-eyeDir, normal);
+	float dp = dot(reflV, gSunDir);
+	float spec = gSunLightParam.x * pow(dp, gSunLightParam.y);
+	
+	return spec * gSunColor;
+}
+
+float2 CalcuNoiseIncUV(float2 projUV, float2 incUV, float3 vpos)
+{
+	float d1 = vpos.z;
+	float d2 = tex2D(gTex_Depth, projUV + incUV).r * gFarClip.x;
+
+	return incUV * (d2 > d1);
+}
+
+float CalcuSmoothFactor(float2 projUV, float3 vpos)
+{
+	float d1 = vpos.z;
+	float d2 = tex2D(gTex_Depth, projUV).r * gFarClip.x;
+
+	float s = saturate((d2 - d1) / 10);
+
+	float k = saturate((d2 - 200) / (1000 - 200));
+
+	s = lerp(s, 1, k);
+
+	return s;
+}
+
+float CalcuFresnel(float3 normal, float3 eyeDir)
+{
+	float dp = dot(normal, eyeDir);
+	return tex2D(gTex_Fresnel, float2(dp, 0)).r;
+}
+
+
+float4 main(PS_IN In) : COLOR
+{
+	float2 projUV = In.projPos.xy / In.projPos.w * float2(0.5, -0.5) + 0.5 + gInvScreenSize.xy * 0.5f;
+
+	float3 noise = CalcuNoise(In.worldPos);
+	
+	float3 eyeDir = normalize(gCameraPos - In.worldPos);
+	
+	float3 normal = CalcuNormal(In.worldPos, In.normal, noise);
+	
+	float wgt = CalcuDeepWeight(projUV, In.worldPos.xyz, In.viewPos.xyz);
+
+	float smooth = CalcuSmoothFactor(projUV, In.viewPos.xyz);
+	
+	float2 rNoiseUV = CalcuNoiseIncUV(projUV, normal.xz * 0.04f, In.viewPos.xyz);
+
+	float4 refrColor = tex2D(gTex_Refr, projUV + rNoiseUV * smooth);
+	float4 reflColor = tex2D(gTex_Refl, projUV + normal.xz * 0.065f * smooth);
+
+	float fresnel = CalcuFresnel(normal, eyeDir);
+	
+	refrColor = lerp(refrColor, gDeepColor, wgt);
+	reflColor = reflColor;
+
+	float4 col = lerp(refrColor, reflColor, fresnel * smooth);
+	
+	col.rgb += CalcuSunColor(normal, eyeDir) * smooth;
+	col.a = 1;
+	
+	return col;
+}

@@ -86,7 +86,6 @@ namespace Infinite {
 
 		Terrain * terrain = Environment::Instance()->GetTerrain();
 
-
 		if (!terrain)
 			return ;
 

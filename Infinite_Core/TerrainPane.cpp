@@ -8,6 +8,7 @@ namespace Infinite {
 	#define xHeightPage 0
 	#define xLayerPage 1
 	#define xVegPage 2
+	#define xWaterPage 3
 
 	IMP_SLN(TerrainPane);
 
@@ -27,6 +28,7 @@ namespace Infinite {
 		assignBase(mHeightDlg, "Height");
 		assignBase(mLayerDlg, "Layer");
 		assignBase(mVegDlg, "Vegetation");
+		assignBase(mWaterDlg, "Water");
 	}
 
 	TerrainPane::~TerrainPane()
@@ -39,6 +41,7 @@ namespace Infinite {
 		mEditHeight._Init();
 		mEditLayer._Init();
 		mEditVeg._Init();
+		mEditWater._Init();
 	}
 
 	void TerrainPane::_Shutdown(Event * sender)
@@ -46,6 +49,7 @@ namespace Infinite {
 		mEditHeight._Shutdown();
 		mEditLayer._Shutdown();
 		mEditVeg._Shutdown();
+		mEditWater._Shutdown();
 	}
 
 	void TerrainPane::_Update(Event * sender)
@@ -72,6 +76,10 @@ namespace Infinite {
 		{
 			mEditVeg._Update();
 		}
+		else if (isel == xWaterPage)
+		{
+			mEditWater._Update();
+		}
 	}
 
 	void TerrainPane::_Render(Event * sender)
@@ -94,6 +102,10 @@ namespace Infinite {
 		else if (isel == xVegPage)
 		{
 			mEditVeg._Render();
+		}
+		else if (isel == xWaterPage)
+		{
+			mEditWater._Render();
 		}
 	}
 
@@ -121,6 +133,7 @@ namespace Infinite {
 
 		mLayerDlg->_UnloadScene(NULL);
 		mVegDlg->_UnloadScene(NULL);
+		mWaterDlg->_UnloadScene(NULL);
 	}
 
 	void TerrainPane::_AfterloadScene(Event * sender)
@@ -129,6 +142,7 @@ namespace Infinite {
 
 		mLayerDlg->_AfterLoadScene(NULL);
 		mVegDlg->_AfterLoadScene(NULL);
+		mWaterDlg->_AfterLoadScene(NULL);
 	}
 
 }

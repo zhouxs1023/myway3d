@@ -21,14 +21,16 @@ struct VS_OUT
 
 uniform float4x4 matWVP;
 uniform float4x4 matWV;
-uniform float4 gPosition;
-uniform float4 gScale;
+
+uniform float4 gHeight;
 
 VS_OUT main(VS_IN In)
 {
     VS_OUT Out;
     
-    float4 worldPos = In.pos * gScale + gPosition;
+    float4 worldPos = In.pos;
+
+	worldPos.y = gHeight.x;
     
     Out.pos = mul(worldPos, matWVP);
     Out.normal = In.normal;
