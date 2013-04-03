@@ -107,7 +107,6 @@ namespace Myway {
 				Position = mOcean->GetPosition();
 
 			mGodRay->Render(Position);
-
 		}
 	}
 
