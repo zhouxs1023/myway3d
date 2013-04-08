@@ -16,9 +16,11 @@ public:
 
     virtual void SetPosition(const Vec3 & pos) = 0;
     virtual void SetVolume(int iVolume) = 0;
-    virtual void SetDistance(float dist) = 0;
+    virtual void SetDistance(float minDist, float maxDist) = 0;
 
-    virtual float GetDistance() const = 0;
+	virtual float GetMinDistance() const = 0;
+    virtual float GetMaxDistance() const = 0;
+
     virtual int GetLength() const = 0;
     virtual const Vec3 & GetPosition() const = 0;
     virtual int GetChannel() const = 0;

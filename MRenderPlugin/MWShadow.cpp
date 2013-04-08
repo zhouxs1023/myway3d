@@ -1,6 +1,8 @@
 #include "MWShadow.h"
 #include "MWRenderHelper.h"
+#include "MWRenderEvent.h"
 #include "MWEnvironment.h"
+
 
 namespace Myway {
 
@@ -278,6 +280,8 @@ namespace Myway {
 		World::Instance()->ImpVisibleCull(mCullResult, mLightCamera, false);
 
 		OnVisibleCull(mLightCamera, NULL);
+
+		RenderEvent::OnFilterCullResult(&mCullResult, World::Instance()->MainCamera());
 
 		mRenderQueue.Clear();
 		mRenderQueue.PushRenderer(mCullResult.nodes);

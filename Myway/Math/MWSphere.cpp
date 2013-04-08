@@ -5,6 +5,7 @@ namespace Myway
 {
 
 const Sphere Sphere::Zero     = Sphere(0, 0, 0, 0);
+const Sphere Sphere::Identity = Sphere(0, 0, 0, 1);
 const Sphere Sphere::Infinite = Sphere(0, 0, 0, FLT_MAX);
 
 /* :) Sphere

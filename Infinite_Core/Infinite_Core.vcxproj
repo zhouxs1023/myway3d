@@ -118,6 +118,7 @@
     <ClCompile Include="xRenderSetting.cpp" />
     <ClCompile Include="xScene.cpp" />
     <ClCompile Include="xSerializer.cpp" />
+    <ClCompile Include="xSound.cpp" />
     <ClCompile Include="xTerrain.cpp" />
     <ClCompile Include="xTree.cpp" />
     <ClCompile Include="xUndoRedo.cpp" />
@@ -178,6 +179,7 @@
     <ClInclude Include="xRenderSetting.h" />
     <ClInclude Include="xScene.h" />
     <ClInclude Include="xSerializer.h" />
+    <ClInclude Include="xSound.h" />
     <ClInclude Include="xTerrain.h" />
     <ClInclude Include="xTree.h" />
     <ClInclude Include="xUndoRedo.h" />

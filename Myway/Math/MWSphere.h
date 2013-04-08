@@ -12,7 +12,8 @@ class MW_ENTRY Sphere
     DECLARE_ALLOC();
 
 public:
-    static const Sphere Zero;
+	static const Sphere Zero;
+    static const Sphere Identity;
     static const Sphere Infinite;
 
 public:

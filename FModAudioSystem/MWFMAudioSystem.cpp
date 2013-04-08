@@ -49,19 +49,35 @@ void FMAudioSystem::Update(const Vec3 & listener)
 
     while (whr != end)
     {
-        Sound * pSound = whr->second;
+        FMSound * pSound = whr->second;
 
-        float dist = pSound->GetDistance();
-        float distSq = Math::VecDistanceSq(listener, pSound->GetPosition());
+		float minDist = pSound->GetMinDistance();
+		float maxDist = pSound->GetMaxDistance();
+		float dist = Math::VecDistance(listener, pSound->GetPosition());
+		Vec3 dir = pSound->m_vPosition - listener;
 
-        if (distSq <= dist * dist)
-        {
-            FSOUND_SetPaused(pSound->GetChannel(), FALSE);
-            FSOUND_3D_Listener_SetAttributes((const float*)&listener, NULL, 0, 0, 1.0f, 0, 1.0f, 0);
-        }
+        if (dist < maxDist)
+		{
+			float k = (dist - minDist) / (maxDist - minDist + 0.0001f);
+
+			k = Math::Maximum(0.0f, k);
+			k = Math::Minimum(1.0f, k);
+
+			Vec3 pos = dir * k;
+
+			pSound->Play();
+
+			FSOUND_SetVolume(pSound->GetChannel(), pSound->GetVolume());
+
+			FSOUND_Sample_SetMinMaxDistance(pSound->m_pSound, 0, 0);
+
+			FSOUND_3D_SetAttributes(pSound->m_iChannel, (const float*)&pos, NULL);
+
+			FSOUND_3D_Listener_SetAttributes((const float*)&Vec3::Zero, NULL, 0, 0, 1.0f, 0, 1.0f, 0);
+		}
         else
         {
-            FSOUND_SetPaused(pSound->GetChannel(), TRUE);
+			pSound->Stop();
         }
 
         ++whr;
@@ -88,6 +104,32 @@ Music * FMAudioSystem::CreateMusic(const char * name, const char * media)
     m_mMusics.Insert(music->GetName(), music);
 
     return music;
+}
+
+bool FMAudioSystem::RenameSound(const char * newName, const char * oldName)
+{
+	FMSound * oldSound = (FMSound *)GetSound(oldName);
+	FMSound * newSound = (FMSound *)GetSound(newName);
+
+	if (oldSound == NULL || newSound != NULL)
+		return false;
+
+	oldSound->_SetName(newName);
+
+	return true;
+}
+
+bool FMAudioSystem::RenameMusic(const char * newName, const char * oldName)
+{
+	FMMusic * oldMusic = (FMMusic *)GetMusic(oldName);
+	FMMusic * newMusic = (FMMusic *)GetMusic(newName);
+
+	if (oldMusic == NULL || newMusic != NULL)
+		return false;
+
+	oldMusic->_SetName(newName);
+
+	return true;
 }
 
 void FMAudioSystem::DestroySound(const char * name)

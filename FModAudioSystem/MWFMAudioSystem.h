@@ -24,6 +24,9 @@ public:
     virtual Sound * CreateSound(const char * name, const char * media);
     virtual Music * CreateMusic(const char * name, const char * media);
 
+	virtual bool RenameSound(const char * newName, const char * oldName);
+	virtual bool RenameMusic(const char * newName, const char * oldName);
+
     virtual void DestroySound(const char * name);
     virtual void DestroyMusic(const char * name);
 

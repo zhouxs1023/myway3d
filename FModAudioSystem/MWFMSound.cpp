@@ -10,15 +10,17 @@ namespace Myway
 FMSound::FMSound(const char * name, const char * media)
 : Sound(name, media)
 {
-    m_fDistance = 50.0f;
+	m_fMinDistance = 0;
+    m_fMaxDistance = DEFAULT_DISTANCE;
     m_iChannel = -1;
+	m_iVolume = 1000;
     m_pStream = ResourceManager::Instance()->OpenResource(media);
 
     m_pSound = FSOUND_Sample_Load(FSOUND_FREE, (const char *)m_pStream->GetData(),
-                               FSOUND_HW3D | FSOUND_LOADMEMORY, 0, 0);
+                               FSOUND_HW3D | FSOUND_LOADMEMORY, 0, m_pStream->Size());
 
-    SetPosition(DEFAULT_POSITION);
-    SetDistance(DEFAULT_DISTANCE);
+	m_iLength = m_pSound ? FSOUND_Sample_GetLength(m_pSound) : 0;
+
     SetLoop(true);
 }
 
@@ -30,29 +32,32 @@ FMSound::~FMSound()
 void FMSound::SetPosition(const Vec3 & pos)
 {
     m_vPosition = pos;
-    FSOUND_3D_SetAttributes(m_iChannel, (const float*)&m_vPosition, NULL);
 }
 
 void FMSound::SetVolume(int iVolume)
 {
-    if (m_iChannel != -1)
-        FSOUND_SetVolume(m_iChannel, iVolume);
+	m_iVolume = iVolume;
 }
 
-void FMSound::SetDistance(float dist)
+void FMSound::SetDistance(float start, float end)
 {
-    m_fDistance = dist;
-    FSOUND_Sample_SetMinMaxDistance(m_pSound, 0.0f, dist);  
+	m_fMinDistance = start;
+    m_fMaxDistance = end;
 }
 
-float FMSound::GetDistance() const
+float FMSound::GetMinDistance() const
 {
-    return m_fDistance;
+    return m_fMinDistance;
+}
+
+float FMSound::GetMaxDistance() const
+{
+	return m_fMaxDistance;
 }
 
 int FMSound::GetLength() const
 {
-    return FSOUND_Sample_GetLength(m_pSound);
+    return m_iLength;
 }
 
 const Vec3 & FMSound::GetPosition() const
@@ -67,15 +72,13 @@ int FMSound::GetChannel() const
 
 int FMSound::GetVolume() const
 {
-    if (m_iChannel != -1)
-        return FSOUND_GetVolume(m_iChannel);
-
-    return 0;
+    return m_iVolume;
 }
 
 void FMSound::Play()
 {
-    m_iChannel = FSOUND_PlaySoundEx(FSOUND_FREE, m_pSound, NULL, TRUE);
+	if (m_iChannel == -1)
+		m_iChannel = FSOUND_PlaySoundEx(FSOUND_FREE, m_pSound, NULL, FALSE);
 }
 
 void FMSound::Pause()
@@ -87,7 +90,9 @@ void FMSound::Pause()
 void FMSound::Stop()
 {
     if (m_iChannel != -1)
-        FSOUND_SetPaused(m_iChannel, TRUE);
+        FSOUND_StopSound(m_iChannel);
+
+	m_iChannel = -1;
 }
 
 void FMSound::SetLoop(bool bLoop)
@@ -101,5 +106,6 @@ void FMSound::SetLoop(bool bLoop)
         FSOUND_Sample_SetMode(m_pSound, FSOUND_LOOP_OFF);
     }
 }
+
 
 }

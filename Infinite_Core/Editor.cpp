@@ -7,6 +7,7 @@
 #include "xOcean.h"
 #include "xTerrain.h"
 #include "xTree.h"
+#include "xSound.h"
 #include "MainWorkSpace.h"
 
 namespace Infinite {
@@ -51,6 +52,7 @@ namespace Infinite {
 		mShapeMgr.AddFactory(new xTreeFactory);
 		mShapeMgr.AddFactory(new xOceanFactory);
 		mShapeMgr.AddFactory(new xTerrainFactory);
+		mShapeMgr.AddFactory(new xSoundFactory);
 
 		mColorPanel = new ColourPanel();
 		mMessageBox = new MMessageBox();
@@ -75,6 +77,8 @@ namespace Infinite {
 	{
 		RenderWindow::Instance()->Update();
 		xEvent::OnUpdate();
+
+		AudioSystem::Instance()->Update(World::Instance()->MainCamera()->GetPosition());
 	}
 
 	void Editor::SetSelectedShape(Shape * obj)

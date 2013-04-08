@@ -151,6 +151,9 @@
     <ClCompile Include="xEditTerrainWater.cpp">
       <Filter>Terrain</Filter>
     </ClCompile>
+    <ClCompile Include="xSound.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -322,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="xEditTerrainWater.h">
       <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="xSound.h">
+      <Filter>Shape</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

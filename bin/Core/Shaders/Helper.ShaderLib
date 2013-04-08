@@ -48,6 +48,14 @@
     <Shader name = "PointLightPS" language = "cg" profile = "ps30" source = "PointLight.ps" >
     </Shader>
 
+    <Shader name = "BillboardVS" language = "cg" profile = "vs30" source = "Billboard.vs" >
+      <param name = "matWV" type = "float4x4" btype = "matWV" />
+      <param name = "matProj" type = "float4x4" btype = "matProj" />
+    </Shader>
+
+    <Shader name = "BillboardPS" language = "cg" profile = "ps30" source = "Billboard.ps" >
+    </Shader>
+
   </Shaders>
 
 	<Techniques>
@@ -74,6 +82,10 @@
     </Technique>
 
     <Technique name = "PointLight" vs = "PointLightVS" ps = "PointLightPS">
+      <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
+    </Technique>
+
+    <Technique name = "Billboard" vs = "BillboardVS" ps = "BillboardPS">
       <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
     </Technique>
     

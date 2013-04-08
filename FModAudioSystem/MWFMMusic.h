@@ -28,6 +28,8 @@ public:
 
     virtual void SetLoop(bool bLoop);
 
+	void _SetName(const char * name) { mName = name; }
+
 protected:
     int m_iChannel;
     FSOUND_STREAM * m_pMusic;
