@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="GMesh.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="GEntity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GSerializer.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GSound.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GLight.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="GApp.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="GMode.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="GActor.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GNpc.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="GData.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{b0415e5c-d7f9-48bf-ad1c-c83655b938cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{aece5fb8-2147-491d-bd23-9d1702269b9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{3954b91a-77fe-450a-888c-209bedd67431}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="App">
+      <UniqueIdentifier>{23889dec-1bd2-48bc-8340-1fcc1b2563ba}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="GMesh.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="GEntity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GSerializer.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GSound.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GLight.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GApp.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="GMode.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="GCore.h" />
+    <ClInclude Include="GActor.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GNpc.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="GData.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

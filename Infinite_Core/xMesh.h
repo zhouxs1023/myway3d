@@ -49,6 +49,7 @@ namespace Infinite {
 		virtual void Serialize(xSerializer & serializer);
 
 		virtual Aabb GetBound();
+		virtual ColMesh * GetColMesh();
 
 		virtual bool OnPropertyChanged(const Property * p);
 

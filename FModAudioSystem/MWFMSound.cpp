@@ -5,7 +5,6 @@ namespace Myway
 {
 
 #define DEFAULT_DISTANCE 50.0f
-#define DEFAULT_POSITION Vec3::Zero
 
 FMSound::FMSound(const char * name, const char * media)
 : Sound(name, media)
@@ -27,11 +26,6 @@ FMSound::FMSound(const char * name, const char * media)
 FMSound::~FMSound()
 {
     FSOUND_Sample_Free(m_pSound);
-}
-
-void FMSound::SetPosition(const Vec3 & pos)
-{
-    m_vPosition = pos;
 }
 
 void FMSound::SetVolume(int iVolume)
@@ -58,11 +52,6 @@ float FMSound::GetMaxDistance() const
 int FMSound::GetLength() const
 {
     return m_iLength;
-}
-
-const Vec3 & FMSound::GetPosition() const
-{
-    return m_vPosition;
 }
 
 int FMSound::GetChannel() const

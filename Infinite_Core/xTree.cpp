@@ -13,7 +13,7 @@ namespace Infinite {
 		DF_PROPERTY(xTree, LeafDiffuse, "Material", "LeafDiffuse", PT_Color, 16)
 		DF_PROPERTY(xTree, FrondDiffuse, "Material", "FrondDiffuse", PT_Color, 16)
 		DF_PROPERTY(xTree, BranchDiffuse, "Material", "BranchDiffuse", PT_Color, 16)
-		DF_PROPERTY_END();
+	DF_PROPERTY_END();
 
 	xTree::xTree(const TString128 & name)
 		: Shape(name)

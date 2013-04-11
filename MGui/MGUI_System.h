@@ -42,15 +42,15 @@ namespace Myway {
 
 		MGUI_RenderSystem * GetRenderManager() { return mRenderManager; }
 
-		void InjectMouseEvent();
-		void InjectKeyEvent(DWORD uMsg, WPARAM wParam,LPARAM lParam);
+		bool InjectMouseEvent();
+		bool InjectKeyEvent(DWORD uMsg, WPARAM wParam,LPARAM lParam);
 
 	protected:
-		void injectMouseMove(int _absx, int _absy, int _absz);
-		void injectMousePress(int _absx, int _absy, MyGUI::MouseButton _id);
-		void injectMouseRelease(int _absx, int _absy, MyGUI::MouseButton _id);
-		void injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text);
-		void injectKeyRelease(MyGUI::KeyCode _key);
+		bool injectMouseMove(int _absx, int _absy, int _absz);
+		bool injectMousePress(int _absx, int _absy, MyGUI::MouseButton _id);
+		bool injectMouseRelease(int _absx, int _absy, MyGUI::MouseButton _id);
+		bool injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text);
+		bool injectKeyRelease(MyGUI::KeyCode _key);
 
 	protected:
 		void _OnResize(Event * sender);

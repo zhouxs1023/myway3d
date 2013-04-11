@@ -100,6 +100,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Math\MWCurve.h" />
+    <ClInclude Include="Math\MWValue.h" />
     <ClInclude Include="Myway.h" />
     <ClInclude Include="Core\MWAllocObj.h" />
     <ClInclude Include="Core\MWArchive.h" />
@@ -229,7 +230,6 @@
     <ClInclude Include="AudioSystem\MWMusic.h" />
     <ClInclude Include="AudioSystem\MWSound.h" />
     <ClInclude Include="AI\MWPath.h" />
-    <ClInclude Include="AI\MWValue.h" />
     <ClInclude Include="InputSystem\MWInputSystem.h" />
     <ClInclude Include="InputSystem\MWJoystick.h" />
     <ClInclude Include="InputSystem\MWKeyboard.h" />
@@ -369,7 +369,6 @@
     <ClCompile Include="AudioSystem\MWMusic.cpp" />
     <ClCompile Include="AudioSystem\MWSound.cpp" />
     <ClCompile Include="AI\MWPath.cpp" />
-    <ClCompile Include="AI\MWValue.cpp" />
     <ClCompile Include="InputSystem\MWInputSystem.cpp" />
     <ClCompile Include="Core\MWNetStream.cpp" />
     <ClCompile Include="Core\MWSocket.cpp" />

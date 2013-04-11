@@ -16,7 +16,6 @@ public:
     FMSound(const char * name, const char * media);
     virtual ~FMSound();
 
-    virtual void SetPosition(const Vec3 & pos);
     virtual void SetVolume(int iVolume);
     virtual void SetDistance(float minDist, float maxDist);
 
@@ -24,7 +23,6 @@ public:
     virtual float GetMaxDistance() const;
 
     virtual int GetLength() const;
-    virtual const Vec3 & GetPosition() const;
     virtual int GetChannel() const;
     virtual int GetVolume() const;
 
@@ -34,8 +32,6 @@ public:
 
     virtual void SetLoop(bool bLoop);
 
-	void _SetName(const char * name) { mName = name; }
-
 protected:
     FSOUND_SAMPLE * m_pSound;
     DataStreamPtr m_pStream;
@@ -44,7 +40,6 @@ protected:
 	int m_iVolume;
 	int m_iLength;
     int m_iChannel;
-    Vec3 m_vPosition;
 };
 
 }

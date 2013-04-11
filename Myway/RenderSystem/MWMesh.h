@@ -76,6 +76,7 @@ public:
 
 	ColMesh *					GetColMesh();
 	void						GenColMeshFromRenderMesh();
+	void						GenColMesh(Vec3 * verts, int numVerts, int * idxs, int numIdxs);
 
     void                        CalcuBounds();
 
@@ -90,7 +91,7 @@ protected:
     Sphere                  mSphere;
     Array<SubMesh*>         mMeshes;
 	Skeleton				mSkeleton;
-	ColMesh					mColMesh;
+	ColMesh	*				mColMesh;
 };
 
 DeclareSmartPtr(Mesh);

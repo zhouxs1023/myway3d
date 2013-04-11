@@ -144,7 +144,7 @@ void xObjBound::RenderColMesh()
 
 	Vec3 pos = obj->GetPosition();
 	Quat ort = obj->GetOrientation();
-	Vec3 scale = obj->GetScale() * 1.02f;
+	Vec3 scale = obj->GetScale();
 
 	RenderSystem * render = RenderSystem::Instance();
 

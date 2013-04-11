@@ -33,11 +33,9 @@ xMesh::xMesh(const TString128 & name)
 
 xMesh::~xMesh()
 {
-    if (mEntity)
-        World::Instance()->DestroyEntity(mEntity);
-
-    if (mNode)
-        World::Instance()->DestroySceneNode(mNode);
+	IPhyWorld::Instance()->RemoveNode(mNode);
+    World::Instance()->DestroyEntity(mEntity);
+    World::Instance()->DestroySceneNode(mNode);
 }
 
 Aabb xMesh::GetBound()
@@ -132,6 +130,21 @@ void xMesh::SetMeshFile(const TString128 & meshFile)
         return ;
 
     mEntity->SetMesh(meshFile);
+
+	IPhyWorld::Instance()->RemoveNode(mNode);
+
+	if (mEntity->GetMesh() == NULL)
+		return ;
+
+	if (mEntity->GetMesh()->GetColMesh() == NULL)
+		mEntity->GetMesh()->GenColMeshFromRenderMesh();
+
+	IColObjPtr colObj = IPhyWorld::Instance()->GetColMesh(mEntity->GetMesh().c_ptr(), Scale);
+
+	if (colObj == NULL)
+		colObj = IPhyWorld::Instance()->AddColMesh(mEntity->GetMesh().c_ptr(), mEntity->GetMesh()->GetColMesh(), Scale);
+
+	IPhyWorld::Instance()->AddNode(mNode, colObj);
 }
 
 void xMesh::SetAnimName(const TString128 & animName)
@@ -191,6 +204,8 @@ void xMesh::SetScale(float scale)
 {
 	Scale = scale;
     mNode->SetScale(scale);
+
+	IPhyWorld::Instance()->OnNodeScaleChanged(mNode);
 }
 
 void xMesh::_Update(Event * sender)
@@ -203,6 +218,13 @@ void xMesh::_Update(Event * sender)
 	mEntity->UpdateAnimation();
 }
 
+ColMesh * xMesh::GetColMesh()
+{
+	if (mEntity && mEntity->GetMesh() != NULL)
+		return mEntity->GetMesh()->GetColMesh();
+
+	return NULL;
+}
 
 
 

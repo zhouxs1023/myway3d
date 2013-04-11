@@ -81,56 +81,74 @@ namespace Myway {
 
 
 
-	void MGUI_System::InjectMouseEvent()
+	bool MGUI_System::InjectMouseEvent()
 	{
+		bool inject = false;
 		if (IMouse::Instance()->MouseMoved() || IMouse::Instance()->MouseWheel())
 		{
 			static int pt_z = 0;
 			Point2i pt = IMouse::Instance()->GetPosition();
 			pt_z += IMouse::Instance()->MouseWheel();
 
-			injectMouseMove(pt.x, pt.y, pt_z);
+			if (injectMouseMove(pt.x, pt.y, pt_z))
+				inject = true;
 		}
 
 		if (IMouse::Instance()->KeyDown(MKC_BUTTON0))
 		{
 			Point2i pt = IMouse::Instance()->GetPosition();
-			injectMousePress(pt.x, pt.y, MyGUI::MouseButton::Left);
+			
+			if (injectMousePress(pt.x, pt.y, MyGUI::MouseButton::Left))
+				inject = true;
 		}
 
 		if (IMouse::Instance()->KeyDown(MKC_BUTTON1))
 		{
 			Point2i pt = IMouse::Instance()->GetPosition();
-			injectMousePress(pt.x, pt.y, MyGUI::MouseButton::Right);
+			
+			if (injectMousePress(pt.x, pt.y, MyGUI::MouseButton::Right))
+				inject = true;
 		}
 
 		if (IMouse::Instance()->KeyDown(MKC_BUTTON2))
 		{
 			Point2i pt = IMouse::Instance()->GetPosition();
-			injectMousePress(pt.x, pt.y, MyGUI::MouseButton::Middle);
+			
+			if (injectMousePress(pt.x, pt.y, MyGUI::MouseButton::Middle))
+				inject = true;
 		}
 
 		if (IMouse::Instance()->KeyUp(MKC_BUTTON0))
 		{
 			Point2i pt = IMouse::Instance()->GetPosition();
-			injectMouseRelease(pt.x, pt.y, MyGUI::MouseButton::Left);
+			
+			if (injectMouseRelease(pt.x, pt.y, MyGUI::MouseButton::Left))
+				inject = true;
 		}
 
 		if (IMouse::Instance()->KeyUp(MKC_BUTTON1))
 		{
 			Point2i pt = IMouse::Instance()->GetPosition();
-			injectMouseRelease(pt.x, pt.y, MyGUI::MouseButton::Right);
+			
+			if (injectMouseRelease(pt.x, pt.y, MyGUI::MouseButton::Right))
+				inject = true;
 		}
 
 		if (IMouse::Instance()->KeyUp(MKC_BUTTON2))
 		{
 			Point2i pt = IMouse::Instance()->GetPosition();
-			injectMouseRelease(pt.x, pt.y, MyGUI::MouseButton::Middle);
+
+			if (injectMouseRelease(pt.x, pt.y, MyGUI::MouseButton::Middle))
+				inject = true;
 		}
+
+		return inject;
 	}
 
-	void MGUI_System::InjectKeyEvent(DWORD uMsg, WPARAM wParam,LPARAM lParam)
+	bool MGUI_System::InjectKeyEvent(DWORD uMsg, WPARAM wParam,LPARAM lParam)
 	{
+		bool inject = false;
+
 		if (WM_KEYDOWN == uMsg)
 		{
 			bool repeat = (lParam & (1 >> 30)) != 0;
@@ -138,7 +156,9 @@ namespace Myway {
 			{
 				int scan_code = MGUI_Input::VirtualKeyToScanCode(wParam);
 				int text = MGUI_Input::VirtualKeyToText(wParam);
-				injectKeyPress(MyGUI::KeyCode::Enum(scan_code), (MyGUI::Char)text);
+				
+				if (injectKeyPress(MyGUI::KeyCode::Enum(scan_code), (MyGUI::Char)text))
+					inject = true;
 			}
 		}
 		else if (WM_IME_CHAR == uMsg)
@@ -166,7 +186,9 @@ namespace Myway {
 			/*int num = */MultiByteToWideChar(CP_ACP, MB_PRECOMPOSED, mbstr, -1, wstr, _countof(wstr));
 			text = wstr[0];
 #endif // _UNICODE
-			injectKeyPress(MyGUI::KeyCode::None, (MyGUI::Char)text);
+			
+			if (injectKeyPress(MyGUI::KeyCode::None, (MyGUI::Char)text))
+				inject = true;
 		}
 		else if (WM_KEYUP == uMsg)
 		{
@@ -174,86 +196,77 @@ namespace Myway {
 			MyGUI::KeyCode code = MyGUI::KeyCode::Enum(scan_code);
 
 			if (code == MyGUI::KeyCode::SysRq)
-				injectKeyPress(code, (MyGUI::Char)0);
+			{
+				if (injectKeyPress(code, (MyGUI::Char)0))
+					inject = true;
+			}
 
-			injectKeyRelease(code);
+			if (injectKeyRelease(code))
+				inject = true;
 		}
+
+		return inject;
 	}
 
 
 
-	void MGUI_System::injectMouseMove(int _absx, int _absy, int _absz)
+	bool MGUI_System::injectMouseMove(int _absx, int _absy, int _absz)
 	{
-		if (!mGui)
-			return;
-
 		bool _inject = true;
 
 		OnMouseMove(&_inject, &_absx, &_absy, &_absz);
 
 		if (!_inject)
-			return ;
+			return false;
 
-		MyGUI::InputManager::getInstance().injectMouseMove(_absx, _absy, _absz);
+		return MyGUI::InputManager::getInstance().injectMouseMove(_absx, _absy, _absz);
 	}
 
-	void MGUI_System::injectMousePress(int _absx, int _absy, MyGUI::MouseButton _id)
+	bool MGUI_System::injectMousePress(int _absx, int _absy, MyGUI::MouseButton _id)
 	{
-		if (!mGui)
-			return;
-
 		bool _inject = true;
 
 		OnMousePress(&_inject, &_absx, &_absy, &_id);
 
 		if (!_inject)
-			return ;
+			return false;
 
-		MyGUI::InputManager::getInstance().injectMousePress(_absx, _absy, _id);
+		return MyGUI::InputManager::getInstance().injectMousePress(_absx, _absy, _id);
 	}
 
-	void MGUI_System::injectMouseRelease(int _absx, int _absy, MyGUI::MouseButton _id)
+	bool MGUI_System::injectMouseRelease(int _absx, int _absy, MyGUI::MouseButton _id)
 	{
-		if (!mGui)
-			return;
-
 		bool _inject = true;
 
 		OnMouseRelease(&_inject, &_absx, &_absy, &_id);
 
 		if (!_inject)
-			return ;
+			return false;
 
-		MyGUI::InputManager::getInstance().injectMouseRelease(_absx, _absy, _id);
+		return MyGUI::InputManager::getInstance().injectMouseRelease(_absx, _absy, _id);
 	}
 
-	void MGUI_System::injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text)
+	bool MGUI_System::injectKeyPress(MyGUI::KeyCode _key, MyGUI::Char _text)
 	{
-		if (!mGui)
-			return;
-
 		bool _inject = true;
 
 		OnKeyPress(&_inject, &_key, &_text);
 
 		if (!_inject)
-			return ;
+			return false;
 
-		MyGUI::InputManager::getInstance().injectKeyPress(_key, _text);
+		return MyGUI::InputManager::getInstance().injectKeyPress(_key, _text);
 	}
 
-	void MGUI_System::injectKeyRelease(MyGUI::KeyCode _key)
+	bool MGUI_System::injectKeyRelease(MyGUI::KeyCode _key)
 	{
-		if (!mGui)
-			return;
-
 		bool _inject = true;
 
 		OnKeyRelease(&_inject, &_key);
 
 		if (!_inject)
-			return ;
+			return false;
 
-		MyGUI::InputManager::getInstance().injectKeyRelease(_key);
+		return MyGUI::InputManager::getInstance().injectKeyRelease(_key);
 	}
 }

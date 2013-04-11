@@ -11,6 +11,8 @@ FMAudioSystem::FMAudioSystem(HWND hWnd)
     FSOUND_Init(44100, MAX_CHANEL, 0);
     FSOUND_SetMixer(FSOUND_MIXER_QUALITY_AUTODETECT);
     FSOUND_SetSpeakerMode(FSOUND_SPEAKERMODE_SURROUND);
+
+	FSOUND_3D_Listener_SetAttributes((const float*)&Vec3::Zero, NULL, 0, 0, 1.0f, 0, 1.0f, 0);
 }
 
 FMAudioSystem::~FMAudioSystem()
@@ -51,34 +53,36 @@ void FMAudioSystem::Update(const Vec3 & listener)
     {
         FMSound * pSound = whr->second;
 
-		float minDist = pSound->GetMinDistance();
-		float maxDist = pSound->GetMaxDistance();
-		float dist = Math::VecDistance(listener, pSound->GetPosition());
-		Vec3 dir = pSound->m_vPosition - listener;
-
-        if (dist < maxDist)
+		if (pSound->GetAttachNode())
 		{
-			float k = (dist - minDist) / (maxDist - minDist + 0.0001f);
+			float minDist = pSound->GetMinDistance();
+			float maxDist = pSound->GetMaxDistance();
 
-			k = Math::Maximum(0.0f, k);
-			k = Math::Minimum(1.0f, k);
+			Vec3 dir = pSound->GetPosition() - listener;
+			float dist = dir.Length();
 
-			Vec3 pos = dir * k;
+			if (dist < maxDist)
+			{
+				float k = (dist - minDist) / (maxDist - minDist + 0.0001f);
 
-			pSound->Play();
+				k = Math::Maximum(0.0f, k);
+				k = Math::Minimum(1.0f, k);
 
-			FSOUND_SetVolume(pSound->GetChannel(), pSound->GetVolume());
+				Vec3 pos = dir * k;
 
-			FSOUND_Sample_SetMinMaxDistance(pSound->m_pSound, 0, 0);
+				pSound->Play();
 
-			FSOUND_3D_SetAttributes(pSound->m_iChannel, (const float*)&pos, NULL);
+				FSOUND_SetVolume(pSound->GetChannel(), pSound->GetVolume());
 
-			FSOUND_3D_Listener_SetAttributes((const float*)&Vec3::Zero, NULL, 0, 0, 1.0f, 0, 1.0f, 0);
+				FSOUND_Sample_SetMinMaxDistance(pSound->m_pSound, 0, 0);
+
+				FSOUND_3D_SetAttributes(pSound->m_iChannel, (const float*)&pos, NULL);
+			}
+			else
+			{
+				pSound->Stop();
+			}
 		}
-        else
-        {
-			pSound->Stop();
-        }
 
         ++whr;
     }
@@ -91,7 +95,7 @@ Sound * FMAudioSystem::CreateSound(const char * name, const char * media)
     d_assert (GetSound(name) == 0);
 
     FMSound * sound = new FMSound(name, media);
-    m_mSounds.Insert(sound->GetName(), sound);
+    m_mSounds.Insert(sound->GetName().c_str(), sound);
 
     return sound;
 }
@@ -114,7 +118,7 @@ bool FMAudioSystem::RenameSound(const char * newName, const char * oldName)
 	if (oldSound == NULL || newSound != NULL)
 		return false;
 
-	oldSound->_SetName(newName);
+	oldSound->SetName(newName);
 
 	return true;
 }
@@ -156,7 +160,7 @@ void FMAudioSystem::DestroyMusic(const char * name)
 
 void FMAudioSystem::DestroySound(Sound * pSound)
 {
-    DestroySound(pSound->GetName());
+    DestroySound(pSound->GetName().c_str());
 }
 
 void FMAudioSystem::DestroyMusic(Music * pMusic)

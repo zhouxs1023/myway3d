@@ -87,6 +87,12 @@ namespace Myway
 typedef __int64 int64;
 typedef unsigned __int64 uint64;
 
+#ifdef _WIN64
+	typedef int64 t_ptr;
+#else 
+	typedef int t_ptr;
+#endif
+
 /*
 #ifdef _UNICODE
 

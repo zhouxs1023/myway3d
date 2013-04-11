@@ -96,15 +96,17 @@ SubMesh * Mesh::CreateSubMesh()
 ----------------------------------------------------
 */
 Mesh::Mesh(const TString128 & sName)
-: mName(sName),
-  mBound(Vec3::Zero, Vec3::Zero),
-  mSphere(Vec3::Zero, 0.0f)
+: mName(sName)
+, mBound(Vec3::Zero, Vec3::Zero)
+, mSphere(Vec3::Zero, 0.0f)
+, mColMesh(NULL)
 {
 }
 
 Mesh::~Mesh()
 {
     RemoveAllSubMehs();
+	safe_delete (mColMesh);
 }
 
 void Mesh::DeleteSelf()
@@ -143,7 +145,25 @@ Skeleton * Mesh::GetSkeleton()
 
 ColMesh * Mesh::GetColMesh()
 {
-	return &mColMesh;
+	return mColMesh;
+}
+
+void Mesh::GenColMesh(Vec3 * verts, int numVerts, int * idxs, int numIdxs)
+{
+	safe_delete (mColMesh);
+
+	mColMesh = new ColMesh;
+
+	mColMesh->Alloc(numVerts, numIdxs);
+
+	Array<Vec3> & colVert = mColMesh->GetPositions();
+	Array<int> & colIdx = mColMesh->GetIndices();
+
+	for (int i = 0; i < numVerts; ++i)
+		colVert[i] = verts[i];
+
+	for (int i = 0; i < numIdxs; ++i)
+		colIdx[i] = idxs[i];
 }
 
 void Mesh::GenColMeshFromRenderMesh()
@@ -151,7 +171,9 @@ void Mesh::GenColMeshFromRenderMesh()
 	if (!CanLoad()) // only for load from file
 		return ;
 
-	mColMesh.Clear();
+	safe_delete (mColMesh);
+
+	mColMesh = new ColMesh;
 
 	int numVerts = 0, numIndices = 0;
 
@@ -159,15 +181,18 @@ void Mesh::GenColMeshFromRenderMesh()
 	{
 		numVerts += mMeshes[i]->GetVertexStream()->GetCount();
 		numIndices += mMeshes[i]->GetIndexStream()->GetCount();
+
+		if (mMeshes[i]->GetPrimitiveType() != PRIM_TRIANGLELIST)
+			return ;
 	}
 
 	if (numVerts == 0 || numIndices == 0)
 		return ;
 
-	mColMesh.Alloc(numVerts, numIndices);
+	mColMesh->Alloc(numVerts, numIndices / 3);
 
-	Array<Vec3> & colVert = mColMesh.GetPositions();
-	Array<int> & colIdx = mColMesh.GetIndices();
+	Array<Vec3> & colVert = mColMesh->GetPositions();
+	Array<int> & colIdx = mColMesh->GetIndices();
 
 	int indexV = 0, indexI = 0;
 	int startVertex = 0;
@@ -189,8 +214,10 @@ void Mesh::GenColMeshFromRenderMesh()
 		{
 			for (int v = 0; v < subMesh->GetVertexStream()->GetCount(); ++v)
 			{
-				Vec3 * pos = (Vec3 *)(vertData[vep->Offset]);
+				Vec3 * pos = (Vec3 *)(vertData + vep->Offset);
+
 				colVert[indexV++] = *pos;
+				vertData += stride;
 			}
 		}
 		vb->Unlock();
@@ -210,7 +237,6 @@ void Mesh::GenColMeshFromRenderMesh()
 					index = *((int *)idxData);
 
 				colIdx[indexI++] = index + startVertex;
-
 				idxData += stride;
 			}
 		}

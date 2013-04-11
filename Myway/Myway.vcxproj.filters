@@ -447,9 +447,6 @@
     <ClInclude Include="AI\MWPath.h">
       <Filter>Myway\AI</Filter>
     </ClInclude>
-    <ClInclude Include="AI\MWValue.h">
-      <Filter>Myway\AI</Filter>
-    </ClInclude>
     <ClInclude Include="InputSystem\MWInputSystem.h">
       <Filter>Myway\InputSystem</Filter>
     </ClInclude>
@@ -488,6 +485,9 @@
     </ClInclude>
     <ClInclude Include="RenderSystem\MWColMesh.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="Math\MWValue.h">
+      <Filter>Myway\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -857,9 +857,6 @@
       <Filter>Myway\AudioSystem</Filter>
     </ClCompile>
     <ClCompile Include="AI\MWPath.cpp">
-      <Filter>Myway\AI</Filter>
-    </ClCompile>
-    <ClCompile Include="AI\MWValue.cpp">
       <Filter>Myway\AI</Filter>
     </ClCompile>
     <ClCompile Include="InputSystem\MWInputSystem.cpp">

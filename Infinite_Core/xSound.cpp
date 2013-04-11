@@ -136,7 +136,7 @@ namespace Infinite {
 		Name = name;
 		
 		if (mSound)
-			AudioSystem::Instance()->RenameSound(name.c_str(), mSound->GetName());
+			AudioSystem::Instance()->RenameSound(name.c_str(), mSound->GetName().c_str());
 	}
 
 	void xSound::SetSoundFile(const TString128 & file)
@@ -155,8 +155,8 @@ namespace Infinite {
 			return ;
 
 		mSound = AudioSystem::Instance()->CreateSound(Name.c_str(), SoundFile.c_str());
+		mNode->Attach(mSound);
 
-		mSound->SetPosition(mNode->GetPosition());
 		mSound->SetDistance(MinDist, MaxDist);
 		mSound->SetVolume(int(Volume));
 
@@ -185,9 +185,6 @@ namespace Infinite {
 	{
 		Position = position;
 		mNode->SetPosition(position);
-
-		if (mSound)
-			mSound->SetPosition(mNode->GetPosition());
 	}
 
 	void xSound::SetMinDist(float r)
