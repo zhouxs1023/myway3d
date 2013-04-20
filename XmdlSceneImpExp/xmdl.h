@@ -42,6 +42,17 @@ namespace xmdl {
 #define GEOSET_MPOINT	*(DWORD*)"MPNT"
 
 
+	// 是否根骨骼
+#define NODE_IS_ROOT		(1L<<7)
+	// 是 CS骨骼.CS骨骼的缩放不参与运动和标准桢计算,只在体型时用于计算缩放
+#define NODE_IS_CSBONE		(1L<<8)
+	// 是否负矩阵骨骼
+#define NODE_IS_NEGATIVE	(1L<<9)
+	// 是否需要保留初始桢的旋转和缩放,不与后续抵消.
+#define NODE_HOLD_FIRSTFRAME	(1L<<10)
+	// 是否 Dumy.Dumy只有位移,没有旋转和缩放.
+#define NODE_IS_DUMY		(1L<<13)
+	// 保留 14-15 3bits
 
 	struct t_chunk
 	{
@@ -86,15 +97,61 @@ namespace xmdl {
 		DWORD dwNameStr;			// 名字字符串
 	};
 
+	struct t_blend_infl
+	{
+		WORD wWeightCount;
+		WORD wWeightOffset;
+	};
+
+	struct t_skin
+	{
+		FLOAT fWeight;
+		BYTE byBoneID;
+	};
+
 	struct t_texture
 	{
 		DWORD dwFileNameStr;
+	};
+
+	struct t_node
+	{
+		WORD wNameStr;
+		WORD wFlags;
+		BYTE byType;			// NodeType
+		BYTE byParent;			// 父骨骼
+		BYTE byChildBegin;
+		BYTE byChildCount;
+
+		FLOAT Pos[3];			// 初始化局部矩阵。1、如果无关键桢，使用初始化局部矩阵。2、世界矩阵运行时计算得到。
+		FLOAT Rot[4];
+		FLOAT Scl[3];
+	};
+
+	struct t_track
+	{
+		UINT nFrame;
+		Vec3 p;
+		Quat q;
+		Vec3 s;
+	};
+
+	struct t_skin_anim
+	{
+		USHORT nNodeIndex;
+		Array<t_track> vTracks;
 	};
 
 	struct t_fx
 	{
 		DWORD dwFileNameStr;				// FX 文件名
 		int nVersion;						// Fx 版本
+	};
+
+	struct t_skin_info
+	{
+		unsigned char bindex[4];
+		float bweight[4];
 	};
 
 	struct t_mesh
@@ -110,6 +167,15 @@ namespace xmdl {
 		Vec2 * mUV;
 		WORD * mIndex;
 
+		t_blend_infl * mBInfl;
+
+		int mSkinCount;
+		t_skin * mSkin;
+
+		t_skin_info * mSkinInfo;
+
+		Array<short> boneIds;
+
 		t_mesh()
 		{
 			mVertexCount = 0;
@@ -121,6 +187,13 @@ namespace xmdl {
 			mNormal = NULL;
 			mUV = NULL;
 			mIndex = NULL;
+
+			mSkinCount = 0;
+
+			mBInfl = NULL;
+			mSkin = NULL;
+
+			mSkinInfo = NULL;
 		}
 
 		~t_mesh()
@@ -132,6 +205,26 @@ namespace xmdl {
 
 			mVertexCount = 0;
 			mIndexCount = 0;
+
+			safe_delete_array (mBInfl);
+			safe_delete_array (mSkin);
+
+			mSkinCount = 0;
+
+			safe_delete_array (mSkinInfo);
+		}
+
+		short MapBoneId(short boneId)
+		{
+			for (int i = 0; i < boneIds.Size(); ++i)
+			{
+				if (boneIds[i] == boneId)
+					return i;
+			}
+
+			boneIds.PushBack(boneId);
+
+			return boneIds.Size() - 1;
 		}
 	};
 
@@ -147,9 +240,18 @@ namespace xmdl {
 		void save(const char * filename);
 
 	protected:
+		void _saveMesh(const char * filename);
+		void _saveAnim(const char * filename);
+
+		bool _exsitBoneName(const TString128 & name);
+		void _optimize();
+		t_mesh * _mergeMesh(t_mesh * mesh0, t_mesh * mesh1);
+
+	protected:
 		void _loadHead(DataStreamPtr & file);
 		void _loadGeoset(DataStreamPtr & file, int size);
 		int _loadTexture(DataStreamPtr & file, int size);
+		void _loadTrack(DataStreamPtr & file, int size);
 
 	protected:
 		TString128 mFilename;
@@ -167,6 +269,14 @@ namespace xmdl {
 		t_fx * mFxs;
 
 		Array<t_mesh *> mMeshes;
+
+		int mNodeCount;
+		t_node * mNodes;
+
+		int mSkinAnimCount;
+		t_skin_anim * mSkinAnims;
+
+		Array<TString128> mBoneNames;
 	};
 
 }

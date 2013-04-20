@@ -21,6 +21,7 @@ void SkeletonInstance::_Initialize()
     {
         joint * data = mSkeleton->GetJoint(i);
         Bone * bone = CreateBone(data->sName);
+		bone->SetFlag(data->flag);
         bone->SetPosition(data->position);
         bone->SetOrientation(data->orientation);
         bone->SetScale(data->scale);
@@ -54,6 +55,10 @@ void SkeletonInstance::_Initialize()
 	{
 		mRoots[i]->_Intitalize();
 	}
+
+	ResetBone();
+
+	UpdateBoneMatrix();
 }
 
 void SkeletonInstance::_Shutdown()
@@ -95,22 +100,12 @@ void SkeletonInstance::_Dump(Bone * bn, const String & sText, const String & sSp
 
 int SkeletonInstance::GetBoneMatrix(Mat4 * forms)
 {
-    int index = 0;
-
-    Array<Bone*>::Iterator iter;
-    Array<Bone*>::Iterator end;
-
-    iter = mBones.Begin();
-    end = mBones.End();
-
-    while (iter != end)
-    {
-        forms[index++] = (*iter)->GetBoneMatrix();
-
-        ++iter;
+    for (int i = 0; i < mBones.Size(); ++i)
+	{
+        forms[i] = mBones[i]->GetBoneMatrix();
     }
 
-    return index;
+    return mBones.Size();
 }
 
 void SkeletonInstance::UpdateBoneMatrix()
@@ -183,19 +178,4 @@ Bone * SkeletonInstance::GetBone(short handle)
     assert(handle < mBones.Size());
 
 	return mBones[handle];
-}
-
-Animation * SkeletonInstance::GetAnimation(const TString128 & sAnimation)
-{
-    return mSkeleton->GetAnimation(sAnimation);
-}
-
-int SkeletonInstance::GetAnimationCount()
-{
-    return mSkeleton->GetAnimationCount();
-}
-
-Animation * SkeletonInstance::GetAnimation(int index)
-{
-    return mSkeleton->GetAnimation(index);
 }

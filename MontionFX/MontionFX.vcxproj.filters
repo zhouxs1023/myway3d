@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="App.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="BackgroundPane.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenu.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainPane.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="MainWorkSpace.cpp">
+      <Filter>MainPane</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\ColourPanel.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\FileDialog.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Common\PointerManager.cpp">
+      <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="BackCell.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="App.h" />
+    <ClInclude Include="MotionFX.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="BackgroundPane.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenu.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainPane.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="MainWorkSpace.h">
+      <Filter>MainPane</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\Attribute.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BaseLayout.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelView.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelViewCell.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\BasePanelViewItem.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\ColourPanel.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FileDialog.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\FileSystemInfo.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\PointerManager.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Common\WrapsAttribute.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor.h" />
+    <ClInclude Include="BackCell.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MainPane">
+      <UniqueIdentifier>{59252a15-a5a3-4c6a-bcf0-92accb371044}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{47efeb75-4f26-4981-b636-cb6b1cb8e2a9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

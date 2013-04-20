@@ -181,12 +181,12 @@ namespace xmdl {
 			}
 		}
 
-		d_assert (mXVertSize == mZVertSize && mXVertSize <= 1024 && mZVertSize <= 1024);
+		d_assert (mXVertSize == mZVertSize && mXVertSize <= 1025 && mZVertSize <= 1025);
 
 		Terrain::Config config;
 
-		config.xVertexCount = 1024;
-		config.zVertexCount = 1024;
+		config.xVertexCount = 1025;
+		config.zVertexCount = 1025;
 		config.xSize = (mXVertSize - 1) * TERRAIN_GRID_SIZE;
 		config.zSize = (mZVertSize - 1) * TERRAIN_GRID_SIZE;
 

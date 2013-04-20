@@ -5,7 +5,6 @@ namespace Infinite {
 
 DF_PROPERTY_BEGIN(xMesh)
 	DF_PROPERTY(xMesh, MeshFile, "General", "File", PT_TString, 128)
-    DF_PROPERTY(xMesh, AnimName, "General", "Animation", PT_TString, 128)
 	DF_PROPERTY(xMesh, Position, "Transform", "Position", PT_Vec3, 12)
 	DF_PROPERTY(xMesh, Orientation, "Transform", "Orientation", PT_Vec4, 16)
 	DF_PROPERTY(xMesh, Scale, "Transform", "Scale", PT_Float, 4)
@@ -13,14 +12,11 @@ DF_PROPERTY_END();
 
 xMesh::xMesh(const TString128 & name)
     : Shape(name)
-	, OnUpdate(xEvent::OnUpdate, this, &xMesh::_Update)
 {
 	MeshFile = "";
 	Position = Vec3::Zero;
 	Orientation = Quat::Identity;
 	Scale = 1;
-
-	mAnimState = NULL;
 
 	mNode = World::Instance()->CreateSceneNode();
 	mEntity = World::Instance()->CreateEntity(name);
@@ -96,10 +92,6 @@ bool xMesh::OnPropertyChanged(const Property * p)
 	{
 		SetMeshFile(MeshFile);
 	}
-	else if (p->name == "AnimName")
-	{
-		SetAnimName(AnimName);
-	}
 	else if (p->name == "Position")
 	{
 		SetPosition(Position);
@@ -147,30 +139,6 @@ void xMesh::SetMeshFile(const TString128 & meshFile)
 	IPhyWorld::Instance()->AddNode(mNode, colObj);
 }
 
-void xMesh::SetAnimName(const TString128 & animName)
-{
-	AnimName = animName;
-
-	if (mAnimState && mAnimState->GetName() == animName)
-		return ;
-
-	if (mAnimState)
-	{
-		mAnimState->SetEnable(false);
-		mAnimState->SetPosition(0);
-		mAnimState = NULL;
-	}
-
-	mAnimState = mEntity->GetAnimationSet()->GetState(AnimName);
-
-	if (mAnimState)
-	{
-		mAnimState->SetEnable(true);
-		mAnimState->SetPosition(0);
-		mAnimState->SetLoop(true);
-	}
-}
-
 Shape * xMesh::Clone()
 {
 	xMesh * mesh = (xMesh *)ShapeManager::Instance()->Create(GetTypeName().c_str());
@@ -206,16 +174,6 @@ void xMesh::SetScale(float scale)
     mNode->SetScale(scale);
 
 	IPhyWorld::Instance()->OnNodeScaleChanged(mNode);
-}
-
-void xMesh::_Update(Event * sender)
-{
-	float time = Engine::Instance()->GetFrameTime();
-
-	if (mAnimState)
-		mAnimState->AddTime(time);
-
-	mEntity->UpdateAnimation();
 }
 
 ColMesh * xMesh::GetColMesh()

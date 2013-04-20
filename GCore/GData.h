@@ -1,27 +1,33 @@
 #pragma once
 
+#include "GCoreEntry.h"
+
 namespace game {
 
-	struct GNpcInfo
+	struct GCORE_ENTRY GNpcInfo
 	{
 		int id;
-		char name[32];
+		TString32 name;
 
-		char part_Main[32];
-		char part_Weapon[32];
-		char part_Helmet[32];
-		char part_Shoulder[32];
-		char part_Clothes[32];
-		char part_Shoes[32];
+		TString32 part_main;
+		TString32 part_weapon;
+		TString32 part_helmet;
+		TString32 part_shoulder;
+		TString32 part_clothes;
+		TString32 part_shoes;
+
+		GNpcInfo()
+		{
+			id = -1;
+		}
 	};
 
 
 
-	
 
 	typedef Value<32> GValue;
 
-	class GDataTable
+	class GCORE_ENTRY GDataTable
 	{
 		DECLARE_ALLOC();
 
@@ -45,7 +51,7 @@ namespace game {
 		GValue * mData;
 	};
 
-	class GDataManager
+	class GCORE_ENTRY GDataManager
 	{
 		DECLARE_SINGLETON(GDataManager);
 
@@ -53,10 +59,16 @@ namespace game {
 		GDataManager();
 		~GDataManager();
 
+		void Init();
+		void Shutdown();
+
 		void LoadTabel(const char * name);
 		GDataTable * GetTable(const char * name);
 
 		const GNpcInfo * GetNpcInfo(int id);
+
+	protected:
+		void _loadNpcInfo();
 
 	protected:
 		Array<GDataTable *> mTables;

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "GCoreEntry.h"
+
 namespace game {
 
-	class GEntity
+	class GCORE_ENTRY GEntity
 	{
 		DECLARE_ALLOC();
 
@@ -20,6 +22,8 @@ namespace game {
 
 		void SetScale(float x);
 		float GetScale();
+
+		SceneNode * GetNode() { return mNode; }
 
 	protected:
 		SceneNode * mNode;

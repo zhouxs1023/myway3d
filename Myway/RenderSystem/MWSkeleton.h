@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MWBone.h"
-#include "MWAnimation.h"
 #include "MWResource.h"
 
 namespace Myway
@@ -10,6 +9,7 @@ namespace Myway
 struct MW_ENTRY joint : public AllocObj
 {
     TString128 sName;
+	int flag;
     Vec3 position;
     Quat orientation;
     Vec3 scale;
@@ -32,19 +32,12 @@ public:
     joint * CreateJoint(const TString128 & sName);
     void SetupHiberarchy(short parent, short child);
 
-    Animation * CreateAnimation(const TString128 & sAnimation);
-
     int GetJointCount();
     joint * GetJoint(const TString128 & sBoneName);
     joint * GetJoint(short handle);
 
     int GetHiberarchyCount();
     hiberarchy * GetHiberarchy(int index);
-
-    Animation * GetAnimation(const TString128 & sAnimation);
-
-    int GetAnimationCount();
-    Animation * GetAnimation(int index);
 
 	void Shutdown();
 
@@ -55,7 +48,6 @@ public:
     TString128             mName;
     Array<joint>           mJoints;
     Array<hiberarchy>      mHiberarchys;
-    Array<Animation*>      mAnimations;
 	bool				   mRelative;
 };
 

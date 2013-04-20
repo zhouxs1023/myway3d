@@ -1,20 +1,31 @@
 #pragma once
 
 #include "GActor.h"
+#include "GData.h"
 
 namespace game {
 
-	class GNpc : public GActor
+	class GCORE_ENTRY GNpc : public GActor
 	{
+		DECLARE_ALLOC();
+
 	public:
-		GNpc(int id, const char * name, const char * source);
+		static const int K_Type = 'GNPC';
+
+	public:
+		GNpc(int uid, int mid);
 		virtual ~GNpc();
 
-	protected:
-		void _init(const char * source);
+		virtual int GetUId() const { return mUId; }
+
+		virtual int GetType() const { return K_Type; };
 
 	protected:
-		int mId;
+		void _init(int mid);
+
+	protected:
+		const GNpcInfo * mNpcInfo;
+		int mUId;
 	};
 
 }

@@ -196,10 +196,10 @@ namespace Myway {
 
 		mTech = Environment::Instance()->GetShaderLib()->GetTechnique("Water");
 		mTech_UnderWater = Environment::Instance()->GetShaderLib()->GetTechnique("UnderWater");
-		mTex_Wave = VideoBufferManager::Instance()->Load2DTexture("Water\\waves2.dds", "Water\\waves2.dds");
+		mTex_Wave = VideoBufferManager::Instance()->Load2DTexture("Water\\PerlinNormalHeight.dds", "Water\\PerlinNormalHeight.dds");
 		mTex_Fresnel = VideoBufferManager::Instance()->Load2DTexture("Water\\Fresnel.bmp", "Water\\Fresnel.bmp");
-		mTex_Normal0 = VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal1.tga", "Water\\WaterNormal1.tga");
-		mTex_Normal1 = VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal2.tga", "Water\\WaterNormal2.tga");
+		mTex_Normal0 = mTex_Wave;//VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal1.tga", "Water\\WaterNormal1.tga");
+		mTex_Normal1 = mTex_Wave;//VideoBufferManager::Instance()->Load2DTexture("Water\\WaterNormal2.tga", "Water\\WaterNormal2.tga");
 
 		d_assert (mTech != NULL && mTex_Normal0 != NULL && mTech_UnderWater != NULL);
 
@@ -241,6 +241,9 @@ namespace Myway {
 	{
 		DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source);
 
+		if (stream == NULL)
+			return ;
+
 		int Magic, Version;
 
 		stream->Read(&Magic, sizeof(int));
@@ -257,12 +260,14 @@ namespace Myway {
 			stream->Read(&sizeX, sizeof(int));
 			stream->Read(&sizeZ, sizeof(int));
 
-			d_assert (sizeX != mSizeX && sizeZ != mSizeZ);
+			d_assert (sizeX == mSizeX && sizeZ == mSizeZ);
 
 			stream->Read(&mHeight, sizeof(float));
 
 			stream->Read(mData, sizeX * sizeZ);
 		}
+
+		_initBlock();
 	}
 
 	void Water::Save(const char * source)

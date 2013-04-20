@@ -57,10 +57,10 @@ namespace Infinite {
 		mColorPanel = new ColourPanel();
 		mMessageBox = new MMessageBox();
 
+		_loadPlugin();
+
 		xEvent::OnInit(NULL, NULL);
 		xEvent::OnInitUI(NULL, NULL);
-
-		_loadPlugin();
 	}
 
 	void Editor::Shutdown()

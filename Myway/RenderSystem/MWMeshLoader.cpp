@@ -462,7 +462,7 @@ void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 
 	stream->Read(&iVersion, sizeof(int));
 
-	d_assert (iVersion == K_SubMesh_Version);
+	d_assert (iVersion == K_SubMesh_Version || iVersion == K_SubMesh_Version_1);
 
 	stream->Read(&iVertexCount, sizeof(int));
 	stream->Read(&iIndexCount, sizeof(int));
@@ -500,23 +500,28 @@ void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 	void * idata = ib->Lock(0, 0, LOCK_NORMAL);
 	{
 		stream->Read(idata, istride * iIndexCount);
-
-		int index = 0;
-		short * idx = (short *)idata;
-		for (int i = 0; i < iIndexCount / 3; ++i)
-		{
-			short p0 = idx[index++];
-			short p1 = idx[index++];
-			short p2 = idx[index++];
-
-			int sum = p0 + p1;
-		}
 	}
 	ib->Unlock();
 
 	sm->GetVertexStream()->SetDeclaration(decl);
 	sm->GetVertexStream()->Bind(0, vb, vstride);
 	sm->GetIndexStream()->Bind(ib, 0);
+
+	if (iVersion >= K_SubMesh_Version_1)
+	{
+		Array<short> & boneMap = sm->GetBoneIdMap();
+
+		int numBoneMap = 0;
+
+		stream->Read(&numBoneMap, sizeof(int));
+
+		if (numBoneMap > 0 && numBoneMap < MAX_BLEND_MATRIX_VS)
+		{
+			boneMap.Resize(numBoneMap);
+
+			stream->Read(&boneMap[0], sizeof(short) * numBoneMap);
+		}
+	}
 
 	ReadMaterial(sm, stream);
 }
@@ -584,17 +589,20 @@ void MeshLoader_v1::ReadSkeleton(MeshPtr mesh, DataStreamPtr & stream)
 	for (int i = 0; i < boneCount; ++i)
 	{
 		char Name[128];
+		int flag;
 		Vec3 Position;
 		Quat Orientation;
 		Vec3 Scale;
 
 		stream->Read(&Name[0],  128);
+		stream->Read(&flag, sizeof(int));
 		stream->Read(&Position, sizeof(Vec3));
 		stream->Read(&Orientation, sizeof(Quat));
 		stream->Read(&Scale, sizeof(Vec3)); // equal ratio scale.
 
 		joint * bn = skel->CreateJoint(Name);
 
+		bn->flag = flag;
 		bn->position = Position;
 		bn->orientation = Orientation;
 		bn->scale = Scale;
@@ -625,8 +633,8 @@ void MeshLoader_v1::ReadSkelAnim(MeshPtr mesh, DataStreamPtr & stream)
 
 	stream->Read(name, 128);
 
-	Animation * anim = skel->CreateAnimation(name);
-	
+	Animation * anim = mesh->CreateAnimation(name);
+
 	int numAnims = 0;
 	stream->Read(&numAnims, sizeof(int));
 

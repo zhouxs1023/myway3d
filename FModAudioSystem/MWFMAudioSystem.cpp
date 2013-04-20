@@ -68,15 +68,15 @@ void FMAudioSystem::Update(const Vec3 & listener)
 				k = Math::Maximum(0.0f, k);
 				k = Math::Minimum(1.0f, k);
 
-				Vec3 pos = dir * k;
+				//Vec3 pos = dir * k;
 
 				pSound->Play();
 
-				FSOUND_SetVolume(pSound->GetChannel(), pSound->GetVolume());
+				int vol = pSound->GetVolume() * (1 - k);
 
-				FSOUND_Sample_SetMinMaxDistance(pSound->m_pSound, 0, 0);
-
-				FSOUND_3D_SetAttributes(pSound->m_iChannel, (const float*)&pos, NULL);
+				FSOUND_SetVolume(pSound->GetChannel(), vol);
+				//FSOUND_Sample_SetMinMaxDistance(pSound->m_pSound, 0, maxDist - minDist);
+				FSOUND_3D_SetAttributes(pSound->m_iChannel, (const float*)&Vec3::Zero, NULL);
 			}
 			else
 			{

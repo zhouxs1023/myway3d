@@ -9,6 +9,13 @@
 		<Shader name = "ColorPS" language = "cg" profile = "ps30" source = "Color.ps" >
 		</Shader>
 
+    <Shader name = "VColorVS" language = "cg" profile = "vs30" source = "VColor.vs" >
+      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
+    </Shader>
+
+    <Shader name = "VColorPS" language = "cg" profile = "ps30" source = "VColor.ps" >
+    </Shader>
+
     <Shader name = "OpToolBarVS" language = "cg" profile = "vs30" source = "OpToolBar.vs" >
     </Shader>
 
@@ -62,6 +69,9 @@
     
 		<Technique name = "Color" vs = "ColorVS" ps = "ColorPS">
 		</Technique>
+
+    <Technique name = "VColor" vs = "VColorVS" ps = "VColorPS">
+    </Technique>
     
     <Technique name = "OpToolBarBack" vs = "OpToolBarVS" ps = "OpToolBarBackPS">
     </Technique>

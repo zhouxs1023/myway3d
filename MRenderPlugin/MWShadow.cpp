@@ -29,6 +29,7 @@ namespace Myway {
 		_initRT();
 
 		mTech_ShadowDepth = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowDepth");
+		mTech_ShadowDepthSkin = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowDepthSkined");
 		mTech_Shadow[0] = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowL0");
 		mTech_Shadow[1] = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowL1");
 		mTech_Shadow[2] = Environment::Instance()->GetShaderLib()->GetTechnique("ShadowL2");
@@ -333,6 +334,7 @@ namespace Myway {
 		const Array<Renderer *> & objs = mRenderQueue.GetSolidRender();
 
 		ShaderParam * uMatWVP = mTech_ShadowDepth->GetVertexShaderParamTable()->GetParam("matWVP");
+		ShaderParam * uMatWVPSkin = mTech_ShadowDepthSkin->GetVertexShaderParamTable()->GetParam("matWVP");
 
 		for (int j = 0; j < objs.Size(); ++j)
 		{
@@ -350,8 +352,12 @@ namespace Myway {
 			form *= mCascadedMatrix[layer].mViewProj;
 
 			uMatWVP->SetMatrix(form);
+			uMatWVPSkin->SetMatrix(form);
 
-			render->Render(mTech_ShadowDepth, rd);
+			if (!skined)
+				render->Render(mTech_ShadowDepth, rd);
+			else
+				render->Render(mTech_ShadowDepthSkin, rd);
 		}
 
 		OnRenderDepth(this, &layer);

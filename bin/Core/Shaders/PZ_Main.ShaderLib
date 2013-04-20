@@ -8,9 +8,9 @@
 		</Shader>
 
 		<Shader name = "baseSkinedVS" language = "cg" profile = "vs30" source = "baseSkined.vs" >
-			<param name = "matWorld" type = "float4x4" btype = "matWorld" />
-			<param name = "matBlend" type = "float4x4" btype = "matBlend" count = "50" />
-			<param name = "matWVP" type = "float4x4" btype = "matWVP" />
+			<param name = "matBlend" type = "float3x4" btype = "matBlend" count = "75" />
+      <param name = "matWV" type = "float4x4" btype = "matWV" />
+      <param name = "matWVP" type = "float4x4" btype = "matWVP" />
 		</Shader>
 
 		<Shader name = "basePS" language = "cg" profile = "ps30" source = "base.ps" >

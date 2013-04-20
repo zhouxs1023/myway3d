@@ -71,6 +71,7 @@ void xEnvironment::_OnSerialize(Event * sender)
 		_SavePropertyObj(kNoon, Serializer);
 		_SavePropertyObj(kEvening, Serializer);
 		_SavePropertyObj(kGlobal, Serializer);
+
 	}
 	else if (K_ChunkId == chunkId)
 	{

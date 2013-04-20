@@ -1,23 +1,16 @@
 #include "stdafx.h"
 
-#include "GApp.h"
+#include "GCore.h"
 
-INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nShowCmd)
+bool APIENTRY DllMain(HANDLE hModule,DWORD ul_reason_for_call, LPVOID lpReserved)
 {
-	_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF|_CrtSetDbgFlag(_CRTDBG_LEAK_CHECK_DF));
-
-	//BreakAllock(803);
-
-	char sFileName[1024];
-	GetModuleFileName(GetModuleHandle(NULL), sFileName, 1024);
-
-	TString128 fileDir = File::GetFileDir(sFileName);
-
-	SetCurrentDirectory(fileDir.c_str());
-
-	game::GApp app;
-
-	app.Run(hInstance);
-
-	return 0;
+	switch( ul_reason_for_call ) 
+	{
+	case DLL_PROCESS_ATTACH:
+	case DLL_THREAD_ATTACH:
+	case DLL_THREAD_DETACH:
+	case DLL_PROCESS_DETACH:
+		;
+	}
+	return TRUE;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MWSkeleton.h"
+#include "MWAnimationLoader.h"
 
 namespace Myway
 {
@@ -23,10 +24,6 @@ public:
     int GetBoneCount();
     Bone * GetBone(const TString128 & sName);
     Bone * GetBone(short handle);
-
-    Animation * GetAnimation(const TString128 & sAnimation);
-    int GetAnimationCount();
-    Animation * GetAnimation(int index);
 
 	// Is Relative Init.
 	bool IsRelative() const { return mSkeleton->IsRelative(); }

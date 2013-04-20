@@ -23,15 +23,24 @@ namespace xmdl {
 		scene.load(filename);
 	}
 
-	void __convert(const TString128 & dir, const TString128 & file)
+	void __convert(const TString128 & ofile, const TString128 & ifile)
 	{
-		TString128 filename = dir + "\\xmdl\\scene\\" + file;
-		TString128 ofilename = dir + "\\mesh\\" + File::RemoveExternName(file) + ".mesh";
-
 		xmdl::t_xmdl mdl;
 
-		mdl.load(filename.c_str());
-		mdl.save(ofilename.c_str());
+		mdl.load(ifile.c_str());
+		mdl.save(ofile.c_str());
+	}
+
+	void __copyTex(const TString128 & ofile, const TString128 & ifile)
+	{
+		DataStreamPtr file = ResourceManager::Instance()->OpenResource(ifile.c_str(), true);
+
+		File fp;
+
+		fp.Open(ofile.c_str(), OM_WRITE_BINARY);
+		fp.Write(file->GetData(), file->Size());
+
+		fp.Close();
 	}
 
 	void t_plugin::_convertXMDL(const char * filename)
@@ -52,7 +61,7 @@ namespace xmdl {
 		}
 
 		{
-			TString128 dirtyFile = path + "\\mesh\\dirty.txt";
+			TString128 dirtyFile = path + "\\actor\\dirty.txt";
 
 			if (File::Exist(dirtyFile))
 			{
@@ -66,7 +75,7 @@ namespace xmdl {
 			fp.Close();
 		}
 
-		FileSystem fs(path + "\\xmdl\\scene");
+		FileSystem fs(path + "\\xmdl\\宠物");
 
 		fs.Load();
 
@@ -80,7 +89,18 @@ namespace xmdl {
 
 				if (File::GetExternName(_xmdl) == "xmdl")
 				{
-					__convert(path, _xmdl);
+					TString128 ifilename = path + "\\xmdl\\宠物\\" + _xmdl;
+					TString128 ofilename = path + "\\actor\\宠物\\" + File::RemoveExternName(_xmdl) + ".mesh";
+
+					__convert(ofilename, ifilename);
+				}
+				
+				else if (File::GetExternName(_xmdl) == "dds")
+				{
+					TString128 ifilename = path + "\\xmdl\\宠物\\" + _xmdl;
+					TString128 ofilename = path + "\\actor\\texture\\" + File::GetBaseName(_xmdl);
+
+					__copyTex(ofilename, ifilename);
 				}
 			}
 

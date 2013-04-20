@@ -58,6 +58,14 @@ void xTerrain::Serialize(xSerializer & Serializer)
 		sceneFile = xScene::Instance()->GetFloder() + "\\" + sceneFile;
 
 		mTerrain->Save(sceneFile.c_str());
+
+		// water
+		TString128 waterFile = xScene::Instance()->GetFileName();
+		waterFile = File::RemoveExternName(waterFile);
+		waterFile += ".water";
+		waterFile = xScene::Instance()->GetFloder() + "\\" + waterFile;
+
+		WaterManager::Instance()->GetWater()->Save(waterFile.c_str());
 	}
 	else
 	{
@@ -68,6 +76,13 @@ void xTerrain::Serialize(xSerializer & Serializer)
 		sceneFile += ".terrain";
 
 		_load(sceneFile.c_str());
+
+		// water
+		TString128 waterFile = sceneFile;
+		waterFile = File::RemoveExternName(waterFile);
+		waterFile += ".water";
+
+		WaterManager::Instance()->GetWater()->Load(waterFile.c_str());
 	}
 }
 

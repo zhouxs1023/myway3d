@@ -36,17 +36,6 @@ void Skeleton::SetupHiberarchy(short parent, short child)
     bp->child = child;
 }
 
-Animation * Skeleton::CreateAnimation(const TString128 & sAnimation)
-{
-    debug_assert(!GetAnimation(sAnimation), "animation exist.");
-
-    Animation * anim = new Animation(sAnimation);
-
-    mAnimations.PushBack(anim);
-
-    return anim;
-}
-
 joint * Skeleton::GetJoint(const TString128 & sBoneName)
 {
     Array<joint>::Iterator iter;
@@ -85,39 +74,9 @@ hiberarchy * Skeleton::GetHiberarchy(int index)
     return &mHiberarchys[index];
 }
 
-Animation * Skeleton::GetAnimation(const TString128 & sAnimation)
-{
-    Array<Animation*>::Iterator iter;
-    Array<Animation*>::Iterator end;
-
-    iter = mAnimations.Begin();
-    end = mAnimations.End();
-
-    while (iter != end && (*iter)->GetName() != sAnimation)
-    {
-        ++iter;
-    }
-
-    return iter != end ? (*iter) : NULL;
-}
-
-int Skeleton::GetAnimationCount()
-{
-    return mAnimations.Size();
-}
-
-Animation * Skeleton::GetAnimation(int index)
-{
-    assert(index < mAnimations.Size());
-    return mAnimations[index];
-}
 
 void Skeleton::Shutdown()
 {
-	for (int i = 0; i < mAnimations.Size(); ++i)
-		delete mAnimations[i];
-
 	mJoints.Clear();
 	mHiberarchys.Clear();
-	mAnimations.Clear();
 }

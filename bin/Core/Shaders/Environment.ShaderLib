@@ -205,6 +205,10 @@
     <Shader name = "ShadowDepthVS" language = "cg" profile = "vs30" source = "ShadowDepth.vs" >
     </Shader>
 
+    <Shader name = "ShadowDepthSkinedVS" language = "cg" profile = "vs30" source = "ShadowDepthSkined.vs" >
+      <param name = "matBlend" type = "float3x4" btype = "matBlend" count = "75" />
+    </Shader>
+
     <Shader name = "ShadowDepthPS" language = "cg" profile = "ps30" source = "ShadowDepth.ps" >
     </Shader>
 
@@ -357,6 +361,10 @@
     </Technique>
 
     <Technique name = "ShadowDepth" vs = "ShadowDepthVS" ps = "ShadowDepthPS">
+      <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
+    </Technique>
+
+    <Technique name = "ShadowDepthSkined" vs = "ShadowDepthSkinedVS" ps = "ShadowDepthPS">
       <sampler index = "0" btype = "diffuse" filter = "default" address = "wrap" border = "0,0,0,0" mmlevel = "0"/>
     </Technique>
 

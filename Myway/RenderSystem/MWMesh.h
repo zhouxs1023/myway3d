@@ -1,9 +1,10 @@
 #pragma once
 
+#include "MWResource.h"
 #include "MWRenderer.h"
 #include "MWMaterial.h"
 #include "MWSkeleton.h"
-#include "MWResource.h"
+#include "MWAnimation.h"
 #include "MWColMesh.h"
 
 namespace Myway
@@ -21,22 +22,26 @@ public:
     SubMesh();
     ~SubMesh();
 
-    void                    SetPrimitiveCount(int iPrimCount);
-    void                    SetPrimitiveType(PRIMITIVE_TYPE pt);
+	void                    SetPrimitiveCount(int iPrimCount);
+	void                    SetPrimitiveType(PRIMITIVE_TYPE pt);
 
-    VertexStream *          GetVertexStream();
-    IndexStream *           GetIndexStream();
-    int                     GetPrimitiveCount();
-    PRIMITIVE_TYPE          GetPrimitiveType();
+	VertexStream *          GetVertexStream();
+	IndexStream *           GetIndexStream();
+	int                     GetPrimitiveCount();
+	PRIMITIVE_TYPE          GetPrimitiveType();
 
 	Material *				GetMaterial();
 
+	Array<short> &			GetBoneIdMap() { return mBoneIdMaps; }
+
 protected:
-    VertexStream            mVertexStream;
-    IndexStream             mIndexStream;
-    int                     mPrimCount;
-    PRIMITIVE_TYPE          mPrimType;
+	VertexStream            mVertexStream;
+	IndexStream             mIndexStream;
+	int                     mPrimCount;
+	PRIMITIVE_TYPE          mPrimType;
 	Material				mMaterial;
+
+	Array<short>			mBoneIdMaps;
 };
 
 
@@ -80,6 +85,13 @@ public:
 
     void                        CalcuBounds();
 
+	Animation *					CreateAnimation(const TString128 & sAnimation);
+	Animation *					GetAnimation(const TString128 & sAnimation);
+	int							GetAnimationCount();
+	Animation *					GetAnimation(int index);
+	void						RemoveAnimation(const TString128 & anim);
+	void						RemoveAllAnimation();
+
     virtual void                Load();
     virtual void                Reload();
     virtual void                Unload();
@@ -92,6 +104,8 @@ protected:
     Array<SubMesh*>         mMeshes;
 	Skeleton				mSkeleton;
 	ColMesh	*				mColMesh;
+
+	Array<Animation*>      mAnimations;
 };
 
 DeclareSmartPtr(Mesh);

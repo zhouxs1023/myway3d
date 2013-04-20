@@ -1,6 +1,7 @@
 #pragma once
 
 #include "MWEntity.h"
+#include "MWActor.h"
 #include "MWBillboard.h"
 #include "MWCamera.h"
 #include "MWSceneNode.h"
@@ -52,6 +53,17 @@ public:
     void                DestroyEntity(Entity * entity);
     void                DestroyAllEntity();
 
+	// actor
+	Actor *             CreateActor(const TString128 & name, const TString128 & mesh);
+	Actor *             CreateActor(const TString128 & name, MeshPtr mesh);
+	Actor *             CreateActor(const TString128 & name);
+	bool                RenameActor(const TString128 & name, Actor * actor);
+	bool                HasActor(const TString128 & name);
+	Actor *             GetActor(const TString128 & name);
+	void                DestroyActor(const TString128 & name);
+	void                DestroyActor(Actor * actor);
+	void                DestroyAllActor();
+
 
     //light
     Light *             CreateLight(const TString128 & name);
@@ -91,6 +103,8 @@ protected:
     List<SceneNode *>   mSceneNodes;
 
     List<Entity*>       mEntitys;
+	List<Actor*>       mActors;
+
     List<Camera*>       mCameras;
 
     Camera *            mMainCamera;

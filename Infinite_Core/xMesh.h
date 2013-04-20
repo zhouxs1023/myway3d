@@ -20,7 +20,6 @@ namespace Infinite {
 
 	public:
 		TString128 MeshFile;
-		TString128 AnimName;
 		Vec3 Position;
 		Quat Orientation;
 		float Scale;
@@ -33,7 +32,6 @@ namespace Infinite {
 
 		virtual void SetName(const TString128 & name);
 		virtual void SetMeshFile(const TString128 & meshFile);
-		virtual void SetAnimName(const TString128 & animName);
 
 		virtual Shape * Clone();
 		virtual bool IsSceneNode(SceneNode * node);
@@ -54,14 +52,8 @@ namespace Infinite {
 		virtual bool OnPropertyChanged(const Property * p);
 
 	protected:
-		void _Update(Event * sender);
-
-	protected:
 		SceneNode * mNode;
 		Entity * mEntity;
-		AnimationState * mAnimState;
-
-		tEventListener<xMesh> OnUpdate;
 	};
 
 	class xMeshFactory : public ShapeFactory
@@ -70,7 +62,7 @@ namespace Infinite {
 		xMeshFactory() : OnDragFile(xEvent::OnDragFile, this, &xMeshFactory::_OnDragFile) {};
 		virtual ~xMeshFactory() {};
 
-		virtual xMesh * Create(const char * name) { return new xMesh(name); }
+		virtual Shape * Create(const char * name) { return new xMesh(name); }
 
 		virtual const char * GetGroupName()		{ return "Entity"; }
 		virtual const char * GetTypeName()		{ return "Mesh"; }

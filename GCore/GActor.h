@@ -4,7 +4,7 @@
 
 namespace game {
 
-	class GActor : public GEntity
+	class GCORE_ENTRY GActor : public GEntity
 	{
 		DECLARE_ALLOC();
 
@@ -32,11 +32,13 @@ namespace game {
 		GActor(const char * name);
 		virtual ~GActor();
 
+		virtual int GetType() const = 0;
+
 		void SetPart(PartType type, const char * mesh);
 
 	protected:
 		TString128 mName;
-		Entity * mEntities[PT_Max];
+		Actor * mActor[PT_Max];
 	};
 
 	

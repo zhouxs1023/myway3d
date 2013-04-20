@@ -44,24 +44,17 @@ class MW_ENTRY SubEntity : public Renderer
     };
 
 public:
-    SubEntity(Entity * parent);
-    ~SubEntity();
+    SubEntity(Entity * parent, SubMesh * sm);
+    virtual ~SubEntity();
 
 	virtual const Aabb & GetWorldAabb();
     virtual void GetWorldPosition(Vec3 * pos);
     virtual void GetWorldTransform(Mat4 * form);
     virtual int GetBlendMatrix(Mat4 * forms);
 
-    virtual VertexStream * GetVertexStream();
-
-protected:
-    void NotifySoftSkined();
-
 protected:
     Entity *        mParent;
-    bool            mSoftSkined;
-    VertexStream    mSkStream;
-    skve            mSkElement;
+	SubMesh *		mSubMesh;
 };
 
 class MW_ENTRY Entity : public Mover
@@ -70,38 +63,31 @@ class MW_ENTRY Entity : public Mover
 
 public:
     Entity(const TString128 & name);
-    Entity(const TString128 & name, MeshPtr mesh);
-    ~Entity();
+    virtual ~Entity();
 
     void                SetMesh(const TString128 & source);
     void                SetMesh(MeshPtr mesh);
     MeshPtr             GetMesh();
 
     virtual void        NotifyCamera(Camera * cam);
-    virtual void        UpdateMover();
     virtual void        AddRenderQueue(RenderQueue * rq);
-
-    void                UpdateAnimation();
 
     SubEntity *         GetSubEntity(int index);
     int                 GetSubEntityCount();
     SkeletonInstance *  GetSkeletonInstance();
-    AnimationSet *      GetAnimationSet();
     bool                HasSkeletion();
 
     void                SetUserData(void * data);
     void *              GetUserData() const;
    
 protected:
-    void                _Init();
-    void                _DeInit();
+    virtual void        _Init();
+    virtual void        _DeInit();
 
 protected:
     MeshPtr             mMesh;
 
     SkeletonInstance *  mSkeleton;
-    AnimationSet *      mAnims;
-
     Array<SubEntity*>   mEntitys;
 };
 

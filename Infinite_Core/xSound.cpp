@@ -20,7 +20,7 @@ namespace Infinite {
 		Position = Vec3::Zero;
 		MinDist = 50;
 		MaxDist = 100;
-		Volume = 1000;
+		Volume = 300;
 
 		mNode = World::Instance()->CreateSceneNode();
 

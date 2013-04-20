@@ -7,6 +7,8 @@ namespace Myway
 
 class MW_ENTRY Bone : public Node
 {
+public:
+	static const int K_Flag_CsBone = 0x01;
 
 public:
     Bone(const TString128 & sName, short handle);
@@ -82,13 +84,21 @@ public:
 
     virtual void                    AddChild(Bone * pChild);
     virtual Bone *                  GetParent();
-            short                  GetHandle();
+            short					GetHandle();
 
             bool                   _IsRoot() const;
+			bool				   _IsCSBone() const { return mFlag & K_Flag_CsBone; }
+
+			void				   SetFlag(int flag) { mFlag = flag; }
+
+			const Vec3 &			GetInitPosition() { return mInitPos; }
+			const Quat &			GetInitOrientation() { return mInitOrient; }
+			const Vec3 &			GetInitScale() { return mInitScale; }
+			const Mat4 &			GetInitMatrix() { return mInitMatrix; }
 
 protected:
-    TString128                          mName;
-    short                          mHandle;
+    TString128                      mName;
+    short							mHandle;
     bool                            mNeedUpdate;
 
     Vec3                            mPos;
@@ -100,6 +110,7 @@ protected:
     Vec3                            mInitPos;
     Quat                            mInitOrient;
     Vec3                            mInitScale;
+	Mat4							mInitMatrix;
 
     Mat4                            mMatBone;
     Mat4                            mMatCombine;
@@ -109,7 +120,9 @@ protected:
     Sphere                          mSphere;
 
     Bone *                          mParent;
-    Array<Bone*>                   mChildren;
+    Array<Bone*>					mChildren;
+
+	int								mFlag;							
 };
 
 

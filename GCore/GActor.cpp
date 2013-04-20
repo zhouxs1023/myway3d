@@ -40,6 +40,9 @@ namespace game {
 			mEntities[type] = NULL;
 		}
 
+		if (strcmp(mesh, "") == 0)
+			return ;
+
 		TString128 uname = mName + "_" + _ActorPartName[type];
 
 		mEntities[type] = World::Instance()->CreateEntity(uname, mesh);

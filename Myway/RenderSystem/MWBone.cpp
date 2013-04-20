@@ -20,10 +20,12 @@ Bone::Bone(const TString128 & sName, short handle)
   mInitPos(Vec3::Zero),
   mInitOrient(Quat::Identity),
   mInitScale(Vec3::Unit),
+  mInitMatrix(Mat4::Identity),
   mMatCombine(Mat4::Identity),
   mMatInvCombine(Mat4::Identity),
   mMatBone(Mat4::Identity),
-  mMatWorld(Mat4::Identity)
+  mMatWorld(Mat4::Identity),
+  mFlag(0)
 {
 }
 
@@ -97,9 +99,9 @@ void Bone::Translate(const Vec3 & v, TRANSFORM_TYPE ts)
 
     case TS_LOCAL:
         {
-            Vec3 dir;
-            Math::QuatAxisZ(dir, mOrientation);
-            mPos += dir * v;
+			Vec3 t;
+			Math::QuatTranslate(t, mOrientation, v);
+			mPos += t;
         }
         break;
     }
@@ -378,6 +380,8 @@ void Bone::UpdateCombine(const Mat4 & mat)
     mInitOrient = mOrientation;
     mInitScale = mScale;
     Math::MatTransform(mMatLocal, mPos, mOrientation, mScale);
+	mInitMatrix = mMatLocal;
+
     Math::MatMultiply(mMatCombine, mMatLocal, mat);
     Math::MatInverse(mMatInvCombine, mMatCombine);
 

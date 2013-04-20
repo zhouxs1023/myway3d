@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="Npc.cpp">
+      <Filter>Shape</Filter>
+    </ClCompile>
+    <ClCompile Include="Plugin.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Npc.h">
+      <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="Plugin.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Shape">
+      <UniqueIdentifier>{c0ea330e-aa26-4da4-b201-2bfb28a7cf70}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

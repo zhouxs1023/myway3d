@@ -70,6 +70,9 @@
     <Filter Include="Myway\AudioSystem">
       <UniqueIdentifier>{6c415a54-c836-424e-8dcb-94f2fa6c7c9e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Myway\RenderSystem\Entity\Actor">
+      <UniqueIdentifier>{07d6d287-91b3-4b9c-8848-2e3b00157c2d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Myway.h">
@@ -489,6 +492,12 @@
     <ClInclude Include="Math\MWValue.h">
       <Filter>Myway\Math</Filter>
     </ClInclude>
+    <ClInclude Include="RenderSystem\MWAnimationLoader.h">
+      <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWActor.h">
+      <Filter>Myway\RenderSystem\Entity\Actor</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -886,6 +895,12 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWColMesh.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWAnimationLoader.cpp">
+      <Filter>Myway\RenderSystem\Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWActor.cpp">
+      <Filter>Myway\RenderSystem\Entity\Actor</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

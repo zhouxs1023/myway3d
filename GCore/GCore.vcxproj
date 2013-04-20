@@ -13,11 +13,11 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{80B09F3D-68CE-40D7-8973-6D7E34909196}</ProjectGuid>
     <RootNamespace>GCore</RootNamespace>
-    <ProjectName>Game</ProjectName>
+    <ProjectName>GCore</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -43,16 +43,15 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;..\Infinite_Core;..\MRenderPlugin</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>GCORE_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <OutputFile>../bin/Debug/Game_d.exe</OutputFile>
+      <OutputFile>../bin/Debug/GCore_d.dll</OutputFile>
       <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
       <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;MRender_d.lib;MTree_d.lib;MActor_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <ImportLibrary>
-      </ImportLibrary>
+      <ImportLibrary>../bin/lib/GCore_d.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -74,12 +73,14 @@
     <ClCompile Include="GData.cpp" />
     <ClCompile Include="GEntity.cpp" />
     <ClCompile Include="GLight.cpp" />
+    <ClCompile Include="GMain.cpp" />
     <ClCompile Include="GMesh.cpp" />
     <ClCompile Include="GMode.cpp" />
     <ClCompile Include="GNpc.cpp" />
     <ClCompile Include="GScene.cpp" />
     <ClCompile Include="GSerializer.cpp" />
     <ClCompile Include="GSound.cpp" />
+    <ClCompile Include="GWorld.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -89,15 +90,18 @@
     <ClInclude Include="GActor.h" />
     <ClInclude Include="GApp.h" />
     <ClInclude Include="GCore.h" />
+    <ClInclude Include="GCoreEntry.h" />
     <ClInclude Include="GData.h" />
     <ClInclude Include="GEntity.h" />
     <ClInclude Include="GLight.h" />
+    <ClInclude Include="GMain.h" />
     <ClInclude Include="GMesh.h" />
     <ClInclude Include="GMode.h" />
     <ClInclude Include="GNpc.h" />
     <ClInclude Include="GScene.h" />
     <ClInclude Include="GSerializer.h" />
     <ClInclude Include="GSound.h" />
+    <ClInclude Include="GWorld.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

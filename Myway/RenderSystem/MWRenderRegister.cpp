@@ -18,7 +18,7 @@ RenderRegister::RenderRegister()
    
     mNumBlendMatrices = 0;
     for (int i = 0; i < MAX_BLEND_MATRIX; ++i)
-        mBlendMatrices[i] = Mat4::Identity;
+        mBlendMatrices[i] = Mat3x4::Identity;
 
     //texture
     for (int i = 0; i < MAX_SAMPLER_STATE; ++i)
@@ -142,15 +142,13 @@ void RenderRegister::SetBlendMatrix(const Mat4 * m, int count)
 
 	for (int k = 0; k < count; ++k)
 	{
-		/*for (int j = 0; j < 3; ++j)
+		for (int j = 0; j < 3; ++j)
 		{
 			for (int i = 0; i < 4; ++i)
 			{
 				mBlendMatrices[k][j][i] = m[k][i][j];
 			}
-		}*/
-
-		mBlendMatrices[k] = m[k];
+		}
 	}
 
     mNumBlendMatrices = count;
@@ -269,13 +267,13 @@ const Mat4 & RenderRegister::GetWorldViewProjMatrix()
     return mWorldViewProjMatrix;
 }
 
-const Mat4 & RenderRegister::GetBlendMatrix(int index)
+const Mat3x4 & RenderRegister::GetBlendMatrix(int index)
 {
     d_assert(index < 256);
     return mBlendMatrices[index];
 }
 
-const Mat4 * RenderRegister::GetBlendMatrices()
+const Mat3x4 * RenderRegister::GetBlendMatrices()
 {
     return mBlendMatrices;
 }

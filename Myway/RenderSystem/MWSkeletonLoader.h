@@ -29,15 +29,11 @@ protected:
     static void ReadHead(DataStreamPtr & stream);
     static void ReadBone(Skeleton * skel, DataStreamPtr & stream);
     static void ReadHierarchy(Skeleton * skel, DataStreamPtr & stream);
-    static void ReadAnimation(Skeleton * skel, DataStreamPtr & stream);
-    static void ReadBoneAnimation(Skeleton * skel, Animation * anim, DataStreamPtr & stream);
 
 protected:
 
     static int ComputeBoneSize(Skeleton * skel);
     static int ComputeHierarchySize(Skeleton * skel);
-    static int ComputeAnimationSize(Animation * anim);
-    static int ComputeSkeletonAnimationSize(SkeletonAnimation * anim);
 };
 
 }

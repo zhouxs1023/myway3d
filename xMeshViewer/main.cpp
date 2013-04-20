@@ -109,12 +109,13 @@ public:
 		xmdl::t_xmdl mdl;
 
 		mdl.load(filename);
+		mdl.save("d:\\text.mesh");
+
+		int i = 0;
 		
-		MeshPtr mesh = mdl.build();
+		//d_assert (mesh != NULL);
 
-		d_assert (mesh != NULL);
-
-		createMesh(filename);
+		//createMesh(filename);
 	}
 
 	void LookMesh(const char * filename)

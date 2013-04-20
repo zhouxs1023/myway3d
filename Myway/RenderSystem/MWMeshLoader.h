@@ -146,6 +146,8 @@ public:
 	static const int K_File_Verion = MODEL_FILE_VERSION + 1;
 	
 	static const int K_SubMesh_Version = 0;
+	static const int K_SubMesh_Version_1 = 1;
+
 	static const int K_Material_Version = 0;
 	static const int K_Bound_Version = 0;
 	static const int K_Skeleton_Version = 0;

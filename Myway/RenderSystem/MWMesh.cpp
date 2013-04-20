@@ -58,8 +58,6 @@ Material * SubMesh::GetMaterial()
 
 
 
-
-
 SubMesh * Mesh::GetSubMesh(int index)
 { 
     return mMeshes[index];
@@ -105,6 +103,7 @@ Mesh::Mesh(const TString128 & sName)
 
 Mesh::~Mesh()
 {
+	RemoveAllAnimation();
     RemoveAllSubMehs();
 	safe_delete (mColMesh);
 }
@@ -371,4 +370,64 @@ const Aabb& Mesh::GetAabb() const
 const Sphere & Mesh::GetBoundingSphere() const
 {
     return mSphere;
+}
+
+Animation * Mesh::CreateAnimation(const TString128 & sAnimation)
+{
+	d_assert(GetAnimation(sAnimation) == NULL);
+
+	Animation * anim = new Animation(sAnimation);
+
+	mAnimations.PushBack(anim);
+
+	return anim;
+}
+
+Animation *	Mesh::GetAnimation(const TString128 & sAnimation)
+{
+	Array<Animation*>::Iterator iter;
+	Array<Animation*>::Iterator end;
+
+	iter = mAnimations.Begin();
+	end = mAnimations.End();
+
+	while (iter != end && (*iter)->GetName() != sAnimation)
+	{
+		++iter;
+	}
+
+	return iter != end ? (*iter) : NULL;
+}
+
+int	Mesh::GetAnimationCount()
+{
+	return mAnimations.Size();
+}
+
+Animation *	Mesh::GetAnimation(int index)
+{
+	return mAnimations[index];
+}
+
+void Mesh::RemoveAnimation(const TString128 & anim)
+{
+	for (int i = 0; i < mAnimations.Size(); ++i)
+	{
+		if (mAnimations[i]->GetName() == anim)
+		{
+			delete mAnimations[i];
+			mAnimations.Erase(i);
+			return ;
+		}
+	}
+
+	d_assert (0);
+}
+
+void Mesh::RemoveAllAnimation()
+{
+	for (int i = 0; i < mAnimations.Size(); ++i)
+		delete mAnimations[i];
+	
+	mAnimations.Clear();
 }

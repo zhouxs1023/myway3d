@@ -1,6 +1,6 @@
 #pragma once
 
-#include "MWMath.h"
+#include "MWRenderDefine.h"
 
 namespace Myway
 {
@@ -12,6 +12,29 @@ enum INTERPOLATION_TYPE
     INTERPOLATION_LINEAR,
 
     MW_ALIGN_ENUM(INTERPOLATION_TYPE)
+};
+
+struct MotionBlendInfo
+{
+	float BlendInTime;
+
+	float Weight;
+	float Speed;
+
+	bool Looped;
+	bool BlendMask[MAX_BLEND_MATRIX];
+
+	MotionBlendInfo()
+	{
+		BlendInTime = 0.3f;
+
+		Weight = 1.0f;
+		Speed = 1.0f;
+
+		Looped = true;
+
+		ZeroMemory(BlendMask, sizeof(bool) * MAX_BLEND_MATRIX);
+	}
 };
 
 /* :) KeyFrame
@@ -40,7 +63,6 @@ public:
     const Quat & GetRotation() const;
     const Vec3 & GetScale() const;
 
-
 protected:
     float       mTime;
     Vec3        mTrans;
@@ -49,23 +71,24 @@ protected:
 };
 
 
+class AnimationController;
+
 /* :) SkeletonAnimation
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 */
 class MW_ENTRY SkeletonAnimation : public AllocObj
 {
+
 public:
     SkeletonAnimation(short handle);
     ~SkeletonAnimation();
 
-    void UpdateAnimation(SkeletonInstance * skel, float time);
+    void UpdateAnimation(SkeletonInstance * skel, AnimationController * controller);
     KeyFrame * CreateKeyFrame();
     int GetFrameCount();
     KeyFrame * GetKeyFrame(int index);
     short GetBoneHandle();
-
-    friend class Animation;
 
 protected:
     short             mHandle;
@@ -93,9 +116,11 @@ public:
     const TString128 & GetName() const;
     float GetLength() const;
 
-    void _UpdateAnimation(SkeletonInstance * skel, float time);
+    void _UpdateAnimation(SkeletonInstance * skel, AnimationController * controller);
 
 	void _calcuLength();
+
+	//void _convertSkinAnim(SkeletonInstance * skel);
 
 protected:
     TString128                  mName;
@@ -108,38 +133,33 @@ protected:
 -----------------------------------------------------------------------------
 -----------------------------------------------------------------------------
 */
-class MW_ENTRY AnimationState : public AllocObj
+class MW_ENTRY AnimationController : public AllocObj
 {
 public:
-    AnimationState();
-    ~AnimationState();
+    AnimationController(Animation * anim);
+    ~AnimationController();
 
-    void SetEnable(bool enable);
-    void SetLoop(bool loop);
-    void SetWeight(float weight);
+	void SetBlendInfo(const MotionBlendInfo & info);
+	const MotionBlendInfo & GetBlendInfo() const;
 
-    void AddTime(float time);
     void SetPosition(float pos);
 
-    const TString128 & GetName() const;
-    bool GetEnable() const;
-    bool GetLoop() const;
-    float GetWeight() const;
     float GetPosition() const;
-    float GetLength() const;
+	Animation * GetAinmation();
 
-    void _UpdateAnimation(SkeletonInstance * skel);
-    Animation * GetAinmation();
+	void Play();
+    bool _UpdateAnimation(float elapsedTime, SkeletonInstance * skel);
 
-    friend class AnimationSet;
+	float GetWeight() { return mWeight; }
 
 protected:
-    bool        mEnable;            
-    bool        mLoop;
-    float       mWeight;
-    float       mPos;
+    float mPos;
+	MotionBlendInfo mBlendInfo;
     Animation * mAnim;
-    AnimationSet * mParent;
+
+	bool mEnable;
+	float mWeightDelta;
+	float mWeight;
 };
 
 /* :) AnimationSet
@@ -149,36 +169,16 @@ protected:
 class MW_ENTRY AnimationSet : public AllocObj
 {
 public:
-    typedef List<AnimationState>                StateList;
-    typedef List<AnimationState*>               ActiveStateList;
-
-    typedef Visitor<StateList::Iterator>        StateVisitor;
-    typedef Visitor<ActiveStateList::Iterator>  ActiveStateVisitor;
-
-    friend class AnimationState;
-
-public:
     AnimationSet();
     ~AnimationSet();
 
-    AnimationState *    CreateState(Animation * anim);
-    AnimationState *    GetState(const TString128 & name);
+	bool IsPlay(const char * anim);
+	void Play(AnimationController * controller);
 
-    bool                HasState(const TString128 & name);
-
-    int                 GetStateCount();
-    int                 GetActiveStateCount() const;
-
-    StateVisitor        GetStates();
-    ActiveStateVisitor  GetActiveStates();
+	void UpdateAnimation(float elapsedTime, SkeletonInstance * skel);
 
 protected:
-    void _NotifyActive(AnimationState * anim, bool enable);
-    void _RemoveActive(AnimationState * anim);
-
-protected:
-    StateList           mStates;
-    ActiveStateList     mActives;
+	Array<AnimationController*> mControllers;
 };
 
 #include "MWAnimation.inl"

@@ -29,7 +29,8 @@ World::~World()
     safe_delete (mSceneManager);
 
     DestroyAllLight();
-    DestroyAllEntity();
+	DestroyAllEntity();
+    DestroyAllActor();
     DestroyAllCamera();
 
     safe_delete (mMainCamera);
@@ -148,7 +149,9 @@ Entity * World::CreateEntity(const TString128 & name, const TString128 & mesh)
 {
     d_assert(!HasEntity(name) && "entity has been created.");
 
-    Entity * pEntity = new Entity(name, MeshManager::Instance()->Load(mesh, mesh));
+    Entity * pEntity = new Entity(name);
+
+	pEntity->SetMesh(MeshManager::Instance()->Load(mesh, mesh));
 
     mEntitys.PushBack(pEntity);
 
@@ -159,7 +162,9 @@ Entity * World::CreateEntity(const TString128 & name, MeshPtr mesh)
 {
     d_assert(!HasEntity(name) && mesh.NotNull() && "entity has been created.");
 
-    Entity * pEntity = new Entity(name,mesh);
+    Entity * pEntity = new Entity(name);
+
+	pEntity->SetMesh(mesh);
 
     mEntitys.PushBack(pEntity);
 
@@ -275,6 +280,154 @@ void World::DestroyAllEntity()
 
     mEntitys.Clear();
 }
+
+
+
+
+
+
+Actor * World::CreateActor(const TString128 & name, const TString128 & mesh)
+{
+	d_assert(!HasActor(name) && "Actor has been created.");
+
+	Actor * pActor = new Actor(name);
+
+	pActor->SetMesh(MeshManager::Instance()->Load(mesh, mesh));
+
+	mActors.PushBack(pActor);
+
+	return pActor;
+}
+
+Actor * World::CreateActor(const TString128 & name, MeshPtr mesh)
+{
+	d_assert(!HasActor(name) && mesh.NotNull() && "Actor has been created.");
+
+	Actor * pActor = new Actor(name);
+
+	pActor->SetMesh(mesh);
+
+	mActors.PushBack(pActor);
+
+	return pActor;
+}
+
+Actor * World::CreateActor(const TString128 & name)
+{
+	d_assert(!HasActor(name) && "Actor has been created.");
+
+	Actor * pActor = new Actor(name);
+
+	mActors.PushBack(pActor);
+
+	return pActor;
+}
+
+bool World::HasActor(const TString128 & name)
+{
+	List<Actor*>::Iterator iter;
+	List<Actor*>::Iterator end;
+
+	iter = mActors.Begin();
+	end = mActors.End();
+
+	while (iter != end && (*iter)->GetName() != name)
+	{
+		++iter;
+	}
+
+	return iter != end;
+}
+
+bool World::RenameActor(const TString128 & name, Actor * actor)
+{
+	if (HasActor(name))
+		return false;
+
+	actor->SetName(name);
+
+	return true;
+}
+
+
+Actor * World::GetActor(const TString128 & name)
+{
+	List<Actor*>::Iterator iter;
+	List<Actor*>::Iterator end;
+
+	iter = mActors.Begin();
+	end = mActors.End();
+
+	while (iter != end && (*iter)->GetName() != name)
+	{
+		++iter;
+	}
+
+	return iter != end ? (*iter) : NULL;
+}
+
+void World::DestroyActor(const TString128 & name)
+{
+	List<Actor*>::Iterator iter;
+	List<Actor*>::Iterator end;
+
+	iter = mActors.Begin();
+	end = mActors.End();
+
+	while (iter != end && (*iter)->GetName() != name)
+	{
+		++iter;
+	}
+
+	debug_assert(iter != end, "Actor not exist.");
+
+	delete *iter;
+	mActors.Erase(iter);
+}
+
+void World::DestroyActor(Actor * actor)
+{
+	List<Actor*>::Iterator iter;
+	List<Actor*>::Iterator end;
+
+	iter = mActors.Begin();
+	end = mActors.End();
+
+	while (iter != end && (*iter) != actor)
+	{
+		++iter;
+	}
+
+	debug_assert(iter != end, "Actor not exist.");
+
+	delete *iter;
+	mActors.Erase(iter);
+}
+
+void World::DestroyAllActor()
+{
+	List<Actor*>::Iterator iter;
+	List<Actor*>::Iterator end;
+
+	iter = mActors.Begin();
+	end = mActors.End();
+
+	while (iter != end)
+	{
+		delete *iter;
+
+		++iter;
+	}
+
+	mActors.Clear();
+}
+
+
+
+
+
+
+
 
 Light * World::CreateLight(const TString128 & name)
 {

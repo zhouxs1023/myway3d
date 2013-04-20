@@ -29,8 +29,8 @@ public:
             void            SetPrimitiveCount(int size);
             void            SetPrimitiveType(PRIMITIVE_TYPE type);
 
-    virtual VertexStream *  GetVertexStream();
-    virtual IndexStream *   GetIndexStream();
+			VertexStream *  GetVertexStream();
+			IndexStream *   GetIndexStream();
             int             GetPrimitiveCount() const;
             PRIMITIVE_TYPE  GetPrimitiveType() const;
 

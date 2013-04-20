@@ -97,9 +97,16 @@ SkeletonAnimation::~SkeletonAnimation()
 }
 
 
-void SkeletonAnimation::UpdateAnimation(SkeletonInstance * skel, float time)
+void SkeletonAnimation::UpdateAnimation(SkeletonInstance * skel, AnimationController * controller)
 {
     Bone * bone = skel->GetBone(mHandle);
+
+	const MotionBlendInfo & blendInfo = controller->GetBlendInfo();
+
+	if (blendInfo.BlendMask[mHandle])
+		return ;
+
+	float time = controller->GetPosition();
 
     int key1, key2;
 
@@ -109,8 +116,13 @@ void SkeletonAnimation::UpdateAnimation(SkeletonInstance * skel, float time)
             break;
     }
 
-    EXCEPTION_DEBUG(key2 != mFrames.Size(), "time failed.");
+    d_assert(key2 != mFrames.Size());
+
     key1 = (key2 != 0) ? (key2 - 1) : 0;
+
+	Vec3 trans;
+	Quat rotate;
+	Vec3 scale;
     
     if (key1 != key2)
     {
@@ -118,26 +130,34 @@ void SkeletonAnimation::UpdateAnimation(SkeletonInstance * skel, float time)
         float len = mFrames[key2].GetTime() - mFrames[key1].GetTime();
         float t = elapsed / len;
 
-        Vec3 trans;
-        Quat rotate;
-        Vec3 scale;
-
         Math::VecLerp(trans, mFrames[key1].GetTranslate(), mFrames[key2].GetTranslate(), t);
         Math::QuatSlerp(rotate, mFrames[key1].GetRotation(), mFrames[key2].GetRotation(), t);
-        Math::VecLerp(scale, mFrames[key1].GetScale(), mFrames[key2].GetScale(), t);
+		Math::VecLerp(scale, mFrames[key1].GetScale(), mFrames[key2].GetScale(), t);
+	}
+	else
+	{
+		trans = mFrames[key1].GetTranslate();
+		rotate = mFrames[key1].GetRotation();
+		scale = mFrames[key1].GetScale();
+	}
 
-		if (skel->IsRelative())
-		{
-			bone->Translate(trans, TS_LOCAL);
-			bone->Rotate(rotate, TS_LOCAL);
-			bone->Scale(scale);
-		}
-		else
-		{
-			bone->SetPosition(trans);
-			bone->SetOrientation(rotate);
-			bone->SetScale(scale);
-		}
+	float w = controller->GetWeight();
+
+	if (w > 0.99f)
+	{
+		bone->SetPosition(trans);
+		bone->SetOrientation(rotate);
+		bone->SetScale(scale);
+	}
+	else
+	{
+		Math::VecLerp(trans, bone->GetPosition(), trans, w);
+		Math::QuatSlerp(rotate, bone->GetOrientation(), rotate, w);
+		Math::VecLerp(scale, bone->GetScale(), scale, w);
+
+		bone->SetPosition(trans);
+		bone->SetOrientation(rotate);
+		bone->SetScale(scale);
 	}
 }
 
@@ -234,43 +254,177 @@ float Animation::GetLength() const
     return mLen;
 }
 
-void Animation::_UpdateAnimation(SkeletonInstance * skel, float time)
+void Animation::_UpdateAnimation(SkeletonInstance * skel, AnimationController * controller)
 {
-	Array<SkeletonAnimation*>::Iterator iter;
-	Array<SkeletonAnimation*>::Iterator end;
-
-	iter = mSkelAnims.Begin();
-	end = mSkelAnims.End();
-
-	while (iter != end)
+	for (int i = 0; i < mSkelAnims.Size(); ++i)
 	{
-		(*iter)->UpdateAnimation(skel, time);
-
-		++iter;
+		mSkelAnims[i]->UpdateAnimation(skel, controller);
 	}
+}
+
+//void Animation::_convertSkinAnim(SkeletonInstance * skel)
+//{
+//	for (int i = 0; i < mSkelAnims.Size(); ++i)
+//	{
+//		SkeletonAnimation * anim = mSkelAnims[i];
+//
+//		short boneId = anim->GetBoneHandle();
+//		Bone * bone = skel->GetBone(boneId);
+//
+//		Quat bone_q = bone->GetInitOrientation().Inverse();
+//		Vec3 bone_p = bone->GetInitPosition();
+//		Vec3 bone_s = bone->GetInitScale();
+//
+//		for (int k = 0; k < anim->GetFrameCount(); ++k)
+//		{
+//			KeyFrame * kf = anim->GetKeyFrame(k);
+//
+//			Vec3 p = (kf->GetTranslate() - bone_p) * bone_q;
+//			Quat q = bone_q * kf->GetRotation();
+//			Vec3 s = kf->GetScale() / bone_s;
+//
+//			kf->SetTranslate(p);
+//			kf->SetRotation(q);
+//			kf->SetScale(s);
+//		}
+//	}
+//}
+
+
+
+
+
+
+AnimationController::AnimationController(Animation * anim)
+	: mPos(0.0f)
+	, mAnim(anim)
+	, mWeightDelta(0)
+	, mWeight(1)
+	, mEnable(false)
+{
+}
+
+AnimationController::~AnimationController()
+{
+}
+
+void AnimationController::SetBlendInfo(const MotionBlendInfo & info)
+{
+	mBlendInfo = info;
+}
+
+const MotionBlendInfo & AnimationController::GetBlendInfo() const
+{
+	return mBlendInfo;
+}
+
+void AnimationController::SetPosition(float pos)
+{
+	mPos = pos;
+}
+
+float AnimationController::GetPosition() const
+{
+	return mPos;
+}
+
+Animation * AnimationController::GetAinmation()
+{
+	return mAnim;
+}
+
+void AnimationController::Play()
+{
+	if (!mEnable)
+		mEnable = true;
+
+	if (mBlendInfo.BlendInTime < 0.01f)
+		mWeightDelta = 0;
+	else
+		mWeightDelta = 1 / mBlendInfo.BlendInTime;
+
+	mWeight = 0;
+}
+
+bool AnimationController::_UpdateAnimation(float elapsedTime, SkeletonInstance * skel)
+{
+	float len = mAnim->GetLength();
+
+	mPos += elapsedTime;
+
+	if (mWeightDelta > 0)
+	{
+		mWeight += elapsedTime * mWeightDelta;
+
+		if (mWeight >= 1)
+		{
+			mWeight = 1;
+			mWeightDelta = 0;
+		}
+	}
+	else
+	{
+		mWeight = 1;
+	}
+
+
+    if (mPos >= len)
+    {
+        if (mBlendInfo.Looped)
+        {
+            while (mPos > len)
+                mPos -= len;
+
+			return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    mAnim->_UpdateAnimation(skel, this);
 }
 
 
 
-void AnimationState::_UpdateAnimation(SkeletonInstance * skel)
+
+/*
+    AnimationSet
+*/
+AnimationSet::AnimationSet()
 {
-    float len = GetLength();
+}
 
-    if (mPos > len)
-    {
-        if (mLoop)
-        {
-            while (mPos > len)
-            {
-                mPos -= len;
-            }
-        }
-        else
-        {
-            SetEnable(false);
-            return;
-        }
-    }
+AnimationSet::~AnimationSet()
+{
+	for (int i = 0; i < mControllers.Size(); ++i)
+		delete mControllers[i];
 
-    mAnim->_UpdateAnimation(skel, mPos);
+	mControllers.Clear();
+}
+
+bool AnimationSet::IsPlay(const char * anim)
+{
+	for (int i = 0; i < mControllers.Size(); ++i)
+	{
+		if (mControllers[i]->GetAinmation()->GetName() == anim)
+			return true;
+	}
+
+	return false;
+}
+
+void AnimationSet::Play(AnimationController * controller)
+{
+	controller->Play();
+	mControllers.PushBack(controller);
+}
+
+void AnimationSet::UpdateAnimation(float elapsedTime, SkeletonInstance * skel)
+{
+	for (int i = 0; i < mControllers.Size(); ++i)
+	{
+		mControllers[i]->_UpdateAnimation(elapsedTime, skel);
+	}
 }

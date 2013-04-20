@@ -41,6 +41,12 @@ namespace xmdl {
 
 		mTextureCount = 0;
 		mTextures = NULL;
+
+		mNodeCount = 0;
+		mNodes = NULL;
+
+		mSkinAnimCount = 0;
+		mSkinAnims = NULL;
 	}
 
 	t_xmdl::~t_xmdl()
@@ -53,6 +59,12 @@ namespace xmdl {
 		{
 			delete mMeshes[i];
 		}
+
+		safe_delete_array (mNodes);
+		mNodeCount = 0;
+
+		safe_delete_array (mSkinAnims);
+		mSkinAnimCount = 0;
 	}
 
 	void t_xmdl::load(const char * filename)
@@ -111,6 +123,21 @@ namespace xmdl {
 			else if (ck.dwFlag == GEOS_FLAG)
 			{
 				_loadGeoset(file, ck.dwChunkSize);
+			}
+
+			else if (ck.dwFlag == NODE_FLAG)
+			{
+				mNodeCount = ck.dwChunkSize / sizeof (t_node);
+
+				d_assert (mNodeCount * sizeof(t_node) == ck.dwChunkSize);
+
+				mNodes = new t_node[mNodeCount];
+				file->Read(mNodes, ck.dwChunkSize);
+			}
+
+			else if (ck.dwFlag == NTRACK_FLAG)
+			{
+				_loadTrack(file, ck.dwChunkSize);
 			}
 
 			else
@@ -179,6 +206,26 @@ namespace xmdl {
 				d_assert (mesh->mVertexCount * sizeof (Vec2) == ck.dwChunkSize);
 
 				file->Read(mesh->mUV, mesh->mVertexCount * sizeof(Vec2));
+			}
+
+			else if (ck.dwFlag == GEOSET_SKINS)
+			{
+				mesh->mVertexCount = ck.dwChunkSize / sizeof (t_blend_infl);
+				mesh->mBInfl = new t_blend_infl[mesh->mVertexCount];
+
+				d_assert (mesh->mVertexCount * sizeof (t_blend_infl) == ck.dwChunkSize);
+
+				file->Read(mesh->mBInfl, mesh->mVertexCount * sizeof (t_blend_infl));
+			}
+
+			else if (ck.dwFlag == GEOSET_BWEIGHT)
+			{
+				mesh->mSkinCount = ck.dwChunkSize / sizeof (t_skin);
+				mesh->mSkin = new t_skin[mesh->mSkinCount];
+
+				d_assert (mesh->mSkinCount * sizeof (t_skin) == ck.dwChunkSize);
+
+				file->Read(mesh->mSkin, mesh->mSkinCount * sizeof (t_skin));
 			}
 
 			else if (ck.dwFlag == GEOSET_INDEX)
@@ -282,10 +329,323 @@ namespace xmdl {
 		return -1;
 	}
 
+	void t_xmdl::_loadTrack(DataStreamPtr & file, int size)
+	{
+		struct BoneAnimChunk
+		{
+			// 动画信息
+			USHORT nFrames;		// 骨骼动画桢数
+			USHORT nNodes;		// 骨骼总数
+		};
+
+		struct NodeTrackChunk
+		{
+			USHORT nNodeIndex;
+			USHORT nTrackCount;
+		};
+
+		enum NodeTrackType
+		{
+			NodeTrack_Position,
+			NodeTrack_Rotation,
+			NodeTrack_scaling,
+			NodeTrack_Visible,
+			NodeTrack_Horz,
+			NodeTrack_Vert,
+			NodeTrack_PosX,
+			NodeTrack_PosY,
+			NodeTrack_PosZ,
+			NodeTrack_EulerX,
+			NodeTrack_EulerY,
+			NodeTrack_EulerZ,
+			NodeTrack_Sample,
+			NodeTrack_Max,
+		};
+
+		enum InterpolationType
+		{
+			Interpolation_None,
+			Interpolation_Linear,
+			Interpolation_TCB,
+			Interpolation_Bezier,
+			Interpolation_Cubic,
+			Interpolation_CatmullRom,
+		};
+
+		struct TrackChunk
+		{
+			BYTE byTrackType;			// TrackType
+			BYTE byInterpType;			// InterpolationType
+			WORD wTrackSubType;			// 轨迹类型 NodeTrackType/UVWTrackType/参数ID/FxParamType
+			WORD wKeyCount;				// 关键桢数量
+			WORD wKeySize;				// 关键桢结构大小
+		};
+
+		BoneAnimChunk bac;
+		file->Read(&bac, sizeof (BoneAnimChunk));
+		size -= sizeof(BoneAnimChunk);
+
+		mSkinAnimCount = bac.nNodes;
+		mSkinAnims = new t_skin_anim[mSkinAnimCount];
+
+		while (size > 0)
+		{
+			NodeTrackChunk ntc;
+			file->Read(&ntc, sizeof(NodeTrackChunk));
+			size -= sizeof(NodeTrackChunk);
+
+			t_skin_anim * anim = &mSkinAnims[ntc.nNodeIndex];
+			anim->nNodeIndex = ntc.nNodeIndex;
+
+			for (int i = 0; i < ntc.nTrackCount; ++i)
+			{
+				TrackChunk tc;
+				file->Read(&tc, sizeof(TrackChunk));
+				size -= sizeof(TrackChunk);
+
+				InterpolationType eiType = (InterpolationType)tc.byInterpType;
+				NodeTrackType etType = (NodeTrackType)tc.wTrackSubType;
+
+				if (etType == NodeTrack_Sample)
+				{
+					d_assert (tc.wKeySize == sizeof(t_track));
+
+					for (int i = 0; i < tc.wKeyCount; ++i)
+					{
+						t_track track;
+						file->Read(&track, sizeof (t_track));
+						anim->vTracks.PushBack(track);
+					}
+				}
+				else
+				{
+					file->Skip(tc.wKeySize * tc.wKeyCount);
+				}
+
+				size -= tc.wKeySize * tc.wKeyCount;
+			}
+		}
+
+		d_assert (size == 0);
+	}
+
+
 	void t_xmdl::save(const char * filename)
+	{
+		_saveMesh(filename);
+		_saveAnim(filename);
+	}
+
+	t_mesh * t_xmdl::_mergeMesh(t_mesh * mesh0, t_mesh * mesh1)
+	{
+		t_mesh * mesh = new t_mesh;
+
+		int gset = 0;
+
+		const char * strFxName = mStrTable + mFxs[mesh1->mGeoset.byFxId].dwFileNameStr;
+		if (strstr(strFxName, "AlphaTest") != NULL)
+			gset = 1;
+
+		mesh->mGeoset = (gset == 0) ? mesh0->mGeoset : mesh1->mGeoset;
+
+		mesh->mTextureId = mesh0->mTextureId;
+
+		mesh->mVertexCount = mesh0->mVertexCount + mesh1->mVertexCount;
+
+		mesh->mVertex = new Vec3[mesh->mVertexCount];
+		mesh->mNormal = new Vec3[mesh->mVertexCount];
+		mesh->mUV = new Vec2[mesh->mVertexCount];
+
+		if (mesh0->mSkinInfo)
+		{
+			mesh->mSkinInfo = new t_skin_info[mesh->mVertexCount];
+		}
+
+		int index = 0;
+		for (int i = 0; i < mesh0->mVertexCount; ++i)
+		{
+			mesh->mVertex[index] = mesh0->mVertex[i];
+
+			if (mesh0->mNormal)
+				mesh->mNormal[index] = mesh0->mNormal[i];
+			else
+				mesh->mNormal[index] = Vec3::UnitY;
+
+			if (mesh0->mUV)
+				mesh->mUV[index] = mesh0->mUV[i];
+			else
+				mesh->mUV[index] = Vec2::Zero;
+
+			if (mesh0->mSkinInfo)
+				mesh->mSkinInfo[index] = mesh0->mSkinInfo[i];
+
+			++index;
+		}
+
+		for (int i = 0; i < mesh1->mVertexCount; ++i)
+		{
+			mesh->mVertex[index] = mesh1->mVertex[i];
+
+			if (mesh1->mNormal)
+				mesh->mNormal[index] = mesh1->mNormal[i];
+			else
+				mesh->mNormal[index] = Vec3::UnitY;
+
+			if (mesh1->mUV)
+				mesh->mUV[index] = mesh1->mUV[i];
+			else
+				mesh->mUV[index] = Vec2::Zero;
+
+			if (mesh0->mSkinInfo)
+				mesh->mSkinInfo[index] = mesh1->mSkinInfo[i];
+
+			++index;
+		}
+
+
+		// index
+		mesh->mIndexCount = mesh0->mIndexCount + mesh1->mIndexCount;
+		mesh->mIndex = new WORD[mesh->mIndexCount];
+		index = 0;
+
+		for (int i = 0; i < mesh0->mIndexCount; ++i)
+		{
+			mesh->mIndex[index++] = mesh0->mIndex[i];
+		}
+
+		for (int i = 0; i < mesh1->mIndexCount; ++i)
+		{
+			mesh->mIndex[index++] = mesh1->mIndex[i] + mesh0->mVertexCount;
+		}
+
+		return mesh;
+	}
+
+	void t_xmdl::_optimize()
+	{
+		for (int i = 0; i < mMeshes.Size(); )
+		{
+			t_mesh * mesh = mMeshes[i];
+
+			const char * strFxName = mStrTable + mFxs[mesh->mGeoset.byFxId].dwFileNameStr;
+			if (strstr(strFxName, "粒子") != NULL)
+			{
+				delete mesh;
+				mMeshes.Erase(i);
+				continue;
+			}
+
+			++i;
+		}
+
+		for (int i = 0; i < mMeshes.Size(); ++i)
+		{
+			t_mesh * mesh = mMeshes[i];
+
+			if (mesh->mBInfl && mesh->mSkin)
+			{
+				mesh->mSkinInfo = new t_skin_info[mesh->mVertexCount];
+
+				ZeroMemory(mesh->mSkinInfo, sizeof(t_skin_info) * mesh->mVertexCount);
+
+				for (int v = 0; v < mesh->mVertexCount; ++v)
+				{
+					unsigned char bindex[4] = { 0 };
+					float bweight[4] = {0};
+
+					for (int b = 0; b < 4 && b < mesh->mBInfl[v].wWeightCount; ++b)
+					{
+						int _i = mesh->mBInfl[v].wWeightOffset + b;
+						bindex[b] = mesh->mSkin[_i].byBoneID;
+						bweight[b] = mesh->mSkin[_i].fWeight;
+					}
+
+					float sum = bweight[0] + bweight[1] + bweight[2] + bweight[3];
+
+					if (sum < 0.1f)
+						sum = 1;
+
+					bweight[0] /= sum;
+					bweight[1] /= sum;
+					bweight[2] /= sum;
+					bweight[3] /= sum;
+
+					for (int k = 0; k < 4; ++k)
+					{
+						mesh->mSkinInfo[v].bindex[k] = bindex[k];
+						mesh->mSkinInfo[v].bweight[k] = bweight[k];
+					}
+				}
+			}
+			else if (mesh->mSkinCount == 1)
+			{
+				mesh->mSkinInfo = new t_skin_info[mesh->mVertexCount];
+
+				for (int v = 0; v < mesh->mVertexCount; ++v)
+				{
+					unsigned char bindex[4] = { mesh->mSkin->byBoneID, 0, 0, 0};
+					float bweight[4] = {1, 0, 0, 0};
+
+					for (int k = 0; k < 4; ++k)
+					{
+						mesh->mSkinInfo[v].bindex[k] = bindex[k];
+						mesh->mSkinInfo[v].bweight[k] = bweight[k];
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < mMeshes.Size() - 1; ++i)
+		{
+			t_mesh * mesh = mMeshes[i];
+
+			for (int j = i + 1; j < mMeshes.Size();)
+			{
+				t_mesh * nmesh = mMeshes[j];
+
+				if (nmesh->mTextureId == mesh->mTextureId &&
+					((nmesh->mSkin != NULL) == (mesh->mSkin != NULL)) &&
+					nmesh->mIndexCount + mesh->mIndexCount < 65536)
+				{
+					t_mesh * newMesh = _mergeMesh(mesh, nmesh);
+					delete mesh;
+					delete nmesh;
+
+					mMeshes[i] = newMesh;
+					mMeshes.Erase(j);
+					continue;
+				}
+
+				++j;
+			}
+		}
+
+		for (int i = 0; i < mMeshes.Size(); ++i)
+		{
+			t_mesh * mesh = mMeshes[i];
+
+			if (!mesh->mSkinInfo)
+				continue ;
+
+			for (int v = 0; v < mesh->mVertexCount; ++v)
+			{
+				for (int k = 0; k < 4; ++k)
+				{
+					if (mesh->mSkinInfo[v].bweight[k] > 0.01f)
+						mesh->mSkinInfo[v].bindex[k] = mesh->MapBoneId(mesh->mSkinInfo[v].bindex[k]);
+				}
+			}
+
+			d_assert (mesh->boneIds.Size() <= MAX_BLEND_MATRIX_VS);
+		}
+	}
+
+	void t_xmdl::_saveMesh(const char * filename)
 	{
 		if (mMeshes.Size() == 0)
 			return ;
+
+		_optimize();
 
 		File file;
 
@@ -310,11 +670,14 @@ namespace xmdl {
 
 			file.Write(&ckId, sizeof(int));
 
-			file.Write(&MeshLoader_v1::K_SubMesh_Version, sizeof(int));
+			file.Write(&MeshLoader_v1::K_SubMesh_Version_1, sizeof(int));
 
 			int iVertexCount = mesh->mVertexCount;
 			int iIndexCount = mesh->mIndexCount;
 			int iVertexElem = MeshLoader_v1::VE_POSITION | MeshLoader_v1::VE_NORMAL | MeshLoader_v1::VE_TEXCOORD;
+
+			if (mesh->mSkinInfo)
+				iVertexElem |= MeshLoader_v1::VE_BLENDINDICES | MeshLoader_v1::VE_BLENDWEIGHTS;
 
 			file.Write(&iVertexCount, sizeof(int));
 			file.Write(&iIndexCount, sizeof(int));
@@ -333,9 +696,19 @@ namespace xmdl {
 					file.Write(&mesh->mUV[v], sizeof(Vec2));
 				else
 					file.Write(&Vec2::Zero, sizeof(Vec2));
+
+				if (mesh->mSkinInfo)
+				{
+					file.Write(mesh->mSkinInfo[v].bindex, 4 * sizeof(unsigned char));
+					file.Write(mesh->mSkinInfo[v].bweight, 4 * sizeof(float));
+				}
 			}
 
 			file.Write(mesh->mIndex, sizeof(WORD) * iIndexCount);
+
+			int NumBoneIdMaps = mesh->boneIds.Size();
+			file.Write(&NumBoneIdMaps, sizeof(int));
+			file.Write(&mesh->boneIds[0], NumBoneIdMaps * sizeof(short));
 
 			// write material
 			file.Write(&MeshLoader_v1::K_Material_Version, sizeof(int));
@@ -396,6 +769,8 @@ namespace xmdl {
 			sph.center = bound.GetCenter();
 			sph.radius = mModel->bound.fBoundsRadius;
 
+			int ckId = MC_BOUNDS;
+			file.Write(&ckId, sizeof(int));
 			file.Write(&MeshLoader_v1::K_Bound_Version, sizeof(int));
 
 			file.Write(&bound.minimum, sizeof(Vec3));
@@ -405,7 +780,123 @@ namespace xmdl {
 			file.Write(&sph.radius, sizeof(float));
 		}
 
+		mBoneNames.Clear();
+
+		// skeleton
+		if (mNodes != NULL)
+		{
+			int ckId = MC_SKELETON;
+			file.Write(&ckId, sizeof(int));
+			file.Write(&MeshLoader_v1::K_Skeleton_Version, sizeof(int));
+
+			file.Write(&mNodeCount, sizeof(int));
+
+			for (int i = 0; i < mNodeCount; ++i)
+			{
+				TString128 name = mStrTable + mNodes[i].wNameStr;
+
+				int index = 0;
+				if (_exsitBoneName(name))
+				{
+					TString128 boneName = name + "_" + index;
+
+					while (_exsitBoneName(boneName))
+						++index;
+
+					name = boneName;
+				}
+
+				file.Write(name.c_str(), 128);
+
+				int flag = 0;
+
+				if (mNodes->wFlags & NODE_IS_CSBONE)
+					flag |= Bone::K_Flag_CsBone;
+
+				file.Write(&flag, sizeof(int));
+				file.Write(mNodes[i].Pos, 3 * sizeof(float));
+				file.Write(mNodes[i].Rot, 4 * sizeof(float));
+
+				if (mNodes->wFlags & NODE_IS_CSBONE)
+					file.Write(Vec3::Unit, 3 * sizeof(float));
+				else
+					file.Write(mNodes[i].Scl, 3 * sizeof(float));
+			}
+
+			for (int i = 0; i < mNodeCount; ++i)
+			{
+				short parent = mNodes[i].byParent;
+				short child = (short)i;
+
+				if (parent == 255)
+					parent = -1;
+
+				d_assert (parent < mNodeCount);
+
+				file.Write(&parent, sizeof(short));
+				file.Write(&child, sizeof(short));
+			}
+		}
+
 		file.Close();
 	}
 
+	bool t_xmdl::_exsitBoneName(const TString128 & name)
+	{
+		for (int i = 0; i < mBoneNames.Size(); ++i)
+		{
+			if (mBoneNames[i] == name)
+				return true;
+		}
+
+		mBoneNames.PushBack(name);
+
+		return false;
+	}
+
+	void t_xmdl::_saveAnim(const char * filename)
+	{
+		if (mSkinAnims == NULL)
+			return ;
+
+		TString128 animFile = File::RemoveExternName(filename) + ".anim";
+
+		File file;
+
+		file.Open(animFile.c_str(), OM_WRITE_BINARY);
+
+		d_assert (file.IsOpen());
+
+		file.Write(&AnimationLoader::K_Magic, sizeof(int));
+		file.Write(&AnimationLoader::K_Version, sizeof(int));
+
+		if (mSkinAnimCount > 0)
+		{
+			file.Write(&AnimationLoader::K_SkinAnim, sizeof(int));
+			file.Write(&AnimationLoader::K_SkinAnimVersion, sizeof(int));
+
+			file.Write(&mSkinAnimCount, sizeof(int));
+
+			for (int i = 0; i < mSkinAnimCount; ++i)
+			{
+				int boneId = mSkinAnims[i].nNodeIndex;
+				int count = mSkinAnims[i].vTracks.Size();
+
+				file.Write(&boneId, sizeof(int));
+				file.Write(&count, sizeof(int));
+
+				for (int j = 0; j < count; ++j)
+				{
+					const t_track & track = mSkinAnims[i].vTracks[j];
+
+					float time = track.nFrame * (1.0f / 30);
+
+					file.Write(&time, sizeof(float));
+					file.Write(&track.p, sizeof(Vec3));
+					file.Write(&track.q, sizeof(Quat));
+					file.Write(&track.s, sizeof(Vec3));
+				}
+			}
+		}
+	}
 }

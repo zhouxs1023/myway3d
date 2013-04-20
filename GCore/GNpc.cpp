@@ -4,25 +4,24 @@
 
 namespace game {
 
-	GNpc::GNpc(int id, const char * name, const char * source)
-		: GActor(name)
-		, mId(id)
+	GNpc::GNpc(int id, int mid)
+		: GActor(("Npc_" + TString128(id)).c_str())
+		, mUId(id)
 	{
-		
+		_init(mid);
 	}
 
 	GNpc::~GNpc()
 	{
 	}
 
-	void GNpc::_init(const char * source)
+	void GNpc::_init(int mid)
 	{
-		DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source);
+		mNpcInfo = GDataManager::Instance()->GetNpcInfo(mid);
 
-		xml_doc doc;
+		d_assert (mNpcInfo != NULL);
 
-		XmlHelper::LoadXmlFromMem(doc, stream->GetData());
-
-		doc->first_node()
+		SetPart(GActor::Main, mNpcInfo->part_main.c_str());
+		SetPart(GActor::Weapon, mNpcInfo->part_weapon.c_str());
 	}
 }

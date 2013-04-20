@@ -36,6 +36,12 @@
     <ClCompile Include="GData.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="GMain.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="GWorld.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entity">
@@ -86,6 +92,13 @@
     </ClInclude>
     <ClInclude Include="GData.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GCoreEntry.h" />
+    <ClInclude Include="GMain.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="GWorld.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

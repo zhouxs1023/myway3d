@@ -74,7 +74,7 @@ void SkeletonLoader::Load(Skeleton * skel, const TString128 & source)
             break;
 
         case SC_ANIMATION:
-            ReadAnimation(skel, stream);
+			d_assert (0);
             break;
 
         default:
@@ -140,65 +140,6 @@ void SkeletonLoader::ReadHierarchy(Skeleton * skel, DataStreamPtr & stream)
     }
 }
 
-void SkeletonLoader::ReadAnimation(Skeleton * skel, DataStreamPtr & stream)
-{
-    String name;
-    float len;
-    Animation * anim;
-
-    stream->ReadString(name);
-    stream->Read(&len, sizeof(float));
-    anim = skel->CreateAnimation(name.c_str());
-    anim->SetLength(len);
-
-    chunk ck;
-    while (ReadChunk(ck, stream) &&
-           ck.id == SC_SKELETON_ANIMATION)
-    {
-        switch (ck.id)
-        {
-        case SC_SKELETON_ANIMATION:
-            ReadBoneAnimation(skel, anim, stream);
-            break;
-        }
-    }
-
-    //skip
-    if (!stream->Eof())
-        stream->Skip(-CHUNK_SIZE);
-}
-
-void SkeletonLoader::ReadBoneAnimation(Skeleton * skel, Animation * anim, DataStreamPtr & stream)
-{
-	short bone_index;
-	stream->Read(&bone_index, sizeof(short));
-
-	SkeletonAnimation * skel_anim;
-	skel_anim = anim->CreateSkeletonAnimation(bone_index);
-
-	int count;
-	stream->Read(&count, sizeof(int));
-
-	KeyFrame * kf;
-	float time;
-	Vec3 trans;
-	Quat rotate;
-	Vec3 scale;
-
-	for (int i = 0; i < count; ++i)
-	{
-		stream->Read(&time, sizeof(float));
-		stream->Read(&trans, sizeof(float) * 3);
-		stream->Read(&rotate, sizeof(float) * 4);
-		stream->Read(&scale, sizeof(float) * 3);
-
-		kf = skel_anim->CreateKeyFrame();
-		kf->SetTime(time);
-		kf->SetTranslate(trans);
-		kf->SetRotation(rotate);
-		kf->SetScale(scale);
-	}
-}
 
 
 
@@ -225,35 +166,4 @@ int SkeletonLoader::ComputeBoneSize(Skeleton * skel)
 int SkeletonLoader::ComputeHierarchySize(Skeleton * skel)
 {
     return skel->GetHiberarchyCount() * (sizeof(short) + sizeof(short)) + sizeof(int);
-}
-
-
-int SkeletonLoader::ComputeAnimationSize(Animation * anim)
-{
-    int size = 0;
-
-    size += (anim->GetName().Length() + 1) * sizeof(char);
-    size += sizeof(float);
-
-    SkeletonAnimation * bn_anim;
-    for (int i = 0; i < anim->GetSkeletonAnimationCount(); ++i)
-    {
-        bn_anim = anim->GetSkeletonAnimation(i);
-        size += ComputeSkeletonAnimationSize(bn_anim) + CHUNK_SIZE;
-    }
-
-    return size;
-}
-
-int SkeletonLoader::ComputeSkeletonAnimationSize(SkeletonAnimation * anim)
-{
-    int size = 0;
-
-    //bone index
-    size += sizeof(short);
-
-    //key frames
-    size += sizeof(float) * (1 + 3 + 4 + 3) * anim->GetFrameCount() + sizeof(int);
-
-    return size;
 }
