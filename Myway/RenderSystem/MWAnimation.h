@@ -24,6 +24,7 @@ struct MW_ENTRY MotionBlendInfo
 	float Speed;
 
 	bool Looped;
+	bool Mixed;
 	bool BlendMask[MAX_BLEND_MATRIX];
 
 	MotionBlendInfo()
@@ -34,6 +35,7 @@ struct MW_ENTRY MotionBlendInfo
 		Speed = 1.0f;
 
 		Looped = true;
+		Mixed = false;
 
 		ZeroMemory(BlendMask, sizeof(bool) * MAX_BLEND_MATRIX);
 	}

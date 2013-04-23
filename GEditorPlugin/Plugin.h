@@ -22,10 +22,12 @@ namespace game {
 	protected:
 		void _OnInit(Event * _sender);
 		void _OnShutdown(Event * _sender);
+		void _OnUpdate(Event * _sender);
 
 	protected:
 		tEventListener<GamePlugin> OnInit;
 		tEventListener<GamePlugin> OnShutown;
+		tEventListener<GamePlugin> OnUpdate;
 
 		GMain mGameMain;
 	};

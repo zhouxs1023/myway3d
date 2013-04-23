@@ -8,6 +8,7 @@ namespace game {
 	GamePlugin::GamePlugin()
 		: OnInit(xEvent::OnInit, this, &GamePlugin::_OnInit)
 		, OnShutown(xEvent::OnShutdown, this, &GamePlugin::_OnShutdown)
+		, OnUpdate(xEvent::OnUpdate, this, &GamePlugin::_OnUpdate)
 	{
 	}
 
@@ -31,4 +32,8 @@ namespace game {
 		mGameMain.Shutdown();
 	}
 	
+	void GamePlugin::_OnUpdate(Event * _sender)
+	{
+		mGameMain.Update();
+	}
 }

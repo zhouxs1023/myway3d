@@ -15,6 +15,7 @@ namespace Myway {
 		virtual void UpdateGeometry();
 
 		void LoadAnimation(const char * name, const char * source);
+
 		void PlayAnimation(const char * name, const MotionBlendInfo & mbi = MotionBlendInfo::Default);
 
 

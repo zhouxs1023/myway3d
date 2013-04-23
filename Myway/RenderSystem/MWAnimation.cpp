@@ -420,7 +420,18 @@ bool AnimationSet::IsPlay(const char * anim)
 
 void AnimationSet::Play(AnimationController * controller)
 {
+	if (!controller->GetBlendInfo().Mixed)
+	{
+		for (int i = 0; i < mControllers.Size(); ++i)
+		{
+			delete mControllers[i];
+		}
+
+		mControllers.Clear();
+	}
+
 	controller->Play();
+
 	mControllers.PushBack(controller);
 }
 
@@ -432,26 +443,10 @@ void AnimationSet::UpdateAnimation(float elapsedTime, SkeletonInstance * skel)
 		{
 			delete mControllers[i];
 			mControllers.Erase(i);
+
+			continue;
 		}
 
 		++i;
-	}
-
-	int index = -1;
-
-	for (int i = mControllers.Size() - 1; i >= 0; --i)
-	{
-		if (mControllers[i]->GetWeight() >= 0.9999f)
-		{
-			index = i;
-			break;
-		}
-	}
-
-	while (index > 0)
-	{
-		delete mControllers[0];
-		mControllers.Erase(0);
-		--index;
 	}
 }

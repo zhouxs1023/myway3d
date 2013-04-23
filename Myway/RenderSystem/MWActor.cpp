@@ -84,8 +84,6 @@ namespace Myway {
 		if (mAnimationSet == NULL || mSkeleton == NULL)
 			return ;
 
-		mSkeleton->ResetBone();
-
 		float frameTime = Engine::Instance()->GetFrameTime();
 
 		mAnimationSet->UpdateAnimation(frameTime, mSkeleton);
