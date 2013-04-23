@@ -65,6 +65,8 @@ namespace Infinite {
 
 	void Editor::Shutdown()
 	{
+		mShapeMgr._Shutdown(NULL);
+
 		xEvent::OnShutdown(NULL, NULL);
 
 		safe_delete (mColorPanel);

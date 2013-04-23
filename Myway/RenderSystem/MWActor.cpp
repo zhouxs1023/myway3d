@@ -57,27 +57,10 @@ namespace Myway {
 		AnimationLoader::Load(anim, stream);
 	}
 
-	void Actor::PlayAnimation(const char * name)
+	void Actor::PlayAnimation(const char * name, const MotionBlendInfo & mbi)
 	{
 		if (mAnimationSet == NULL)
 			return ;
-
-		/*while (mAnimationSet->GetActiveStateCount() > 0)
-		{
-			AnimationState * as = mAnimationSet->GetActiveState(0);
-
-			as->SetEnable(false);
-		}
-
-		AnimationState * state = mAnimationSet->GetState(name);*/
-
-		/*if (state)
-		{
-			state->SetEnable(true);
-			state->SetLoop(true);
-			state->SetPosition(0);
-			state->SetWeight(1);
-		}*/
 
 		AnimationController * controller = NULL;
 
@@ -88,6 +71,8 @@ namespace Myway {
 			if (anim)
 			{
 				controller = new AnimationController(anim);
+
+				controller->SetBlendInfo(mbi);
 				
 				mAnimationSet->Play(controller);
 			}

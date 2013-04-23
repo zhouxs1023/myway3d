@@ -85,8 +85,9 @@ public:
 
 	Shape * _Create(const TString128 & name, const TString128 & type);
 
-protected:
 	void _Shutdown(Event * sender);
+
+protected:
 	void _Serialize(Event * sender);
 	void _UnloadScene(Event * sender);
 
@@ -98,7 +99,6 @@ protected:
 	Array<Shape *> mObjs;
 
 	tEventListener<ShapeManager> OnUnloadScene;
-	tEventListener<ShapeManager> OnShutdown;
 	tEventListener<ShapeManager> OnSerialize;
 };
     

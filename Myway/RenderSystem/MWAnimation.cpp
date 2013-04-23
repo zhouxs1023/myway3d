@@ -3,6 +3,8 @@
 
 using namespace Myway;
 
+const MotionBlendInfo MotionBlendInfo::Default;
+
 
 /* :) KeyFrame
 -----------------------------------------------------------------------------
@@ -374,16 +376,17 @@ bool AnimationController::_UpdateAnimation(float elapsedTime, SkeletonInstance *
         {
             while (mPos > len)
                 mPos -= len;
-
-			return true;
         }
         else
         {
+			mPos = len;
             return false;
         }
     }
 
     mAnim->_UpdateAnimation(skel, this);
+
+	return true;
 }
 
 
@@ -423,8 +426,32 @@ void AnimationSet::Play(AnimationController * controller)
 
 void AnimationSet::UpdateAnimation(float elapsedTime, SkeletonInstance * skel)
 {
-	for (int i = 0; i < mControllers.Size(); ++i)
+	for (int i = 0; i < mControllers.Size(); )
 	{
-		mControllers[i]->_UpdateAnimation(elapsedTime, skel);
+		if (!mControllers[i]->_UpdateAnimation(elapsedTime, skel))
+		{
+			delete mControllers[i];
+			mControllers.Erase(i);
+		}
+
+		++i;
+	}
+
+	int index = -1;
+
+	for (int i = mControllers.Size() - 1; i >= 0; --i)
+	{
+		if (mControllers[i]->GetWeight() >= 0.9999f)
+		{
+			index = i;
+			break;
+		}
+	}
+
+	while (index > 0)
+	{
+		delete mControllers[0];
+		mControllers.Erase(0);
+		--index;
 	}
 }

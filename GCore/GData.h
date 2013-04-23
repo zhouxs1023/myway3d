@@ -4,6 +4,17 @@
 
 namespace game {
 
+	struct GCORE_ENTRY GHelper {
+		static const TString32 S_Anim_Idle0;
+		static const TString32 S_Anim_Idle1;
+		static const TString32 S_Anim_Walk;
+		static const TString32 S_Anim_Run;
+	};
+	
+
+
+
+
 	struct GCORE_ENTRY GNpcInfo
 	{
 		int id;
@@ -15,6 +26,11 @@ namespace game {
 		TString32 part_shoulder;
 		TString32 part_clothes;
 		TString32 part_shoes;
+
+		TString32 anim_Idle0;
+		TString32 anim_Idle1;
+		TString32 anim_Walk;
+		TString32 anim_Run;
 
 		GNpcInfo()
 		{

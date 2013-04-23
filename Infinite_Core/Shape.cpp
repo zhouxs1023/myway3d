@@ -43,8 +43,7 @@ void Shape::Serialize(xSerializer & Serializer)
 IMP_SLN(ShapeManager);
 
 ShapeManager::ShapeManager()
-	: OnShutdown(xEvent::OnShutdown, this, &ShapeManager::_Shutdown)
-	, OnSerialize(xEvent::OnSerialize, this, &ShapeManager::_Serialize)
+	: OnSerialize(xEvent::OnSerialize, this, &ShapeManager::_Serialize)
 	, OnUnloadScene(xEvent::OnUnloadScene, this, &ShapeManager::_UnloadScene)
 {
 	INIT_SLN;

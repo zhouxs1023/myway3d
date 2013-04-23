@@ -14,8 +14,10 @@ enum INTERPOLATION_TYPE
     MW_ALIGN_ENUM(INTERPOLATION_TYPE)
 };
 
-struct MotionBlendInfo
+struct MW_ENTRY MotionBlendInfo
 {
+	static const MotionBlendInfo Default;
+
 	float BlendInTime;
 
 	float Weight;

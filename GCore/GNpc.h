@@ -13,7 +13,7 @@ namespace game {
 		static const int K_Type = 'GNPC';
 
 	public:
-		GNpc(int uid, int mid);
+		GNpc(int uid, int templateId);
 		virtual ~GNpc();
 
 		virtual int GetUId() const { return mUId; }
@@ -21,7 +21,7 @@ namespace game {
 		virtual int GetType() const { return K_Type; };
 
 	protected:
-		void _init(int mid);
+		void _init(int templateId);
 
 	protected:
 		const GNpcInfo * mNpcInfo;

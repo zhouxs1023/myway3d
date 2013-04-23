@@ -18,6 +18,8 @@ namespace game {
 		Scale = 1;
 
 		mNpc = GWorld::Instance()->CreateNpc(-1, 0);
+
+		mNpc->GetNode()->GetFlag().SetFlags(PICK_Flag);
 	}
 
 	Npc::~Npc()

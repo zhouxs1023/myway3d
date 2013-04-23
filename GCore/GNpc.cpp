@@ -4,24 +4,37 @@
 
 namespace game {
 
-	GNpc::GNpc(int id, int mid)
+	GNpc::GNpc(int id, int templateId)
 		: GActor(("Npc_" + TString128(id)).c_str())
 		, mUId(id)
 	{
-		_init(mid);
+		_init(templateId);
 	}
 
 	GNpc::~GNpc()
 	{
 	}
 
-	void GNpc::_init(int mid)
+	void GNpc::_init(int templateId)
 	{
-		mNpcInfo = GDataManager::Instance()->GetNpcInfo(mid);
+		mNpcInfo = GDataManager::Instance()->GetNpcInfo(templateId);
 
 		d_assert (mNpcInfo != NULL);
 
 		SetPart(GActor::Main, mNpcInfo->part_main.c_str());
-		SetPart(GActor::Weapon, mNpcInfo->part_weapon.c_str());
+		
+		if (mNpcInfo->anim_Idle0 != "")
+			mActor[GActor::Main]->LoadAnimation(GHelper::S_Anim_Idle0.c_str(), mNpcInfo->anim_Idle0.c_str());
+
+		if (mNpcInfo->anim_Idle1 != "")
+			mActor[GActor::Main]->LoadAnimation(GHelper::S_Anim_Idle1.c_str(), mNpcInfo->anim_Idle1.c_str());
+
+		if (mNpcInfo->anim_Walk != "")
+			mActor[GActor::Main]->LoadAnimation(GHelper::S_Anim_Walk.c_str(), mNpcInfo->anim_Walk.c_str());
+
+		if (mNpcInfo->anim_Run != "")
+			mActor[GActor::Main]->LoadAnimation(GHelper::S_Anim_Run.c_str(), mNpcInfo->anim_Run.c_str());
+
+		mActor[GActor::Main]->PlayAnimation(GHelper::S_Anim_Idle0.c_str());
 	}
 }

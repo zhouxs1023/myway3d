@@ -19,7 +19,7 @@ namespace game {
 
 		for (int i = 0; i < PT_Max; ++i)
 		{
-			mEntities[i] = NULL;
+			mActor[i] = NULL;
 		}
 	}
 
@@ -27,17 +27,17 @@ namespace game {
 	{
 		for (int i = 0; i < PT_Max; ++i)
 		{
-			if (mEntities[i])
-				World::Instance()->DestroyEntity(mEntities[i]);
+			if (mActor[i])
+				World::Instance()->DestroyActor(mActor[i]);
 		}
 	}
 
 	void GActor::SetPart(PartType type, const char * mesh)
 	{
-		if (mEntities[type])
+		if (mActor[type])
 		{
-			World::Instance()->DestroyEntity(mEntities[type]);
-			mEntities[type] = NULL;
+			World::Instance()->DestroyActor(mActor[type]);
+			mActor[type] = NULL;
 		}
 
 		if (strcmp(mesh, "") == 0)
@@ -45,8 +45,8 @@ namespace game {
 
 		TString128 uname = mName + "_" + _ActorPartName[type];
 
-		mEntities[type] = World::Instance()->CreateEntity(uname, mesh);
+		mActor[type] = World::Instance()->CreateActor(uname, mesh);
 
-		mNode->Attach(mEntities[type]);
+		mNode->Attach(mActor[type]);
 	}
 }
