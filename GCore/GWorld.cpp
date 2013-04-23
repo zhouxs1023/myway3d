@@ -25,6 +25,14 @@ namespace game {
 		DestroyAllNpc();
 	}
 
+	void GWorld::Update()
+	{
+		for (int i = 0; i < mNpcs.Size(); ++i)
+		{
+			mNpcs[i]->Update();
+		}
+	}
+
 	GNpc * GWorld::CreateNpc(int uId, int mId)
 	{
 		d_assert (GetNpc(uId) == NULL);

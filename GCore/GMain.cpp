@@ -23,4 +23,10 @@ namespace game {
 		mWorld.Shutdown();
 		mDataManager.Shutdown();
 	}
+
+	void GMain::Update()
+	{
+		mWorld.Update();
+	}
+
 }

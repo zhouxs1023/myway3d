@@ -42,6 +42,12 @@
     <ClCompile Include="GWorld.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="GState.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
+    <ClCompile Include="GAIStates.cpp">
+      <Filter>AI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entity">
@@ -55,6 +61,9 @@
     </Filter>
     <Filter Include="App">
       <UniqueIdentifier>{23889dec-1bd2-48bc-8340-1fcc1b2563ba}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AI">
+      <UniqueIdentifier>{f0efd58a-4ef1-4f6e-b8cc-dadee56d2848}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -99,6 +108,12 @@
     </ClInclude>
     <ClInclude Include="GWorld.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GState.h">
+      <Filter>AI</Filter>
+    </ClInclude>
+    <ClInclude Include="GAIStates.h">
+      <Filter>AI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

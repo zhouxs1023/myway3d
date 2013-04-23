@@ -32,9 +32,10 @@ namespace game {
 		GActor(const char * name);
 		virtual ~GActor();
 
-		virtual int GetType() const = 0;
-
 		void SetPart(PartType type, const char * mesh);
+		
+		void PlayAnimation(const char * anim, const MotionBlendInfo & mbi);
+		virtual void Update() {}
 
 	protected:
 		TString128 mName;

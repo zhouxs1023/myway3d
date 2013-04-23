@@ -2,10 +2,11 @@
 
 #include "GActor.h"
 #include "GData.h"
+#include "GState.h"
 
 namespace game {
 
-	class GCORE_ENTRY GNpc : public GActor
+	class GCORE_ENTRY GNpc : public GActor, public GAIEntity
 	{
 		DECLARE_ALLOC();
 
@@ -19,6 +20,9 @@ namespace game {
 		virtual int GetUId() const { return mUId; }
 
 		virtual int GetType() const { return K_Type; };
+
+		virtual void Update();
+		virtual void ChangeState(GState * state);
 
 	protected:
 		void _init(int templateId);

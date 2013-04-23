@@ -80,6 +80,8 @@
     <ClCompile Include="GScene.cpp" />
     <ClCompile Include="GSerializer.cpp" />
     <ClCompile Include="GSound.cpp" />
+    <ClCompile Include="GState.cpp" />
+    <ClCompile Include="GAIStates.cpp" />
     <ClCompile Include="GWorld.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -101,6 +103,8 @@
     <ClInclude Include="GScene.h" />
     <ClInclude Include="GSerializer.h" />
     <ClInclude Include="GSound.h" />
+    <ClInclude Include="GState.h" />
+    <ClInclude Include="GAIStates.h" />
     <ClInclude Include="GWorld.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

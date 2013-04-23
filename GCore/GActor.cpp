@@ -49,4 +49,10 @@ namespace game {
 
 		mNode->Attach(mActor[type]);
 	}
+
+	void GActor::PlayAnimation(const char * anim, const MotionBlendInfo & mbi)
+	{
+		d_assert (mActor[Main] != NULL);
+		mActor[GActor::Main]->PlayAnimation(anim, mbi);
+	}
 }

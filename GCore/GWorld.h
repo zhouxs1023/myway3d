@@ -15,6 +15,8 @@ namespace game {
 		void Init();
 		void Shutdown();
 
+		void Update();
+
 		GNpc * CreateNpc(int uId, int mId);
 		void DestroyNpc(GNpc * npc);
 		void DestroyNpc(int uId);

@@ -14,6 +14,8 @@ namespace game {
 		void Init();
 		void Shutdown();
 
+		void Update();
+
 	protected:
 		GDataManager mDataManager;
 		GWorld mWorld;

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 
 #include "GNpc.h"
+#include "GAIStates.h"
 
 namespace game {
 
@@ -35,6 +36,16 @@ namespace game {
 		if (mNpcInfo->anim_Run != "")
 			mActor[GActor::Main]->LoadAnimation(GHelper::S_Anim_Run.c_str(), mNpcInfo->anim_Run.c_str());
 
-		mActor[GActor::Main]->PlayAnimation(GHelper::S_Anim_Idle0.c_str());
+		ChangeState(new GState_Idle(this));
+	}
+
+	void GNpc::Update()
+	{
+		GAIEntity::Think();
+	}
+
+	void GNpc::ChangeState(GState * state)
+	{
+		GAIEntity::ChangeState(state);
 	}
 }
