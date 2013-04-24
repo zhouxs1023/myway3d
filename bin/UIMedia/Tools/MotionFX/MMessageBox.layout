@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="312 424 400 175" align="Center" name="_Main">
+        <Property key="Caption" value="MessageBox"/>
+        <Widget type="Button" skin="Button" position="90 100 100 25" name="Ok">
+            <Property key="Caption" value="Ok"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="210 100 100 25" name="Cancel">
+            <Property key="Caption" value="Cancel"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="55 35 285 30" name="Text"/>
+    </Widget>
+</MyGUI>

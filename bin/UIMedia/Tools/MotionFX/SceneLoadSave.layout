@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Window" skin="WindowC" position="115 105 545 485">
+        <Property key="Caption" value="Scene"/>
+        <Widget type="ListBox" skin="ListBox" position="25 25 230 350" name="ID_FLODER_LIST"/>
+        <Widget type="ListBox" skin="ListBox" position="285 25 230 350" name="ID_SCENE_LIST"/>
+        <Widget type="Button" skin="Button" position="285 390 115 30" name="IDOK">
+            <Property key="Caption" value="OK"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="25 390 230 30" name="ID_SCENE_NAME"/>
+        <Widget type="Button" skin="Button" position="400 390 115 30" name="IDCANCEL">
+            <Property key="Caption" value="Cancel"/>
+        </Widget>
+    </Widget>
+</MyGUI>

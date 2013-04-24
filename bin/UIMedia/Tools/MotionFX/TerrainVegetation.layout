@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelSkin" position="80 40 280 660" align="Stretch" name="_Main">
+        <UserString key="SnapTo" value="Stretch"/>
+        <Widget type="TextBox" skin="TextBox" position="20 25 90 25">
+            <Property key="Caption" value="Size:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="20 70 90 25">
+            <Property key="Caption" value="Density:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="20 115 90 25">
+            <Property key="Caption" value="Type:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="ComboBox" skin="ComboBox" position="125 115 135 25" name="BrushType"/>
+        <Widget type="ListBox" skin="ListBox" position="15 175 140 220" name="VegList"/>
+        <Widget type="Button" skin="Button" position="165 175 95 25" name="Add">
+            <Property key="Caption" value="Add"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="165 210 95 25" name="Remove">
+            <Property key="Caption" value="Remove"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="165 245 95 25" name="Edit">
+            <Property key="Caption" value="Edit"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="15 420 110 25">
+            <Property key="Caption" value="MinSize:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="15 455 110 25">
+            <Property key="Caption" value="MaxSize:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="15 490 110 25">
+            <Property key="Caption" value="MinLum:"/>
+            <Property key="TextAlign" value="Left VCenter"/>
+        </Widget>
+        <Widget type="TextBox" skin="TextBox" position="15 525 110 25">
+            <Property key="TextAlign" value="Left VCenter"/>
+            <Property key="Caption" value="MaxLum:"/>
+        </Widget>
+        <Widget type="EditBox" skin="EditBox" position="150 420 110 25" name="MinSize"/>
+        <Widget type="EditBox" skin="EditBox" position="150 455 110 25" name="MaxSize"/>
+        <Widget type="EditBox" skin="EditBox" position="150 490 110 25" name="MinLum"/>
+        <Widget type="EditBox" skin="EditBox" position="150 525 110 25" name="MaxLum"/>
+        <Widget type="EditBox" skin="EditBox" position="125 25 135 25" name="BrushSize"/>
+        <Widget type="EditBox" skin="EditBox" position="125 70 135 25" name="BrushDensity"/>
+    </Widget>
+</MyGUI>

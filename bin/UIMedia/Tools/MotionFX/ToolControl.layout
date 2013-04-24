@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout" version="3.2.0">
+    <Widget type="Widget" skin="PanelEmpty" position="25 25 600 315" align="Stretch" name="_Main">
+        <UserString key="SnapTo" value="Stretch"/>
+        <Widget type="TabControl" skin="TabControl" position="5 0 600 315" align="Stretch" name="TabControl">
+            <Widget type="TabItem" skin="" position="2 24 594 287">
+                <Property key="Caption" value="Object"/>
+                <Widget type="Widget" skin="PanelEmpty" position="0 0 594 287" align="Stretch" name="Object"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 594 287" name="Property">
+                <Property key="Caption" value="Property"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 594 287" name="RenderSetting">
+                <Property key="Caption" value="RenderSetting"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 594 287" name="Environment">
+                <Property key="Caption" value="Environment"/>
+            </Widget>
+            <Widget type="TabItem" skin="" position="2 24 594 287" name="Terrain">
+                <Property key="Caption" value="Terrain"/>
+            </Widget>
+        </Widget>
+    </Widget>
+</MyGUI>
