@@ -498,6 +498,9 @@
     <ClInclude Include="RenderSystem\MWActor.h">
       <Filter>Myway\RenderSystem\Entity\Actor</Filter>
     </ClInclude>
+    <ClInclude Include="Core\MWTArray.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">

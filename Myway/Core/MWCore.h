@@ -18,6 +18,7 @@
 #include "MWFileSystem.h"
 #include "MWRefObj.h"
 #include "MWArray.h"
+#include "MWTArray.h"
 #include "MWList.h"
 #include "MWStack.h"
 #include "MWQueue.h"
