@@ -16,7 +16,9 @@ namespace Myway
 			mSize = 0;
 		}
 
-		~TArray();
+		~TArray()
+		{
+		}
 
 		int Size() const
 		{
