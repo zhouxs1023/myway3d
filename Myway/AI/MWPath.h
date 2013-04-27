@@ -28,18 +28,18 @@ public:
     };
     
 protected:
-    struct Node
-    {
-        int x, y;
-        Node * parent;
-        Node * next;
-    };
+	struct Node
+	{
+		int x, y;
+		Node * parent;
+		Node * next;
+	};
 
-    struct Queue
-    {
-        Node * beg;
-        Node * end;
-    };
+	struct Queue
+	{
+		Node * beg;
+		Node * end;
+	};
 
 public:
     Path(int width, int height);
@@ -70,16 +70,16 @@ protected:
     void SetColor(int x, int y, char color);
     char GetColor(int x, int y) const;
 
-    void PushOpen(int x, int y, Node * parent);
-    Node * PopOpen();
-    bool EmptyOpen() const;
+	void PushOpen(int x, int y, Node * parent);
+	Node * PopOpen();
+	bool EmptyOpen() const;
 
-    void PushClose(Node * n);
-    Node * PopClose();
-    bool EmptyClose() const;
+	void PushClose(Node * n);
+	Node * PopClose();
+	bool EmptyClose() const;
 
-    Node * AllocNode();
-    void FreeNode(Node * n);
+	Node * AllocNode();
+	void FreeNode(Node * n);
 
     bool DrawLine(int sx, int sy, int ex, int ey, int stop);
     bool TestLine(int sx, int sy, int ex, int ey, int stop, int & dx, int & dy);

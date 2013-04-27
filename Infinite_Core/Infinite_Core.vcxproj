@@ -42,14 +42,14 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PrecompiledHeader>Use</PrecompiledHeader>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;..\MRenderPlugin;..\MTree;..\MActor;.\</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;..\MRenderPlugin;..\MTree;..\MActor;.\;..\MNavPath</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>INFI_EXPORT;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>../bin/Debug/Infinite_Core_d.dll</OutputFile>
       <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
-      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;MRender_d.lib;MTree_d.lib;MActor_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;MRender_d.lib;MTree_d.lib;MActor_d.lib;MNavPath_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ImportLibrary>../bin/lib/Infinite_Core_d.lib</ImportLibrary>
     </Link>
   </ItemDefinitionGroup>
@@ -99,6 +99,7 @@
     <ClCompile Include="TerrainHeightDlg.cpp" />
     <ClCompile Include="TerrainLayerDlg.cpp" />
     <ClCompile Include="TerrainLayerInfoDlg.cpp" />
+    <ClCompile Include="TerrainNavPathDlg.cpp" />
     <ClCompile Include="TerrainPane.cpp" />
     <ClCompile Include="TerrainVegDlg.cpp" />
     <ClCompile Include="TerrainVegInfoDlg.cpp" />
@@ -106,6 +107,7 @@
     <ClCompile Include="xBaseOperator.cpp" />
     <ClCompile Include="xEditTerrainHeight.cpp" />
     <ClCompile Include="xEditTerrainLayer.cpp" />
+    <ClCompile Include="xEditTerrainNavPath.cpp" />
     <ClCompile Include="xEditTerrainVeg.cpp" />
     <ClCompile Include="xEditTerrainWater.cpp" />
     <ClCompile Include="xEnvironment.cpp" />
@@ -160,6 +162,7 @@
     <ClInclude Include="TerrainHeightDlg.h" />
     <ClInclude Include="TerrainLayerDlg.h" />
     <ClInclude Include="TerrainLayerInfoDlg.h" />
+    <ClInclude Include="TerrainNavPathDlg.h" />
     <ClInclude Include="TerrainPane.h" />
     <ClInclude Include="TerrainVegDlg.h" />
     <ClInclude Include="TerrainVegInfoDlg.h" />
@@ -167,6 +170,7 @@
     <ClInclude Include="xBaseOperator.h" />
     <ClInclude Include="xEditTerrainHeight.h" />
     <ClInclude Include="xEditTerrainLayer.h" />
+    <ClInclude Include="xEditTerrainNavPath.h" />
     <ClInclude Include="xEditTerrainVeg.h" />
     <ClInclude Include="xEditTerrainWater.h" />
     <ClInclude Include="xEnvironment.h" />

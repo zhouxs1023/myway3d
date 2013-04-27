@@ -154,6 +154,12 @@
     <ClCompile Include="xSound.cpp">
       <Filter>Shape</Filter>
     </ClCompile>
+    <ClCompile Include="xEditTerrainNavPath.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="TerrainNavPathDlg.cpp">
+      <Filter>Terrain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -328,6 +334,12 @@
     </ClInclude>
     <ClInclude Include="xSound.h">
       <Filter>Shape</Filter>
+    </ClInclude>
+    <ClInclude Include="xEditTerrainNavPath.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="TerrainNavPathDlg.h">
+      <Filter>Terrain</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

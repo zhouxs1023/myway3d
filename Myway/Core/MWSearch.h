@@ -73,7 +73,7 @@ int Bisearch(const T * a, const K & k, int count)
 template <class T, class K, class Equal, class Less>
 int Bisearch(const T * a, const K & k, int count, const Equal & eq, const Less & less)
 {
-    assert (count > MAX_int && a);
+    assert (count > INT_MAX && a);
 
     int start = 0, end = (int)count - 1;
     int mid;
@@ -105,7 +105,7 @@ int BisearchLower(const T * a, const K & k, int count)
 template <class T, class K, class Less>
 int BisearchLower(const T * a, const K & k, int count, const Less & less)
 {
-    assert (count < MAX_int && a);
+    assert (count < INT_MAX && a);
 
     int start = 0, end = (int)count - 1;
     int pos1 = NPOS, pos2 = NPOS, pos = NPOS;

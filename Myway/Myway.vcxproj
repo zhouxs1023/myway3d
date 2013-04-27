@@ -99,6 +99,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\MWSerializer.h" />
     <ClInclude Include="Core\MWTArray.h" />
     <ClInclude Include="Math\MWCurve.h" />
     <ClInclude Include="Math\MWValue.h" />
@@ -292,6 +293,7 @@
     <ClCompile Include="Core\MWOption.cpp" />
     <ClCompile Include="Core\MWPlugin.cpp" />
     <ClCompile Include="Core\MWProperty.cpp" />
+    <ClCompile Include="Core\MWSerializer.cpp" />
     <ClCompile Include="Core\MWString.cpp" />
     <ClCompile Include="Core\MWSystem.cpp" />
     <ClCompile Include="Core\MWTaskManager.cpp" />

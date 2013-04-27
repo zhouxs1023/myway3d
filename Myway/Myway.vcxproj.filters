@@ -501,6 +501,9 @@
     <ClInclude Include="Core\MWTArray.h">
       <Filter>Myway\Core\Template</Filter>
     </ClInclude>
+    <ClInclude Include="Core\MWSerializer.h">
+      <Filter>Myway\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl">
@@ -904,6 +907,9 @@
     </ClCompile>
     <ClCompile Include="RenderSystem\MWActor.cpp">
       <Filter>Myway\RenderSystem\Entity\Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\MWSerializer.cpp">
+      <Filter>Myway\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

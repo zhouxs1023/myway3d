@@ -129,16 +129,16 @@ void Path::FindPath(int x, int y, int dx, int dy, char stop, Result & result)
     ResetColor();
 
     // check param valid
-    if (x < 0 || x >= mWidth ||
-        y < 0 || y >= mHeight)
-    {
-        result.flag = PR_INVALID;
-        result.x = -1;
-        result.y = -1;
-        result.dx = -1;
-        result.dy = -1;
-        return;
-    }
+	if (x < 0 || x >= mWidth ||
+		y < 0 || y >= mHeight)
+	{
+		result.flag = PR_INVALID;
+		result.x = -1;
+		result.y = -1;
+		result.dx = -1;
+		result.dy = -1;
+		return;
+	}
 
     // current position is invalid.
     if (IsSet(x, y, stop))
@@ -194,15 +194,15 @@ void Path::FindPath(int x, int y, int dx, int dy, char stop, Result & result)
     }
 
     // is reached ?
-    if(x == dx && y == dy)
-    {
-        result.flag = PR_REACHED;
-        result.x = dx;
-        result.y = dy;
-        result.dx = dx;
-        result.dy = dy;
-        return;
-    }
+	if(x == dx && y == dy)
+	{
+		result.flag = PR_REACHED;
+		result.x = dx;
+		result.y = dy;
+		result.dx = dx;
+		result.dy = dy;
+		return;
+	}
 
     // adjust dest position if the dest is a stop cell.
     if (IsSet(dx, dy, stop))
@@ -255,10 +255,10 @@ void Path::FindPath(int x, int y, int dx, int dy, char stop, Result & result)
         else
         {
             // left
-            if(x - 1 >= 0 && !IsSet(x - 1, y, stop) && GetColor(x - 1, y) == white)
-            {
-                PushOpen(x - 1, y, n);
-            }
+			if(x - 1 >= 0 && !IsSet(x - 1, y, stop) && GetColor(x - 1, y) == white)
+			{
+				PushOpen(x - 1, y, n);
+			}
 
             // right
             if(x + 1 < mWidth && !IsSet(x + 1, y, stop) && GetColor(x + 1, y) == white)

@@ -9,3 +9,4 @@
 #include "MWCommand.h"
 #include "MWValue.h"
 #include "MWProperty.h"
+#include "MWSerializer.h"

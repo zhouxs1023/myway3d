@@ -14,11 +14,13 @@
 #include "xEditTerrainLayer.h"
 #include "xEditTerrainVeg.h"
 #include "xEditTerrainWater.h"
+#include "xEditTerrainNavPath.h"
 
 #include "TerrainHeightDlg.h"
 #include "TerrainLayerDlg.h"
 #include "TerrainVegDlg.h"
 #include "TerrainWaterDlg.h"
+#include "TerrainNavPathDlg.h"
 
 namespace Infinite {
 
@@ -34,11 +36,13 @@ namespace Infinite {
 		TerrainLayerDlg * GetTerrainLayerDlg() { return mLayerDlg; }
 		TerrainVegDlg * GetTerrainVegDlg() { return mVegDlg; }
 		TerrainWaterDlg * GetTerrainWaterDlg() { return mWaterDlg; }
+		TerrainNavPathDlg * GetTerrainNavPathDlg() { return mNavPathDlg; }
 
 		xEditTerrainHeight * GetTerrainHeight() { return &mEditHeight; }
 		xEditTerrainLayer * GetTerrainLayer() { return &mEditLayer; }
 		xEditTerrainVeg * GetTerrainVeg() { return &mEditVeg; }
 		xEditTerrainWater * GetTerrainWater() { return &mEditWater; }
+		xEditTerrainNavPath * GetTerrainNavPath() { return &mEditPath; }
 
 	protected:
 		void _Init(Event * sender);
@@ -62,11 +66,13 @@ namespace Infinite {
 		xEditTerrainLayer mEditLayer;
 		xEditTerrainVeg mEditVeg;
 		xEditTerrainWater mEditWater;
+		xEditTerrainNavPath mEditPath;
 
 		MyGUI::TabControl * mTabControl;
 		TerrainHeightDlg * mHeightDlg;
 		TerrainLayerDlg * mLayerDlg;
 		TerrainVegDlg * mVegDlg;
 		TerrainWaterDlg * mWaterDlg;
+		TerrainNavPathDlg * mNavPathDlg;
 	};
 }

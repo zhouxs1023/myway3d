@@ -26,6 +26,26 @@ struct MW_ENTRY RectF
     float x2, y2;
 };
 
+struct MW_ENTRY Size2
+{
+	DECLARE_ALLOC();
+
+	int w, h;
+
+	Size2() {}
+	Size2(int _w, int _h) { w = _w, h = _h; }
+};
+
+struct MW_ENTRY Size2F
+{
+	DECLARE_ALLOC();
+
+	float w, h;
+
+	Size2F() {}
+	Size2F(float _w, float _h)  { w = _w, h = _h; }
+};
+
 struct MW_ENTRY Size
 {
     DECLARE_ALLOC();

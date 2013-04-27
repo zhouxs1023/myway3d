@@ -24,7 +24,7 @@
 #include "MWQuaternion.h"
 #include "MWSkinInfl.h"
 #include "MWCurve.h"
-
+#include "MWRect.h"
 
 namespace Myway
 {

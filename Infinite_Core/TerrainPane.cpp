@@ -29,6 +29,7 @@ namespace Infinite {
 		assignBase(mLayerDlg, "Layer");
 		assignBase(mVegDlg, "Vegetation");
 		assignBase(mWaterDlg, "Water");
+		assignBase(mNavPathDlg, "Path");
 	}
 
 	TerrainPane::~TerrainPane()
@@ -42,6 +43,7 @@ namespace Infinite {
 		mEditLayer._Init();
 		mEditVeg._Init();
 		mEditWater._Init();
+		mEditPath._Init();
 	}
 
 	void TerrainPane::_Shutdown(Event * sender)
@@ -50,6 +52,7 @@ namespace Infinite {
 		mEditLayer._Shutdown();
 		mEditVeg._Shutdown();
 		mEditWater._Shutdown();
+		mEditPath._Shutdown();
 	}
 
 	void TerrainPane::_Update(Event * sender)

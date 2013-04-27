@@ -15,6 +15,9 @@
             <Widget type="TabItem" skin="" position="2 24 494 287" name="Water">
                 <Property key="Caption" value="Water"/>
             </Widget>
+            <Widget type="TabItem" skin="" position="2 24 494 287" name="Path">
+                <Property key="Caption" value="Path"/>
+            </Widget>
         </Widget>
     </Widget>
 </MyGUI>
