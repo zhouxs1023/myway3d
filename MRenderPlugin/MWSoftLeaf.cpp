@@ -42,8 +42,8 @@ namespace Myway {
 
 		VideoBufferManager * video = VideoBufferManager::Instance();
 
-		mTex_Quad = video->CreateTextureRT("SoftLeaf_Tex_Quad", width, height, FMT_A16B16G16R16F);
-		mRT_Quad = video->CreateRenderTarget("SoftLeaf_RT_Quad", width, height, FMT_A16B16G16R16F, MSAA_NONE);
+		mTex_Quad = video->CreateTextureRT("SoftLeaf_Tex_Quad", width, height, FMT_A16R16G16B16F);
+		mRT_Quad = video->CreateRenderTarget("SoftLeaf_RT_Quad", width, height, FMT_A16R16G16B16F, MSAA_NONE);
 
 		mTech_BlurH = Environment::Instance()->GetShaderLib()->GetTechnique("BlurH");
 		mTech_BlurV = Environment::Instance()->GetShaderLib()->GetTechnique("BlurV");

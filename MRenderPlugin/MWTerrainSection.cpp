@@ -56,10 +56,10 @@ void TerrainSection::Init()
     VertexBufferPtr pVertexBuffer0 = mTerrain->GetXYVertexBuffer();
 
     int iStride1 = sizeof(float);
-    VertexBufferPtr pVertexBuffer1 = mgr.CreateVertexBuffer(iVertexCount * iStride1);
+    VertexBufferPtr pVertexBuffer1 = mgr.CreateVertexBuffer(iVertexCount * iStride1, iStride1);
 
     int iStride2 = sizeof(Color);
-    VertexBufferPtr pVertexBuffer2 = mgr.CreateVertexBuffer(iVertexCount * iStride2);
+    VertexBufferPtr pVertexBuffer2 = mgr.CreateVertexBuffer(iVertexCount * iStride2, iStride2);
 
     int iSrcOffset = mSectionZ * ztile * xVertSize + mSectionX * xtile;
 
@@ -277,7 +277,7 @@ void TerrainSection::CalcuMorphBuffer()
         int size = Terrain::kSectionVertexSize * Terrain::kSectionVertexSize * sizeof(float);
         for (int i = 0; i < Terrain::kMaxDetailLevel - 1; ++i)
         {
-            mMorphBuffer[i] = VideoBufferManager::Instance()->CreateVertexBuffer(size);
+            mMorphBuffer[i] = VideoBufferManager::Instance()->CreateVertexBuffer(size, sizeof(float));
             _CalcuMorphBuffer(i);
         }
     }

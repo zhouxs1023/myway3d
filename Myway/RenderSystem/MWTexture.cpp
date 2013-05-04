@@ -13,7 +13,7 @@ namespace Myway
         , mUsage(USAGE_STATIC)
         , mFormat(FMT_UNKNOWN)
         , mType(TEXTYPE_2D)
-
+		, mRenderTarget(false)
     {
     }
 
@@ -66,4 +66,10 @@ namespace Myway
 	{ 
 		return mType;
 	}
+
+	bool Texture::IsRenderTarget() const
+	{
+		return mRenderTarget;
+	}
+
 }

@@ -98,14 +98,10 @@ namespace Myway
 
     SHADER_PROFILE GetShaderProfile(const char * pro)
     {
-        if (strcmp(pro, "vs20") == 0)
-            return SP_VS_2_0;
-        else if (strcmp(pro, "vs30") == 0)
-            return SP_VS_3_0;
-        else if (strcmp(pro, "ps20") == 0)
-            return SP_PS_2_0;
-        else if (strcmp(pro, "ps30") == 0)
-            return SP_PS_3_0;
+        if (strstr(pro, "vs") != 0)
+            return SP_VS;
+        else if (strstr(pro, "ps") != 0)
+            return SP_PS;
         else
             LOG_PRINT_FORMAT ("unknown shader profile '%s'./n", pro);
 

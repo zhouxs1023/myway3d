@@ -31,31 +31,28 @@ class D3D9VideoBufferManager : public VideoBufferManager
 
 public:
     D3D9VideoBufferManager(IDirect3DDevice9 * Device);
-    ~D3D9VideoBufferManager();
+    virtual ~D3D9VideoBufferManager();
 
     
     VertexDeclarationPtr CreateVertexDeclaration();
 
-    VertexBufferPtr CreateVertexBuffer(
-        int iSize, USAGE usage);
+	VertexBufferPtr CreateVertexBuffer(
+		int size, int stride, USAGE usage, bool cpuAccess, const void * initData);
 
-    IndexBufferPtr CreateIndexBuffer(
-        int iSize, FORMAT Format, USAGE usage);
+	IndexBufferPtr CreateIndexBuffer(
+		int size, bool index16, USAGE usage, bool cpuAccess, const void * initData);
 
     TexturePtr CreateTexture(
         const TString128 & sName, int iWidth, int iHeight,
-        int iMipLevel, FORMAT Format, USAGE usage);
-
-	virtual TexturePtr CreateTextureRT(
-		const TString128 & sName, int iWidth, int iHeight, FORMAT Format);
+        int iMipLevel, FORMAT Format, USAGE usage, bool bRenderTarget);
 
     TexturePtr CreateVolumeTexture(
         const TString128 & sName, int iWidth, int iHeight, int iDepth,
-        int iMipLevel, FORMAT Format, USAGE usage);
+        int iMipLevel, FORMAT Format, USAGE usage, bool bRenderTarget);
 
     TexturePtr CreateCubeTexture(
         const TString128 & sName, int iWidth, int iMipLevel,
-        FORMAT Format, USAGE usage);
+        FORMAT Format, USAGE usage, bool bRenderTarget);
 
     RenderTargetPtr CreateRenderTarget(
         const TString128 & sName, int iWidth, int iHeight,

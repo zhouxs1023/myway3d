@@ -29,6 +29,8 @@ void D3D9Texture::DeleteSelf()
 
 void D3D9Texture::Lock(int iLevel, LockedBox * pLockedBox, const Boxi * pBox, int LockFlags)
 {
+	d_assert(!mRenderTarget);
+
     HRESULT hr = D3D_OK;
 
     DWORD D3DLock = 0;
@@ -140,8 +142,11 @@ void D3D9Texture::ResetDevice()
         D3DPOOL D3DPool = D3D9Mapping::GetD3DPool(mUsage);
         D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(mFormat);
 
-        if (mType == TEXTYPE_RENDERTARGET)
+        if (mRenderTarget)
+		{
             D3DUsage = D3DUSAGE_RENDERTARGET;
+			D3DPool = D3DPOOL_DEFAULT;
+		}
 
         int rWidth = mWidth, rHeight = mHeight;
 

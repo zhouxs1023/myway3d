@@ -170,7 +170,7 @@ namespace Myway {
 		vdecl->AddElement(0, 36, DT_FLOAT4, DU_TEXCOORD, 0);
 		vdecl->Init();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(BranchVertex) * iVertexCount);
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(BranchVertex) * iVertexCount, sizeof(BranchVertex));
 
 		BranchVertex * verts = (BranchVertex *)vb->Lock(0, 0, LOCK_NORMAL);
 		for (int i = 0; i < iVertexCount; ++i)
@@ -258,7 +258,7 @@ namespace Myway {
 		vdecl->AddElement(0, 24, DT_FLOAT4, DU_TEXCOORD, 0);
 		vdecl->Init();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(FrondVertex) * iVertexCount);
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(FrondVertex) * iVertexCount, sizeof(FrondVertex));
 
 		FrondVertex * verts = (FrondVertex *)vb->Lock(0, 0, LOCK_NORMAL);
 		for (int i = 0; i < iVertexCount; ++i)
@@ -319,7 +319,7 @@ namespace Myway {
 
 		int iVertexCount = leafCount * 6;
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(LeafVertex) * iVertexCount);
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(sizeof(LeafVertex) * iVertexCount, sizeof(LeafVertex));
 
 		for (int lod = 0; lod < 1/*mNumLeafLods*/; ++lod)
 		{

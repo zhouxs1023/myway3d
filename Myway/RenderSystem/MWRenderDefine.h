@@ -81,83 +81,34 @@ enum FORMAT
     FMT_R8G8B8,
     FMT_A8R8G8B8,
     FMT_X8R8G8B8,
-    FMT_R5G6B5,
-    FMT_X1R5G5B5,
-    FMT_A1R5G5B5,
-    FMT_A4R4G4B4,
-    FMT_R3G3B2,
-    FMT_A8,
-    FMT_A8R3G3B2,
-    FMT_X4R4G4B4,
-    FMT_A2B10G10R10,
-    FMT_A8B8G8R8,
-    FMT_X8B8G8R8,
-    FMT_G16R16,
-    FMT_A2R10G10B10,
-    FMT_A16B16G16R16,
-
-    FMT_A8P8,
-    FMT_P8,
+    FMT_R16G16,
+    FMT_A16R16G16B16,
 
     FMT_L8,
-    FMT_A8L8,
-    FMT_A4L4,
+	FMT_L16,
 
-    FMT_V8U8,
-    FMT_L6V5U5,
-    FMT_X8L8V8U8,
-    FMT_Q8W8V8U8,
-    FMT_V16U16,
-    FMT_A2W10V10U10,
+	FMT_A8L8, // dx9 only
 
-    FMT_UYVY,
-    FMT_R8G8_B8G8,
-    FMT_YUY2,
-    FMT_G8R8_G8B8,
     FMT_DXT1,
     FMT_DXT2,
     FMT_DXT3,
     FMT_DXT4,
     FMT_DXT5,
 
-    FMT_D16_LOCKABLE,
+	FMT_D16,
     FMT_D32,
-    FMT_D15S1,
     FMT_D24S8,
-    FMT_D24X8,
-    FMT_D24X4S4,
-    FMT_D16,
-
-    FMT_D32F_LOCKABLE,
     FMT_D24FS8,
-
-    FMT_L16,
-
-    FMT_VERTEXDATA,
-
-    FMT_INDEX16,
-    FMT_INDEX32,
-
-    FMT_Q16W16V16U16,
-
-    FMT_MULTI2_ARGB8,
 
     // Floating point surface formats(s10e5 formats <16-bits per channel>)
     FMT_R16F,
-    FMT_G16R16F,
-    FMT_A16B16G16R16F,
+    FMT_R16G16F,
+    FMT_A16R16G16B16F,
 
     // IEEE s23e8 formats (32-bits per channel)
     FMT_R32F,
-    FMT_G32R32F,
-    FMT_A32B32G32R32F,
-
-    //D3D9 Ex
-    FMT_D32_LOCKABLE,
-    FMT_S8_LOCKABLE,
-    FMT_CxV8U8,
-    FMT_A1,
-    FMT_BINARYBUFFER,
+    FMT_R32G32F,
+    FMT_A32R32G32B32F,
 
     MW_ALIGN_ENUM(FORMAT)
 };
@@ -174,7 +125,6 @@ enum TEXTURE_TYPE
     TEXTYPE_2D,                 // normal texture
     TEXTYPE_3D,                 // volume texture
     TEXTYPE_CUBE,               // cube texture
-    TEXTYPE_RENDERTARGET,       // render target
 
     MW_ALIGN_ENUM(TEXTURE_TYPE)
 };
@@ -189,12 +139,12 @@ enum DECL_TYPE
 {
     DT_FLOAT1         = 0,
     DT_FLOAT2         = 1,
-    DT_FLOAT3         = 2,
-    DT_FLOAT4         = 3,
-    DT_COLOR          = 4,
-    DT_UBYTE4         = 5,
-    DT_SHORT2         = 6,
-    DT_SHORT4         = 7,
+	DT_FLOAT3         = 2,
+	DT_FLOAT4         = 3,
+	DT_COLOR          = 4,
+	DT_UBYTE4         = 5,
+	DT_SHORT2         = 6,
+	DT_SHORT4         = 7,
 
     DT_UNKNOWN        = 255
 };
@@ -209,13 +159,13 @@ enum DECL_TYPE
 enum DECL_USAGE
 {
     DU_POSITION      = 0,
-    DU_BLENDWEIGHT   = 1,
-    DU_BLENDINDICES  = 2,
-    DU_NORMAL        = 3,
-    DU_TEXCOORD      = 5,
-    DU_TANGENT       = 6,
-    DU_BINORMAL      = 7,
-    DU_COLOR         = 10,
+    DU_BLENDWEIGHT,
+    DU_BLENDINDICES,
+    DU_NORMAL,
+    DU_TEXCOORD,
+    DU_TANGENT,
+    DU_BINORMAL,
+    DU_COLOR,
     
     DU_UNKNOWN       = 255
 };
@@ -227,7 +177,7 @@ enum DECL_USAGE
         顶点元素声明.
 --------------------------------------------------------------------------------------
 */
-#define MAX_ELEMENT             16
+#define MAX_VERTEX_ELEMENT      16
 
 #define DECL_UNUSED             255
 
@@ -249,6 +199,24 @@ struct MW_ENTRY VertexElement
       UsageIndex(0)
     {
     }
+
+	bool operator == (const VertexElement & rk)
+	{
+		return Stream == rk.Stream &&
+			Offset == rk.Offset &&
+			Type == rk.Type && 
+			Usage == rk.Usage &&
+			UsageIndex == rk.UsageIndex;
+	}
+
+	bool operator != (const VertexElement & rk)
+	{
+		return Stream != rk.Stream &&
+			Offset != rk.Offset &&
+			Type != rk.Type &&
+			Usage != rk.Usage &&
+			UsageIndex != rk.UsageIndex;
+	}
 };
 
 
@@ -333,18 +301,18 @@ enum SHADER_PARAM_BIND_TYPE
 /* enum: SHADER_PROGRAM_PROFILE
 ----------------------------------------------------------
     @Remark:
-        着色程序版本.        
+        ...        
 ----------------------------------------------------------
 */
 enum SHADER_PROFILE
 {
     SP_UNKNOWN      = 0,
 
-    SP_VS_2_0       = 200,
-    SP_VS_3_0       = 300,
+	SP_VS,
+	SP_GS,
+    SP_PS,
 
-    SP_PS_2_0       = 2000,
-    SP_PS_3_0       = 3000,
+	SP_CS,
 
     MW_ALIGN_ENUM(SHADER_PROFILE)
 };

@@ -24,7 +24,7 @@ void D3D9VertexDeclaration::DeleteSelf()
 void D3D9VertexDeclaration::Init()
 {
 
-    D3DVERTEXELEMENT9 d3dve[MAX_ELEMENT];
+    D3DVERTEXELEMENT9 d3dve[MAX_VERTEX_ELEMENT];
 
     for (int i = 0; i < mElementCount; ++i)
     {

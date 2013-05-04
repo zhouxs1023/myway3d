@@ -17,20 +17,25 @@ using namespace Myway;
 
 bool ShaderProgram::IsVertexShader(SHADER_PROFILE profile)
 {
-    return profile == SP_VS_2_0 ||
-        profile == SP_VS_3_0;
+    return profile == SP_VS;
 }
 
 bool ShaderProgram::IsPixelShader(SHADER_PROFILE profile)
 {
-    return profile == SP_PS_2_0 ||
-        profile == SP_PS_3_0;
+	return profile == SP_PS;
 }
 
 ShaderProgram::ShaderProgram(const TString128 & name, SHADER_PROFILE profile, SHADER_LANGUAGE language)
 : mName(name),
   mProfile(profile),
   mLanguage(language)
+{
+}
+
+ShaderProgram::ShaderProgram()
+	: mName("")
+	, mProfile(SP_UNKNOWN)
+	, mLanguage(SL_UNKNOWN)
 {
 }
 

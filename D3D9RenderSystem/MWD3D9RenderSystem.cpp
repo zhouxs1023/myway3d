@@ -557,7 +557,7 @@ void D3D9RenderSystem::SetTexture(int index, const SamplerState & state, Texture
 
         IDirect3DBaseTexture9 * d3d9Tex = NULL;
 
-        if (type == TEXTYPE_2D || type == TEXTYPE_RENDERTARGET)
+        if (type == TEXTYPE_2D)
         {
             D3D9Texture * p = (D3D9Texture *)pTexture;
             d3d9Tex = p->GetD3DTexture();

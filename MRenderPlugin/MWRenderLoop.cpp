@@ -29,12 +29,12 @@ namespace Myway {
 		mRT_Depth = NULL;
 		mDepthStencil = NULL;
 
-		mTex_Color = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Color", w, h, FMT_A16B16G16R16F);
-		mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", w, h, FMT_A16B16G16R16F);
-		//mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16B16G16R16F);
-		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", w, h, FMT_G32R32F);
+		mTex_Color = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Color", w, h, FMT_A16R16G16B16F);
+		mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", w, h, FMT_A16R16G16B16F);
+		//mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16R16G16B16F);
+		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", w, h, FMT_R32G32F);
 
-		mRT_Color = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Color", w, h, FMT_A16B16G16R16F,  MSAA_NONE);
+		mRT_Color = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Color", w, h, FMT_A16R16G16B16F,  MSAA_NONE);
 		mRT_Normal = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Normal);
 		//mRT_Material = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Material);
 		mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);

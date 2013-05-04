@@ -32,6 +32,7 @@ public:
 
 public:
     ShaderProgram(const TString128 & name, SHADER_PROFILE profile, SHADER_LANGUAGE language);
+	ShaderProgram();
     virtual ~ShaderProgram();
 
     void AddParam(const ShaderParamDesc & desc);

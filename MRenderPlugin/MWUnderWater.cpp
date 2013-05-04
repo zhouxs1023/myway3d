@@ -527,8 +527,8 @@ namespace Myway {
 
             vxStream->SetDeclaration(decl);
 
-            VertexBufferPtr vb0 = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20, USAGE_DYNAMIC);
-            VertexBufferPtr vb1 = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 8);
+            VertexBufferPtr vb0 = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20, 20, USAGE_DYNAMIC);
+            VertexBufferPtr vb1 = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 8, 8);
 
             float * tcoord = (float *)vb1->Lock(0, 0, LOCK_NORMAL);
 

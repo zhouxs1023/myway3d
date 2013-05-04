@@ -135,7 +135,7 @@ namespace Myway {
 
         vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * vstride);
+        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * vstride, vstride);
         IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(iIndexCount * 2);
 
         float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);

@@ -29,16 +29,17 @@ VertexDeclarationPtr D3D9VideoBufferManager::CreateVertexDeclaration()
     return VertexDeclarationPtr(pVertexDecl);
 }
 
-VertexBufferPtr D3D9VideoBufferManager::CreateVertexBuffer(int iSize, USAGE Usage)
+VertexBufferPtr D3D9VideoBufferManager::CreateVertexBuffer(
+	int size, int stride, USAGE usage, bool cpuAccess, const void * initData)
 {
-    assert (iSize);
+    d_assert (size > 0);
 
     HRESULT hr;
-    DWORD D3DUsage = D3D9Mapping::GetD3DUsage(Usage);
-    D3DPOOL D3DPool = D3D9Mapping::GetD3DPool(Usage);
+    DWORD D3DUsage = D3D9Mapping::GetD3DUsage(usage);
+    D3DPOOL D3DPool = D3D9Mapping::GetD3DPool(usage);
     IDirect3DVertexBuffer9 * pD3DVB;
 
-    hr = mD3D9Device->CreateVertexBuffer(iSize, D3DUsage, 0, D3DPool, &pD3DVB, NULL);
+    hr = mD3D9Device->CreateVertexBuffer(size, D3DUsage, 0, D3DPool, &pD3DVB, NULL);
 
     if (FAILED(hr))
     {
@@ -48,25 +49,33 @@ VertexBufferPtr D3D9VideoBufferManager::CreateVertexBuffer(int iSize, USAGE Usag
     D3D9VertexBuffer * pVB = new D3D9VertexBuffer(mD3D9Device);
 
     pVB->mD3D9VertexBuffer = pD3DVB;
-    pVB->mSize = iSize;
-    pVB->mUsage = Usage;
+    pVB->mSize = size;
+    pVB->mUsage = usage;
 
     mVertexBuffers.PushBack(pVB);
 
+	if (initData != NULL)
+	{
+		void * data = pVB->Lock(0, 0, LOCK_DISCARD);
+		Memcpy(data, initData, size);
+		pVB->Unlock();
+	}
+	
     return VertexBufferPtr(pVB);
 }
 
-IndexBufferPtr D3D9VideoBufferManager::CreateIndexBuffer(int iSize, FORMAT Format, USAGE Usage)
+IndexBufferPtr D3D9VideoBufferManager::CreateIndexBuffer(
+	int size, bool index16, USAGE usage, bool cpuAccess, const void * initData)
 {
-    assert (iSize);
+    d_assert (size > 0);
 
     HRESULT hr;
-    DWORD D3DUsage = D3D9Mapping::GetD3DUsage(Usage);
-    D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(Format);
-    D3DPOOL D3DPool = D3D9Mapping::GetD3DPool(Usage);
+    DWORD D3DUsage = D3D9Mapping::GetD3DUsage(usage);
+    D3DFORMAT D3DFormat = index16 ? D3DFMT_INDEX16 : D3DFMT_INDEX32;
+    D3DPOOL D3DPool = D3D9Mapping::GetD3DPool(usage);
     IDirect3DIndexBuffer9 * pD3DIB;
 
-    hr = mD3D9Device->CreateIndexBuffer(iSize, D3DUsage, D3DFormat, D3DPool, &pD3DIB, NULL);
+    hr = mD3D9Device->CreateIndexBuffer(size, D3DUsage, D3DFormat, D3DPool, &pD3DIB, NULL);
                                          
     if (FAILED(hr))
     {
@@ -76,11 +85,18 @@ IndexBufferPtr D3D9VideoBufferManager::CreateIndexBuffer(int iSize, FORMAT Forma
    D3D9IndexBuffer * pIB = new D3D9IndexBuffer(mD3D9Device);
 
    pIB->mD3D9IndexBuffer = pD3DIB;
-   pIB->mSize = iSize;
-   pIB->mUsage = Usage;
-   pIB->mFormat = Format;
+   pIB->mSize = size;
+   pIB->mUsage = usage;
+   pIB->mIndex16 = index16;
 
    mIndexBuffers.PushBack(pIB);
+
+   if (initData != NULL)
+   {
+	   void * data = pIB->Lock(0, 0, LOCK_DISCARD);
+	   Memcpy(data, initData, size);
+	   pIB->Unlock();
+   }
 
    return IndexBufferPtr(pIB);
 }
@@ -90,12 +106,29 @@ TexturePtr D3D9VideoBufferManager::CreateTexture(const TString128 & sName,
                                                  int iHeight,
                                                  int iMipLevels,
                                                  FORMAT Format,
-                                                 USAGE Usage)
+                                                 USAGE Usage,
+												 bool bRenderTarget)
 {
-    d_assert (iWidth && iHeight);
+
+	int rWidth = iWidth, rHeight = iHeight;
+
+	if (rWidth == -1 && rHeight == -1)
+	{
+		const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
+		rWidth = dp->Width;
+		rHeight = dp->Height;
+	}
+
+    d_assert (rWidth && rHeight);
     d_assert (FindTexture(sName).IsNull());
 
-    if (!RenderSystem::Instance()->CheckTextureFormat(Format, Usage))
+
+	if (bRenderTarget && !RenderSystem::Instance()->CheckRenderTargetFormat(Format))
+	{
+		EXCEPTION("Your device can't support texture format '" + D3D9Mapping::GetFormatString(Format) + 
+			"' for render target");
+	}
+    else if (!bRenderTarget && !RenderSystem::Instance()->CheckTextureFormat(Format, Usage))
     {
         EXCEPTION("Your device can't support texture format '" + D3D9Mapping::GetFormatString(Format) + 
                   "' for usage '" + D3D9Mapping::GetUsageString(Usage));
@@ -106,6 +139,14 @@ TexturePtr D3D9VideoBufferManager::CreateTexture(const TString128 & sName,
     D3DPOOL D3DPool = D3D9Mapping::GetD3DPool(Usage);
     D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(Format);
     IDirect3DTexture9 * pD3D9Texture = NULL;
+	
+	if (bRenderTarget)
+	{
+		D3DUsage = D3DUSAGE_RENDERTARGET;
+		D3DPool = D3DPOOL_DEFAULT;
+		iMipLevels = 1;
+		Usage = USAGE_DYNAMIC;
+	}
 
 	if (iMipLevels == 0)
 	{
@@ -118,8 +159,8 @@ TexturePtr D3D9VideoBufferManager::CreateTexture(const TString128 & sName,
 		D3DUsage |= D3DUSAGE_AUTOGENMIPMAP;
 	}
    
-    hr = mD3D9Device->CreateTexture(iWidth, 
-                                    iHeight,
+    hr = mD3D9Device->CreateTexture(rWidth, 
+                                    rHeight,
                                     iMipLevels,
                                     D3DUsage,
                                     D3DFormat,
@@ -143,67 +184,12 @@ TexturePtr D3D9VideoBufferManager::CreateTexture(const TString128 & sName,
     pTexture->mFormat = Format;
     pTexture->mType = TEXTYPE_2D;
     pTexture->mMipLevels = iMipLevels;
+	pTexture->mRenderTarget = bRenderTarget;
 
     mTextures.Insert(pTexture->GetName(), pTexture);
 
     return TexturePtr(pTexture);
 }
-
-
-TexturePtr D3D9VideoBufferManager::CreateTextureRT(const TString128 & sName, int iWidth, int iHeight, FORMAT Format)
-{
-    int rWidth = iWidth, rHeight = iHeight;
-
-    if (rWidth == -1 && rHeight == -1)
-    {
-        const DeviceProperty * dp = Engine::Instance()->GetDeviceProperty();
-        rWidth = dp->Width;
-        rHeight = dp->Height;
-    }
-
-    d_assert (rWidth && rHeight);
-    d_assert (FindTexture(sName).IsNull());
-
-    if (!RenderSystem::Instance()->CheckRenderTargetFormat(Format))
-    {
-        EXCEPTION("Your device can't support texture format '" + D3D9Mapping::GetFormatString(Format) + 
-            "' for render target");
-    }
-
-    HRESULT hr = D3D_OK;
-    DWORD D3DUsage = D3DUSAGE_RENDERTARGET;
-    D3DPOOL D3DPool = D3DPOOL_DEFAULT;
-    D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(Format);
-    IDirect3DTexture9 * pD3D9Texture = NULL;
-
-
-    hr = mD3D9Device->CreateTexture(
-        rWidth, rHeight, 1,
-        D3DUsage, D3DFormat, D3DPool,
-        &pD3D9Texture, NULL);
-
-    if (FAILED(hr))
-    {
-        EXCEPTION("D3D Error: CreateTexture failed, desc: " + D3D9Mapping::GetD3DErrorDescription(hr));
-    }
-
-    D3D9Texture * pTexture = new D3D9Texture(mD3D9Device);
-
-    pTexture->mName = sName;
-    pTexture->mD3D9Texture = pD3D9Texture;
-    pTexture->mWidth = iWidth;
-    pTexture->mHeight = iHeight;
-    pTexture->mDepth = 1;
-    pTexture->mUsage = USAGE_DYNAMIC;
-    pTexture->mFormat = Format;
-    pTexture->mType = TEXTYPE_RENDERTARGET;
-    pTexture->mMipLevels = 1;
-
-    mTextures.Insert(pTexture->GetName(), pTexture);
-
-    return TexturePtr(pTexture);
-}
-
 
 TexturePtr D3D9VideoBufferManager::CreateVolumeTexture(const TString128 & sName,
                                                        int iWidth,
@@ -211,9 +197,10 @@ TexturePtr D3D9VideoBufferManager::CreateVolumeTexture(const TString128 & sName,
                                                        int iDepth,
                                                        int iMipLevel,
                                                        FORMAT Format,
-                                                       USAGE Usage)
+													   USAGE Usage,
+													   bool bRenderTarget)
 {
-    d_assert(FindTexture(sName).IsNull());
+    d_assert(FindTexture(sName).IsNull() && !bRenderTarget);
     
     if (!RenderSystem::Instance()->CheckTextureFormat(Format, Usage))
     {
@@ -256,9 +243,10 @@ TexturePtr D3D9VideoBufferManager::CreateCubeTexture(const TString128 & sName,
                                                      int iWidth,
                                                      int iMipLevel,
                                                      FORMAT Format,
-                                                     USAGE Usage)
+                                                     USAGE Usage,
+													 bool bRenderTarget)
 {
-    d_assert(FindTexture(sName).IsNull());
+    d_assert(FindTexture(sName).IsNull() && !bRenderTarget);
     
     if (!RenderSystem::Instance()->CheckTextureFormat(Format, Usage))
     {
@@ -650,7 +638,7 @@ void D3D9VideoBufferManager::BitBlt(ImagePtr imageDest, TexturePtr texSrc, const
     D3D9Image * img = (D3D9Image*)imageDest.c_ptr();
     pD3DDestTexture = img->_MyTexture();
 
-    if (texSrc->GetTextureType() == TEXTYPE_2D || texSrc->GetTextureType() == TEXTYPE_RENDERTARGET)
+    if (texSrc->GetTextureType() == TEXTYPE_2D)
     {
         pD3DSrcTexture = static_cast<D3D9Texture*>(texSrc.c_ptr())->mD3D9Texture;
     }
@@ -787,7 +775,7 @@ void D3D9VideoBufferManager::DestroyTexture(Texture * texture)
 {
     TEXTURE_TYPE type = texture->GetTextureType();
 
-    if (type == TEXTYPE_2D || type == TEXTYPE_RENDERTARGET)
+    if (type == TEXTYPE_2D)
     {
         Texture2DMap::Iterator iter = mTextures.Find(texture->GetName());
         Texture2DMap::Iterator end = mTextures.End();

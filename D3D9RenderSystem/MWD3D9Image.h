@@ -20,14 +20,12 @@ public:
     void SetA8R8G8B8(int x, int y, Color c);
     void SetX8R8G8B8(int x, int y, Color c);
     void SetR8G8B8(int x, int y, Color c);
-    void SetAlpha8(int x, int y, unsigned char a);
     void SetLuminance8(int x, int y, unsigned char l);
     void SetLuminance16(int x, int y, short l);
 
     Color GetA8R8G8B8(int x, int y) const;
     Color GetX8R8G8B8(int x, int y) const;
     Color GetR8G8B8(int x, int y) const;
-    unsigned char GetAlpha8(int x, int y) const;
     unsigned char GetLuminance8(int x, int y) const;
     short GetLuminance16(int x, int y) const;
 

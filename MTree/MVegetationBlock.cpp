@@ -21,7 +21,7 @@ namespace Myway {
 
 		void _Init(Event * sender)
 		{
-			mVertexBuffer_Billboard = VideoBufferManager::Instance()->CreateVertexBuffer(20 * 4);
+			mVertexBuffer_Billboard = VideoBufferManager::Instance()->CreateVertexBuffer(20 * 4, 20);
 
 			float * vert = (float*)mVertexBuffer_Billboard->Lock(0, 0, LOCK_NORMAL);
 			{
@@ -32,7 +32,7 @@ namespace Myway {
 			}
 			mVertexBuffer_Billboard->Unlock();
 
-			mVertexBuffer_X2 = VideoBufferManager::Instance()->CreateVertexBuffer(20 * 8);
+			mVertexBuffer_X2 = VideoBufferManager::Instance()->CreateVertexBuffer(20 * 8, 20);
 			vert = (float*)mVertexBuffer_X2->Lock(0, 0, LOCK_NORMAL);
 			{
 				Mat4 mat;
@@ -302,7 +302,7 @@ namespace Myway {
 		vdecl->Init();
 
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(16 * Vegs.Size());
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(16 * Vegs.Size(), 16);
 
 		float * verts = (float *)vb->Lock(0, 0, LOCK_NORMAL);
 		while (whr != end)
@@ -351,7 +351,7 @@ namespace Myway {
 		VertexBufferPtr vbBillboard = gVegHelper.VB_Billboard();
 		IndexBufferPtr ibBillboard = gVegHelper.IB_Billboard();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(16 * Vegs.Size());
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(16 * Vegs.Size(), 16);
 		float * verts = (float *)vb->Lock(0, 0, LOCK_NORMAL);
 		while (whr != end)
 		{
@@ -398,7 +398,7 @@ namespace Myway {
 		VertexBufferPtr vbX2 = gVegHelper.VB_X2();
 		IndexBufferPtr ibX2 = gVegHelper.IB_X2();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(16 * Vegs.Size());
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(16 * Vegs.Size(), 16);
 		float * verts = (float *)vb->Lock(0, 0, LOCK_NORMAL);
 		while (whr != end)
 		{

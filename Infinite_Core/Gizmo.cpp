@@ -275,7 +275,7 @@ namespace Infinite {
 
 		vxStream->SetDeclaration(decl);
 
-		VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
+		VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3), sizeof (Vec3));
 
 		float * verteces;
 		verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
@@ -396,7 +396,7 @@ namespace Infinite {
 
 		vxStream->SetDeclaration(decl);
 
-		VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
+		VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3), sizeof (Vec3));
 
 		float * verteces;
 		verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
@@ -531,7 +531,7 @@ namespace Infinite {
 
 		vxStream->SetDeclaration(decl);
 
-		VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3));
+		VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof (Vec3), sizeof (Vec3));
 
 		float * verteces;
 		verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);

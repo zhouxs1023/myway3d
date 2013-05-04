@@ -33,7 +33,7 @@ VertexDeclaration::~VertexDeclaration()
 void VertexDeclaration::AddElement(short StreamNumber, short Offset,
     DECL_TYPE DeclType, DECL_USAGE DeclUsage, unsigned char UsageIndex)
 {
-    d_assert(StreamNumber < MAX_ELEMENT);
+    d_assert(StreamNumber < MAX_VERTEX_ELEMENT);
 
     int index = mElementCount;
     mElementCount++;

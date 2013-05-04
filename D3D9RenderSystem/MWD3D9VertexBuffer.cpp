@@ -29,16 +29,16 @@ void D3D9VertexBuffer::DeleteSelf()
 void * D3D9VertexBuffer::Lock(int iOffsetBytes, int iLockSize, int LockFlag)
 {
     void * pData = NULL;
-    DWORD D3DLock = 0;
+	DWORD D3DLock = 0;
 
-    if ((LockFlag & LOCK_DISCARD) && (mUsage == USAGE_DYNAMIC))
-        D3DLock |= D3DLOCK_DISCARD;
+	if ((LockFlag & LOCK_DISCARD) && (mUsage == USAGE_DYNAMIC))
+		D3DLock |= D3DLOCK_DISCARD;
 
-    if (LockFlag & LOCK_NOOVERWRITE)
-        D3DLock |= D3DLOCK_NOOVERWRITE;
+	if (LockFlag & LOCK_NOOVERWRITE)
+		D3DLock |= D3DLOCK_NOOVERWRITE;
 
-    if (LockFlag & LOCK_READONLY)
-        D3DLock |= D3DLOCK_READONLY;
+	if (LockFlag & LOCK_READONLY)
+		D3DLock |= D3DLOCK_READONLY;
 
     HRESULT hr = mD3D9VertexBuffer->Lock((UINT)iOffsetBytes, (UINT)iLockSize, &pData, D3DLock);
     d_assert(hr == D3D_OK && "Lock vertex buffer failed.");

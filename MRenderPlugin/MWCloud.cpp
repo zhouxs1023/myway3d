@@ -70,7 +70,7 @@ namespace Myway {
 
         vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20);
+        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 20, 20);
 
         float * vert = (float *)vb->Lock(0, 0, LOCK_NORMAL);
 
@@ -168,7 +168,7 @@ namespace Myway {
 
         VideoBufferManager * video = VideoBufferManager::Instance();
 
-		mTex_Cloud = video->CreateTextureRT("Core_Cloud_Tex_Cloud", width, height, FMT_G16R16F);
+		mTex_Cloud = video->CreateTextureRT("Core_Cloud_Tex_Cloud", width, height, FMT_R16G16F);
 		mRT_Cloud = video->CreateRenderTarget(mTex_Cloud);
 
         mRT_Lighting = video->CreateRenderTarget("Core_Cloud_RT_Lighting", width, height, FMT_R16F, MSAA_NONE);

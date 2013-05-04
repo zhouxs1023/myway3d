@@ -16,12 +16,12 @@ public:
 
     int GetSize() const { return mSize; }
     USAGE GetUsage() const { return mUsage; }
-    FORMAT GetFormat() const { return mFormat; }
+    bool GetIndex16() const { return mIndex16; }
 
 protected:
     int mSize;
     USAGE mUsage;
-    FORMAT mFormat;
+	bool mIndex16;
 };
 
 DeclareSmartPtr(IndexBuffer);

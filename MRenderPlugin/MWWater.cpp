@@ -115,7 +115,7 @@ namespace Myway {
 
 		VertexDeclarationPtr vdecl = mWater->GetVertexDecl();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vec3));
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vec3), sizeof(Vec3));
 		Vec3 * vert = (Vec3 *)vb->Lock(0, 0, LOCK_DISCARD);
 		{
 			for (int i = 0; i < iVertexCount; ++i)

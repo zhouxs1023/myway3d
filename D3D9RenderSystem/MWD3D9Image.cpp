@@ -71,21 +71,6 @@ void D3D9Image::SetR8G8B8(int x, int y, Color c)
     mD3D9Texture->UnlockRect(0);
 }
 
-void D3D9Image::SetAlpha8(int x, int y, unsigned char a)
-{
-    debug_assert(x < mWidth && y < mHeight && mD3D9Texture, "Invalid Call.");
-    debug_assert(mFormat == FMT_A8, "invalid call.");
-
-    D3DLOCKED_RECT rc;
-    mD3D9Texture->LockRect(0, &rc, NULL, 0);
-    {
-        unsigned char * pData = (unsigned char*)rc.pBits + y * (int)rc.Pitch + x;
-
-        *pData++ = a;
-    }
-    mD3D9Texture->UnlockRect(0);
-}
-
 void D3D9Image::SetLuminance8(int x, int y, unsigned char l)
 {
     debug_assert(x < mWidth && y < mHeight && mD3D9Texture, "Invalid Call.");
@@ -182,25 +167,6 @@ Color D3D9Image::GetR8G8B8(int x, int y) const
     return c;
 }
 
-unsigned char D3D9Image::GetAlpha8(int x, int y) const
-{
-    debug_assert(x < mWidth && y < mHeight && mD3D9Texture, "Invalid Call.");
-    debug_assert(mFormat == FMT_A8, "invalid call.");
-
-    D3DLOCKED_RECT rect;
-    unsigned char c;
-
-    mD3D9Texture->LockRect(0, &rect, NULL, 0);
-    {
-        unsigned char * pData = (unsigned char*)rect.pBits + y * rect.Pitch + x;
-
-        c = *pData++;
-    }
-    mD3D9Texture->UnlockRect(0);
-
-    return c;
-}
-
 unsigned char D3D9Image::GetLuminance8(int x, int y) const
 {
     debug_assert(x < mWidth && y < mHeight && mD3D9Texture, "Invalid Call.");
@@ -223,7 +189,7 @@ unsigned char D3D9Image::GetLuminance8(int x, int y) const
 short D3D9Image::GetLuminance16(int x, int y) const
 {
     debug_assert(x < mWidth && y < mHeight && mD3D9Texture, "Invalid Call.");
-    debug_assert(mFormat == FMT_A8, "invalid call.");
+    debug_assert(mFormat == FMT_L16, "invalid call.");
 
     D3DLOCKED_RECT rect;
     short c;

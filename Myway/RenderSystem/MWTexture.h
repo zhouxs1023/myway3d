@@ -23,6 +23,7 @@ public:
 	USAGE GetUsage() const;
 	FORMAT GetFormat() const;
 	TEXTURE_TYPE GetTextureType() const;
+	bool IsRenderTarget() const;
 
 protected:
     TString128 mName;
@@ -33,6 +34,7 @@ protected:
     USAGE mUsage;
     FORMAT mFormat;
     TEXTURE_TYPE mType;
+	bool mRenderTarget;
 };
 
 DeclareSmartPtr(Texture);

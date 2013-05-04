@@ -78,14 +78,6 @@ Color4 Image::GetColor(int x, int y) const
         c4.a = 1;
         break;
 
-    case FMT_A8:
-        i = GetAlpha8(x, y);
-        c4.r = i / 255.0f;
-        c4.g = c4.r;
-        c4.b = c4.g;
-        c4.a = c4.b;
-        break;
-
     case FMT_L8:
         i = GetLuminance8(x, y);
         c4.r = i / 255.0f;

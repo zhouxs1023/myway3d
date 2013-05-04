@@ -51,7 +51,7 @@ namespace Myway {
 
 		DWORD length = mNeedVertexCount * sizeof(MyGUI::Vertex);
 
-		mpBuffer = VideoBufferManager::Instance()->CreateVertexBuffer(length);
+		mpBuffer = VideoBufferManager::Instance()->CreateVertexBuffer(length, sizeof(MyGUI::Vertex));
 
 		return mpBuffer != NULL;
 	}

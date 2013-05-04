@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="MWD3D11Driver.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11Helper.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11VertexDeclaration.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11Texture.cpp">
+      <Filter>Source\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11RenderTarget.cpp">
+      <Filter>Source\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11DepthStencil.cpp">
+      <Filter>Source\Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11ShaderProgram.cpp">
+      <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11ShaderProgramManager.cpp">
+      <Filter>Source\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11Geometry.cpp">
+      <Filter>Source\Geometry</Filter>
+    </ClCompile>
+    <ClCompile Include="MWD3D11VideoBufferManager.cpp">
+      <Filter>Source\Geometry</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{5d18a87d-7237-4ee7-a03c-80002c760603}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Shader">
+      <UniqueIdentifier>{6e749f74-7d20-469f-a9d4-6e886bcbf277}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Texture">
+      <UniqueIdentifier>{37d7e18c-30f6-4e97-ace1-637d46f22ddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Geometry">
+      <UniqueIdentifier>{a40b3265-32db-4096-8e43-bc1dfbff0b16}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="MWD3D11RenderSystemEntry.h" />
+    <ClInclude Include="MWD3D11Driver.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11Helper.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11VertexDeclaration.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11Texture.h">
+      <Filter>Source\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11RenderTarget.h">
+      <Filter>Source\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11DepthStencil.h">
+      <Filter>Source\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11ShaderProgram.h">
+      <Filter>Source\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11ShaderProgramManager.h">
+      <Filter>Source\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11Geometry.h">
+      <Filter>Source\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="MWD3D11VideoBufferManager.h">
+      <Filter>Source\Geometry</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

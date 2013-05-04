@@ -28,7 +28,7 @@ public:
 	const VertexElement & GetElement(int index) { d_assert (index < mElementCount); return mElements[index]; }
 
 protected:
-    VertexElement mElements[MAX_ELEMENT];
+    VertexElement mElements[MAX_VERTEX_ELEMENT];
     int mElementCount;
 
 };

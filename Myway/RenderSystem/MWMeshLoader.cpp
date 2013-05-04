@@ -337,18 +337,18 @@ void MeshLoader_v0::ReadIndexStream(SubMesh * sm, DataStreamPtr & stream)
 {
     int count = sm->GetIndexStream()->GetCount();
     unsigned char stride;
-    FORMAT format;
+    bool index16 = true;;
 
     stream->Read(&stride, sizeof(unsigned char));
 
     switch (stride)
     {
     case sizeof(short):
-        format = FMT_INDEX16;
+        index16 = true;
         break;
 
     case sizeof(int):
-        format = FMT_INDEX32;
+        index16 = false;
         break;
 
     default:
@@ -356,7 +356,7 @@ void MeshLoader_v0::ReadIndexStream(SubMesh * sm, DataStreamPtr & stream)
         break;
     }
 
-    IndexBufferPtr pIndexBuffer = VideoBufferManager::Instance()->CreateIndexBuffer(stride * count, format);
+    IndexBufferPtr pIndexBuffer = VideoBufferManager::Instance()->CreateIndexBuffer(stride * count, index16);
     void * indices;
 
     int start;
@@ -390,7 +390,7 @@ void MeshLoader_v0::ReadVertexStream(VertexBufferPtr & vb, int & stride, int cou
 
     stream->Read(&stride, sizeof(int));
 
-    vb = VideoBufferManager::Instance()->CreateVertexBuffer(stride * count);
+    vb = VideoBufferManager::Instance()->CreateVertexBuffer(stride * count, stride);
     
     void * data = vb->Lock(0, 0, LOCK_DISCARD);
 
@@ -482,7 +482,7 @@ void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 	
 	int vstride = GenVertexDecl(decl, iVertexElems);
 
-	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(vstride * iVertexCount);
+	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(vstride * iVertexCount, vstride);
 
 	void * vdata = vb->Lock(0, 0, LOCK_NORMAL);
 	{
@@ -490,12 +490,12 @@ void MeshLoader_v1::ReadSubMesh(SubMesh * sm, DataStreamPtr & stream)
 	}
 	vb->Unlock();
 
-	FORMAT indexFormat = FMT_INDEX16;
+	bool index16 = true;
 	if (iIndexCount > 65535)
-		indexFormat = FMT_INDEX32;
+		index16 = false;
 
-	int istride = (indexFormat == FMT_INDEX16) ? 2 : 4;
-	IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(istride * iIndexCount, indexFormat);
+	int istride = index16 ? 2 : 4;
+	IndexBufferPtr ib = VideoBufferManager::Instance()->CreateIndexBuffer(istride * iIndexCount, index16);
 
 	void * idata = ib->Lock(0, 0, LOCK_NORMAL);
 	{

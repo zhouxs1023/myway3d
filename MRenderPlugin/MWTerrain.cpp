@@ -97,7 +97,7 @@ Terrain::~Terrain()
 void Terrain::_init()
 {
 	// create shared x & y stream
-	mXYStream = VideoBufferManager::Instance()->CreateVertexBuffer(8 * kSectionVertexSize * kSectionVertexSize);
+	mXYStream = VideoBufferManager::Instance()->CreateVertexBuffer(8 * kSectionVertexSize * kSectionVertexSize, 8);
 
 	float * vert = (float *)mXYStream->Lock(0, 0, LOCK_NORMAL);
 	{

@@ -59,7 +59,7 @@ void D3D9IndexBuffer::ResetDevice()
 
         HRESULT hr;
         DWORD D3DUsage = D3D9Mapping::GetD3DUsage(mUsage);
-        D3DFORMAT D3DFormat = D3D9Mapping::GetD3DFormat(mFormat);
+        D3DFORMAT D3DFormat = mIndex16 ? D3DFMT_INDEX16 : D3DFMT_INDEX32;
 
         hr = mD3D9Device->CreateIndexBuffer(mSize,
                                               D3DUsage,

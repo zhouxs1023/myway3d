@@ -32,7 +32,7 @@ void Billboard::_initGeometry()
 	decl->AddElement(0, 16, DT_FLOAT4, DU_COLOR, 0);
 	decl->Init();
 
-	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32);
+	VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32, 32);
 
 	GetVertexStream()->SetDeclaration(decl);
 	GetVertexStream()->SetCount(iVertexCount);

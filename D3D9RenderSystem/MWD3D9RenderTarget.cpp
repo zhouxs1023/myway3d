@@ -24,7 +24,7 @@ void D3D9RenderTarget::DeleteSelf()
 
 void D3D9RenderTarget::Stretch(Texture * p)
 {
-    d_assert (p->GetTextureType() == TEXTYPE_RENDERTARGET);
+    d_assert (p->IsRenderTarget());
 
     HRESULT hr = D3D_OK;
     IDirect3DSurface9 * surface;

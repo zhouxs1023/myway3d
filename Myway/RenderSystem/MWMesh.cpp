@@ -222,7 +222,7 @@ void Mesh::GenColMeshFromRenderMesh()
 		vb->Unlock();
 
 		IndexBufferPtr ib = subMesh->GetIndexStream()->GetStream();
-		stride = (ib->GetFormat() == FMT_INDEX16 ? sizeof(short) : sizeof(int));
+		stride = (ib->GetIndex16() ? sizeof(short) : sizeof(int));
 
 		char * idxData = (char *)ib->Lock(0, 0, LOCK_READONLY);
 		{
@@ -230,7 +230,7 @@ void Mesh::GenColMeshFromRenderMesh()
 			{
 				int index = 0;
 
-				if (ib->GetFormat() == FMT_INDEX16)
+				if (ib->GetIndex16())
 					index = *((unsigned short *)idxData);
 				else
 					index = *((int *)idxData);

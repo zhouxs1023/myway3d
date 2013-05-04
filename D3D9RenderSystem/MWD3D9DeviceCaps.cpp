@@ -46,11 +46,8 @@ int D3D9DeviceCaps::VertexShaderVersion()
 {
     switch (mCaps.VertexShaderVersion)
     {
-    case D3DVS_VERSION(2, 0):
-        return (int)SP_VS_2_0;
-
     case D3DVS_VERSION(3, 0):
-        return (int)SP_VS_3_0;
+        return (int)SP_VS;
 
     default:
         return 0;
@@ -66,11 +63,8 @@ int D3D9DeviceCaps::PixelShaderVersion()
 {
     switch (mCaps.PixelShaderVersion)
     {
-    case D3DPS_VERSION(2, 0):
-        return (int)SP_PS_2_0;
-
     case D3DPS_VERSION(3, 0):
-        return (int)SP_PS_3_0;
+        return (int)SP_PS;
 
     default:
         return 0;

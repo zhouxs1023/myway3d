@@ -30,7 +30,7 @@ namespace Infinite {
 		decl->AddElement(0, 0, DT_FLOAT3, DU_POSITION, 0);
 		decl->Init();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vec3));
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vec3), sizeof(Vec3));
 		Vec3 * vert = (Vec3 *)vb->Lock(0, 0, LOCK_DISCARD);
 		{
 			float x = 0, y = 0, z = 0;
@@ -71,7 +71,7 @@ namespace Infinite {
 		mRenderOp_Brush = new RenderOp();
 		iVertexCount = 4;
 
-		vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vec3));
+		vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * sizeof(Vec3), sizeof(Vec3));
 		vert = (Vec3 *)vb->Lock(0, 0, LOCK_DISCARD);
 		{
 			*vert++ = Vec3(-0.5f, 0, -0.5f);

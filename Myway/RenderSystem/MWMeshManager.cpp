@@ -63,7 +63,7 @@ MeshPtr MeshManager::CreateBox(const TString128 & sMeshName,
 
     sm->GetVertexStream()->SetDeclaration(decl);
 
-    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 24);
+    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 24, 24);
 
 	float * verteces;
 	const float half_w = width * 0.5f;
@@ -214,7 +214,7 @@ MeshPtr MeshManager::CreateSphere(const TString128 & sMeshName,
 
     sm->GetVertexStream()->SetDeclaration(decl);
 
-    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 24);
+    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 24, 24);
 
     float * verteces;
     verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
@@ -313,7 +313,7 @@ MeshPtr MeshManager::CreateCylinder(const TString128 & sName,
 
     sm->GetVertexStream()->SetDeclaration(decl);
 
-    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32);
+    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32, 32);
 
     float * verteces;
     verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);
@@ -439,7 +439,7 @@ MeshPtr MeshManager::CreatePlane(const TString128 & sMeshName,
 
     sm->GetVertexStream()->SetDeclaration(decl);
 
-    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32);
+    VertexBufferPtr buffer = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 32, 32);
 
     float * verteces;
     verteces = (float *)buffer->Lock(0, 0, LOCK_DISCARD);

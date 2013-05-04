@@ -345,7 +345,7 @@ namespace Myway {
 			bool skined = buffer.GetNumInfluences() > 0;
 			int iStride = skined ? sizeof(VertexSkined) : sizeof(Vertex);
 
-			VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iStride * iVertexCount);
+			VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iStride * iVertexCount, iStride);
 
 			void * vert = vb->Lock(0, 0, LOCK_DISCARD);
 

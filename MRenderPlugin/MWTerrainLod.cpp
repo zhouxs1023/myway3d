@@ -89,7 +89,7 @@ const TerrainLod::_IndexData &  TerrainLod::GetIndexData(const _Key & k)
 
         d_assert (data.index_count > 0 && data.index_count < 65536);
 
-        data.index_buffer = VideoBufferManager::Instance()->CreateIndexBuffer(data.index_count * sizeof(short), FMT_INDEX16);
+        data.index_buffer = VideoBufferManager::Instance()->CreateIndexBuffer(data.index_count * sizeof(short));
         int index = 0;
         bool flag = false;
 

@@ -16,9 +16,11 @@ public:
 
     int             GetSize() const { return mSize; }
     USAGE           GetUsage() const { return mUsage; }
+	int				GetStride() const { return mStride; }
 
 protected:
     int             mSize;
+	int				mStride;
     USAGE           mUsage;
 };
 

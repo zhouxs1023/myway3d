@@ -34,9 +34,13 @@ namespace Myway
 		TEXTURE_TYPE type = TEXTYPE_2D;
 		USAGE usage = USAGE_STATIC;
 		FORMAT format = FMT_A8R8G8B8;
+		bool bRenderTarget = false;
 
 		if (mTextureUsage == MyGUI::TextureUsage::RenderTarget)
-			type = TEXTYPE_RENDERTARGET;
+		{
+			bRenderTarget = true;
+			usage = USAGE_DYNAMIC;
+		}
 		else if (mTextureUsage == MyGUI::TextureUsage::Dynamic)
 			usage = USAGE_DYNAMIC;
 		else if (mTextureUsage == MyGUI::TextureUsage::Stream)
@@ -67,7 +71,7 @@ namespace Myway
 			d_assert (0 && "Creating texture with unknown pixel formal.");
 		}
 
-		if (type == TEXTYPE_2D)
+		if (!bRenderTarget)
 		{
 			mpTexture = VideoBufferManager::Instance()->CreateTexture(mName.c_str(), 
 				mSize.width, mSize.height, 1, format, usage);
@@ -104,7 +108,7 @@ namespace Myway
 		mNoLock = mTextureUsage == MyGUI::TextureUsage::RenderTarget;
 
 		if (mTextureUsage == MyGUI::TextureUsage::RenderTarget)
-			type = TEXTYPE_RENDERTARGET;
+			usage = USAGE_DYNAMIC;
 		else if (mTextureUsage == MyGUI::TextureUsage::Dynamic)
 			usage = USAGE_DYNAMIC;
 		else if (mTextureUsage == MyGUI::TextureUsage::Stream)
@@ -162,11 +166,6 @@ namespace Myway
 		{
 			mPixelFormat = MyGUI::PixelFormat::R8G8B8;
 			mNumElemBytes = 3;
-		}
-		else if (format == FMT_A8L8)
-		{
-			mPixelFormat = MyGUI::PixelFormat::L8A8;
-			mNumElemBytes = 2;
 		}
 		else if (format == FMT_L8)
 		{

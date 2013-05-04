@@ -62,7 +62,7 @@ namespace Myway {
 
         vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 12);
+        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 12, 12);
         
         float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);
         {
@@ -217,7 +217,7 @@ namespace Myway {
 
 		vxStream->SetDeclaration(decl);
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 12);
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 12, 12);
 
 		float * vert = (float *)vb->Lock(0, 0, LOCK_DISCARD);
 		{

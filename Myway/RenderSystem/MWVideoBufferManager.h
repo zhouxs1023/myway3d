@@ -19,117 +19,55 @@ public:
     VideoBufferManager();
     virtual ~VideoBufferManager();
 
-    /*
-        Create Vertex Declaration.
-    */
     virtual VertexDeclarationPtr CreateVertexDeclaration() = 0;
 
-    /*
-        Create Vertex Buffer.
-        @Param:
-            @iSize: size of buffer.
-            @Usage: usage of buffer. (see USAGE enumerate)
-            @Pool:  memory pool of buffer. (see POOL enumerate)
-    */
+    
     virtual VertexBufferPtr CreateVertexBuffer(
-        int iSize, USAGE usage = USAGE_STATIC) = 0;
+        int size, int stride, USAGE usage = USAGE_STATIC,
+		bool cpuAccess = true, const void * initData = NULL) = 0;
 
-    /*
-        Create Index Buffer.
-        @Param:
-            @iSize:     size of buffer.
-            @Usage:     usage of buffer. (see USAGE enumerate)
-            @Pool:      memory pool of buffer. (see POOL enumerate)
-            @Foramt:    format of index buffer. (must be INDEX_16 or INDEX_32)
-    */
     virtual IndexBufferPtr CreateIndexBuffer(
-        int iSize,  FORMAT Format = FMT_INDEX16, USAGE usage = USAGE_STATIC) = 0;
+        int size, bool index16 = true, USAGE usage = USAGE_STATIC,
+		bool cpuAccess = true, const void * initData = NULL) = 0;
 
-    /*
-        Create Texture.
-        @Param:
-            @sName:     texuter name       
-            @iWidth:    width by pixel.
-            @iHeight:   height by pixel.
-            @iMipLevel: mipmap count.
-            @Usage:     usage of index buffer. (see USAGE enumerate)
-            @Pool:      memory pool of index buffer. (see POOL enumerate)
-            @Format:    format of index buffer. (see FORMAT enumerate)
-    */
+
+
     virtual TexturePtr CreateTexture(
         const TString128 & sName, int iWidth, int iHeight, int iMipLevel,
-        FORMAT Format = FMT_X8R8G8B8, USAGE usage = USAGE_STATIC) = 0;
+        FORMAT Format = FMT_X8R8G8B8, USAGE usage = USAGE_STATIC, bool bRenderTarget = false) = 0;
 
-    virtual TexturePtr CreateTextureRT(
-        const TString128 & sName, int iWidth, int iHeight, FORMAT Format = FMT_X8R8G8B8) = 0;
+    inline TexturePtr CreateTextureRT(
+        const TString128 & sName, int iWidth, int iHeight, FORMAT Format = FMT_X8R8G8B8)
+	{
+		return CreateTexture(sName, iWidth, iHeight, 1, Format, USAGE_DYNAMIC, true);
+	}
 
-
-    /*
-        Create Texture.
-        @Param:
-            @sName:     texuter name       
-            @iWidth:    width by pixel.
-            @iHeight:   height by pixel.
-            @iDepth:    depth by pixel.
-            @iMipLevel: mipmap count.
-            @Usage:     usage of index buffer. (see USAGE enumerate)
-            @Pool:      memory pool of index buffer. (see POOL enumerate)
-            @Format:    format of index buffer. (see FORMAT enumerate)
-    */
     virtual TexturePtr CreateVolumeTexture(
         const TString128 & sName, int iWidth, int iHeight, int iDepth, int iMipLevel,
-        FORMAT Format = FMT_X8R8G8B8, USAGE usage = USAGE_STATIC) = 0;
+        FORMAT Format = FMT_X8R8G8B8, USAGE usage = USAGE_STATIC, bool bRenderTarget = false) = 0;
 
-
-
-    /*
-        Create Texture.
-        @Param:
-            @sName:     texuter name       
-            @iSize:     size by pixel.
-            @iMipLevel: mipmap count.
-            @Usage:     usage of index buffer. (see USAGE enumerate)
-            @Pool:      memory pool of index buffer. (see POOL enumerate)
-            @Format:    format of index buffer. (see FORMAT enumerate)
-    */
-    virtual TexturePtr CreateCubeTexture(
+	virtual TexturePtr CreateCubeTexture(
         const TString128 & sName, int iWidth, int iMipLevel,
-        FORMAT Format = FMT_X8R8G8B8, USAGE usage = USAGE_STATIC) = 0;
+        FORMAT Format = FMT_X8R8G8B8, USAGE usage = USAGE_STATIC, bool bRenderTarget = false) = 0;
 
-    /*
-        Create Render Target.
-            @Param:
-                @sName:     texuter name       
-                @iWidth:    width by pixel.
-                @iHeight:   height by pixel.
-                @Format:    (see FORMAT enumerate)
-                @Msaa:      msaa type.
-    */
     virtual RenderTargetPtr CreateRenderTarget(
         const TString128 & sName, int iWidth, int iHeight,
         FORMAT Format, MULTI_SAMPLE Msaa) = 0;
 
 	virtual RenderTargetPtr CreateRenderTarget(TexturePtr rtTex) = 0;
 
-    /*
-        Create Depth Stencil Buffer
-            @Param:
-                @iWidth:    width by pixel.
-                @iHeight:   height by pixel.
-                @Format:    (see FORMAT enumerate)
-                @Msaa:      msaa type.
-    */
     virtual DepthStencilPtr CreateDepthStencil(
         const TString128 & sName, int iWidth, int iHeight,
         FORMAT Format, MULTI_SAMPLE Msaa) = 0;
+
+
 
     virtual TexturePtr Load2DTexture(const TString128 & name, const TString128 & source) = 0;
     virtual TexturePtr Load3DTexture(const TString128 & name, const TString128 & source) = 0;
     virtual TexturePtr LoadCubeTexture(const TString128 & name, const TString128 & source) = 0;
 
-    /*
-        Create a image
-    */
+   
+
     virtual ImagePtr CreateImage(int iWidth, int iHeight, FORMAT Format) = 0;
     virtual ImagePtr LoadImage_(const TString128 & source, IMAGE_FILTER filter = IMAGE_FILTER_NONE) = 0;
     virtual ImagePtr LoadImageFromFile(const TString128 & filename, int w = -1, int h = -1, IMAGE_FILTER filter = IMAGE_FILTER_NONE) = 0;
