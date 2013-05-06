@@ -156,11 +156,17 @@ namespace Myway {
 
 	TexturePtr D3D11VideoBufferManager::CreateTexture(
 		const TString128 & name, int width, int height,
-		int mipLevel, FORMAT format, USAGE usage)
+		int mipLevel, FORMAT format, USAGE usage, bool bRenderTarget)
 	{
 		ID3D11Device * device = D3D11Driver::Instance()->Device();
 
 		DWORD cpuAccessFlags = D3D11_CPU_ACCESS_READ | D3D11_CPU_ACCESS_WRITE;
+
+		if (usage == USAGE_DYNAMIC && !bRenderTarget)
+			cpuAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+		if (bRenderTarget)
+			cpuAccessFlags = 0;
 
 		D3D11_TEXTURE2D_DESC desc;
 		desc.Width = width;
@@ -171,6 +177,7 @@ namespace Myway {
 
 		desc.SampleDesc.Count = 1;
 		desc.SampleDesc.Quality = 0;
+
 
 		desc.Usage = (usage == USAGE_STATIC) ? D3D11_USAGE_DEFAULT : D3D11_USAGE_DYNAMIC;
 		desc.BindFlags = D3D11_BIND_SHADER_RESOURCE;

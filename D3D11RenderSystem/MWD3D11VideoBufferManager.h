@@ -26,18 +26,15 @@ namespace Myway {
 
 		TexturePtr CreateTexture(
 			const TString128 & sName, int iWidth, int iHeight,
-			int iMipLevel, FORMAT Format, USAGE usage);
-
-		TexturePtr CreateTextureRT(
-			const TString128 & sName, int iWidth, int iHeight, FORMAT Format);
+			int iMipLevel, FORMAT Format, USAGE usage, bool bRenderTarget);
 
 		TexturePtr CreateVolumeTexture(
 			const TString128 & sName, int iWidth, int iHeight, int iDepth,
-			int iMipLevel, FORMAT Format, USAGE usage);
+			int iMipLevel, FORMAT Format, USAGE usage, bool bRenderTarget);
 
 		TexturePtr CreateCubeTexture(
 			const TString128 & sName, int iWidth,
-			int iMipLevel, FORMAT Format, USAGE usage);
+			int iMipLevel, FORMAT Format, USAGE usage, bool bRenderTarget);
 
 	protected:
 		List<D3D11_VertexBuffer*> mVertexBuffers;
