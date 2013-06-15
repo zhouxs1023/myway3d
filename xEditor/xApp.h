@@ -76,6 +76,7 @@ public:
 
 	Vec3 GetHitPosition(float fx, float fy);
 
+	void SetAppMode(eAppMode mode);
 	eAppMode GetAppMode() { return mMode; }
 
 protected:

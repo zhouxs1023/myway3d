@@ -111,7 +111,7 @@ bool xMesh::OnPropertyChanged(const Property * p)
 void xMesh::SetName(const TString128 & name)
 {
 	Name = name;
-    World::Instance()->RenameEntity(name, mEntity);
+	mEntity->SetName(name);
 }
 
 void xMesh::SetMeshFile(const TString128 & meshFile)

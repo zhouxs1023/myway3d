@@ -24,16 +24,20 @@ namespace game {
 	{
 		ShapeManager::Instance()->AddFactory(new NpcFactory);
 
-		mGameMain.Init();
+		mGameMain = new EditorGameMode();
+
+		mGameMain->Init();
 	}
 
 	void GamePlugin::_OnShutdown(Event * _sender)
 	{
-		mGameMain.Shutdown();
+		mGameMain->Shutdown();
+
+		delete mGameMain;
 	}
 	
 	void GamePlugin::_OnUpdate(Event * _sender)
 	{
-		mGameMain.Update();
+		mGameMain->Update(Engine::Instance()->GetFrameTime());
 	}
 }

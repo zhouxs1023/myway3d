@@ -12,5 +12,5 @@ uniform sampler2D gTex;
 
 float4 main(PS_IN In) : COLOR
 {
-	return tex2D(gTex, In.uv0);
+	return float4(tex2D(gTex, In.uv0).rgb, 1);
 }

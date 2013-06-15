@@ -11,6 +11,8 @@ class Camera;
 
 class MW_ENTRY Node : public AllocObj
 {
+	DeclareRootRTTI(Node);
+
 public:
     Node() {}
     virtual ~Node() {}

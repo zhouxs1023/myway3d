@@ -442,3 +442,11 @@ Vec3 xApp::GetHitPosition(float x, float y)
 
 	return pos;
 }
+
+void xApp::SetAppMode(eAppMode mode)
+{
+	if (mMode != mode)
+	{
+		xEvent::OnAppModeChanged(&mMode);
+	}
+}

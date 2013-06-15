@@ -5,6 +5,8 @@
 
 using namespace Myway;
 
+ImplementRTTI(SceneNode, Node);
+
 SceneNode::SceneNode(const TString128 & name)
 : mName(name),
   mPosition(Vec3::Zero),

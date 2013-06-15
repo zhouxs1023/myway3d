@@ -44,7 +44,9 @@ namespace Myway {
 			Opcode::OPCODECREATE info;
 			info.mIMesh = &mMeshInterface;
 			info.mCanRemap = true;
-			mCollisionModel->Build(info);
+			bool hr = mCollisionModel->Build(info);
+
+			d_assert(hr);
 		}
 	}
 

@@ -31,7 +31,7 @@
       <Filter>PropertyGrid</Filter>
     </ClCompile>
     <ClCompile Include="xRenderSetting.cpp">
-      <Filter>PropertyGrid\RenderSetting</Filter>
+      <Filter>RenderSetting</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
       <Filter>Shape</Filter>
@@ -209,7 +209,7 @@
       <Filter>PropertyGrid</Filter>
     </ClInclude>
     <ClInclude Include="xRenderSetting.h">
-      <Filter>PropertyGrid\RenderSetting</Filter>
+      <Filter>RenderSetting</Filter>
     </ClInclude>
     <ClInclude Include="Shape.h">
       <Filter>Shape</Filter>
@@ -370,7 +370,7 @@
     <Filter Include="Plugin">
       <UniqueIdentifier>{3e03b9c7-1a32-499a-94fe-bd1b0790ad6b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="PropertyGrid\RenderSetting">
+    <Filter Include="RenderSetting">
       <UniqueIdentifier>{b05fabfc-6773-4d13-98fb-2885b911de57}</UniqueIdentifier>
     </Filter>
   </ItemGroup>

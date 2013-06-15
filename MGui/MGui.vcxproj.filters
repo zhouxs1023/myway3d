@@ -8,6 +8,7 @@
     <ClCompile Include="MGUI_System.cpp" />
     <ClCompile Include="MGUI_Texture.cpp" />
     <ClCompile Include="MGUI_VertexBuffer.cpp" />
+    <ClCompile Include="MGUI_Util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MGUI_DataManager.h" />
@@ -17,5 +18,6 @@
     <ClInclude Include="MGUI_System.h" />
     <ClInclude Include="MGUI_Texture.h" />
     <ClInclude Include="MGUI_VertexBuffer.h" />
+    <ClInclude Include="MGUI_Util.h" />
   </ItemGroup>
 </Project>

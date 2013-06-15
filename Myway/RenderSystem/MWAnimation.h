@@ -181,6 +181,8 @@ public:
 
 	void UpdateAnimation(float elapsedTime, SkeletonInstance * skel);
 
+	void ClearControllers();
+
 protected:
 	Array<AnimationController*> mControllers;
 };

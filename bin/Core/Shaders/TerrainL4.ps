@@ -57,8 +57,8 @@ PS_OUT main(PS_IN In)
 
     //Out.normal = float4(In.normalDepth.xyz, 1);
 	float3x3 matTBN = float3x3(In.T, In.B, In.N);
-    Out.normal = float4(mul(normal.xyz, matTBN), 1);
-    Out.material = float4(0, 0, 0, 0);
+    Out.normal = float4(mul(normal.xyz, matTBN) * 0.5 + 0.5, 1);
+    //Out.material = float4(0, 0, 0, 0);
     Out.depth = float4(In.normalDepth.w * gClipPlane.w, 0, 0, 1);
        
     return Out;

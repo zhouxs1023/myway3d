@@ -17,6 +17,7 @@
 #include "MWFile.h"
 #include "MWFileSystem.h"
 #include "MWRefObj.h"
+#include "MWRTTIObj.h"
 #include "MWArray.h"
 #include "MWTArray.h"
 #include "MWList.h"

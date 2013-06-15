@@ -15,12 +15,12 @@ namespace game {
 	{
 	}
 
-	void GState_Idle::Enter(GAIEntity * entity)
+	void GState_Idle::Enter()
 	{
 		mActor->PlayAnimation(GHelper::S_Anim_Idle0.c_str(), MotionBlendInfo::Default);
 	}
 
-	void GState_Idle::Exit(GAIEntity * entity)
+	void GState_Idle::Exit()
 	{
 	}
 

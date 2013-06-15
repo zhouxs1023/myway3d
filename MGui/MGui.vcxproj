@@ -72,6 +72,7 @@
     <ClCompile Include="MGUI_RenderSystem.cpp" />
     <ClCompile Include="MGUI_System.cpp" />
     <ClCompile Include="MGUI_Texture.cpp" />
+    <ClCompile Include="MGUI_Util.cpp" />
     <ClCompile Include="MGUI_VertexBuffer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -81,6 +82,7 @@
     <ClInclude Include="MGUI_RenderSystem.h" />
     <ClInclude Include="MGUI_System.h" />
     <ClInclude Include="MGUI_Texture.h" />
+    <ClInclude Include="MGUI_Util.h" />
     <ClInclude Include="MGUI_VertexBuffer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

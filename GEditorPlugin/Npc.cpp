@@ -1,6 +1,8 @@
 #include "stdafx.h"
 
 #include "Npc.h"
+#include "EditorGameMode.h"
+#include "GameAI.h"
 
 namespace game {
 
@@ -17,15 +19,22 @@ namespace game {
 		Orientation = Quat::Identity;
 		Scale = 1;
 
-		mNpc = GWorld::Instance()->CreateNpc(-1, 0);
+		mNpc = new GameNpc(0);
+		mNpc->SetId(EditorGameMode::Instance()->GetUId());
+		mNpc->Init();
 
-		mNpc->GetNode()->GetFlag().SetFlags(PICK_Flag);
+		EditorGameMode::Instance()->AddObject(mNpc);
+
+		SceneNode * node = RTTI_DynamicCast(SceneNode, mNpc->GetNode());
+		node->GetFlag().SetFlags(PICK_Flag);
 	}
 
 	Npc::~Npc()
 	{
-		if (mNpc != NULL)
-			GWorld::Instance()->DestroyNpc(mNpc);
+		if (mNpc)
+		{
+			EditorGameMode::Instance()->RemoveObject(mNpc->GetId());
+		}
 	}
 
 	void Npc::SetName(const TString128 & name)

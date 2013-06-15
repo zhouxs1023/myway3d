@@ -911,5 +911,8 @@
     <ClCompile Include="Core\MWSerializer.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
+    <ClCompile Include="RenderSystem\MWNode.cpp">
+      <Filter>Myway\RenderSystem\Scene</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

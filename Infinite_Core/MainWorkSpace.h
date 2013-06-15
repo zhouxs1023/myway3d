@@ -9,12 +9,13 @@
 //
 #pragma once
 
+#include "Infinite.h"
 #include "Common\\BaseLayout.h"
 #include "PropertyGrid\\PropertyGrid.h"
 
 namespace Infinite {
 
-	class RenderWindow
+	class INFI_ENTRY RenderWindow
 	{
 		DECLARE_SINGLETON(RenderWindow);
 
@@ -25,6 +26,8 @@ namespace Infinite {
 		void Init();
 		void Shutdown();
 		void Update();
+
+		bool GetViewRay(Ray & ray);
 
 		void OnDragFile(const char * file);
 

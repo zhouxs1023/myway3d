@@ -24,8 +24,6 @@ public:
 	static Event OnUnSelectObj;
 
 	static Event OnUpdate;
-	static Event OnUpdateGame;
-	static Event OnAppModeChanged;
 
 	static Event OnOperatorChanged;		// param0: old op, param1: new op.
 
@@ -41,4 +39,6 @@ public:
 	static Event OnUnloadScene;
 
 	static Event OnSerialize;
+
+	static Event OnGameMode;
 };

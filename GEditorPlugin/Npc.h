@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Shape.h"
-#include "GCore.h"
+#include "GameCore.h"
 
 namespace game {
 
@@ -42,7 +42,7 @@ namespace game {
 		virtual bool OnPropertyChanged(const Property * p);
 
 	protected:
-		GNpc * mNpc;
+		GameNpc * mNpc;
 	};
 
 

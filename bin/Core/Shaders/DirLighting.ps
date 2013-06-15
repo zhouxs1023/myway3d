@@ -32,14 +32,19 @@ float3 GetViewPosition(PS_IN In)
 	return pos;
 }
 
+float3 GetViewNormal(float4 c)
+{
+	return float3(c.x, c.y, c.z);
+}
+
 float4 main(PS_IN In) : COLOR
 {
 	float4 clr = tex2D(gTex_Color, In.uv0);
 	float4 clrSpec = tex2D(gTex_Specular, In.uv0);
 	float shadow = tex2D(gTex_Shadow, In.uv0).r;
-	float4 normal = tex2D(gTex_Normal, In.uv0);
+	float4 normal = tex2D(gTex_Normal, In.uv0) * 2 - 1;
 
-	float3 N = normal.rgb;
+	float3 N = GetViewNormal(normal);
 	float3 P = GetViewPosition(In);
 	float3 L = gLightDir;
 	float3 V = normalize(-P);

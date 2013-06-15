@@ -47,8 +47,6 @@ void World::Resize(int xSize, int ySize, int zSize)
 
 Camera * World::CreateCamera(const TString128 & name)
 {
-    debug_assert(!HasCamera(name), "camera exist.");
-
     Camera * cam = new Camera(name);
 
     mCameras.PushBack(cam);
@@ -147,8 +145,6 @@ void World::DestroyAllCamera()
 
 Entity * World::CreateEntity(const TString128 & name, const TString128 & mesh)
 {
-    d_assert(!HasEntity(name) && "entity has been created.");
-
     Entity * pEntity = new Entity(name);
 
 	pEntity->SetMesh(MeshManager::Instance()->Load(mesh, mesh));
@@ -160,8 +156,6 @@ Entity * World::CreateEntity(const TString128 & name, const TString128 & mesh)
 
 Entity * World::CreateEntity(const TString128 & name, MeshPtr mesh)
 {
-    d_assert(!HasEntity(name) && mesh.NotNull() && "entity has been created.");
-
     Entity * pEntity = new Entity(name);
 
 	pEntity->SetMesh(mesh);
@@ -173,8 +167,6 @@ Entity * World::CreateEntity(const TString128 & name, MeshPtr mesh)
 
 Entity * World::CreateEntity(const TString128 & name)
 {
-    d_assert(!HasEntity(name) && "entity has been created.");
-
     Entity * pEntity = new Entity(name);
 
     mEntitys.PushBack(pEntity);
@@ -197,17 +189,6 @@ bool World::HasEntity(const TString128 & name)
 
     return iter != end;
 }
-
-bool World::RenameEntity(const TString128 & name, Entity * entity)
-{
-    if (HasEntity(name))
-        return false;
-
-    entity->SetName(name);
-
-    return true;
-}
-
 
 Entity * World::GetEntity(const TString128 & name)
 {
@@ -288,8 +269,6 @@ void World::DestroyAllEntity()
 
 Actor * World::CreateActor(const TString128 & name, const TString128 & mesh)
 {
-	d_assert(!HasActor(name) && "Actor has been created.");
-
 	Actor * pActor = new Actor(name);
 
 	pActor->SetMesh(MeshManager::Instance()->Load(mesh, mesh));
@@ -301,7 +280,7 @@ Actor * World::CreateActor(const TString128 & name, const TString128 & mesh)
 
 Actor * World::CreateActor(const TString128 & name, MeshPtr mesh)
 {
-	d_assert(!HasActor(name) && mesh.NotNull() && "Actor has been created.");
+	d_assert(mesh.NotNull());
 
 	Actor * pActor = new Actor(name);
 
@@ -314,8 +293,6 @@ Actor * World::CreateActor(const TString128 & name, MeshPtr mesh)
 
 Actor * World::CreateActor(const TString128 & name)
 {
-	d_assert(!HasActor(name) && "Actor has been created.");
-
 	Actor * pActor = new Actor(name);
 
 	mActors.PushBack(pActor);
@@ -338,17 +315,6 @@ bool World::HasActor(const TString128 & name)
 
 	return iter != end;
 }
-
-bool World::RenameActor(const TString128 & name, Actor * actor)
-{
-	if (HasActor(name))
-		return false;
-
-	actor->SetName(name);
-
-	return true;
-}
-
 
 Actor * World::GetActor(const TString128 & name)
 {
@@ -672,8 +638,6 @@ void World::RayTracing(const Ray & ray, float dist, Array<Scene::TraceInfo> & no
 
 SceneNode * World::CreateSceneNode(const TString128 & name)
 {
-    d_assert (!GetSceneNode(name));
-
     SceneNode * node = new SceneNode(name);
     mSceneNodes.PushBack(node);
 
@@ -698,7 +662,7 @@ SceneNode * World::GetSceneNode(const TString128 & name)
 SceneNode * World::CreateSceneNode()
 {
     static int uniqueId = 0;
-    TString128 name("__unknown_");
+    TString128 name("__SceneNode_");
     name += uniqueId++;
 
     return CreateSceneNode(name);

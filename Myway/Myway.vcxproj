@@ -305,6 +305,7 @@
     <ClCompile Include="RenderSystem\MWAnimationLoader.cpp" />
     <ClCompile Include="RenderSystem\MWBillboard.cpp" />
     <ClCompile Include="RenderSystem\MWColMesh.cpp" />
+    <ClCompile Include="RenderSystem\MWNode.cpp" />
     <ClCompile Include="RenderSystem\MWRenderDefine.cpp" />
     <ClCompile Include="RenderSystem\MWTrigger.cpp" />
     <ClCompile Include="Core\MWXml.cpp" />

@@ -31,7 +31,7 @@ float3 _getViewPosition(float2 uv)
 float4 main(PS_IN In) : COLOR
 {
 	float4 clr = tex2D(gTex_Color, In.uv);
-	float3 nrm = tex2D(gTex_Normal, In.uv).rgb;
+	float3 nrm = tex2D(gTex_Normal, In.uv).rgb * 2 - 1;
 	float3 pos = _getViewPosition(In.uv);
 	
 	float3 diff = gLightPos - pos;

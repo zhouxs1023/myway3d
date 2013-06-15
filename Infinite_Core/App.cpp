@@ -4,7 +4,6 @@
 
 namespace Infinite
 {
-
 	App::App()
 	{
 	}
@@ -96,6 +95,5 @@ namespace Infinite
 
 		mUISystem.InjectKeyEvent(iMsg, wParam, lParam);
 	}
-
 
 }

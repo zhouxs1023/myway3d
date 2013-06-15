@@ -86,6 +86,9 @@ namespace Infinite {
 		MMessageBox * getMessageBox();
 		PluginDialog * getPluginDialog();
 
+		void SetGameMode(bool b);
+		bool GetGameMode() { return mGameMode; }
+
 	protected:
 		void _loadPlugin();
 
@@ -120,6 +123,8 @@ namespace Infinite {
 		bool mFoucs;
 
 		Array<iPlugin *> mPlugins;
+
+		bool mGameMode;
 	};
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Editor.h"
-#include "GMain.h"
+#include "EditorGameMode.h"
 
 namespace game {
 
@@ -29,6 +29,6 @@ namespace game {
 		tEventListener<GamePlugin> OnShutown;
 		tEventListener<GamePlugin> OnUpdate;
 
-		GMain mGameMain;
+		EditorGameMode * mGameMain;
 	};
 }

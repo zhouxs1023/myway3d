@@ -1,6 +1,6 @@
 #include "stdafx.h"
 
-#include "GCore.h"
+#include "GameCore.h"
 
 bool APIENTRY DllMain(HANDLE hModule,DWORD ul_reason_for_call, LPVOID lpReserved)
 {

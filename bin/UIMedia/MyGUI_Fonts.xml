@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <MyGUI type="Resource" version="1.1">
-	<Resource type="ResourceTrueTypeFont" name="DejaVuSansFont.15">
+	<Resource type="ResourceTrueTypeFont" name="MSYH_10">
 		<Property key="Source" value="msyh.ttf"/>
 		<Property key="Size" value="10"/>
 		<Codes>

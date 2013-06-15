@@ -27,6 +27,8 @@ namespace Infinite {
 		mMessageBox = NULL;
 		mFileDialog = NULL;
 		mPuginDialog = NULL;
+
+		mGameMode = false;
 	}
 
 	Editor::~Editor()
@@ -77,7 +79,14 @@ namespace Infinite {
 
 	void Editor::Update()
 	{
-		RenderWindow::Instance()->Update();
+		if (IKeyboard::Instance()->KeyUp(KC_F5))
+		{
+			SetGameMode(!mGameMode);
+		}
+
+		if (!mGameMode)
+			RenderWindow::Instance()->Update();
+
 		xEvent::OnUpdate();
 
 		AudioSystem::Instance()->Update(World::Instance()->MainCamera()->GetPosition());
@@ -209,5 +218,16 @@ namespace Infinite {
 
 			++v;
 		}
+	}
+
+
+	void Editor::SetGameMode(bool b)
+	{
+		if (mGameMode == b)
+			return ;
+
+		mGameMode = b;
+
+		xEvent::OnGameMode(&mGameMode);
 	}
 }

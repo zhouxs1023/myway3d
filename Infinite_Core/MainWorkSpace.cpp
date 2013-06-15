@@ -274,7 +274,27 @@ namespace Infinite {
 		xEvent::OnDragFile(&Point2f(mouseX, mouseY), fileName.c_str());
 	}
 
+	bool RenderWindow::GetViewRay(Ray & ray)
+	{
+		MyGUI::IntCoord rc = mRenderWindow->getClientCoord();
+		MyGUI::IntPoint pt = mRenderWindow->getAbsolutePosition();
 
+		Point2i mousePt = IMouse::Instance()->GetPosition();
+		float mouseX = (mousePt.x - pt.left) / (float)rc.width;
+		float mouseY = (mousePt.y - pt.top) / (float)rc.height;
+
+		float x = mouseX, y = mouseY;
+
+		if (x > 0 && x < 1 && y > 0 && y < 1)
+		{
+			ray = World::Instance()->MainCamera()->GetViewportRay(x, y);
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
 
 
 

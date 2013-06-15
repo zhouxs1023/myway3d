@@ -30,6 +30,23 @@ float3 Uncharted2Tonemap(float3 x)
   return ((x*(A*x+C*B)+D*E)/(x*(A*x+B)+D*F))-E/F;
 }
 
+float3 BlurShift(float3 vSample, float fLum)
+{
+static const float3 LUMINANCE_VECTOR  = float3(0.2125f, 0.7154f, 0.0721f);
+static const float3 BLUE_SHIFT_VECTOR = float3(1.05f, 0.97f, 1.27f); 
+	float fMaxBlueShiftCoefficient = 0.2f;
+
+	float fBlueShiftCoefficient = 1.0f - (fLum + 1.5)/4.1;
+
+    fBlueShiftCoefficient = saturate(fBlueShiftCoefficient);
+	fBlueShiftCoefficient = lerp(0, fMaxBlueShiftCoefficient, fBlueShiftCoefficient);
+
+	// Lerp between current color and blue, desaturated copy
+    float3 vRodColor = dot(vSample, LUMINANCE_VECTOR) * BLUE_SHIFT_VECTOR;
+        
+	return lerp(vSample, vRodColor, fBlueShiftCoefficient) ;
+}
+
 float4 main(PS_IN In) : COLOR
 {
 	float adaptedLum = tex2D(gTex_Lum, float2(0.5, 0.5)).r;
@@ -44,9 +61,11 @@ float4 main(PS_IN In) : COLOR
 	texBright = pow(texBright.rgb, 2.2);
 	
 	texColor += texBright;
+
+	//texColor = BlurShift(texColor, adaptedLum);
 	
 	texColor *= gExposure / (adaptedLum + 0.001f);
-	
+
 	float3 curr = Uncharted2Tonemap(texColor);
 	
 	float3 whiteScale = 1.0f / Uncharted2Tonemap(W);

@@ -21,25 +21,34 @@ namespace Myway {
 	void RenderLoop::_resize(int w, int h)
 	{
 		mTex_Color = NULL;
+		mTex_LDRColor = NULL;
+		mTex_HDRColor = NULL;
 		mTex_Normal = NULL;
 		mTex_Depth = NULL;
 
 		mRT_Color = NULL;
+		mRT_LDRColor = NULL;
+		mRT_HDRColor = NULL;
 		mRT_Normal = NULL;
 		mRT_Depth = NULL;
 		mDepthStencil = NULL;
 
-		mTex_Color = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Color", w, h, FMT_A16R16G16B16F);
-		mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", w, h, FMT_A16R16G16B16F);
+		mTex_LDRColor = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_LDRColor", w, h, FMT_A8R8G8B8);
+		mTex_HDRColor = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_HDRColor", w, h, FMT_A16R16G16B16F);
+		mTex_Normal = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Normal", w, h, FMT_A8R8G8B8);
 		//mTex_Material = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Material", -1, -1, FMT_A16R16G16B16F);
-		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", w, h, FMT_R32G32F);
+		mTex_Depth = VideoBufferManager::Instance()->CreateTextureRT("Core_TX_Depth", w, h, FMT_R16G16F);
 
-		mRT_Color = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_Color", w, h, FMT_A16R16G16B16F,  MSAA_NONE);
+		mRT_LDRColor = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_LDRColor", w, h, FMT_A8R8G8B8,  MSAA_NONE);
+		mRT_HDRColor = VideoBufferManager::Instance()->CreateRenderTarget("Core_RT_HDRColor", w, h, FMT_A16R16G16B16F,  MSAA_NONE);
 		mRT_Normal = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Normal);
 		//mRT_Material = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Material);
 		mRT_Depth = VideoBufferManager::Instance()->CreateRenderTarget(mTex_Depth);
 
 		mDepthStencil = VideoBufferManager::Instance()->CreateDepthStencil("Core_DepthStencil", w, h, FMT_D24S8,  MSAA_NONE);
+
+		mRT_Color = mRT_HDRColor;
+		mTex_Color = mTex_HDRColor;
 	}
 
     void RenderLoop::DoRender()
@@ -56,8 +65,11 @@ namespace Myway {
 
         RenderTarget * finalRT = render->GetRenderTarget(0);
 
+		mRT_Color = mRT_LDRColor;
+		mTex_Color = mTex_LDRColor;
+
         // ---> Bind RenderTarget
-        render->SetRenderTarget(0, mRT_Color.c_ptr());
+        render->SetRenderTarget(0, mRT_LDRColor.c_ptr());
         render->SetRenderTarget(1, mRT_Normal.c_ptr());
         render->SetRenderTarget(2, mRT_Material.c_ptr());
         render->SetRenderTarget(3, mRT_Depth.c_ptr());
@@ -86,9 +98,15 @@ namespace Myway {
 
         _updateTexture();
 
+		render->SetRenderTarget(0, mRT_HDRColor.c_ptr());
 		render->SetRenderTarget(1, NULL);
 		render->SetRenderTarget(2, NULL);
 		render->SetRenderTarget(3, NULL);
+
+		_LDR_To_HDR();
+
+		mRT_Color = mRT_HDRColor;
+		mTex_Color = mTex_HDRColor;
 
 		if (Environment::Instance()->GetColorSharp())
 		{
@@ -219,6 +237,20 @@ namespace Myway {
         //mRT_Material->Stretch(mTex_Material.c_ptr());
         //mRT_Depth->Stretch(mTex_Depth.c_ptr());
     }
+
+	void RenderLoop::_LDR_To_HDR()
+	{
+		Technique * frushTech = mScheme->GetMainShaderProvider()->GetFrushTech();
+
+		SamplerState state;
+		state.Filter = TEXF_POINT;
+		state.Address = TEXA_CLAMP;
+
+		RenderSystem::Instance()->SetTexture(0, state, mTex_LDRColor.c_ptr());
+		RenderHelper::Instance()->DrawScreenQuad(BM_OPATICY, frushTech);
+
+		mRT_HDRColor->Stretch(mTex_HDRColor.c_ptr());
+	}
 
     void RenderLoop::_updateColorTexture()
     {

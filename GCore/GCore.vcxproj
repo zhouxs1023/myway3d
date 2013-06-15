@@ -68,44 +68,40 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="GActor.cpp" />
-    <ClCompile Include="GApp.cpp" />
-    <ClCompile Include="GData.cpp" />
-    <ClCompile Include="GEntity.cpp" />
-    <ClCompile Include="GLight.cpp" />
-    <ClCompile Include="GMain.cpp" />
-    <ClCompile Include="GMesh.cpp" />
-    <ClCompile Include="GMode.cpp" />
-    <ClCompile Include="GNpc.cpp" />
-    <ClCompile Include="GScene.cpp" />
-    <ClCompile Include="GSerializer.cpp" />
-    <ClCompile Include="GSound.cpp" />
-    <ClCompile Include="GState.cpp" />
-    <ClCompile Include="GAIStates.cpp" />
-    <ClCompile Include="GWorld.cpp" />
+    <ClCompile Include="GameActor.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameAI.cpp" />
+    <ClCompile Include="GameCameraController.cpp" />
+    <ClCompile Include="GameHelper.cpp" />
+    <ClCompile Include="GameMessage.cpp" />
+    <ClCompile Include="GameMode.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameStructer.cpp" />
+    <ClCompile Include="GameData.cpp" />
+    <ClCompile Include="GameEntity.cpp" />
+    <ClCompile Include="GameNpc.cpp" />
+    <ClCompile Include="GameSerializer.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GActor.h" />
-    <ClInclude Include="GApp.h" />
-    <ClInclude Include="GCore.h" />
-    <ClInclude Include="GCoreEntry.h" />
-    <ClInclude Include="GData.h" />
-    <ClInclude Include="GEntity.h" />
-    <ClInclude Include="GLight.h" />
-    <ClInclude Include="GMain.h" />
-    <ClInclude Include="GMesh.h" />
-    <ClInclude Include="GMode.h" />
-    <ClInclude Include="GNpc.h" />
-    <ClInclude Include="GScene.h" />
-    <ClInclude Include="GSerializer.h" />
-    <ClInclude Include="GSound.h" />
-    <ClInclude Include="GState.h" />
-    <ClInclude Include="GAIStates.h" />
-    <ClInclude Include="GWorld.h" />
+    <ClInclude Include="GameActor.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameAI.h" />
+    <ClInclude Include="GameCameraController.h" />
+    <ClInclude Include="GameHelper.h" />
+    <ClInclude Include="GameMessage.h" />
+    <ClInclude Include="GameMode.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameStructer.h" />
+    <ClInclude Include="GameCore.h" />
+    <ClInclude Include="GameCoreEntry.h" />
+    <ClInclude Include="GameData.h" />
+    <ClInclude Include="GameEntity.h" />
+    <ClInclude Include="GameNpc.h" />
+    <ClInclude Include="GameSerializer.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

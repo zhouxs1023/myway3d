@@ -9,9 +9,7 @@ Event xEvent::OnShutdown;
 Event xEvent::OnSelectObj;
 Event xEvent::OnUnSelectObj;
 Event xEvent::OnUpdate;
-Event xEvent::OnUpdateGame;
 
-Event xEvent::OnAppModeChanged;
 Event xEvent::OnOperatorChanged;
 
 Event xEvent::OnDragFile;
@@ -24,3 +22,5 @@ Event xEvent::OnLoadScene;
 Event xEvent::OnAfterLoadScene;
 Event xEvent::OnUnloadScene;
 Event xEvent::OnSerialize;
+
+Event xEvent::OnGameMode;

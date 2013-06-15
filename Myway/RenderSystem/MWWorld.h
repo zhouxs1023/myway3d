@@ -46,7 +46,6 @@ public:
     Entity *            CreateEntity(const TString128 & name, const TString128 & mesh);
     Entity *            CreateEntity(const TString128 & name, MeshPtr mesh);
     Entity *            CreateEntity(const TString128 & name);
-    bool                RenameEntity(const TString128 & name, Entity * entity);
     bool                HasEntity(const TString128 & name);
     Entity *            GetEntity(const TString128 & name);
     void                DestroyEntity(const TString128 & name);
@@ -57,13 +56,11 @@ public:
 	Actor *             CreateActor(const TString128 & name, const TString128 & mesh);
 	Actor *             CreateActor(const TString128 & name, MeshPtr mesh);
 	Actor *             CreateActor(const TString128 & name);
-	bool                RenameActor(const TString128 & name, Actor * actor);
 	bool                HasActor(const TString128 & name);
 	Actor *             GetActor(const TString128 & name);
 	void                DestroyActor(const TString128 & name);
 	void                DestroyActor(Actor * actor);
 	void                DestroyAllActor();
-
 
     //light
     Light *             CreateLight(const TString128 & name);

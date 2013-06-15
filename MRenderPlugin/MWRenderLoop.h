@@ -24,6 +24,7 @@ namespace Myway
 
         void _updateTexture();
         void _updateColorTexture();
+		void _LDR_To_HDR();
 
         void _clear();
         void _frush(RenderTarget * finalRT);
@@ -36,14 +37,18 @@ namespace Myway
     protected:
         DeferredRenderer * mScheme;
 
-        RenderTargetPtr mRT_Color;
+		RenderTargetPtr mRT_Color;
+        RenderTargetPtr mRT_LDRColor;
+		RenderTargetPtr mRT_HDRColor;
         RenderTargetPtr mRT_Normal;
         RenderTargetPtr mRT_Material;
         RenderTargetPtr mRT_Depth;
 
         DepthStencilPtr mDepthStencil;
 
-        TexturePtr mTex_Color;
+		TexturePtr mTex_Color;
+        TexturePtr mTex_LDRColor;
+		TexturePtr mTex_HDRColor;
         TexturePtr mTex_Normal;
         TexturePtr mTex_Material;
         TexturePtr mTex_Depth;

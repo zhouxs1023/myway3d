@@ -18,6 +18,8 @@ class MW_ENTRY SceneNode : public Node
 {
     friend class SceneManager;
 
+	DeclareRTTI();
+
 public:
     typedef Visitor<List<Mover*>::Iterator>  MoverVisitor;
     typedef Visitor<SceneNodeList::Iterator> ChildVisitor;
