@@ -66,7 +66,7 @@ namespace Myway {
 
         vxStream->SetDeclaration(decl);
 
-        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * iStride, USAGE_DYNAMIC);
+        VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * iStride, iStride, USAGE_DYNAMIC);
 
         vxStream->Bind(0, vb, iStride);
         vxStream->SetCount(iVertexCount);
