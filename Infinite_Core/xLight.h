@@ -17,6 +17,7 @@ namespace Infinite {
 	class xPointLight : public Shape
 	{
 		DECLARE_PROPERTY(Shape);
+		DeclareRTTI();
 
 	public:
 		Vec3 Position;

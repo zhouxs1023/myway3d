@@ -21,6 +21,9 @@ namespace Infinite {
 	class INFI_ENTRY App : public App_Win32
 	{
 	public:
+		static App * GetApp() { return (App*)Instance(); }
+
+	public:
 		App();
 		virtual ~App();
 

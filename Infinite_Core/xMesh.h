@@ -14,9 +14,10 @@
 
 namespace Infinite {
 
-	class xMesh : public Shape
+	class INFI_ENTRY xMesh : public Shape
 	{
 		DECLARE_PROPERTY(Shape);
+		DeclareRTTI();
 
 	public:
 		TString128 MeshFile;

@@ -18,6 +18,7 @@ namespace Infinite {
 class INFI_ENTRY Shape : public IPropertyObj
 {
 	DECLARE_PROPERTY(IPropertyObj);
+	DeclareRootRTTI(Shape);
 
 public:
 	static const Aabb K_DefaultBound;
@@ -82,6 +83,9 @@ public:
 
 	Shape * Get(const char * name);
 	Shape * Get(SceneNode * node);
+	
+	int GetShapeCount();
+	Shape * GetShape(int index);
 
 	Shape * _Create(const TString128 & name, const TString128 & type);
 

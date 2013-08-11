@@ -12,6 +12,8 @@ namespace Infinite {
 		DF_PROPERTY(xSound, Volume, "General", "Volume", PT_Int, 4)
 	DF_PROPERTY_END();
 
+	ImplementRTTI(xSound, Shape);
+
 	xSound::xSound(const TString128 & name)
 		: Shape(name)
 		, mSound(NULL)

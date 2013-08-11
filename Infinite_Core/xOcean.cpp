@@ -8,6 +8,8 @@ DF_PROPERTY_BEGIN(xOcean)
 	DF_PROPERTY(xOcean, Height, "Transform", "Height", PT_Float, 4)
 DF_PROPERTY_END()
 
+ImplementRTTI(xOcean, Shape);
+
 xOcean::xOcean()
 	: Shape("Ocean")
 {

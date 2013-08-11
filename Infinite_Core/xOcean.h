@@ -18,6 +18,8 @@ class xOcean : public Shape
 {
 	DECLARE_PROPERTY(Shape);
 
+	DeclareRTTI();
+
 protected:
 	float Height;
 

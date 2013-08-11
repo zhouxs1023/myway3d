@@ -37,7 +37,7 @@ namespace Infinite {
 		vdecl->AddElement(0, 12, DT_FLOAT4, DU_COLOR, 0);
 		vdecl->Init();
 
-		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 28, USAGE_DYNAMIC);
+		VertexBufferPtr vb = VideoBufferManager::Instance()->CreateVertexBuffer(iVertexCount * 28, 28, USAGE_DYNAMIC);
 
 		float * verts = (float *)vb->Lock(0, 0, LOCK_DISCARD);
 		{

@@ -9,6 +9,8 @@ namespace Infinite {
 	{
 		DECLARE_PROPERTY(Shape);
 
+		DeclareRTTI();
+
 	public:
 		TString128 SoundFile;
 		Vec3 Position;

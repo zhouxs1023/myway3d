@@ -6,6 +6,8 @@
 namespace Infinite {
 
 
+	ImplementRTTI(xTerrain, Shape);
+
 xTerrain::xTerrain()
 	: Shape("Terrain")
 {

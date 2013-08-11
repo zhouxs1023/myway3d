@@ -12,6 +12,8 @@ DF_PROPERTY_BEGIN(Shape)
 	DF_PROPERTY(Shape, Name, "General", "Name", PT_TString, 128)
 DF_PROPERTY_END()
 
+ImplementRootRTTI(Shape);
+
 Shape::Shape(const TString128 & name)
 {
 	Name = name;
@@ -255,6 +257,16 @@ Shape * ShapeManager::Get(SceneNode * node)
 	}
 
 	return NULL;
+}
+
+int ShapeManager::GetShapeCount()
+{
+	return mObjs.Size();
+}
+
+Shape * ShapeManager::GetShape(int index)
+{
+	return mObjs[index];
 }
 
 }

@@ -17,6 +17,8 @@ namespace Infinite {
 
 class INFI_ENTRY xTerrain : public Shape
 {
+	DeclareRTTI();
+
 public:
 	xTerrain();
 	virtual ~xTerrain();

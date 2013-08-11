@@ -12,6 +12,8 @@ namespace Infinite {
 		DF_PROPERTY(xPointLight, Range, "General", "Range", PT_Float, 4)
 	DF_PROPERTY_END();
 
+	ImplementRTTI(xPointLight, Shape);
+
 	xPointLight::xPointLight(const TString128 & name)
 		: Shape(name)
 	{

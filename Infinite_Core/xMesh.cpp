@@ -10,6 +10,8 @@ DF_PROPERTY_BEGIN(xMesh)
 	DF_PROPERTY(xMesh, Scale, "Transform", "Scale", PT_Float, 4)
 DF_PROPERTY_END();
 
+ImplementRTTI(xMesh, Shape);
+
 xMesh::xMesh(const TString128 & name)
     : Shape(name)
 {
