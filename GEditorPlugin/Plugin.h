@@ -12,7 +12,7 @@ namespace game {
 		~GamePlugin();
 
 		virtual const char * getName() { return "game plugin"; }
-		virtual const char * GetExpExtern() { return ""; }
+		virtual const char * GetExpExtern() { return ".gmap"; }
 		virtual const char * GetImpExtern() { return ""; }
 
 		virtual int GetUsages() { return Infinite::iPlugin::eExport; }

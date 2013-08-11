@@ -65,6 +65,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="EditorExport.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="EditorPreViewer.cpp" />
     <ClCompile Include="main.cpp" />
@@ -75,6 +76,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="EditorExport.h" />
     <ClInclude Include="EditorGameMode.h" />
     <ClInclude Include="EditorPreViewer.h" />
     <ClInclude Include="Npc.h" />

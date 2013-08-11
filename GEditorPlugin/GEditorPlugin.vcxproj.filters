@@ -9,6 +9,7 @@
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="EditorPreViewer.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
+    <ClCompile Include="EditorExport.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -18,6 +19,7 @@
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="EditorPreViewer.h" />
     <ClInclude Include="EditorGameMode.h" />
+    <ClInclude Include="EditorExport.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Shape">
