@@ -79,7 +79,7 @@ VS_OUT main(VS_IN In)
 	float3 v3SamplePoint = v3Start + v3SampleRay * 0.5f;
 	
 	// Loop the ray
-	float3 color;
+	float3 color = 0;
 
 	{
 		float fHeight = length(v3SamplePoint);

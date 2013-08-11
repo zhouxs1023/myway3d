@@ -1,0 +1,22 @@
+
+<ShaderLib>
+
+	<Shaders>
+
+		<Shader name = "MGUI_DefaultVS" language = "cg" profile = "vs30" source = "MGUI_Default.vs" >
+		</Shader>
+
+		<Shader name = "MGUI_DefaultPS" language = "cg" profile = "ps30" source = "MGUI_Default.ps" >
+		</Shader>
+    
+  </Shaders>
+
+  
+	<Techniques>
+    
+		<Technique name = "MGUI_Default" vs = "MGUI_DefaultVS" ps = "MGUI_DefaultPS">
+		</Technique>
+    
+	</Techniques>
+
+</ShaderLib>
