@@ -27,6 +27,8 @@ namespace Myway {
 
 
 #define IMP_ENUM(classname) const classname classname::msInstance
+#define ImplementEnum(classname) IMP_ENUM(classname)
+
 #define DF_ENUM_BEGIN(classname) const cEnum classname::msEnums[] = {
 #define DF_ENUM_END() cEnum("unused", -1) };
 

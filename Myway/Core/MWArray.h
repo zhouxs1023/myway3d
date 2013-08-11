@@ -254,4 +254,48 @@ protected:
 };
 
 #include "MWArray.inl"
+
+template <class T, int Count>
+class tFixedArray
+{
+public:
+	tFixedArray() {}
+	~tFixedArray() {}
+
+	int Size() const { return Count; }
+
+	tFixedArray(const tFixedArray & _rk)
+	{
+		for (int i = 0; i < Count; ++i)
+		{
+			mArray[i] = _rk[i];
+		}
+	}
+
+	tFixedArray & operator =(const tFixedArray & _rk)
+	{
+		for (int i = 0; i < Count; ++i)
+		{
+			mArray[i] = _rk[i];
+		}
+		
+		return *this;
+	}
+
+	T & operator [](int index)
+	{
+		d_assert (index < Count);
+		return mArray[index];
+	}
+
+	const T & operator [](int index) const
+	{
+		d_assert (index < Count);
+		return mArray[index];
+	}
+
+protected:
+	T mArray[Count];
+};
+
 }

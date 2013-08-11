@@ -9,9 +9,9 @@ template <class T>
 struct __sort_less
 {
     bool operator ()(const T & a, const T & b) const
-    {
-        return a < b;
-    };
+	{
+		return a < b;
+	};
 };
 
 template <class T>
