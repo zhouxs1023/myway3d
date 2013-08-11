@@ -16,7 +16,6 @@
 #include "MGUI_RenderSystem.h"
 #include "MGUI_DataManager.h"
 #include "MGUI_Input.h"
-#include "MGUI_Util.h"
 
 namespace Myway {
 

@@ -8,7 +8,102 @@
     <ClCompile Include="MGUI_System.cpp" />
     <ClCompile Include="MGUI_Texture.cpp" />
     <ClCompile Include="MGUI_VertexBuffer.cpp" />
-    <ClCompile Include="MGUI_Util.cpp" />
+    <ClCompile Include="MGUI_Types.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Widget.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Layout.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_LookFeel.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Shader.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_RenderItem.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Helper.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Engine.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_ShaderDefault.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Serializer.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Event.cpp">
+      <Filter>MGUI\Event</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Font.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_EngineInput.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Timer.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Button.cpp">
+      <Filter>MGUI\Control\Button</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_CheckBox.cpp">
+      <Filter>MGUI\Control\CheckBox</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_EditBox.cpp">
+      <Filter>MGUI\Control\EditBox</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_HScrollBar.cpp">
+      <Filter>MGUI\Control\ScrollBar</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_VScrollBar.cpp">
+      <Filter>MGUI\Control\ScrollBar</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_ImageBox.cpp">
+      <Filter>MGUI\Control\ImageBox</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Label.cpp">
+      <Filter>MGUI\Control\Label</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_ListBox.cpp">
+      <Filter>MGUI\Control\ListBox</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Scroll.cpp">
+      <Filter>MGUI\Control\ScrollBar</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_ListBoxItem.cpp">
+      <Filter>MGUI\Control\ListBox</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Slider.cpp">
+      <Filter>MGUI\Control\Slider</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_VSlider.cpp">
+      <Filter>MGUI\Control\Slider</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_HSlider.cpp">
+      <Filter>MGUI\Control\Slider</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_ProgressBar.cpp">
+      <Filter>MGUI\Control\ProgressBar</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Panel.cpp">
+      <Filter>MGUI\Control\Panel</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_ComboBox.cpp">
+      <Filter>MGUI\Control\ComboBox</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_String.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_Clipboard.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MGUI_DataManager.h" />
@@ -18,6 +113,166 @@
     <ClInclude Include="MGUI_System.h" />
     <ClInclude Include="MGUI_Texture.h" />
     <ClInclude Include="MGUI_VertexBuffer.h" />
-    <ClInclude Include="MGUI_Util.h" />
+    <ClInclude Include="MGUI_Types.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Widget.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Layout.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_LookFeel.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Shader.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_RenderItem.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Helper.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Engine.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_ShaderDefault.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Serializer.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event0.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event1.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event2.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event3.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event4.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event5.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event6.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Font.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Event.h">
+      <Filter>MGUI\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Timer.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Button.h">
+      <Filter>MGUI\Control\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_CheckBox.h">
+      <Filter>MGUI\Control\CheckBox</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_EditBox.h">
+      <Filter>MGUI\Control\EditBox</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_HScrollBar.h">
+      <Filter>MGUI\Control\ScrollBar</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_VScrollBar.h">
+      <Filter>MGUI\Control\ScrollBar</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_ImageBox.h">
+      <Filter>MGUI\Control\ImageBox</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Label.h">
+      <Filter>MGUI\Control\Label</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_ListBox.h">
+      <Filter>MGUI\Control\ListBox</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Scroll.h">
+      <Filter>MGUI\Control\ScrollBar</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_ListBoxItem.h">
+      <Filter>MGUI\Control\ListBox</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Slider.h">
+      <Filter>MGUI\Control\Slider</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_VSlider.h">
+      <Filter>MGUI\Control\Slider</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_HSlider.h">
+      <Filter>MGUI\Control\Slider</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_ProgressBar.h">
+      <Filter>MGUI\Control\ProgressBar</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Panel.h">
+      <Filter>MGUI\Control\Panel</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_ComboBox.h">
+      <Filter>MGUI\Control\ComboBox</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_String.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_Clipboard.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="MGUI">
+      <UniqueIdentifier>{ef54da1b-fd88-44d4-8aa4-6ef8f5f7de4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Event">
+      <UniqueIdentifier>{8289af0f-e4d0-4ef8-bb9a-c2cd2cb92a81}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control">
+      <UniqueIdentifier>{5a86351c-a96c-411a-8030-e06d2879f573}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\Button">
+      <UniqueIdentifier>{36cc9a0a-8683-470d-aff6-2f00461df44c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\CheckBox">
+      <UniqueIdentifier>{4904b6c3-5b4f-4e6f-be9d-7213fb5cbae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\EditBox">
+      <UniqueIdentifier>{5fe1d9dc-4881-4551-b60d-e7f49afd93f9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\ScrollBar">
+      <UniqueIdentifier>{904aa2a1-f456-4b8e-b296-b5eae9ed2393}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\ImageBox">
+      <UniqueIdentifier>{8ed709f3-60fc-4f02-853a-a4284d9b4860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\Label">
+      <UniqueIdentifier>{ffa7e538-7e37-4ff3-8cd9-9f10b6ef7ee2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\ListBox">
+      <UniqueIdentifier>{5b9ef21c-1143-4245-b537-fce6cb86225d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\Slider">
+      <UniqueIdentifier>{84970235-5a0a-4999-92c0-75b607600cf2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\ProgressBar">
+      <UniqueIdentifier>{7e10747a-ab13-4703-a41f-543030344239}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\Panel">
+      <UniqueIdentifier>{14744029-cf89-4f44-b6c1-4d925afb8d8d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\ComboBox">
+      <UniqueIdentifier>{d31903c5-1bd1-4c08-a529-89a2d2b97e53}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>

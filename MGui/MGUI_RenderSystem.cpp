@@ -39,9 +39,9 @@ namespace Myway {
 	
 		mUpdate = false;
 
-		mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Shaders\\MGui.ShaderLib", "Shaders\\MGui.ShaderLib");
+		mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("Shaders\\MGUI.ShaderLib", "Shaders\\MGUI.ShaderLib");
 		d_assert (mShaderLib);
-		mDefaultTech = mShaderLib->GetTechnique("MGui_Default");
+		mDefaultTech = mShaderLib->GetTechnique("MGUI_Default");
 		d_assert (mDefaultTech);
 
 		mVertexDecl = VideoBufferManager::Instance()->CreateVertexDeclaration();
