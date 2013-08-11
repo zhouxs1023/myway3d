@@ -43,6 +43,10 @@ namespace tools
 			SetResourceConfig("Res_SkinEditor.ini");
 			App_Win32::Init();
 
+			mRenderer = new DeferredRenderer;
+
+			Engine::Instance()->SetRenderScheme(mRenderer);
+
 			mUISystem.Init();
 
 			bool hr = MyGUI::ResourceManager::getInstance().load("MyGUI_BlackBlueTheme.xml");
@@ -62,6 +66,8 @@ namespace tools
 			mPointManager.destroyPointerManager();
 
 			mUISystem.Shutdown();
+
+			delete mRenderer;
 
 			App_Win32::Shutdown();
 		}
@@ -111,6 +117,8 @@ namespace tools
 		void command_QuitApp(const MyGUI::UString& _commandName, bool& _result);
 
 	private:
+		DeferredRenderer * mRenderer;
+
 		MGUI_System mUISystem;
 		input::PointerManager mPointManager;
 

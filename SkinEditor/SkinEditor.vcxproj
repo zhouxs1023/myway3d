@@ -41,7 +41,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;./Common</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../Myway;../Myway/core;../Myway/Math;../Myway/Engine;../Myway/Sound;../Myway/AI;..\ThirdParty\xml;../Myway/AudioSystem;../Myway/InputSystem;../Myway/RenderSystem;../Myway/Physics;../MGui;../ThirdParty/MyGui/include;./Common;..\MRenderPlugin</AdditionalIncludeDirectories>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Precompiled.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -49,7 +49,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <OutputFile>../bin/Debug/SkinEditor.exe</OutputFile>
       <AdditionalLibraryDirectories>../bin/lib;../ThirdParty/MyGui/bin</AdditionalLibraryDirectories>
-      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>myway_d.lib;MGui_d.lib;MyGuiEngine_d.lib;MRender_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -317,7 +317,7 @@ namespace Myway {
 		vb->Unlock();
 
 		vxStream.SetDeclaration(vdecl);
-		vxStream.Bind(0, sm->GetVertexStream()->GetStream(0), sm->GetVertexStream()->GetStreamStride(0), Vegs.Size());
+		vxStream.Bind(0, sm->GetVertexStream()->GetStream(0), 0, Vegs.Size());
 		vxStream.Bind(1, vb, 16);
 		vxStream.SetCount(sm->GetVertexStream()->GetCount());
 
