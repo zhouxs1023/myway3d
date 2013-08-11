@@ -207,7 +207,7 @@ void Mesh::GenColMeshFromRenderMesh()
 		d_assert (vep && vep->Type == DT_FLOAT3);
 
 		VertexBufferPtr vb = subMesh->GetVertexStream()->GetStream(vep->Stream);
-		int stride = subMesh->GetVertexStream()->GetStreamStride(vep->Stream);
+		int stride = subMesh->GetVertexStream()->GetStream(vep->Stream)->GetStride();
 
 		char * vertData = (char *)vb->Lock(0, 0, LOCK_READONLY);
 		{
@@ -271,7 +271,7 @@ void Mesh::CalcuBounds()
         if (ve.Stream != DECL_UNUSED)
         {
             VertexBufferPtr buffer = vs->GetStream(ve.Stream);
-            int stride = vs->GetStreamStride(ve.Stream);
+            int stride = vs->GetStream(ve.Stream)->GetStride();
             if (buffer.NotNull())
             {
                 char * data = (char *)buffer->Lock(0, 0, LOCK_READONLY);

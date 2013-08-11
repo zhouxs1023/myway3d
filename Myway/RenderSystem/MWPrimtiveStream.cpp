@@ -4,7 +4,6 @@ using namespace Myway;
 
 VertexStream::VertexStream()
 {
-	Memzero(mStrides, sizeof(int) * MAX_VERTEX_STREAM);
     Memzero(mInstances, sizeof(int) * MAX_VERTEX_STREAM);
 
 	mStart = 0;
@@ -25,23 +24,17 @@ VertexDeclarationPtr VertexStream::GetDeclaration() const
     return mDeclaration;
 }
 
-void VertexStream::Bind(int number, VertexBufferPtr stream, int stride, int instance)
+void VertexStream::Bind(int number, VertexBufferPtr stream, int unused, int instance)
 {
     assert (number < MAX_VERTEX_STREAM);
 
     mStreams[number] = stream;
-    mStrides[number] = stride;
 	mInstances[number] = instance;
 }
 
 VertexBufferPtr VertexStream::GetStream(int index) const
 {
     return mStreams[index];
-}
-
-int VertexStream::GetStreamStride(int index) const
-{
-    return mStrides[index];
 }
 
 int VertexStream::GetStreamInstance(int index) const
@@ -72,7 +65,6 @@ VertexStream & VertexStream::operator =(const VertexStream & r)
 
     for (int i = 0; i < MAX_VERTEX_STREAM; ++i)
     {
-        mStrides[i] = r.GetStreamStride(i);
         mStreams[i] = r.GetStream(i);
     }
 
