@@ -1,0 +1,22 @@
+
+<ShaderLib>
+
+	<Shaders>
+
+		<Shader name = "SkinRendererVS" language = "cg" profile = "vs30" source = "UIEditor_SkinRenderer.vs" >
+		</Shader>
+
+		<Shader name = "SkinRendererPS" language = "cg" profile = "ps30" source = "UIEditor_SkinRenderer.ps" >
+		</Shader>
+    
+  </Shaders>
+
+  
+	<Techniques>
+    
+		<Technique name = "SkinRenderer" vs = "SkinRendererVS" ps = "SkinRendererPS">
+		</Technique>
+    
+	</Techniques>
+
+</ShaderLib>

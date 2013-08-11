@@ -1,0 +1,23 @@
+/////////////////////////////////////////////////////////////////////////
+//
+//
+//
+struct PS_IN
+{
+	float2 bkuv		: TEXCOORD0;
+	float2 uv		: TEXCOORD1;
+};
+
+uniform sampler2D gBackTex;
+uniform sampler2D gSkinTex;
+
+float4 main(PS_IN In) : COLOR
+{
+	float4 backColor = tex2D(gBackTex, In.bkuv);
+	float4 skinColor = tex2D(gSkinTex, In.uv);
+
+	//backColor.rgb = lerp(backColor.rgb, skinColor.rgb, skinColor.a);
+
+	return backColor;
+}
+

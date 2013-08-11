@@ -1,0 +1,11 @@
+
+
+<Font>
+
+	<FontSource value = "simsun.ttc" />
+	<Resolution value = "72" />
+	<CharSize value = "20" />
+
+  <CharRange low = "32" high = "126"/>	
+
+</Font>
