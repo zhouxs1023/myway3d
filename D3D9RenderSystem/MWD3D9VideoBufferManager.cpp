@@ -50,6 +50,7 @@ VertexBufferPtr D3D9VideoBufferManager::CreateVertexBuffer(
 
     pVB->mD3D9VertexBuffer = pD3DVB;
     pVB->mSize = size;
+	pVB->mStride = stride;
     pVB->mUsage = usage;
 
     mVertexBuffers.PushBack(pVB);
