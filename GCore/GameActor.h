@@ -5,7 +5,7 @@
 
 class GameComponent_AI;
 
-class GCORE_ENTRY GameActor : public IGameObject, public IGameEntity
+class GCORE_ENTRY GameActor : public IGameObject
 {
 	DeclareRTTI();
 

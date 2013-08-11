@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GameCoreEntry.h"
+#include "GameEntity.h"
 
 class IGameObject;
 
@@ -45,7 +46,7 @@ protected:
 
 
 
-class GCORE_ENTRY IGameObject
+class GCORE_ENTRY IGameObject : public IGameEntity
 {
 	DeclareRootRTTI(IGameObject);
 

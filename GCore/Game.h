@@ -2,23 +2,32 @@
 
 #include "MWApp_Win32.h"
 #include "GameMode.h"
+#include "GUI_Util.h"
 
-class GCORE_ENTRY Game : public App_Win32
-{
-public:
-	Game();
-	~Game();
+namespace Game {
 
-	virtual bool Init();
-	virtual void Shutdown();
-	virtual void Update();
-	virtual void OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam);
+	class GCORE_ENTRY Game
+	{
+		DECLARE_SINGLETON(Game);
 
-	void SetMode(IGameMode * mode);
+	public:
+		Game();
+		~Game();
 
-protected:
-	MGUI_System mUISystem;
-	RenderScheme * mRenderer;
+		void Init();
+		void Shutdown();
+		void Update();
 
-	IGameMode * mCurrentMode;
-};
+		void SetMode(IGameMode * mode);
+		IGameMode * GetMode();
+
+		ShaderLib * GetShaderLib() { return mShaderLib; }
+
+	protected:
+		ShaderLib * mShaderLib;
+		MGUI_Util mUIUtil;
+
+		IGameMode * mCurrentMode;
+	};
+
+}

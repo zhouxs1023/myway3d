@@ -21,6 +21,9 @@ public:
 	void SetScale(float x);
 	float GetScale();
 
+	void SetVisible(bool b);
+	bool IsVisible();
+
 	Node * GetNode() { return mNode; }
 
 protected:

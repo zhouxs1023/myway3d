@@ -15,19 +15,19 @@ public:
 	void SetTimeDelay(float time);
 	float GetTimeDelay();
 	
-	void SetSender(int id);
-	int GetSender();
+	void SetSenderId(int id);
+	int GetSenderId();
 
-	void AddReceiver(int id);
-	int GetReceiverCount();
-	int GetReceiver(int index);
-	bool HasReceiver(int id);
+	void SetReceiverId(int id);
+	int GetReceiverId();
 
 	virtual void Do() = 0;
 
 protected:
-	int mId;
-	int mSender;
 	float mTimeDelay;
-	Array<int> mReceivers;
+
+	int mId;
+
+	int mSenderId;
+	int mReceiverId;
 };

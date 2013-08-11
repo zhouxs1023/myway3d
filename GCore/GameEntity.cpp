@@ -50,3 +50,13 @@ float IGameEntity::GetScale()
 {
 	return mNode->GetScale().x;
 }
+
+void IGameEntity::SetVisible(bool b)
+{
+	mNode->SetVisible(b);
+}
+
+bool IGameEntity::IsVisible()
+{
+	return mNode->IsVisible();
+}

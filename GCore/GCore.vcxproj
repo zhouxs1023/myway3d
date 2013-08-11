@@ -32,6 +32,7 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\Build\Game.props" />
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
@@ -73,6 +74,7 @@
     <ClCompile Include="GameAI.cpp" />
     <ClCompile Include="GameCameraController.cpp" />
     <ClCompile Include="GameHelper.cpp" />
+    <ClCompile Include="GameMesh.cpp" />
     <ClCompile Include="GameMessage.cpp" />
     <ClCompile Include="GameMode.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -81,6 +83,8 @@
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameNpc.cpp" />
     <ClCompile Include="GameSerializer.cpp" />
+    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="GUI_Util.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -92,6 +96,7 @@
     <ClInclude Include="GameAI.h" />
     <ClInclude Include="GameCameraController.h" />
     <ClInclude Include="GameHelper.h" />
+    <ClInclude Include="GameMesh.h" />
     <ClInclude Include="GameMessage.h" />
     <ClInclude Include="GameMode.h" />
     <ClInclude Include="GameObject.h" />
@@ -102,6 +107,8 @@
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameNpc.h" />
     <ClInclude Include="GameSerializer.h" />
+    <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="GUI_Util.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

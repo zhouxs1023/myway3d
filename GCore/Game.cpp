@@ -1,75 +1,47 @@
 #include "stdafx.h"
 #include "Game.h"
 
+namespace Game {
+
+Game * Game::msInstance = NULL;
+
 Game::Game()
+	: mCurrentMode(NULL)
+	, mShaderLib(NULL)
 {
+	msInstance = this;
 }
 
 Game::~Game()
 {
+	msInstance = NULL;
 }
 
-bool Game::Init()
+void Game::Init()
 {
-	SetResourceConfig("game_res.ini");
-	SetPluginConfig("game_plugin.ini");
+	mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("GameShaderLib", "Game.ShaderLib");
+	d_assert (mShaderLib);
 
-	App_Win32::Init();
-
-	mRenderer = new DeferredRenderer();
-
-	Engine::Instance()->SetRenderScheme(mRenderer);
-
-	mUISystem.Init();
+	mUIUtil.Init();
 
 	mCurrentMode = NULL;
-
-	//bool hr = MyGUI::ResourceManager::getInstance().load("Editor.xml"); d_assert (hr);
-
-	return true;
 }
 
 void Game::Shutdown()
 {
-	mCurrentMode->Shutdown();
+	mUIUtil.Shutdown();
 
-	delete mCurrentMode;
-
-	mUISystem.Shutdown();
-
-	delete mRenderer;
-
-	App_Win32::Shutdown();
+	if (mCurrentMode)
+	{
+		mCurrentMode->Shutdown();
+		delete mCurrentMode;
+	}
 }
 
 void Game::Update()
 {
-	App_Win32::Update();
-
-	InputSystem::Instance()->Update();
-
-	mUISystem.InjectMouseEvent();
-
 	if (mCurrentMode)
 		mCurrentMode->Update(Engine::Instance()->GetFrameTime());
-}
-
-void Game::OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
-{
-	if (mhWnd == hWnd && iMsg == WM_SIZE)
-	{
-		if (wParam != SIZE_MINIMIZED)
-		{
-			RECT rc;
-
-			GetClientRect(hWnd, &rc);
-
-			Engine::Instance()->Resize(rc.right - rc.left, rc.bottom - rc.top);
-			mRenderer->Resize(rc.right - rc.left, rc.bottom - rc.top);
-		}
-	}
-
-	mUISystem.InjectKeyEvent(iMsg, wParam, lParam);
 }
 
 void Game::SetMode(IGameMode * mode)
@@ -86,3 +58,10 @@ void Game::SetMode(IGameMode * mode)
 	mCurrentMode->Init();
 }
 
+IGameMode * Game::GetMode()
+{
+	return mCurrentMode;
+}
+
+
+}

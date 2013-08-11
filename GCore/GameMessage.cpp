@@ -5,7 +5,8 @@
 
 IGameMessage::IGameMessage(int id)
 	: mId(id)
-	, mSender(-1)
+	, mSenderId(-1)
+	, mReceiverId(-1)
 	, mTimeDelay(0)
 {
 }
@@ -24,41 +25,22 @@ float IGameMessage::GetTimeDelay()
 	return mTimeDelay;
 }
 
-void IGameMessage::SetSender(int id)
+void IGameMessage::SetSenderId(int id)
 {
-	mSender = id;
+	mSenderId = id;
 }
 
-int IGameMessage::GetSender()
+int IGameMessage::GetSenderId()
 {
-	return mSender;
+	return mSenderId;
 }
 
-void IGameMessage::AddReceiver(int id)
+void IGameMessage::SetReceiverId(int id)
 {
-	d_assert (id != -1);
-
-	if (!HasReceiver(id))
-		mReceivers.PushBack(id);
+	mReceiverId = id;
 }
 
-int IGameMessage::GetReceiverCount()
+int IGameMessage::GetReceiverId()
 {
-	return mReceivers.Size();
-}
-
-int IGameMessage::GetReceiver(int index)
-{
-	return mReceivers[index];
-}
-
-bool IGameMessage::HasReceiver(int id)
-{
-	for (int i = 0; i < mReceivers.Size(); ++i)
-	{
-		if (mReceivers[i] == id)
-			return true;
-	}
-
-	return false;
+	return mReceiverId;
 }

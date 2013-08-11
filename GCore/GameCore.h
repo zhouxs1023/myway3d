@@ -9,3 +9,4 @@
 #include "GameActor.h"
 #include "GameNpc.h"
 #include "GameAI.h"
+#include "GameWorld.h"
