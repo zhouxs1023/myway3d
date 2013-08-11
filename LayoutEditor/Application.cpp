@@ -39,7 +39,7 @@ namespace tools
 		: mUISystem()
 		, mEditorState(nullptr)
 		, mTestState(nullptr)
-		, OnKeyPress(&mUISystem.OnKeyPress, this, &Application::_OnKeyPress)
+		, OnKeyPress(mUISystem.OnKeyPress, this, &Application::_OnKeyPress)
 	{
 	}
 
