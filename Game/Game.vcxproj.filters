@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="App.cpp">
+      <Filter>GameApp</Filter>
+    </ClCompile>
+    <ClCompile Include="cMainMode.cpp">
+      <Filter>游戏模式\游戏</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="App.h">
+      <Filter>GameApp</Filter>
+    </ClInclude>
+    <ClInclude Include="cMainMode.h">
+      <Filter>游戏模式\游戏</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="GameApp">
+      <UniqueIdentifier>{9c68a6ef-cd57-4e27-831a-7d7d644d27c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏模式">
+      <UniqueIdentifier>{2bc808fd-8912-4195-b056-8b4bd4222231}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏模式\角色">
+      <UniqueIdentifier>{69cd2ad6-b2d2-4c9e-8597-712b2dc983bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏模式\游戏">
+      <UniqueIdentifier>{b86a9f7a-05ed-48dc-ab98-ce5c1747f55b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="游戏模式\登陆">
+      <UniqueIdentifier>{7c4c540e-2e0b-4e72-883c-918a68eecff2}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
