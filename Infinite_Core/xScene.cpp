@@ -68,6 +68,27 @@ namespace Infinite {
 		dlg->DoModal();
 	}
 
+	/*void xScene::Export()
+	{
+		FileDialog * dlg = Editor::Instance()->getFileDialog();
+
+		dlg->clearFileExt();
+		dlg->eventEndDialog = MyGUI::newDelegate(this, &xScene::notifyExport);
+
+		for (int i = 0; i < Editor::Instance()->GetPluginCount(); ++i)
+		{
+			iPlugin * plugin = Editor::Instance()->GetPlugin(i);
+
+			if (!(plugin->GetUsages() | iPlugin::eExport))
+				continue ;
+
+			TString128 ext = TString128(".") + plugin->GetImpExtern();
+
+			dlg->addFileExt(ext.c_wstr());
+		}
+
+		dlg->DoModal();
+	}*/
 
 	bool xScene::Load(const char * filename, const char * floder)
 	{
@@ -154,6 +175,31 @@ namespace Infinite {
 
 	void xScene::Export()
 	{
+		if (!IsInited())
+			return ;
+
+		TString128 sceneFile = mFloder + "\\" + mFilename;
+
+		iPlugin * plugin = NULL;
+
+		for (int i = 0; i < Editor::Instance()->GetPluginCount(); ++i)
+		{
+			iPlugin * _p = Editor::Instance()->GetPlugin(i);
+
+			if (_p->GetUsages() & iPlugin::eExport)
+			{
+				plugin = _p;
+				break;
+			}
+		}
+
+		if (plugin == NULL)
+			return ;
+
+		TString128 saveFile = File::RemoveExternName(sceneFile);
+		saveFile += plugin->GetExpExtern();
+
+		plugin->Export(saveFile.c_str());
 	}
 
 	void xScene::DirtSave()
@@ -181,7 +227,7 @@ namespace Infinite {
 		{
 			iPlugin * _p = Editor::Instance()->GetPlugin(i);
 
-			if (!(_p->GetUsages() | iPlugin::eImport))
+			if (!(_p->GetUsages() & iPlugin::eImport))
 				continue ;
 
 			if (ext == _p->GetImpExtern())

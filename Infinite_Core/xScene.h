@@ -28,7 +28,6 @@ public:
 	void Save();
 
 	void Import(const char * filename, const char * floder);
-
 	void Export();
 
 	bool IsInited() { return mFilename != ""; }

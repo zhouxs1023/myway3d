@@ -96,6 +96,11 @@ namespace Infinite {
 	void MainMenu::OnExport()
 	{
 		mMode = eOnExport;
+
+		if (xScene::Instance()->IsInited())
+		{
+			xScene::Instance()->Export();
+		}
 	}
 
 	void MainMenu::OnNew()
@@ -125,11 +130,6 @@ namespace Infinite {
 			{
 				MMessageBox::Instance()->DoModal("Scene File Exit!", "Error");
 			}
-		}
-
-		else if (mMode == eOnImport)
-		{
-			xScene::Instance()->Import(mSceneDialog->GetSceneName().c_str(), mSceneDialog->GetSceneFloder().c_str());
 		}
 	}
 
