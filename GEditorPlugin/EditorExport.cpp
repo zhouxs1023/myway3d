@@ -19,12 +19,14 @@ void EditorExport::Export(const char * filename)
 	SaveForest(file);
 	SaveParticle(file);
 	SaveSound(file);
+
+	file.Close();
 }
 
 void EditorExport::SaveHead(File & file)
 {
-	int Magic = Game::GameWorld::K_FILE_MAGIC;
-	int Version = Game::GameWorld::K_FILE_VERSION;
+	int Magic = GmMap::K_FILE_MAGIC;
+	int Version = GmMap::K_FILE_VERSION;
 
 	file.Write(&Magic, sizeof(int));
 	file.Write(&Version, sizeof(int));
@@ -32,22 +34,38 @@ void EditorExport::SaveHead(File & file)
 
 void EditorExport::SaveEnvironment(File & file)
 {
-	const int K_Version = Game::GameWorld::K_Enviroment_Version;
+	int ckId = GmMap::FCI_Enviroment;
+	const int K_Version = GmMap::K_Enviroment_Version;
 
+	file.Write(&ckId, sizeof(int));
 	file.Write(&K_Version, sizeof(int));
+
+	EvKeyFrame * kNight = Environment::Instance()->GetKeyFrame(EVKT_Night);
+	EvKeyFrame * kMorning = Environment::Instance()->GetKeyFrame(EVKT_Morning);
+	EvKeyFrame * kNoon = Environment::Instance()->GetKeyFrame(EVKT_Noon);
+	EvKeyFrame * kEvening = Environment::Instance()->GetKeyFrame(EVKT_Evening);
+	EvGlobalParam * kGlobal = Environment::Instance()->GetGlobalParam();
+
+	file.WriteProperty(kNight);
+	file.WriteProperty(kMorning);
+	file.WriteProperty(kNoon);
+	file.WriteProperty(kEvening);
+	file.WriteProperty(kGlobal);
 }
 
 void EditorExport::SaveTerrain(File & file)
 {
-	const int K_Version = Game::GameWorld::K_Terrain_Version;
+	int ckId = GmMap::FCI_Terrain;
+	int K_Version = GmMap::K_Terrain_Version;
 
+	file.Write(&ckId, sizeof(int));
 	file.Write(&K_Version, sizeof(int));
 }
 
 void EditorExport::SaveMesh(File & file)
 {
-	int ckId = Game::GameWorld::FCI_Mesh;
-	int ckVr = Game::GameWorld::K_Mesh_Version;
+	int ckId = GmMap::FCI_Mesh;
+	int ckVr = GmMap::K_Mesh_Version;
 
 	file.Write(&ckId, sizeof(int));
 	file.Write(&ckVr, sizeof(int));

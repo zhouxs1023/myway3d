@@ -2,7 +2,7 @@
 
 #include "GameCore.h"
 
-class EditorGameMode : public IGameMode
+class EditorGameMode : public GmMode
 {
 	DECLARE_SINGLETON(EditorGameMode);
 
@@ -14,5 +14,5 @@ public:
 	void Shutdown();
 
 protected:
-	GameDataManager mDataManager;
+	GmDataManager mDataManager;
 };

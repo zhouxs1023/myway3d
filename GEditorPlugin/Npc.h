@@ -42,7 +42,7 @@ namespace game {
 		virtual bool OnPropertyChanged(const Property * p);
 
 	protected:
-		GameNpc * mNpc;
+		GmNpc * mNpc;
 	};
 
 

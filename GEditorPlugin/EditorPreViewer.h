@@ -9,7 +9,7 @@ namespace game {
 
 	using namespace Infinite;
 
-	class xPreViewerPlayer : public GameNpc
+	class xPreViewerPlayer : public GmNpc
 	{
 	public:
 		xPreViewerPlayer();
@@ -19,13 +19,13 @@ namespace game {
 	};
 
 
-	class xPreViewerCameraController : public GameCameraController
+	class xPreViewerCameraController : public GmCameraController
 	{
 	public:
 		xPreViewerCameraController();
 		~xPreViewerCameraController();
 
-		virtual void SetObject(IGameObject * obj);
+		virtual void SetObject(GmObj * obj);
 
 	protected:
 		Vec3 mOrigPos;

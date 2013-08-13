@@ -19,7 +19,7 @@ namespace game {
 		Orientation = Quat::Identity;
 		Scale = 1;
 
-		mNpc = new GameNpc(0);
+		mNpc = new GmNpc(0);
 		mNpc->SetId(EditorGameMode::Instance()->GetUId());
 		mNpc->Init();
 

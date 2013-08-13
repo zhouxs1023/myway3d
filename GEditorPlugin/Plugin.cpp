@@ -2,6 +2,7 @@
 
 #include "Plugin.h"
 #include "Npc.h"
+#include "EditorExport.h"
 
 namespace game {
 
@@ -18,6 +19,9 @@ namespace game {
 
 	void GamePlugin::Export(const char * filename)
 	{
+		EditorExport exp;
+
+		exp.Export(filename);
 	}
 
 	void GamePlugin::_OnInit(Event * _sender)

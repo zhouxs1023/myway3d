@@ -7,7 +7,7 @@
 namespace game {
 
 xPreViewerPlayer::xPreViewerPlayer()
-	: GameNpc(0)
+	: GmNpc(0)
 {
 }
 
@@ -26,9 +26,9 @@ xPreViewerCameraController::~xPreViewerCameraController()
 {
 }
 
-void xPreViewerCameraController::SetObject(IGameObject * obj)
+void xPreViewerCameraController::SetObject(GmObj * obj)
 {
-	GameCameraController::SetObject(obj);
+	GmCameraController::SetObject(obj);
 
 	mOrigPos = World::Instance()->MainCamera()->GetPosition();
 	mOrigOrt = World::Instance()->MainCamera()->GetOrientation();
@@ -61,7 +61,7 @@ void xPreViewerListener::_OnUpdate(Event * sender)
 
 	if (IMouse::Instance()->KeyUp(MKC_BUTTON0) && RenderWindow::Instance()->GetViewRay(ray))
 	{
-		GameEngine::RayCheckInfo info = GameEngine::RayCheck(ray, 500);
+		GmEngine::RayCheckInfo info = GmEngine::RayCheck(ray, 500);
 
 		if (info.bPicked)
 		{
