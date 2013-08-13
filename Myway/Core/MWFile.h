@@ -6,6 +6,8 @@
 namespace Myway
 {
 
+struct IPropertyObj;
+
 enum OPEN_MODE
 {
 	OM_READ						= 1,
@@ -61,6 +63,9 @@ public:
     bool ReadLine(String & data);
     bool ReadString(String & data);
     bool WriteString(const String & data);
+	
+	void WriteProperty(IPropertyObj * obj);
+	void ReadProperty(IPropertyObj * obj);
 
     static TString128 GetExternName(const TString128 & file);
 	static TString128 GetFileDir(const TString128 & file);

@@ -1,5 +1,7 @@
 #include "MWFile.h"
 #include "MWDebug.h"
+#include "MWProperty.h"
+
 #include <io.h>
 
 #ifdef MW_PLATFORM_WIN32
@@ -384,5 +386,49 @@ bool File::Exist(const TString128 & file)
 	return ::_access(file.c_str(), 0) != -1;
 }
 
+void File::WriteProperty(IPropertyObj * obj)
+{
+	int iPropertySize = obj->GetPropertySize();
+
+	for (int j = 0; j < iPropertySize; ++j)
+	{
+		const Property * p = obj->GetProperty(j);
+		const void * data = obj->GetPropertyData(p);
+
+		Write(p->name.c_str(), 128);
+		Write(&p->size, sizeof(int));
+
+		Write(data, p->size);
+	}
+
+	Write(TString128("_eof").c_str(), 128);
+}
+
+void File::ReadProperty(IPropertyObj * obj)
+{
+	char buffer[1024];
+
+	while (1)
+	{
+		TString128 name;
+		int size;
+
+		Read(name.c_str(), 128);
+
+		if (name == "_eof")
+			break;
+
+		Read(&size, sizeof(int));
+
+		d_assert (size < 1024);
+
+		Read(buffer, size);
+
+		const Property * p = obj->GetProperty(name.c_str());
+
+		if (p)
+			obj->SetPropertyData(p, buffer);
+	}
+}
 
 #pragma warning(pop)
