@@ -2,16 +2,12 @@
 
 #include "GameEntity.h"
 
-namespace Game {
+class GmMesh : public GmEntity
+{
+public:
+	GmMesh(const char * sMeshFile);
+	virtual ~GmMesh();
 
-
-	class GameMesh : public IGameEntity
-	{
-	public:
-		GameMesh(const char * sMeshFile);
-		virtual ~GameMesh();
-
-	protected:
-		Entity * mEntity;
-	};
-}
+protected:
+	Entity * mEntity;
+};

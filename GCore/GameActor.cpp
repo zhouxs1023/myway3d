@@ -12,9 +12,9 @@ TString128 _ActorPartName[] = {
 	TString128("Shoes")
 };
 
-ImplementRTTI(GameActor, IGameObject);
+ImplementRTTI(GmActor, GmObj);
 
-GameActor::GameActor()
+GmActor::GmActor()
 {
 	for (int i = 0; i < PT_Max; ++i)
 	{
@@ -22,7 +22,7 @@ GameActor::GameActor()
 	}
 }
 
-GameActor::~GameActor()
+GmActor::~GmActor()
 {
 	for (int i = 0; i < PT_Max; ++i)
 	{
@@ -31,46 +31,46 @@ GameActor::~GameActor()
 	}
 }
 
-GameComponent_AI * GameActor::GetAIComponent()
+GmCompAI * GmActor::GetAGmComponent()
 {
 	for (int i = 0; i < mComponents.Size(); ++i)
 	{
-		if (RTTI_KindOf(GameComponent_AI, mComponents[i]))
-			return RTTI_StaticCast(GameComponent_AI, mComponents[i]);
+		if (RTTI_KindOf(GmCompAI, mComponents[i]))
+			return RTTI_StaticCast(GmCompAI, mComponents[i]);
 	}
 
 	return NULL;
 }
 
 
-void GameActor::Init()
+void GmActor::Init()
 {
-	GameComponent_AI * pAIComp = new GameComponent_AI;
+	GmCompAI * pAIComp = new GmCompAI;
 
 	AddComponent(pAIComp);
 
 	Idle();
 }
 
-void GameActor::Idle()
+void GmActor::Idle()
 {
-	GameComponent_AI * pAIComp = GetAIComponent();
+	GmCompAI * pAIComp = GetAGmComponent();
 
 	d_assert (pAIComp != NULL);
 
-	pAIComp->ChangeState(new GameAIState_Idle);
+	pAIComp->ChangeState(new AIState_Idle);
 }
 
-void GameActor::MoveTo(const Vec3 & pos)
+void GmActor::MoveTo(const Vec3 & pos)
 {
-	GameComponent_AI * pAIComp = GetAIComponent();
+	GmCompAI * pAIComp = GetAGmComponent();
 
 	d_assert (pAIComp != NULL);
 
-	pAIComp->ChangeState(new GameAIState_Move(pos));
+	pAIComp->ChangeState(new AIState_Move(pos));
 }
 
-void GameActor::SetPart(PartType type, const char * mesh)
+void GmActor::SetPart(PartType type, const char * mesh)
 {
 	if (mActor[type])
 	{
@@ -88,8 +88,8 @@ void GameActor::SetPart(PartType type, const char * mesh)
 	mNode->Attach(mActor[type]);
 }
 
-void GameActor::PlayAnimation(const char * anim, const MotionBlendInfo & mbi)
+void GmActor::PlayAnimation(const char * anim, const MotionBlendInfo & mbi)
 {
 	d_assert (mActor[Main] != NULL);
-	mActor[GameActor::Main]->PlayAnimation(anim, mbi);
+	mActor[GmActor::Main]->PlayAnimation(anim, mbi);
 }

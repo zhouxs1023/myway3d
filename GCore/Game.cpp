@@ -1,25 +1,23 @@
 #include "stdafx.h"
 #include "Game.h"
 
-namespace Game {
+GmRoot * GmRoot::msInstance = NULL;
 
-Game * Game::msInstance = NULL;
-
-Game::Game()
+GmRoot::GmRoot()
 	: mCurrentMode(NULL)
 	, mShaderLib(NULL)
 {
 	msInstance = this;
 }
 
-Game::~Game()
+GmRoot::~GmRoot()
 {
 	msInstance = NULL;
 }
 
-void Game::Init()
+void GmRoot::Init()
 {
-	mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("GameShaderLib", "Game.ShaderLib");
+	mShaderLib = ShaderLibManager::Instance()->LoadShaderLib("ShaderLib", "Game.ShaderLib");
 	d_assert (mShaderLib);
 
 	mUIUtil.Init();
@@ -27,7 +25,7 @@ void Game::Init()
 	mCurrentMode = NULL;
 }
 
-void Game::Shutdown()
+void GmRoot::Shutdown()
 {
 	mUIUtil.Shutdown();
 
@@ -38,13 +36,13 @@ void Game::Shutdown()
 	}
 }
 
-void Game::Update()
+void GmRoot::Update()
 {
 	if (mCurrentMode)
 		mCurrentMode->Update(Engine::Instance()->GetFrameTime());
 }
 
-void Game::SetMode(IGameMode * mode)
+void GmRoot::SetMode(GmMode * mode)
 {
 	d_assert (mode != NULL);
 
@@ -58,10 +56,8 @@ void Game::SetMode(IGameMode * mode)
 	mCurrentMode->Init();
 }
 
-IGameMode * Game::GetMode()
+GmMode * GmRoot::GetMode()
 {
 	return mCurrentMode;
 }
 
-
-}

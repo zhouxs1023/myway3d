@@ -2,13 +2,13 @@
 
 #include "GameCoreEntry.h"
 
-class IGameObject;
+class GmObj;
 
-class GCORE_ENTRY IGameMessage 
+class GCORE_ENTRY GmMsg 
 {
 public:
-	IGameMessage(int id);
-	virtual ~IGameMessage();
+	GmMsg(int id);
+	virtual ~GmMsg();
 
 	int GetId() const { return mId; }
 

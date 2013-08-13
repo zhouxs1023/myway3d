@@ -3,28 +3,28 @@
 #include "GameAI.h"
 #include "GameHelper.h"
 
-ImplementRootRTTI(IGameAIState);
+ImplementRootRTTI(GmAIState);
 
-ImplementRTTI(GameComponent_AI, IGameComponent);
+ImplementRTTI(GmCompAI, GmComponent);
 
 
-GameComponent_AI::GameComponent_AI()
+GmCompAI::GmCompAI()
 {
 	mCurrentState = NULL;
 }
 
-GameComponent_AI::~GameComponent_AI()
+GmCompAI::~GmCompAI()
 {
 	safe_delete (mCurrentState);
 }
 
-void GameComponent_AI::Update(float frameTime)
+void GmCompAI::Update(float frameTime)
 {
 	if (mCurrentState)
 		mCurrentState->Think(frameTime);
 }
 
-void GameComponent_AI::ChangeState(IGameAIState * state)
+void GmCompAI::ChangeState(GmAIState * state)
 {
 	if (mCurrentState)
 	{
@@ -42,21 +42,21 @@ void GameComponent_AI::ChangeState(IGameAIState * state)
 	mCurrentState->Enter();
 }
 
-IGameAIState * GameComponent_AI::GetCurrentState()
+GmAIState * GmCompAI::GetCurrentState()
 {
 	return mCurrentState;
 }
 
-void GameComponent_AI::SetObject(IGameObject * obj)
+void GmCompAI::SetObject(GmObj * obj)
 {
-	d_assert (RTTI_KindOf(GameActor, obj));
+	d_assert (RTTI_KindOf(GmActor, obj));
 
-	IGameComponent::SetObject(obj);
+	GmComponent::SetObject(obj);
 }
 
-GameActor * GameComponent_AI::GetActor()
+GmActor * GmCompAI::GetActor()
 {
-	return RTTI_StaticCast(GameActor, mObject);
+	return RTTI_StaticCast(GmActor, mObject);
 }
 
 
@@ -65,28 +65,28 @@ GameActor * GameComponent_AI::GetActor()
 
 // Idle State
 //
-ImplementRTTI(GameAIState_Idle, IGameAIState);
+ImplementRTTI(AIState_Idle, GmAIState);
 
-GameAIState_Idle::GameAIState_Idle()
+AIState_Idle::AIState_Idle()
 {
 }
 
-GameAIState_Idle::~GameAIState_Idle()
+AIState_Idle::~AIState_Idle()
 {
 }
 
-void GameAIState_Idle::Enter()
+void AIState_Idle::Enter()
 {
-	GameActor * pActor = mComponent->GetActor();
+	GmActor * pActor = mComponent->GetActor();
 
-	pActor->PlayAnimation(GameHelper::S_Anim_Idle0.c_str(), MotionBlendInfo::Default);
+	pActor->PlayAnimation(GmHelper::S_Anim_Idle0.c_str(), MotionBlendInfo::Default);
 }
 
-void GameAIState_Idle::Exit()
+void AIState_Idle::Exit()
 {
 }
 
-void GameAIState_Idle::Think(float frameTime)
+void AIState_Idle::Think(float frameTime)
 {
 }
 
@@ -95,28 +95,28 @@ void GameAIState_Idle::Think(float frameTime)
 
 // Move State
 //
-ImplementRTTI(GameAIState_Move, IGameAIState);
+ImplementRTTI(AIState_Move, GmAIState);
 
-GameAIState_Move::GameAIState_Move(const Vec3 & pos)
+AIState_Move::AIState_Move(const Vec3 & pos)
 	: mTargetPos(pos)
 {
 }
 
-GameAIState_Move::~GameAIState_Move()
+AIState_Move::~AIState_Move()
 {
 }
 
-void GameAIState_Move::Enter()
+void AIState_Move::Enter()
 {
-	GameActor * pActor = mComponent->GetActor();
+	GmActor * pActor = mComponent->GetActor();
 
-	pActor->PlayAnimation(GameHelper::S_Anim_Run.c_str(), MotionBlendInfo::Default);
+	pActor->PlayAnimation(GmHelper::S_Anim_Run.c_str(), MotionBlendInfo::Default);
 }
 
-void GameAIState_Move::Exit()
+void AIState_Move::Exit()
 {
 }
 
-void GameAIState_Move::Think(float frameTime)
+void AIState_Move::Think(float frameTime)
 {
 }

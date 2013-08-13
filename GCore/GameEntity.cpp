@@ -1,62 +1,62 @@
 #include "stdafx.h"
 #include "GameEntity.h"
 
-IGameEntity::IGameEntity()
+GmEntity::GmEntity()
 {
 	mNode = World::Instance()->CreateSceneNode();
 }
 
-IGameEntity::~IGameEntity()
+GmEntity::~GmEntity()
 {
 	World::Instance()->DestroySceneNode((SceneNode *)mNode);
 }
 
-void IGameEntity::SetPosition(float x, float y, float z)
+void GmEntity::SetPosition(float x, float y, float z)
 {
 	SetPosition(Vec3(x, y, z));
 }
 
-void IGameEntity::SetPosition(const Vec3 & v)
+void GmEntity::SetPosition(const Vec3 & v)
 {
 	mNode->SetPosition(v);
 }
 
-Vec3 IGameEntity::GetPosition() const
+Vec3 GmEntity::GetPosition() const
 {
 	return mNode->GetPosition();
 }
 
-void IGameEntity::SetOrientation(float x, float y, float z, float w)
+void GmEntity::SetOrientation(float x, float y, float z, float w)
 {
 	SetOrientation(Quat(x, y, z, w));
 }
 
-void IGameEntity::SetOrientation(const Quat & q)
+void GmEntity::SetOrientation(const Quat & q)
 {
 	mNode->SetOrientation(q);
 }
 
-Quat IGameEntity::GetOrientation() const
+Quat GmEntity::GetOrientation() const
 {
 	return mNode->GetOrientation();
 }
 
-void IGameEntity::SetScale(float x)
+void GmEntity::SetScale(float x)
 {
 	mNode->SetScale(x);
 }
 
-float IGameEntity::GetScale()
+float GmEntity::GetScale()
 {
 	return mNode->GetScale().x;
 }
 
-void IGameEntity::SetVisible(bool b)
+void GmEntity::SetVisible(bool b)
 {
 	mNode->SetVisible(b);
 }
 
-bool IGameEntity::IsVisible()
+bool GmEntity::IsVisible()
 {
 	return mNode->IsVisible();
 }

@@ -2,7 +2,7 @@
 
 #include "GameCoreEntry.h"
 
-struct GCORE_ENTRY GameNpcInfo
+struct GCORE_ENTRY GmNpcInfo
 {
 	int id;
 	TString32 name;
@@ -19,7 +19,7 @@ struct GCORE_ENTRY GameNpcInfo
 	TString32 anim_Walk;
 	TString32 anim_Run;
 
-	GameNpcInfo()
+	GmNpcInfo()
 	{
 		id = -1;
 	}

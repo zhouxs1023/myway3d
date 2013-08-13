@@ -3,7 +3,7 @@
 #include "GameMessage.h"
 
 
-IGameMessage::IGameMessage(int id)
+GmMsg::GmMsg(int id)
 	: mId(id)
 	, mSenderId(-1)
 	, mReceiverId(-1)
@@ -11,36 +11,36 @@ IGameMessage::IGameMessage(int id)
 {
 }
 
-IGameMessage::~IGameMessage()
+GmMsg::~GmMsg()
 {
 }
 
-void IGameMessage::SetTimeDelay(float time)
+void GmMsg::SetTimeDelay(float time)
 {
 	mTimeDelay = time;
 }
 
-float IGameMessage::GetTimeDelay()
+float GmMsg::GetTimeDelay()
 {
 	return mTimeDelay;
 }
 
-void IGameMessage::SetSenderId(int id)
+void GmMsg::SetSenderId(int id)
 {
 	mSenderId = id;
 }
 
-int IGameMessage::GetSenderId()
+int GmMsg::GetSenderId()
 {
 	return mSenderId;
 }
 
-void IGameMessage::SetReceiverId(int id)
+void GmMsg::SetReceiverId(int id)
 {
 	mReceiverId = id;
 }
 
-int IGameMessage::GetReceiverId()
+int GmMsg::GetReceiverId()
 {
 	return mReceiverId;
 }

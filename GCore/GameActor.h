@@ -3,9 +3,9 @@
 #include "GameObject.h"
 #include "GameEntity.h"
 
-class GameComponent_AI;
+class GmCompAI;
 
-class GCORE_ENTRY GameActor : public IGameObject
+class GCORE_ENTRY GmActor : public GmObj
 {
 	DeclareRTTI();
 
@@ -30,14 +30,14 @@ public:
 	};
 
 public:
-	GameActor();
-	virtual ~GameActor();
+	GmActor();
+	virtual ~GmActor();
 
 	virtual void Init();
 
 	// AI
 	//
-	GameComponent_AI * GetAIComponent();
+	GmCompAI * GetAGmComponent();
 	virtual void Idle();
 	virtual void MoveTo(const Vec3 & pos);
 

@@ -21,9 +21,6 @@
     <ClCompile Include="GameHelper.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="GameSerializer.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="GameAI.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -45,7 +42,7 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Entity</Filter>
     </ClCompile>
-    <ClCompile Include="GameWorld.cpp">
+    <ClCompile Include="GameMap.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
     <ClCompile Include="GameMesh.cpp">
@@ -92,9 +89,6 @@
     <ClInclude Include="GameCore.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="GameSerializer.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="GameAI.h">
       <Filter>Core</Filter>
     </ClInclude>
@@ -116,7 +110,7 @@
     <ClInclude Include="GameObject.h">
       <Filter>Entity</Filter>
     </ClInclude>
-    <ClInclude Include="GameWorld.h">
+    <ClInclude Include="GameMap.h">
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="GameMesh.h">

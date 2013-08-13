@@ -3,16 +3,15 @@
 #include "GameCoreEntry.h"
 #include "GameObject.h"
 
-
-class GCORE_ENTRY GameCameraController : public IGameController
+class GCORE_ENTRY GmCameraController : public GmController
 {
 	DeclareRTTI();
 
 public:
-	GameCameraController();
-	virtual ~GameCameraController();
+	GmCameraController();
+	virtual ~GmCameraController();
 
-	virtual void SetObject(IGameObject * obj);
+	virtual void SetObject(GmObj * obj);
 	virtual void Update(float frameTime);
 
 protected:
@@ -26,3 +25,18 @@ protected:
 	Vec3 mCurrentPos;
 	Quat mCurrentOrt;
 };
+
+
+class GCORE_ENTRY GmCameraControllerTest : public GmController
+{
+	DeclareRTTI();
+
+public:
+	GmCameraControllerTest();
+	virtual ~GmCameraControllerTest();
+
+	virtual void SetObject(GmObj * obj);
+
+	virtual void Update(float frameTime);
+};
+

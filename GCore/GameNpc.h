@@ -4,19 +4,19 @@
 #include "GameData.h"
 #include "GameHelper.h"
 
-class GCORE_ENTRY GameNpc : public GameActor
+class GCORE_ENTRY GmNpc : public GmActor
 {
 	DECLARE_ALLOC();
 	DeclareRTTI();
 
 public:
-	GameNpc(int templateId);
-	virtual ~GameNpc();
+	GmNpc(int templateId);
+	virtual ~GmNpc();
 
 protected:
 	void _init(int templateId);
 
 protected:
-	const GameNpcInfo * mNpcInfo;
+	const GmNpcInfo * mNpcInfo;
 };
 

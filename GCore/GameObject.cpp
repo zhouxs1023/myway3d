@@ -2,42 +2,42 @@
 
 #include "GameObject.h"
 
-ImplementRootRTTI(IGameController);
+ImplementRootRTTI(GmController);
 
-ImplementRootRTTI(IGameComponent);
+ImplementRootRTTI(GmComponent);
 
-ImplementRootRTTI(IGameObject);
+ImplementRootRTTI(GmObj);
 
-IGameObject::IGameObject()
+GmObj::GmObj()
 {
 }
 
-IGameObject::~IGameObject()
+GmObj::~GmObj()
 {
 	RemoveAllComponent();
 }
 
-void IGameObject::SetId(int id)
+void GmObj::SetId(int id)
 {
 	mId = id;
 }
 
-int IGameObject::GetId() const
+int GmObj::GetId() const
 {
 	return mId;
 }
 
-void IGameObject::SetName(const char * name)
+void GmObj::SetName(const char * name)
 {
 	mName = name;
 }
 
-const char * IGameObject::GetName() const
+const char * GmObj::GetName() const
 {
 	return mName.c_str();
 }
 
-void IGameObject::Update(float frameTime)
+void GmObj::Update(float frameTime)
 {
 	for (int i = 0; i < mComponents.Size(); ++i)
 	{
@@ -45,13 +45,13 @@ void IGameObject::Update(float frameTime)
 	}
 }
 
-void IGameObject::AddComponent(IGameComponent * cp)
+void GmObj::AddComponent(GmComponent * cp)
 {
 	cp->SetObject(this);
 	mComponents.PushBack(cp);
 }
 
-void IGameObject::RemoveComponent(IGameComponent * cp)
+void GmObj::RemoveComponent(GmComponent * cp)
 {
 	for (int i = 0; i < mComponents.Size(); ++i)
 	{
@@ -65,14 +65,14 @@ void IGameObject::RemoveComponent(IGameComponent * cp)
 	d_assert (0);
 }
 
-void IGameObject::RemoveComponent(int index)
+void GmObj::RemoveComponent(int index)
 {
 	d_assert (index < mComponents.Size());
 
 	delete mComponents[index];
 }
 
-void IGameObject::RemoveAllComponent()
+void GmObj::RemoveAllComponent()
 {
 	for (int i = 0; i < mComponents.Size(); ++i)
 		delete mComponents[i];
@@ -80,12 +80,12 @@ void IGameObject::RemoveAllComponent()
 	mComponents.Clear();
 }
 
-int IGameObject::GetComponetCount()
+int GmObj::GetComponetCount()
 {
 	return mComponents.Size();
 }
 
-IGameComponent * IGameObject::GetComponent(int index)
+GmComponent * GmObj::GetComponent(int index)
 {
 	d_assert (index < mComponents.Size());
 

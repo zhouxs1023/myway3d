@@ -2,23 +2,23 @@
 
 #include "GameStructer.h"
 
-class GCORE_ENTRY GameDataManager
+class GCORE_ENTRY GmDataManager
 {
-	DECLARE_SINGLETON(GameDataManager);
+	DECLARE_SINGLETON(GmDataManager);
 
 public:
-	GameDataManager();
-	~GameDataManager();
+	GmDataManager();
+	~GmDataManager();
 
 	void Init();
 	void Shutdown();
 
-	const GameNpcInfo * GetNpcInfo(int id);
+	const GmNpcInfo * GetNpcInfo(int id);
 
 protected:
 	void _loadNpcInfo();
 
 protected:
-	Array<GameNpcInfo> mNpcInfos;
+	Array<GmNpcInfo> mNpcInfos;
 };
 

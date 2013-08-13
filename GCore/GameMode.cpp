@@ -2,22 +2,22 @@
 
 #include "GameMode.h"
 
-IGameMode::IGameMode()
+GmMode::GmMode()
 {
 }
 
-IGameMode::~IGameMode()
+GmMode::~GmMode()
 {
 	RemoveAllController();
 	RemoveAllObject();
 }
 
-int IGameMode::GetUId()
+int GmMode::GetUId()
 {
 	return mUId;
 }
 
-void IGameMode::Update(float frameTime)
+void GmMode::Update(float frameTime)
 {
 	for (int i = 0; i < mControllers.Size(); ++i)
 	{
@@ -31,7 +31,7 @@ void IGameMode::Update(float frameTime)
 	}
 }
 
-void IGameMode::AddObject(IGameObject * obj)
+void GmMode::AddObject(GmObj * obj)
 {
 	if (obj->GetId() == -1)
 	{
@@ -46,7 +46,7 @@ void IGameMode::AddObject(IGameObject * obj)
 }
 
 
-IGameObject * IGameMode::GetObject(int id)
+GmObj * GmMode::GetObject(int id)
 {
 	for (int i = 0; i < mObjects.Size(); ++i)
 	{
@@ -59,7 +59,7 @@ IGameObject * IGameMode::GetObject(int id)
 	return NULL;
 }
 
-void IGameMode::RemoveObject(int id)
+void GmMode::RemoveObject(int id)
 {
 	for (int i = 0; i < mObjects.Size(); ++i)
 	{
@@ -74,7 +74,7 @@ void IGameMode::RemoveObject(int id)
 	d_assert (0);
 }
 
-void IGameMode::RemoveAllObject()
+void GmMode::RemoveAllObject()
 {
 	for (int i = 0; i < mObjects.Size(); ++i)
 	{
@@ -84,38 +84,38 @@ void IGameMode::RemoveAllObject()
 	mObjects.Clear();
 }
 
-int IGameMode::GetObjectCount()
+int GmMode::GetObjectCount()
 {
 	return mObjects.Size();
 }
 
-IGameObject * IGameMode::GetObjectByIndex(int index)
+GmObj * GmMode::GetObjectByIndex(int index)
 {
 	return mObjects[index];
 }
 
-void IGameMode::AddController(IGameController * ctrl)
+void GmMode::AddController(GmController * ctrl)
 {
 	mControllers.PushBack(ctrl);
 }
 
-IGameController * IGameMode::GetController(int index)
+GmController * GmMode::GetController(int index)
 {
 	return mControllers[index];
 }
 
-int IGameMode::GetControllerCount()
+int GmMode::GetControllerCount()
 {
 	return mControllers.Size();
 }
 
-void IGameMode::RemoveController(int index)
+void GmMode::RemoveController(int index)
 {
 	delete mControllers[index];
 	mControllers.Erase(index);
 }
 
-void IGameMode::RemoveController(IGameController * ctrl)
+void GmMode::RemoveController(GmController * ctrl)
 {
 	for (int i = 0; i < mControllers.Size(); ++i)
 	{
@@ -130,7 +130,7 @@ void IGameMode::RemoveController(IGameController * ctrl)
 	d_assert (0);
 }
 
-void IGameMode::RemoveAllController()
+void GmMode::RemoveAllController()
 {
 	for (int i = 0; i < mControllers.Size(); ++i)
 	{
@@ -144,7 +144,7 @@ void IGameMode::RemoveAllController()
 
 
 
-void IGameMode::AddMessage(IGameMessage * msg)
+void GmMode::AddMessage(GmMsg * msg)
 {
 	if (msg->GetTimeDelay() <= 0)
 	{
@@ -152,12 +152,12 @@ void IGameMode::AddMessage(IGameMessage * msg)
 	}
 	else
 	{
-		List<IGameMessage *>::Iterator whr = mMessages.Begin();
-		List<IGameMessage *>::Iterator end = mMessages.End();
+		List<GmMsg *>::Iterator whr = mMessages.Begin();
+		List<GmMsg *>::Iterator end = mMessages.End();
 
 		while (whr != end)
 		{
-			IGameMessage * m = *whr;
+			GmMsg * m = *whr;
 
 			float t0 = msg->GetTimeDelay();
 			float t1 = m->GetTimeDelay();

@@ -2,26 +2,24 @@
 
 #include "GameCoreEntry.h"
 
-struct GCORE_ENTRY GameHelper {
+struct GCORE_ENTRY GmHelper {
 
 	static const TString32 S_Anim_Idle0;
 	static const TString32 S_Anim_Idle1;
 	static const TString32 S_Anim_Walk;
 	static const TString32 S_Anim_Run;
-
-	
 	
 	static Vec3 GetRayCheckPosition();
 };
 
-class GameActor;
+class GmActor;
 
-namespace GameEngine {
+namespace GmEngine {
 
 	struct GCORE_ENTRY RayCheckInfo {
 		bool bPicked;
 		Vec3 vPosition;
-		GameActor * pObject;
+		GmActor * pObject;
 
 		RayCheckInfo()
 		{

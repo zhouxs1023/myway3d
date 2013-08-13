@@ -3,9 +3,9 @@
 #include "GameCameraController.h"
 #include "GameActor.h"
 
-ImplementRTTI(GameCameraController, IGameController);
+ImplementRTTI(GmCameraController, GmController);
 
-GameCameraController::GameCameraController()
+GmCameraController::GmCameraController()
 {
 	mMinDist = 50;
 	mMaxDist = 100;
@@ -15,17 +15,17 @@ GameCameraController::GameCameraController()
 	mRotationSpeed = 1;
 }
 
-GameCameraController::~GameCameraController()
+GmCameraController::~GmCameraController()
 {
 }
 
-void GameCameraController::SetObject(IGameObject * obj)
+void GmCameraController::SetObject(GmObj * obj)
 {
-	d_assert (RTTI_KindOf(GameActor, obj));
+	d_assert (RTTI_KindOf(GmActor, obj));
 
-	IGameController::SetObject(obj);
+	GmController::SetObject(obj);
 
-	GameActor * pActor = RTTI_StaticCast(GameActor, obj);
+	Actor * pActor = RTTI_StaticCast(Actor, obj);
 
 	mCurrentPos = World::Instance()->MainCamera()->GetPosition();
 	mCurrentOrt = World::Instance()->MainCamera()->GetOrientation();
@@ -44,7 +44,7 @@ void GameCameraController::SetObject(IGameObject * obj)
 	World::Instance()->MainCamera()->SetOrientation(mCurrentOrt);
 }
 
-void GameCameraController::Update(float frameTime)
+void GmCameraController::Update(float frameTime)
 {
 	float dist = mTargetPos.Distance(mCurrentPos);
 
@@ -63,3 +63,72 @@ void GameCameraController::Update(float frameTime)
 
 	World::Instance()->MainCamera()->SetPosition(mCurrentPos);
 }
+
+
+
+
+
+
+
+
+
+
+
+
+ImplementRTTI(GmCameraControllerTest, GmController);
+
+
+GmCameraControllerTest::GmCameraControllerTest()
+{
+}
+
+GmCameraControllerTest::~GmCameraControllerTest()
+{
+}
+
+void GmCameraControllerTest::SetObject(GmObj * obj)
+{
+}
+
+void GmCameraControllerTest::Update(float frameTime)
+{
+	SceneNode * cam = World::Instance()->MainCameraNode();
+
+	if (IKeyboard::Instance()->KeyPressed(KC_W))
+	{
+		cam->Move(5.0f);
+	}
+	else if (IKeyboard::Instance()->KeyPressed(KC_S))
+	{
+		cam->Move(-5.0f);
+	}
+	else if (IKeyboard::Instance()->KeyPressed(KC_A))
+	{
+		cam->Right(-5.0f);
+	}
+	else if (IKeyboard::Instance()->KeyPressed(KC_D))
+	{
+		cam->Right(5.0f);
+	}
+
+	// camera
+	if (IMouse::Instance()->MouseMoved() && IMouse::Instance()->KeyPressed(MKC_BUTTON1))
+	{
+		Point2i pt = IMouse::Instance()->GetPositionDiff();
+
+		if (abs(pt.y) >abs(pt.x))
+		{
+			cam->Pitch(pt.y * 0.005f, TS_LOCAL);
+		}
+		else
+		{
+			cam->Yaw(pt.x * 0.005f, TS_PARENT);
+		}
+	}
+
+	if (IMouse::Instance()->MouseWheel())
+	{
+		cam->Move(0.5f * IMouse::Instance()->MouseWheel());
+	}
+}
+

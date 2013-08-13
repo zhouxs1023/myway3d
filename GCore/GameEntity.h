@@ -2,13 +2,13 @@
 
 #include "GameCoreEntry.h"
 
-class GCORE_ENTRY IGameEntity
+class GCORE_ENTRY GmEntity
 {
 	DECLARE_ALLOC();
 
 public:
-	IGameEntity();
-	virtual ~IGameEntity();
+	GmEntity();
+	virtual ~GmEntity();
 
 	void SetPosition(float x, float y, float z);
 	void SetPosition(const Vec3 & v);

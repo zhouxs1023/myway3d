@@ -2,16 +2,13 @@
 
 #include "GameMesh.h"
 
-namespace Game {
+GmMesh::GmMesh(const char * sMeshFile)
+{
+	mEntity = World::Instance()->CreateEntity("GmMesh", sMeshFile);
+	mNode->Attach(mEntity);
+}
 
-	GameMesh::GameMesh(const char * sMeshFile)
-	{
-		mEntity = World::Instance()->CreateEntity("GameMesh", sMeshFile);
-	}
-
-	GameMesh::~GameMesh()
-	{
-		World::Instance()->DestroyEntity("GameMesh");
-	}
-
+GmMesh::~GmMesh()
+{
+	World::Instance()->DestroyEntity("GmMesh");
 }

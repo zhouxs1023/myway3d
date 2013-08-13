@@ -3,18 +3,18 @@
 #include "GameObject.h"
 #include "GameActor.h"
 
-class GameComponent_AI;
+class GmCompAI;
 
-class GCORE_ENTRY IGameAIState
+class GCORE_ENTRY GmAIState
 {
-	DeclareRootRTTI(IGameAIState);
+	DeclareRootRTTI(GmAIState);
 
 public:
-	IGameAIState() : mComponent(NULL) {};
-	virtual ~IGameAIState() {}
+	GmAIState() : mComponent(NULL) {};
+	virtual ~GmAIState() {}
 
-	virtual void SetComponent(GameComponent_AI * cp) { mComponent = cp; }
-	GameComponent_AI * GetComponent() { return mComponent; }
+	virtual void SetComponent(GmCompAI * cp) { mComponent = cp; }
+	GmCompAI * GetComponent() { return mComponent; }
 
 	virtual void Enter() = 0;
 	virtual void Exit() = 0;
@@ -22,41 +22,41 @@ public:
 	virtual void Think(float frameTime) = 0;
 
 protected:
-	GameComponent_AI * mComponent;
+	GmCompAI * mComponent;
 };
 
 
-class GCORE_ENTRY GameComponent_AI : public IGameComponent
+class GCORE_ENTRY GmCompAI : public GmComponent
 {
 	DeclareRTTI();
 
 public:
-	GameComponent_AI();
-	virtual ~GameComponent_AI();
+	GmCompAI();
+	virtual ~GmCompAI();
 
 	virtual void Update(float frameTime);
 
-	virtual void ChangeState(IGameAIState * state);
-	virtual IGameAIState * GetCurrentState();
+	virtual void ChangeState(GmAIState * state);
+	virtual GmAIState * GetCurrentState();
 
-	virtual void SetObject(IGameObject * obj);
-	GameActor * GetActor();
+	virtual void SetObject(GmObj * obj);
+	GmActor * GetActor();
 
 protected:
-	IGameAIState * mCurrentState; 
+	GmAIState * mCurrentState; 
 };
 
 
 
 // Idle State
 //
-class GCORE_ENTRY GameAIState_Idle : public IGameAIState
+class GCORE_ENTRY AIState_Idle : public GmAIState
 {
 	DeclareRTTI();
 
 public:
-	GameAIState_Idle();
-	virtual ~GameAIState_Idle();
+	AIState_Idle();
+	virtual ~AIState_Idle();
 
 	virtual void Enter();
 	virtual void Exit();
@@ -66,13 +66,13 @@ public:
 
 // Move State
 //
-class GCORE_ENTRY GameAIState_Move : public IGameAIState
+class GCORE_ENTRY AIState_Move : public GmAIState
 {
 	DeclareRTTI();
 
 public:
-	GameAIState_Move(const Vec3 & pos);
-	virtual ~GameAIState_Move();
+	AIState_Move(const Vec3 & pos);
+	virtual ~AIState_Move();
 
 	virtual void Enter();
 	virtual void Exit();

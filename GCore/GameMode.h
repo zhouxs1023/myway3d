@@ -3,11 +3,11 @@
 #include "GameMessage.h"
 #include "GameObject.h"
 
-class GCORE_ENTRY IGameMode
+class GCORE_ENTRY GmMode
 {
 public:
-	IGameMode();
-	virtual ~IGameMode();
+	GmMode();
+	virtual ~GmMode();
 
 	int GetUId();
 
@@ -16,26 +16,26 @@ public:
 
 	virtual void Update(float frameTime);
 
-	void AddObject(IGameObject * obj);
-	IGameObject * GetObject(int id);
-	IGameObject * GetObjectByIndex(int index);
+	void AddObject(GmObj * obj);
+	GmObj * GetObject(int id);
+	GmObj * GetObjectByIndex(int index);
 	int GetObjectCount();
 	void RemoveObject(int id);
 	void RemoveAllObject();
 
-	void AddController(IGameController * ctrl);
-	IGameController * GetController(int index);
+	void AddController(GmController * ctrl);
+	GmController * GetController(int index);
 	int GetControllerCount();
 	void RemoveController(int index);
-	void RemoveController(IGameController * ctrl);
+	void RemoveController(GmController * ctrl);
 	void RemoveAllController();
 
-	void AddMessage(IGameMessage * message);
+	void AddMessage(GmMsg * message);
 
 protected:
-	Array<IGameObject *> mObjects;
-	Array<IGameController *> mControllers;
-	List<IGameMessage *> mMessages;
+	Array<GmObj *> mObjects;
+	Array<GmController *> mControllers;
+	List<GmMsg *> mMessages;
 	int mUId;
 };
 

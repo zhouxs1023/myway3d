@@ -2,12 +2,12 @@
 
 #include "GameHelper.h"
 
-const TString32 GameHelper::S_Anim_Idle0 = "Idle0";
-const TString32 GameHelper::S_Anim_Idle1 = "Idle1";
-const TString32 GameHelper::S_Anim_Walk = "Walk";
-const TString32 GameHelper::S_Anim_Run = "Run";
+const TString32 GmHelper::S_Anim_Idle0 = "Idle0";
+const TString32 GmHelper::S_Anim_Idle1 = "Idle1";
+const TString32 GmHelper::S_Anim_Walk = "Walk";
+const TString32 GmHelper::S_Anim_Run = "Run";
 
-namespace GameEngine {
+namespace GmEngine {
 
 	RayCheckInfo RayCheck(Ray ray, float dist)
 	{

@@ -82,8 +82,7 @@
     <ClCompile Include="GameData.cpp" />
     <ClCompile Include="GameEntity.cpp" />
     <ClCompile Include="GameNpc.cpp" />
-    <ClCompile Include="GameSerializer.cpp" />
-    <ClCompile Include="GameWorld.cpp" />
+    <ClCompile Include="GameMap.cpp" />
     <ClCompile Include="GUI_Util.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -106,8 +105,7 @@
     <ClInclude Include="GameData.h" />
     <ClInclude Include="GameEntity.h" />
     <ClInclude Include="GameNpc.h" />
-    <ClInclude Include="GameSerializer.h" />
-    <ClInclude Include="GameWorld.h" />
+    <ClInclude Include="GameMap.h" />
     <ClInclude Include="GUI_Util.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

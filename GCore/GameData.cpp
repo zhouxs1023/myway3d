@@ -2,28 +2,28 @@
 
 #include "GameData.h"
 
-IMP_SLN(GameDataManager);
+IMP_SLN(GmDataManager);
 
-GameDataManager::GameDataManager()
+GmDataManager::GmDataManager()
 {
 	INIT_SLN;
 }
 
-GameDataManager::~GameDataManager()
+GmDataManager::~GmDataManager()
 {
 	SHUT_SLN;
 }
 
-void GameDataManager::Init()
+void GmDataManager::Init()
 {
 	_loadNpcInfo();
 }
 
-void GameDataManager::Shutdown()
+void GmDataManager::Shutdown()
 {
 }
 
-const GameNpcInfo * GameDataManager::GetNpcInfo(int id)
+const GmNpcInfo * GmDataManager::GetNpcInfo(int id)
 {
 	for (int i = 0; i < mNpcInfos.Size(); ++i)
 	{
@@ -34,7 +34,7 @@ const GameNpcInfo * GameDataManager::GetNpcInfo(int id)
 	return NULL;
 }
 
-void _loadNpcPart(GameNpcInfo & info, xml_node * node)
+void _loadNpcPart(GmNpcInfo & info, xml_node * node)
 {
 	xml_node * nd_main = node->first_node("main");
 	xml_node * nd_weapon = node->first_node("weapon");
@@ -60,7 +60,7 @@ void _loadNpcPart(GameNpcInfo & info, xml_node * node)
 		info.part_shoes = nd_helmet->first_attribute("filename")->value();
 }
 
-void _loadNpcAnim(GameNpcInfo & info, xml_node * node)
+void _loadNpcAnim(GmNpcInfo & info, xml_node * node)
 {
 	xml_node * nd_idle0 = node->first_node("idle1");
 	xml_node * nd_idle1 = node->first_node("idle2");
@@ -80,7 +80,7 @@ void _loadNpcAnim(GameNpcInfo & info, xml_node * node)
 		info.anim_Run = nd_run->first_attribute("filename")->value();
 }
 
-void GameDataManager::_loadNpcInfo()
+void GmDataManager::_loadNpcInfo()
 {
 	DataStreamPtr stream = ResourceManager::Instance()->OpenResource("NpcInfo.ini");
 
@@ -95,7 +95,7 @@ void GameDataManager::_loadNpcInfo()
 
 	while (node)
 	{
-		GameNpcInfo info;
+		GmNpcInfo info;
 
 		xml_attri * nd_id = node->first_attribute("id");
 		xml_attri * nd_name = node->first_attribute("name");

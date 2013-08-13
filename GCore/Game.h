@@ -4,30 +4,28 @@
 #include "GameMode.h"
 #include "GUI_Util.h"
 
-namespace Game {
 
-	class GCORE_ENTRY Game
-	{
-		DECLARE_SINGLETON(Game);
+class GCORE_ENTRY GmRoot
+{
+	DECLARE_SINGLETON(GmRoot);
 
-	public:
-		Game();
-		~Game();
+public:
+	GmRoot();
+	~GmRoot();
 
-		void Init();
-		void Shutdown();
-		void Update();
+	void Init();
+	void Shutdown();
+	void Update();
 
-		void SetMode(IGameMode * mode);
-		IGameMode * GetMode();
+	void SetMode(GmMode * mode);
+	GmMode * GetMode();
 
-		ShaderLib * GetShaderLib() { return mShaderLib; }
+	ShaderLib * GetShaderLib() { return mShaderLib; }
 
-	protected:
-		ShaderLib * mShaderLib;
-		MGUI_Util mUIUtil;
+protected:
+	ShaderLib * mShaderLib;
+	MGUI_Util mUIUtil;
 
-		IGameMode * mCurrentMode;
-	};
+	GmMode * mCurrentMode;
+};
 
-}

@@ -3,36 +3,36 @@
 #include "GameCoreEntry.h"
 #include "GameEntity.h"
 
-class IGameObject;
+class GmObj;
 
-class GCORE_ENTRY IGameComponent
+class GCORE_ENTRY GmComponent
 {
-	DeclareRootRTTI(IGameComponent);
+	DeclareRootRTTI(GmComponent);
 
 public:
-	IGameComponent() { mObject = NULL; }
-	virtual ~IGameComponent() {}
+	GmComponent() { mObject = NULL; }
+	virtual ~GmComponent() {}
 
-	virtual void SetObject(IGameObject * obj) { mObject = obj; }
-	virtual IGameObject * GetObject() { return mObject; }
+	virtual void SetObject(GmObj * obj) { mObject = obj; }
+	virtual GmObj * GetObject() { return mObject; }
 
 	virtual void Update(float time) = 0;
 
 protected:
-	IGameObject * mObject;
+	GmObj * mObject;
 };
 
 
-class GCORE_ENTRY IGameController
+class GCORE_ENTRY GmController
 {
-	DeclareRootRTTI(IGameController);
+	DeclareRootRTTI(GmController);
 
 public:
-	IGameController() { mObject = NULL; mEnable = true; }
-	virtual ~IGameController() {}
+	GmController() { mObject = NULL; mEnable = true; }
+	virtual ~GmController() {}
 
-	virtual void SetObject(IGameObject * obj) { mObject = obj; }
-	virtual IGameObject * GetObject() { return mObject; }
+	virtual void SetObject(GmObj * obj) { mObject = obj; }
+	virtual GmObj * GetObject() { return mObject; }
 
 	void SetEnable(bool enable) { mEnable = enable; } 
 	bool GetEnable() const { return mEnable; }
@@ -40,19 +40,19 @@ public:
 	virtual void Update(float time) = 0;
 
 protected:
-	IGameObject * mObject;
+	GmObj * mObject;
 	bool mEnable;
 };
 
 
 
-class GCORE_ENTRY IGameObject : public IGameEntity
+class GCORE_ENTRY GmObj : public GmEntity
 {
-	DeclareRootRTTI(IGameObject);
+	DeclareRootRTTI(GmObj);
 
 public:
-	IGameObject();
-	virtual ~IGameObject();
+	GmObj();
+	virtual ~GmObj();
 
 	void SetId(int id);
 	int GetId() const;
@@ -64,17 +64,17 @@ public:
 
 	// Component
 	//
-	void AddComponent(IGameComponent * cp);
-	void RemoveComponent(IGameComponent * cp);
+	void AddComponent(GmComponent * cp);
+	void RemoveComponent(GmComponent * cp);
 	void RemoveComponent(int index);
 	void RemoveAllComponent();
 	int GetComponetCount();
-	IGameComponent * GetComponent(int index);
+	GmComponent * GetComponent(int index);
 
 	// Message
 
 protected:
 	int mId;
 	TString128 mName;
-	Array<IGameComponent *> mComponents;
+	Array<GmComponent *> mComponents;
 };

@@ -46,7 +46,7 @@ void MGUI_Util::Init()
 	mRenderOp->vxStream.Bind(0, mText3DVB);
 	mRenderOp->ixStream.Bind(mText3DIB);
 
-	mTech = Game::Game::Instance()->GetShaderLib()->GetTechnique("NamePad");
+	mTech = GmRoot::Instance()->GetShaderLib()->GetTechnique("NamePad");
 	d_assert (mTech);
 }
 
@@ -219,14 +219,14 @@ bool MGUI_Util::IsVisible(const Vec3 & position, const Size2F & size)
 
 void MGUI_Util::OnPostUpdateScene_(Event * sender)
 {
-	IGameMode * pCurrentMode = Game::Game::Instance()->GetMode();
+	GmMode * pCurrentMode = GmRoot::Instance()->GetMode();
 
 	if (pCurrentMode == NULL)
 		return ;
 
 	for (int i = 0; i < pCurrentMode->GetObjectCount(); ++i)
 	{
-		IGameObject * obj = pCurrentMode->GetObjectByIndex(i);
+		GmObj * obj = pCurrentMode->GetObjectByIndex(i);
 
 		if (obj->IsVisible())
 		{
