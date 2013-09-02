@@ -19,6 +19,8 @@
 #include "MWRenderEvent.h"
 #include "MWPhysics.h"
 
+#include "MWCursor.h"
+
 namespace Myway
 {
 
@@ -91,6 +93,8 @@ protected:
 
     RenderScheme *          mRenderScheme;
     RenderHelper *          mRenderHelper;
+
+	Cursor *				mCursor;
     
     float                   mLastFrameTime;
     float                   mFrameTime;

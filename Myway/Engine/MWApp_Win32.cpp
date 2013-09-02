@@ -84,13 +84,17 @@ LRESULT CALLBACK WndProc(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
         PostQuitMessage(0);
         break;
 
+	case WM_SETCURSOR:
+		Cursor::Instance()->Draw();
+		break;
+
     default:
         break;
     }
 
     App_Win32::Instance()->OnMessage(hWnd, iMsg, wParam, lParam);
 
-    return::DefWindowProc(hWnd, iMsg, wParam, lParam); 
+    return ::DefWindowProc(hWnd, iMsg, wParam, lParam); 
 }
 
 #define WIN32_CLASS_NAME "Win32 Window For Game"
@@ -103,7 +107,7 @@ void App_Win32::Run(HINSTANCE hInstance)
     wc.cbClsExtra = 0; 
     wc.cbWndExtra = 0; 
     wc.hbrBackground = (HBRUSH)GetStockObject(BLACK_BRUSH);
-    wc.hCursor= LoadCursor(NULL, IDC_ARROW); 
+    wc.hCursor= NULL; 
     wc.hIcon = LoadIcon(hInstance, IDI_APPLICATION); 
     wc.hInstance = hInstance; 
     wc.lpfnWndProc = WndProc;

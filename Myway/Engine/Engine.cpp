@@ -19,6 +19,7 @@ Engine::Engine()
 , mTime2PI(0)
 , mLastFPSCalcTime(0)
 , mFPS(0)
+, mCursor(NULL)
 {
     INIT_SLN;
 }
@@ -40,8 +41,9 @@ void Engine::Init(const DeviceProperty * pDeviceProperty,
     mDllManager = new DllManager();
     mResourceManager = new ResourceManager();
 
+	mCursor = new Cursor;
+
     ResourceManager::Instance()->AddArchiveFactory(new FileSystemFactory());
-    ResourceManager::Instance()->AddArchiveFactory(new ArchiveZipFactory());
 
     mDeviceProperty = *pDeviceProperty;
 
@@ -80,6 +82,7 @@ void Engine::Shutdown()
 
     PluginManager::Instance()->UninstallAll();
 
+	safe_delete(mCursor);
     safe_delete(mResourceManager);
     safe_delete(mDllManager);
     safe_delete(mLogSystem);

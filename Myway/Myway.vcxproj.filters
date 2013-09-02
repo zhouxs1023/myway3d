@@ -70,9 +70,6 @@
     <Filter Include="Myway\AudioSystem">
       <UniqueIdentifier>{6c415a54-c836-424e-8dcb-94f2fa6c7c9e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Myway\RenderSystem\Entity\Actor">
-      <UniqueIdentifier>{07d6d287-91b3-4b9c-8848-2e3b00157c2d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Myway.h">
@@ -82,9 +79,6 @@
       <Filter>Myway\Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWArchive.h">
-      <Filter>Myway\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\MWArchiveZip.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWCharSet.h">
@@ -99,13 +93,7 @@
     <ClInclude Include="Core\MWCore.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
-    <ClInclude Include="Core\MWDataBase.h">
-      <Filter>Myway\Core</Filter>
-    </ClInclude>
     <ClInclude Include="Core\MWDataStream.h">
-      <Filter>Myway\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Core\MWDataTable.h">
       <Filter>Myway\Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWDebug.h">
@@ -495,14 +483,38 @@
     <ClInclude Include="RenderSystem\MWAnimationLoader.h">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClInclude>
-    <ClInclude Include="RenderSystem\MWActor.h">
-      <Filter>Myway\RenderSystem\Entity\Actor</Filter>
-    </ClInclude>
     <ClInclude Include="Core\MWTArray.h">
       <Filter>Myway\Core\Template</Filter>
     </ClInclude>
     <ClInclude Include="Core\MWSerializer.h">
       <Filter>Myway\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent0.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent1.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent2.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent3.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent4.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent5.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\MEvent6.h">
+      <Filter>Myway\Core\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderSystem\MWCursor.h">
+      <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -510,9 +522,6 @@
       <Filter>Myway\Core</Filter>
     </None>
     <None Include="Core\MWCodeTimer.inl">
-      <Filter>Myway\Core</Filter>
-    </None>
-    <None Include="Core\MWDataTable.inl">
       <Filter>Myway\Core</Filter>
     </None>
     <None Include="Core\MWFile.inl">
@@ -592,9 +601,6 @@
     <ClCompile Include="Core\MWArchive.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core\MWArchiveZip.cpp">
-      <Filter>Myway\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Core\MWCharSet.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
@@ -605,9 +611,6 @@
       <Filter>Myway\Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\MWCore.cpp">
-      <Filter>Myway\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\MWDataBase.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
     <ClCompile Include="Core\MWDataStream.cpp">
@@ -905,14 +908,20 @@
     <ClCompile Include="RenderSystem\MWAnimationLoader.cpp">
       <Filter>Myway\RenderSystem\Entity</Filter>
     </ClCompile>
-    <ClCompile Include="RenderSystem\MWActor.cpp">
-      <Filter>Myway\RenderSystem\Entity\Actor</Filter>
-    </ClCompile>
     <ClCompile Include="Core\MWSerializer.cpp">
       <Filter>Myway\Core</Filter>
     </ClCompile>
     <ClCompile Include="RenderSystem\MWNode.cpp">
       <Filter>Myway\RenderSystem\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\MWEvent.cpp">
+      <Filter>Myway\Core\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\MEvent.cpp">
+      <Filter>Myway\Core\Template</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderSystem\MWCursor.cpp">
+      <Filter>Myway\RenderSystem\RenderSystem</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

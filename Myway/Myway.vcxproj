@@ -53,7 +53,7 @@
     <ClCompile>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>Engine;Core;Math;RenderSystem;Gui;Sky;Physics;..\ThirdParty\cg\include;..\ThirdParty\FreeType2\include;..\ThirdParty\Mysql\include;..\ThirdParty\Sqlite3\include;..\ThirdParty\zzip\include;..\ThirdParty\include;AudioSystem;..\ThirdParty\fmod\include;AI;..\ThirdParty\xml;InputSystem;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MW_EXPORT;MW_DEBUG_MEMORY;MW_PROFILE_CODE_TIMER;MW_DEBUG_MEMORY_POOL;MW_SQLITE3_DATABASE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;MW_EXPORT;MW_DEBUG_MEMORY;MW_DEBUG_MEMORY_POOL;MW_PROFILE_CODE_TIMER;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -62,7 +62,7 @@
       <DisableSpecificWarnings>4355;%(DisableSpecificWarnings)</DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>freetype241_d.lib;sqlite3.lib;zzip_d.lib;winmm.lib;user32.lib;kernel32.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>winmm.lib;user32.lib;kernel32.lib;ws2_32.lib;gdi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <OutputFile>../bin/Debug/Myway_d.dll</OutputFile>
       <AdditionalLibraryDirectories>..\ThirdParty\cg\lib;..\ThirdParty\FreeType2\lib;..\ThirdParty\Mysql\lib;..\ThirdParty\Sqlite3\lib;..\ThirdParty\zzip\lib;$(DXSDK_DIR)/lib/x86;..\ThirdParty\fmod\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -99,6 +99,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Core\MEvent.h" />
+    <ClInclude Include="Core\MEvent0.h" />
+    <ClInclude Include="Core\MEvent1.h" />
+    <ClInclude Include="Core\MEvent2.h" />
+    <ClInclude Include="Core\MEvent3.h" />
+    <ClInclude Include="Core\MEvent4.h" />
+    <ClInclude Include="Core\MEvent5.h" />
+    <ClInclude Include="Core\MEvent6.h" />
     <ClInclude Include="Core\MWSerializer.h" />
     <ClInclude Include="Core\MWTArray.h" />
     <ClInclude Include="Math\MWCurve.h" />
@@ -106,14 +114,11 @@
     <ClInclude Include="Myway.h" />
     <ClInclude Include="Core\MWAllocObj.h" />
     <ClInclude Include="Core\MWArchive.h" />
-    <ClInclude Include="Core\MWArchiveZip.h" />
     <ClInclude Include="Core\MWCharSet.h" />
     <ClInclude Include="Core\MWCodeTimer.h" />
     <ClInclude Include="Core\MWCommand.h" />
     <ClInclude Include="Core\MWCore.h" />
-    <ClInclude Include="Core\MWDataBase.h" />
     <ClInclude Include="Core\MWDataStream.h" />
-    <ClInclude Include="Core\MWDataTable.h" />
     <ClInclude Include="Core\MWDebug.h" />
     <ClInclude Include="Core\MWDefine.h" />
     <ClInclude Include="Core\MWDynamicLinkLib.h" />
@@ -138,10 +143,10 @@
     <ClInclude Include="Core\MWTimer.h" />
     <ClInclude Include="Physics\MWKDTree.h" />
     <ClInclude Include="Physics\MWPhysics.h" />
-    <ClInclude Include="RenderSystem\MWActor.h" />
     <ClInclude Include="RenderSystem\MWAnimationLoader.h" />
     <ClInclude Include="RenderSystem\MWBillboard.h" />
     <ClInclude Include="RenderSystem\MWColMesh.h" />
+    <ClInclude Include="RenderSystem\MWCursor.h" />
     <ClInclude Include="RenderSystem\MWTrigger.h" />
     <ClInclude Include="Core\MWAllocator.h" />
     <ClInclude Include="Core\MWArray.h" />
@@ -246,7 +251,6 @@
   <ItemGroup>
     <None Include="Core\MWAllocObj.inl" />
     <None Include="Core\MWCodeTimer.inl" />
-    <None Include="Core\MWDataTable.inl" />
     <None Include="Core\MWFile.inl" />
     <None Include="Core\MWMemoryPool.inl" />
     <None Include="Core\MWMutex.inl" />
@@ -273,13 +277,12 @@
     <None Include="Core\MWSocket.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Core\MEvent.cpp" />
     <ClCompile Include="Core\MWArchive.cpp" />
-    <ClCompile Include="Core\MWArchiveZip.cpp" />
     <ClCompile Include="Core\MWCharSet.cpp" />
     <ClCompile Include="Core\MWCodeTimer.cpp" />
     <ClCompile Include="Core\MWCommand.cpp" />
     <ClCompile Include="Core\MWCore.cpp" />
-    <ClCompile Include="Core\MWDataBase.cpp" />
     <ClCompile Include="Core\MWDataStream.cpp" />
     <ClCompile Include="Core\MWDebug.cpp" />
     <ClCompile Include="Core\MWDynamicLinkLib.cpp" />
@@ -301,10 +304,10 @@
     <ClCompile Include="Core\MWTimer.cpp" />
     <ClCompile Include="Math\MWCurve.cpp" />
     <ClCompile Include="Physics\MWPhysics.cpp" />
-    <ClCompile Include="RenderSystem\MWActor.cpp" />
     <ClCompile Include="RenderSystem\MWAnimationLoader.cpp" />
     <ClCompile Include="RenderSystem\MWBillboard.cpp" />
     <ClCompile Include="RenderSystem\MWColMesh.cpp" />
+    <ClCompile Include="RenderSystem\MWCursor.cpp" />
     <ClCompile Include="RenderSystem\MWNode.cpp" />
     <ClCompile Include="RenderSystem\MWRenderDefine.cpp" />
     <ClCompile Include="RenderSystem\MWTrigger.cpp" />

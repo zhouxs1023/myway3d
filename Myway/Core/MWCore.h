@@ -36,9 +36,7 @@
 #include "MWGuid.h"
 #include "MWThread.h"
 #include "MWMutex.h"
-#include "MWDatabase.h"
 #include "MWArchive.h"
-#include "MWArchiveZip.h"
 #include "MWOption.h"
 #include "MWSort.h"
 #include "MWSearch.h"
@@ -46,6 +44,7 @@
 #include "MWXml.h"
 #include "MWPlugin.h"
 #include "MWEvent.h"
+#include "MEvent.h"
 
 
 

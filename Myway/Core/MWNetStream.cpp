@@ -21,6 +21,9 @@ int NetIStream::Refresh()
 {
     int size = Socket::GetReadSize(m_sock);
 
+	if (size == 0)
+		return 0;
+
     if (m_cursor > 0)
     {
         Memcpy(&m_buffer[0], &m_buffer[m_cursor], m_length);
@@ -87,11 +90,14 @@ bool NetIStream::Skip(void * buff, int size)
             Skip(1);
             ++sk;
         }
-        else
-        {
-            return true;
-        }
+		else
+		{
+			Skip(size);
+			return true;
+		}
     }
+
+	Skip(-sk);
 
     return false;
 }

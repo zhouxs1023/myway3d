@@ -57,7 +57,7 @@ public:
     static bool Connect(Socket * s, const char * ip, int port);
     static bool Bind(Socket * s, int port, int clients);
     static bool Accept(Socket * cl, Socket * sv);
-    static void GetIp(char * ip, int size, Socket * s);
+    static const char * GetIp(Socket * s);
 
     static int Send(Socket * s, const void * buffer, int size);
     static int Recv(Socket * s, void * buffer, int size);

@@ -15,15 +15,7 @@ Map<Key, T, Less>::~Map()
 template <class Key, class T, class Less>
 void Map<Key, T, Less>::Clear()
 {
-    Iterator iter = Begin();
-    Iterator end = End();
-
-    while (iter != end)
-    {
-        Iterator erase = iter++;
-        mAlloc.Free(erase.node);
-    }
-
+    mAlloc.Shutdown();
     mRoot = NULL;
 }
 

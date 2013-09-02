@@ -79,16 +79,22 @@ public:
 
     void                SetUserData(void * data);
     void *              GetUserData() const;
+
+	void				LoadAnimation(const char * name, const char * source);
+	void				PlayAnimation(const char * name, const MotionBlendInfo & mbi = MotionBlendInfo::Default);
+	void				UpdateAnimation(float dtime);
    
 protected:
-    virtual void        _Init();
-    virtual void        _DeInit();
+    void				_Init();
+	void				_Shutdown();
 
 protected:
     MeshPtr             mMesh;
 
     SkeletonInstance *  mSkeleton;
     Array<SubEntity*>   mEntitys;
+
+	AnimationSet *		mAnimationSet;
 };
 
 

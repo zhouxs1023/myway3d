@@ -30,7 +30,6 @@ World::~World()
 
     DestroyAllLight();
 	DestroyAllEntity();
-    DestroyAllActor();
     DestroyAllCamera();
 
     safe_delete (mMainCamera);
@@ -262,131 +261,6 @@ void World::DestroyAllEntity()
     mEntitys.Clear();
 }
 
-
-
-
-
-
-Actor * World::CreateActor(const TString128 & name, const TString128 & mesh)
-{
-	Actor * pActor = new Actor(name);
-
-	pActor->SetMesh(MeshManager::Instance()->Load(mesh, mesh));
-
-	mActors.PushBack(pActor);
-
-	return pActor;
-}
-
-Actor * World::CreateActor(const TString128 & name, MeshPtr mesh)
-{
-	d_assert(mesh.NotNull());
-
-	Actor * pActor = new Actor(name);
-
-	pActor->SetMesh(mesh);
-
-	mActors.PushBack(pActor);
-
-	return pActor;
-}
-
-Actor * World::CreateActor(const TString128 & name)
-{
-	Actor * pActor = new Actor(name);
-
-	mActors.PushBack(pActor);
-
-	return pActor;
-}
-
-bool World::HasActor(const TString128 & name)
-{
-	List<Actor*>::Iterator iter;
-	List<Actor*>::Iterator end;
-
-	iter = mActors.Begin();
-	end = mActors.End();
-
-	while (iter != end && (*iter)->GetName() != name)
-	{
-		++iter;
-	}
-
-	return iter != end;
-}
-
-Actor * World::GetActor(const TString128 & name)
-{
-	List<Actor*>::Iterator iter;
-	List<Actor*>::Iterator end;
-
-	iter = mActors.Begin();
-	end = mActors.End();
-
-	while (iter != end && (*iter)->GetName() != name)
-	{
-		++iter;
-	}
-
-	return iter != end ? (*iter) : NULL;
-}
-
-void World::DestroyActor(const TString128 & name)
-{
-	List<Actor*>::Iterator iter;
-	List<Actor*>::Iterator end;
-
-	iter = mActors.Begin();
-	end = mActors.End();
-
-	while (iter != end && (*iter)->GetName() != name)
-	{
-		++iter;
-	}
-
-	debug_assert(iter != end, "Actor not exist.");
-
-	delete *iter;
-	mActors.Erase(iter);
-}
-
-void World::DestroyActor(Actor * actor)
-{
-	List<Actor*>::Iterator iter;
-	List<Actor*>::Iterator end;
-
-	iter = mActors.Begin();
-	end = mActors.End();
-
-	while (iter != end && (*iter) != actor)
-	{
-		++iter;
-	}
-
-	debug_assert(iter != end, "Actor not exist.");
-
-	delete *iter;
-	mActors.Erase(iter);
-}
-
-void World::DestroyAllActor()
-{
-	List<Actor*>::Iterator iter;
-	List<Actor*>::Iterator end;
-
-	iter = mActors.Begin();
-	end = mActors.End();
-
-	while (iter != end)
-	{
-		delete *iter;
-
-		++iter;
-	}
-
-	mActors.Clear();
-}
 
 
 

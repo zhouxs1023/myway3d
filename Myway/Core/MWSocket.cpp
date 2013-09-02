@@ -1265,14 +1265,18 @@ bool Socket::Accept(Socket * cl, Socket * sv)
     return cl->sock != INVALID_SOCKET;
 }
 
-void Socket::GetIp(char * ip, int size, Socket * s)
+const char * Socket::GetIp(Socket * s)
 {
     assert (s->sock != INVALID_SOCKET);
+
+	static char ip[128];
 
     in_addr n;
     n.S_un.S_addr = s->addr.sin_addr.S_un.S_addr;
 
     Strcpy(ip, 128, inet_ntoa(n));
+
+	return ip;
 }
 
 int Socket::Send(Socket * s, const void * buffer, int size)

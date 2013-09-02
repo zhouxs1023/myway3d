@@ -70,15 +70,16 @@ int SubEntity::GetBlendMatrix(Mat4 * forms)
 --------------------------------------------------------------
 */
 Entity::Entity(const TString128 & name)
-: Mover(name),
-  mMesh(NULL),
-  mSkeleton(NULL)
+: Mover(name)
+, mMesh(NULL)
+, mSkeleton(NULL)
+, mAnimationSet(NULL)
 {
 }
 
 Entity::~Entity(void)
 {
-    _DeInit();
+    _Shutdown();
 }
 
 void Entity::_Init()
@@ -111,12 +112,13 @@ void Entity::_Init()
         Skeleton * skel = mMesh->GetSkeleton();
 
 		mSkeleton = new SkeletonInstance(skel);
+		mAnimationSet = new AnimationSet;
     }
 
     SetBounds(mMesh->GetAabb(), mMesh->GetBoundingSphere());
 }
 
-void Entity::_DeInit()
+void Entity::_Shutdown()
 {
     Array<SubEntity*>::Iterator iter;
     Array<SubEntity*>::Iterator end;
@@ -133,6 +135,7 @@ void Entity::_DeInit()
 
     mEntitys.Clear();
 
+	safe_delete(mAnimationSet);
     safe_delete(mSkeleton);
 
     mMesh = NULL;
@@ -156,7 +159,7 @@ void Entity::SetMesh(MeshPtr mesh)
     if (mesh == mMesh)
         return ;
 
-    _DeInit();
+    _Shutdown();
 
     mMesh = mesh;
 
@@ -224,4 +227,56 @@ SkeletonInstance * Entity::GetSkeletonInstance()
 bool Entity::HasSkeletion()
 {
     return mSkeleton != NULL;
+}
+
+void Entity::LoadAnimation(const char * name, const char * source)
+{
+	d_assert (mMesh != NULL);
+
+	if (mSkeleton == NULL || mMesh->GetAnimation(name) != NULL)
+		return ;
+
+	DataStreamPtr stream = ResourceManager::Instance()->OpenResource(source);
+
+	d_assert (stream != NULL);
+
+	Animation * anim = mMesh->CreateAnimation(name);
+
+	/*anim->_convertSkinAnim(mSkeleton);
+
+	mAnimationSet->CreateState(anim);*/
+
+	AnimationLoader::Load(anim, stream);
+}
+
+void Entity::PlayAnimation(const char * name, const MotionBlendInfo & mbi)
+{
+	if (mAnimationSet == NULL)
+		return ;
+
+	AnimationController * controller = NULL;
+
+	if (!mAnimationSet->IsPlay(name))
+	{
+		Animation * anim = mMesh->GetAnimation(name);
+
+		if (anim)
+		{
+			controller = new AnimationController(anim);
+
+			controller->SetBlendInfo(mbi);
+				
+			mAnimationSet->Play(controller);
+		}
+	}
+}
+
+void Entity::UpdateAnimation(float dtime)
+{
+	if (mAnimationSet == NULL || mSkeleton == NULL)
+		return ;
+
+	mAnimationSet->UpdateAnimation(dtime, mSkeleton);
+
+	mSkeleton->UpdateBoneMatrix();
 }

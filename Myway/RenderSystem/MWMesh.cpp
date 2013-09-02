@@ -167,9 +167,6 @@ void Mesh::GenColMesh(Vec3 * verts, int numVerts, int * idxs, int numIdxs)
 
 void Mesh::GenColMeshFromRenderMesh()
 {
-	if (!CanLoad()) // only for load from file
-		return ;
-
 	safe_delete (mColMesh);
 
 	mColMesh = new ColMesh;
