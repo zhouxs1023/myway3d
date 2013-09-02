@@ -35,17 +35,16 @@ namespace Myway {
 			return ;
 
 		const MGUI_LookFeel * _lookfeel = mLookFeel;
-
 		MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(), _lookfeel->GetShader(), _lookfeel->GetSkin());
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		const MGUI_Rect & myRect = this->GetAbsRect();
 		const MGUI_Rect & clRect = this->GetClientRect();
-		const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-		const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
-		Color4 color = mColor * _lookfeel->GetColor(mState);
+		const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+		const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 		const MGUI_Rect & clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
 
-		MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+		MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 
 		for (int i = 0; i < mChildren.Size(); ++i)
 		{
@@ -57,14 +56,14 @@ namespace Myway {
 	{
 		const MGUI_Rect & clRect = GetAbsClientRect();
 
-		return clRect.Height() * 2 >= clRect.Width();
+		return clRect.DY() * 2 >= clRect.DX();
 	}
 
 	void MGUI_HScrollBar::OnUpdate()
 	{
 		const MGUI_Rect & clRect = GetClientRect();
 
-		int cw = clRect.Width(), ch = clRect.Height();
+		int cw = clRect.DX(), ch = clRect.DY();
 
 		MGUI_Rect myRectLeft, myRectRight, myRectScroll;
 
@@ -95,7 +94,7 @@ namespace Myway {
 
 			const MGUI_LookFeel * scrollLookFeel = mBnScroll->GetLookFeel();
 
-			int minWidth = scrollLookFeel->GetUVRect(MGUI_WidgetState::Normal).Width();
+			int minWidth = scrollLookFeel->GetUVRect(MGUI_WidgetState::Normal).DX();
 
 			myRectLeft.x0 = 0;
 			myRectLeft.x1 = 0 + cw / 2;
@@ -127,10 +126,10 @@ namespace Myway {
 				SetPosition(mDP + mDX / dStep);
 			}
 
-			if (myRectScroll.Width() < minWidth)
+			if (myRectScroll.DX() < minWidth)
 				myRectScroll.x1 = myRectScroll.x0 + minWidth;
 
-			int _w = myRectScroll.Width();
+			int _w = myRectScroll.DX();
 
 			if (myRectScroll.x0 < myRectLeft.x1)
 			{

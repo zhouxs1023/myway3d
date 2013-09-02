@@ -48,7 +48,7 @@ namespace Myway {
 
 	bool MGUI_Helper::Clip(MGUI_Rect & _orect, MGUI_RectF & _ouv, const MGUI_Rect & _rect, const MGUI_RectF & _uv, const MGUI_Rect & _clipRect)
 	{
-		if (_rect.Width() <= 0 || _rect.Height() <= 0)
+		if (_rect.DX() <= 0 || _rect.DY() <= 0)
 			return false;
 
 		if (_rect.x0 >= _clipRect.x1 || _rect.x1 <= _clipRect.x0 ||
@@ -63,8 +63,8 @@ namespace Myway {
 		}
 		else
 		{
-			float uStep = _uv.Width() / _rect.Width();
-			float vStep = _uv.Height() / _rect.Height();
+			float uStep = _uv.DX() / _rect.DX();
+			float vStep = _uv.DY() / _rect.DY();
 			float u = _uv.x0, v = _uv.y0;
 			float x = _rect.x0, y = _rect.y0;
 
@@ -84,7 +84,7 @@ namespace Myway {
 
 	bool MGUI_Helper::Clip(MGUI_RectF & _orect, MGUI_RectF & _ouv, const MGUI_RectF & _rect, const MGUI_RectF & _uv, const MGUI_Rect & _clipRect)
 	{
-		if (_rect.Width() <= 0 || _rect.Height() <= 0)
+		if (_rect.DX() <= 0 || _rect.DY() <= 0)
 			return false;
 
 		if (_rect.x0 >= _clipRect.x1 || _rect.x1 <= _clipRect.x0 ||
@@ -106,8 +106,8 @@ namespace Myway {
 			clipRect.x1 = (float)_clipRect.x1;
 			clipRect.y1 = (float)_clipRect.y1;
 
-			float uStep = _uv.Width() / _rect.Width();
-			float vStep = _uv.Height() / _rect.Height();
+			float uStep = _uv.DX() / _rect.DX();
+			float vStep = _uv.DY() / _rect.DY();
 			float u = _uv.x0, v = _uv.y0;
 			float x = _rect.x0, y = _rect.y0;
 
@@ -136,8 +136,8 @@ namespace Myway {
 
 		const MGUI_Rect & rect = MGUI_Engine::Instance()->GetRect();
 
-		float invWidth = 1.0f / (rect.Width());
-		float invHeight = 1.0f / (rect.Height());
+		float invWidth = 1.0f / (rect.DX());
+		float invHeight = 1.0f / (rect.DY());
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -199,7 +199,7 @@ namespace Myway {
 			}
 
 			// right
-			if (clRect.x1 < myRect.Width())
+			if (clRect.x1 < myRect.DX())
 			{
 				rect.x0 = myRect.x0 + clRect.x1;
 				rect.x1 = myRect.x1;
@@ -260,7 +260,7 @@ namespace Myway {
 			}
 
 			// right
-			if (clRect.x1 < myRect.Width())
+			if (clRect.x1 < myRect.DX())
 			{
 				rect.x0 = myRect.x0 + clRect.x1;
 				rect.x1 = myRect.x1;
@@ -280,7 +280,7 @@ namespace Myway {
 		}
 
 		// right
-		if (clRect.y1 < myRect.Height())
+		if (clRect.y1 < myRect.DY())
 		{
 			// left
 			if (clRect.x0 > 0)
@@ -321,7 +321,7 @@ namespace Myway {
 			}
 
 			// right
-			if (clRect.x1 < myRect.Width())
+			if (clRect.x1 < myRect.DX())
 			{
 				rect.x0 = myRect.x0 + clRect.x1;
 				rect.x1 = myRect.x1;
@@ -352,8 +352,8 @@ namespace Myway {
 
 		const MGUI_Rect & rect = MGUI_Engine::Instance()->GetRect();
 
-		float invWidth = 1.0f / (rect.Width());
-		float invHeight = 1.0f / (rect.Height());
+		float invWidth = 1.0f / (rect.DX());
+		float invHeight = 1.0f / (rect.DY());
 
 		for (int i = 0; i < 4; ++i)
 		{
@@ -419,6 +419,24 @@ namespace Myway {
 		return mVertexDecl;
 	}
 
+	int MGUI_Helper::GetWidgetState(MGUI_Widget * _widget)
+	{
+		int state = MGUI_WidgetState::Normal;
+
+		if (!_widget->GetEnable())
+			state = MGUI_WidgetState::Disabled;
+		else if (_widget == MGUI_InputManager::Instance()->GetKeyFocusedWidget())
+			state = MGUI_WidgetState::Selected;
+		else if (_widget == MGUI_InputManager::Instance()->GetMouseFocusedWidget())
+		{
+			if (MGUI_InputManager::Instance()->IsMouseCaptured())
+				state = MGUI_WidgetState::Pressed;
+			else
+				state = MGUI_WidgetState::Focused;
+		}
+
+		return state;
+	}
 }
 
 #pragma warning(pop)

@@ -27,8 +27,8 @@ namespace Myway {
 
 		myRect.x0 = 0;
 		myRect.y0 = 0;
-		myRect.x1 = mPercentage * mClientRect.Width() / 100;
-		myRect.y1 = mClientRect.Height();
+		myRect.x1 = mPercentage * mClientRect.DX() / 100;
+		myRect.y1 = mClientRect.DY();
 
 		mPercentageWidget->SetRect(myRect);
 	}

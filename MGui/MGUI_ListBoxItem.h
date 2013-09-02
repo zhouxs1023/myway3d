@@ -26,8 +26,7 @@ namespace Myway {
 		virtual void _AddRenderItem(MGUI_Layout * _layout);
 
 	protected:
-		virtual void OnMouseLostFocus(MGUI_Widget* _new);
-		virtual void OnMouseSetFocus(MGUI_Widget* _old);
+		virtual void OnMousePressed(int _x, int _y, MGUI_MouseButton _id);
 
 	protected:
 		MGUI_ListBox * mListBox;

@@ -19,14 +19,17 @@ namespace Myway {
 
 	void MGUI_ShaderDefault::DoRender(MGUI_RenderItem * _ri)
 	{
-		const MGUI_Vertex * vb = _ri->GetVertices();
-		int primCount = _ri->GetVertexCount() / 3;
-		Texture * texture = _ri->GetTexture();
+		if (_ri->GetVertexCount() != 0)
+		{
+			const MGUI_Vertex * vb = _ri->GetVertices();
+			int primCount = _ri->GetVertexCount() / 3;
+			Texture * texture = _ri->GetTexture();
 
-		SamplerState state;
-		RenderSystem::Instance()->SetTexture(0, state, texture);
+			SamplerState state;
+			RenderSystem::Instance()->SetTexture(0, state, texture);
 
-		RenderSystem::Instance()->RenderUI(mTech, MGUI_Helper::Instance()->GetVertexDeclaration(), vb, primCount);
+			RenderSystem::Instance()->RenderUI(mTech, MGUI_Helper::Instance()->GetVertexDeclaration(), vb, primCount);
+		}
 	}
 
 }

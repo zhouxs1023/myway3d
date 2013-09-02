@@ -8,7 +8,7 @@ namespace Myway {
 	MGUI_EditBox::MGUI_EditBox(const MGUI_LookFeel * _lookfeel, MGUI_Widget * _parent)
 		: MGUI_Widget(_lookfeel, _parent)
 	{
-		SetCaption(L"EditBox");
+		SetCaption(L"");
 		mCharHeight = 20;
 		mSelectBackColor = Color4(0.5f, 0.5f, 0.8f);
 
@@ -16,6 +16,9 @@ namespace Myway {
 
 		mKeyFocused = false;
 		mStatic = false;
+
+		mTimerId = -1;
+		mSelectVisible = false;
 	}
 
 	MGUI_EditBox::~MGUI_EditBox()
@@ -26,11 +29,8 @@ namespace Myway {
 	{
 		mStatic = _static;
 
-		if (mStatic && mKeyFocused)
-		{
-			if (MGUI_Engine::Instance()->GetKeyFocusedWidget() == this)
-				MGUI_Engine::Instance()->SetKeyFocusedWidget(NULL);
-;		}
+		if (MGUI_InputManager::Instance()->GetKeyFocusedWidget() == this)
+			MGUI_InputManager::Instance()->SetKeyFocusedWidget(NULL);
 	}
 
 	void MGUI_EditBox::_AddRenderItem(MGUI_Layout * _layout)
@@ -40,6 +40,7 @@ namespace Myway {
 
 		MGUI_LookFeel * _lookfeel = (MGUI_LookFeel *)mLookFeel;
 		MGUI_Rect clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		if (_lookfeel)
 		{
@@ -47,15 +48,14 @@ namespace Myway {
 
 			const MGUI_Rect & myRect = this->GetAbsRect();
 			const MGUI_Rect & clRect = this->GetClientRect();
-			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
-			Color4 color = mColor * _lookfeel->GetColor(mState);
+			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 
-			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 		}
 
 		const MGUI_Rect & clRect = this->GetAbsClientRect();
-		const Color4 & colorSelector = _lookfeel->GetTextColor(MGUI_WidgetState::SelectedNormal);
+		const Color4 & colorSelector = _lookfeel->GetTextColor(MGUI_WidgetState::Selected);
 		const Color4 & colorSelectorBack = mSelectBackColor;
 
 		MGUI_RectF myRect;
@@ -74,13 +74,15 @@ namespace Myway {
 
 		if (length > 0)
 		{
-			MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(), 
+			clipRect = GetAbsClientRect();
+
+			MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(),
 				MGUI_Engine::Instance()->GetDefaultShader(), MGUI_Font::Instance()->GetTexture().c_ptr());
 
 			for (int i = 0; i < length; ++i)
 			{
 				const MGUI_Glyph * glyph = MGUI_Font::Instance()->GetGlyph(wstr[i]);
-				Color4 color = mColor * _lookfeel->GetTextColor(mState);
+				Color4 color = mColor * _lookfeel->GetTextColor(state);
 
 				if (glyph == NULL)
 					glyph = MGUI_Font::Instance()->GetGlyph(MGUI_Helper::Instance()->GetUnknownChar());
@@ -115,7 +117,8 @@ namespace Myway {
 				// select
 				if (mKeyFocused)
 				{
-					if (mSelectStartIndex == mSelectEndIndex &&
+					if (mSelectVisible &&
+						mSelectStartIndex == mSelectEndIndex &&
 						mSelectStartIndex == i)
 					{
 						MGUI_RectF myRect_ = myRect;
@@ -136,7 +139,8 @@ namespace Myway {
 
 		if (mKeyFocused)
 		{
-			if (mSelectStartIndex == mSelectEndIndex &&
+			if (mSelectVisible &&
+				mSelectStartIndex == mSelectEndIndex &&
 				mSelectStartIndex == length)
 			{
 				MGUI_RectF myRect_ = myRect;
@@ -146,7 +150,7 @@ namespace Myway {
 				myRect_.x0 = myRect.x0 - half_w - .5f;
 				myRect_.x1 = myRect.x0 + half_w - .5f;
 
-				MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(), 
+				MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(),
 					MGUI_Engine::Instance()->GetDefaultShader(), MGUI_Font::Instance()->GetTexture().c_ptr());
 
 				if (MGUI_Helper::Instance()->Clip(_rect, _uv, myRect_, glyphSelector->uv, clipRect))
@@ -159,16 +163,6 @@ namespace Myway {
 		{
 			mChildren[i]->_AddRenderItem(_layout);
 		}
-	}
-
-	void MGUI_EditBox::OnMouseLostFocus(MGUI_Widget* _new)
-	{
-		mState = MGUI_WidgetState::Normal;
-	}
-
-	void MGUI_EditBox::OnMouseSetFocus(MGUI_Widget* _old)
-	{
-		mState = MGUI_WidgetState::Focused;
 	}
 
 	void MGUI_EditBox::OnMousePressed(int _x, int _y, MGUI_MouseButton _id)
@@ -267,6 +261,15 @@ namespace Myway {
 	void MGUI_EditBox::OnKeyLostFocus(MGUI_Widget * _new)
 	{
 		mKeyFocused = false;
+
+		if (mTimerId != -1)
+		{
+			MGUI_InputManager::Instance()->EndTimer(mTimerId);
+			mTimerId = -1;
+			mSelectVisible = false;
+
+			MGUI_InputManager::Instance()->eventTimer -= OnTimer(this, &MGUI_EditBox::OnTimer_);
+		}
 	}
 
 	void MGUI_EditBox::OnKeySetFocus(MGUI_Widget* _old)
@@ -275,6 +278,14 @@ namespace Myway {
 
 		if (!mEnable || mStatic)
 			mKeyFocused = false;
+
+		if (mKeyFocused)
+		{
+			mTimerId = MGUI_InputManager::Instance()->StartTimer(500);
+			mSelectVisible = true;
+
+			MGUI_InputManager::Instance()->eventTimer += OnTimer(this, &MGUI_EditBox::OnTimer_);
+		}
 	}
 
 	void MGUI_EditBox::OnKeyPressed(MGUI_KeyCode _key, MGUI_Char _char)
@@ -284,7 +295,7 @@ namespace Myway {
 
 		if (_key == MGUI_KeyCode::Escape)
 		{
-			MGUI_Engine::Instance()->SetKeyFocusedWidget(NULL);
+			MGUI_InputManager::Instance()->SetKeyFocusedWidget(NULL);
 		}
 		
 		else if (_key == MGUI_KeyCode::Backspace)
@@ -349,7 +360,7 @@ namespace Myway {
 			     _key == MGUI_KeyCode::Return)
 		{
 			eventTextReturn();
-			MGUI_Engine::Instance()->SetKeyFocusedWidget(NULL);
+			MGUI_InputManager::Instance()->SetKeyFocusedWidget(NULL);
 		}
 
 		else if (_char != 0)
@@ -433,4 +444,11 @@ namespace Myway {
 		}
 	}
 
+	void MGUI_EditBox::OnTimer_(int _id)
+	{
+		if (_id == mTimerId)
+		{
+			mSelectVisible = !mSelectVisible;
+		}
+	}
 }

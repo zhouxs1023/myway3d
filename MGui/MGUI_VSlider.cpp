@@ -27,21 +27,20 @@ namespace Myway {
 		if (!mVisible)
 			return ;
 
-		if (mRect.Width() == 0 || mRect.Height() == 0)
+		if (mRect.DX() == 0 || mRect.DY() == 0)
 			return ;
 
 		const MGUI_LookFeel * _lookfeel = mLookFeel;
-
 		MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(), _lookfeel->GetShader(), _lookfeel->GetSkin());
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		const MGUI_Rect & myRect = this->GetAbsRect();
 		const MGUI_Rect & clRect = this->GetClientRect();
-		const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-		const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
-		Color4 color = mColor * _lookfeel->GetColor(mState);
+		const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+		const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 		const MGUI_Rect & clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
 
-		MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+		MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 
 		for (int i = 0; i < mChildren.Size(); ++i)
 		{
@@ -51,19 +50,19 @@ namespace Myway {
 
 	void MGUI_VSlider::UpdateChildren()
 	{
-		float acespt = (float)(mBnSlider->GetLookFeel()->GetUVRect(MGUI_WidgetState::Normal).Height()) /
-			(float)(mBnSlider->GetLookFeel()->GetUVRect(MGUI_WidgetState::Normal).Width());
+		float acespt = (float)(mBnSlider->GetLookFeel()->GetUVRect(MGUI_WidgetState::Normal).DY()) /
+			(float)(mBnSlider->GetLookFeel()->GetUVRect(MGUI_WidgetState::Normal).DX());
 
 		MGUI_Rect myRectSlider;
 
-		int w = mClientRect.Width();
+		int w = mClientRect.DX();
 		int h = int(acespt * w);
 		float hh = h * 0.5f;
 
 		myRectSlider.x0 = 0;
-		myRectSlider.x1 = mClientRect.Width();
+		myRectSlider.x1 = mClientRect.DX();
 
-		float length = mClientRect.Height() - hh;
+		float length = mClientRect.DY() - hh;
 
 		if (length < 0)
 			length  = 0;
@@ -95,10 +94,10 @@ namespace Myway {
 			myRectSlider.y0 = 0;
 			myRectSlider.y1 = myRectSlider.y0 + h;
 		}
-		else if (myRectSlider.y1 > mClientRect.Height())
+		else if (myRectSlider.y1 > mClientRect.DY())
 		{
-			myRectSlider.y0 = mClientRect.Height() - h;
-			myRectSlider.y1 = mClientRect.Height();
+			myRectSlider.y0 = mClientRect.DY() - h;
+			myRectSlider.y1 = mClientRect.DY();
 		}
 
 		mBnSlider->SetRect(myRectSlider);

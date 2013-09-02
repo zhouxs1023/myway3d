@@ -12,7 +12,7 @@ namespace Myway {
 		DeclareRTTI();
 
 	public:
-		tEvent2<int, int> eventSelectChanged;
+		tEvent1<int> eventSelectChanged;
 
 	public:
 		MGUI_ComboBox(const MGUI_LookFeel * _lookfeel, MGUI_Widget * _parent);
@@ -22,6 +22,7 @@ namespace Myway {
 		void Insert(int _index, const MGUI_String & _text, void * _userData = NULL);
 		void Remove(int _index);
 		void Clear();
+		int GetCount();
 
 		void SetSelectIndex(int _index);
 		int GetSelectIndex() const;
@@ -30,14 +31,17 @@ namespace Myway {
 		void * GetUserData(int _index);
 
 		void SetItemHeight(int _height);
-		int GetItemHeight() const;
+		int GetItemDY() const;
 
 		virtual void OnUpdate();
 		virtual void _AddRenderItem(MGUI_Layout * _layout);
 
 	protected:
 		void OnDrop_();
-		void OnSelectChanged_(int _old, int _new);
+		void OnSelectChanged_(int _index);
+		void OnInputMousePressed_(int _x, int _y, MGUI_MouseButton _button);
+
+		void _drop(bool popuped);
 
 	protected:
 		MGUI_Button * mBnDrop;
@@ -50,6 +54,7 @@ namespace Myway {
 
 		tListener0<MGUI_ComboBox> OnDropButtonClick;
 		tListener0<MGUI_ComboBox> OnEditBoxClick;
-		tListener2<MGUI_ComboBox, int, int> OnListBoxSelectChanged;
+		tListener1<MGUI_ComboBox, int> OnListBoxSelectChanged;
+		tListener3<MGUI_ComboBox, int, int, MGUI_MouseButton> OnInputMousePressed;
 	};
 }

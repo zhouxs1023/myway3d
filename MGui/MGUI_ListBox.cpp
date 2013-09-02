@@ -17,6 +17,9 @@ namespace Myway {
 		mItemHeight = 24;
 		mItemLookFeel = _lookfeel->GetChild("ListBoxItem");
 
+		mItemWidget = new MGUI_Widget(NULL, this);
+		mItemWidget->SetAlign(MGUI_Align::Stretch);
+
 		mVScrollBar = new MGUI_VScrollBar(_lookfeel->GetChild("VScrollBar"), this);
 		mVScrollBar->eventPositionChanged += OnVScroll(this, &MGUI_ListBox::OnVScroll_);
 
@@ -36,16 +39,24 @@ namespace Myway {
 	void MGUI_ListBox::Insert(int _index, const MGUI_String & _text, void * _userData)
 	{
 		mItems.Insert(_index, new MGUI_ListBoxItem(this, mItemLookFeel, _text, _userData));
+
+		if (mSelectIndex >= _index)
+			SetSelectIndex(mSelectIndex + 1);
 	}
 
 	void MGUI_ListBox::Remove(int _index)
 	{
 		delete mItems[_index];
 		mItems.Erase(_index);
+
+		if (mSelectIndex >= _index)
+			SetSelectIndex(mSelectIndex - 1);
 	}
 
 	void MGUI_ListBox::Clear()
 	{
+		SetSelectIndex(-1);
+
 		for (int i = 0; i < mItems.Size(); ++i)
 			delete mItems[i];
 		
@@ -78,10 +89,9 @@ namespace Myway {
 
 		if (_index != mSelectIndex)
 		{
-			int tIndex = mSelectIndex;
 			mSelectIndex = _index;
 
-			eventSelectChanged(tIndex, _index);
+			eventSelectChanged(_index);
 		}
 	}
 
@@ -105,6 +115,7 @@ namespace Myway {
 
 		const MGUI_LookFeel * _lookfeel = mLookFeel;
 		const MGUI_Rect & clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		if (_lookfeel)
 		{
@@ -112,14 +123,13 @@ namespace Myway {
 
 			const MGUI_Rect & myRect = this->GetAbsRect();
 			const MGUI_Rect & clRect = this->GetClientRect();
-			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
-			Color4 color = mColor * _lookfeel->GetColor(mState);
+			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 
-			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 		}
 
-		Color4 color = mColor * _lookfeel->GetTextColor(mState);
+		Color4 color = mColor * _lookfeel->GetTextColor(state);
 
 		for (int i = 0; i < mItems.Size(); ++i)
 		{
@@ -140,10 +150,10 @@ namespace Myway {
 		const MGUI_Rect myRect = mVScrollBar->GetRect();
 
 		MGUI_Rect rect;
-		rect.x0 = mClientRect.Width() - mVScrollBar->GetRect().Width();
-		rect.x1 = mClientRect.Width();
+		rect.x0 = mClientRect.DX() - mVScrollBar->GetRect().DX();
+		rect.x1 = mClientRect.DX();
 		rect.y0 = 0;
-		rect.y1 = mClientRect.Height();
+		rect.y1 = mClientRect.DY();
 
 		mVScrollBar->SetRect(rect);
 
@@ -159,7 +169,7 @@ namespace Myway {
 			return ;
 		}
 
-		int clHeight = GetClientRect().Height();
+		int clHeight = GetClientRect().DY();
 		int maxHeight = GetCount() * mItemHeight;
 
 		if (maxHeight > clHeight)
@@ -173,7 +183,7 @@ namespace Myway {
 
 	void MGUI_ListBox::_updateItems()
 	{
-		MGUI_Rect myRect = GetAbsClientRect();
+		MGUI_Rect myRect = GetClientRect();
 
 		for (int i = 0; i < GetCount(); ++i)
 		{
@@ -185,80 +195,6 @@ namespace Myway {
 			_rect.y1 = _rect.y0 + mItemHeight - 1;
 
 			item->SetRect(_rect);
-			item->Update();
-		}
-	}
-
-	void MGUI_ListBox::OnMouseLostFocus(MGUI_Widget* _new)
-	{
-		for (int i = 0; i < GetCount(); ++i)
-		{
-			mItems[i]->_notifyMouseLostFocus(NULL);
-		}
-
-		mVScrollBar->_notifyMouseLostFocus(NULL);
-	}
-
-	void MGUI_ListBox::OnMouseMove(int _x, int _y)
-	{
-		if (mVScrollBar->GetVisible() && mVScrollBar->Pick(_x, _y) == mVScrollBar)
-		{
-			mVScrollBar->_notifyMouseMove(_x, _y);
-			return ;
-		}
-
-		const MGUI_Rect myRect = GetAbsClientRect();
-
-		if (myRect.x0 < _x && _x < myRect.x1 &&
-			myRect.y0 < _y && _y < myRect.y1)
-		{
-			for (int i = 0; i < GetCount(); ++i)
-			{
-				MGUI_ListBoxItem * item = mItems[i];
-
-				if (item->Pick(_x, _y) == item)
-					item->_notifyMouseSetFocus(NULL);
-				else
-					item->_notifyMouseLostFocus(NULL);
-			}
-		}
-	}
-
-	void MGUI_ListBox::OnMousePressed(int _x, int _y, MGUI_MouseButton _id)
-	{
-		if (mVScrollBar->GetVisible() && mVScrollBar->Pick(_x, _y) == mVScrollBar)
-		{
-			mVScrollBar->_notifyMousePressed(_x, _y, _id);
-			return ;
-		}
-
-		if (_id != MGUI_MouseButton::Left)
-			return ;
-
-		const MGUI_Rect myRect = GetAbsClientRect();
-
-		if (myRect.x0 < _x && _x < myRect.x1 &&
-			myRect.y0 < _y && _y < myRect.y1)
-		{
-			for (int i = 0; i < GetCount(); ++i)
-			{
-				MGUI_ListBoxItem * item = mItems[i];
-
-				if (item->Pick(_x, _y) == item)
-				{
-					SetSelectIndex(i);
-					break;
-				}
-			}
-		}
-	}
-
-	void MGUI_ListBox::OnMouseReleased(int _x, int _y, MGUI_MouseButton _id)
-	{
-		if (mVScrollBar->GetVisible() && mVScrollBar->Pick(_x, _y) == mVScrollBar)
-		{
-			mVScrollBar->_notifyMouseReleased(_x, _y, _id);
-			return ;
 		}
 	}
 
@@ -266,4 +202,21 @@ namespace Myway {
 	{
 		mTopIndex = _pos;
 	}
+
+	void MGUI_ListBox::OnSelect_(MGUI_ListBoxItem * _item)
+	{
+		for (int i = 0; i < GetCount(); ++i)
+		{
+			MGUI_ListBoxItem * item = mItems[i];
+
+			if (item == _item)
+			{
+				SetSelectIndex(i);
+				return ;
+			}
+		}
+
+		d_assert (0)
+	}
+
 }

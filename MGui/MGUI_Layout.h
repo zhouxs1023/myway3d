@@ -12,7 +12,7 @@ namespace Myway {
 		DeclareRTTI();
 
 	public:
-		MGUI_Layout(const MGUI_LookFeel * _lookfeel, MGUI_Widget * _parent);
+		MGUI_Layout(const MGUI_LookFeel * _lookfeel);
 		virtual ~MGUI_Layout();
 
 		MGUI_RenderItem * GetRenderItem(int _order, MGUI_Shader * _shader, Texture * _skin);

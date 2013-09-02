@@ -1,7 +1,6 @@
 #pragma once
 
 #include "MGUI_Widget.h"
-#include "MGUI_Event.h"
 
 namespace Myway {
 
@@ -26,13 +25,11 @@ namespace Myway {
 		const TString128 & GetCaption() const { return mCaption; }
 
 		void SetCharHeight(int _height) { mCharHeight = _height; }
-		int GetCharHeight() const { return mCharHeight; }
+		int GetCharDY() const { return mCharHeight; }
 
 		virtual void _AddRenderItem(MGUI_Layout * _layout);
 
 	protected:
-		virtual void OnMouseLostFocus(MGUI_Widget* _new);
-		virtual void OnMouseSetFocus(MGUI_Widget* _old);
 		virtual void OnMousePressed(int _x, int _y, MGUI_MouseButton _id);
 		virtual void OnMouseReleased(int _x, int _y, MGUI_MouseButton _id);
 

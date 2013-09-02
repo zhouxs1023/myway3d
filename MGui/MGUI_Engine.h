@@ -10,6 +10,8 @@
 #include "MGUI_Timer.h"
 #include "MGUI_Layout.h"
 #include "MGUI_Clipboard.h"
+#include "MGUI_SkinManager.h"
+#include "MGUI_InputManager.h"
 
 
 namespace Myway {
@@ -24,9 +26,8 @@ namespace Myway {
 
 		// Layout
 		void AddLayout(MGUI_Layout * _layout);
-		void RemoveLayout(const TString128 & name);
 		void RemoveLayout(MGUI_Layout * _layout);
-		void RemoveAllLayout();
+		void RemoveAllLayout(bool _delete = true);
 		MGUI_Layout * GetLayout(const TString128 & name);
 
 		// LookFeel
@@ -48,21 +49,9 @@ namespace Myway {
 
 		// input 
 		bool InjectMouseEvent();
-		bool InjectKeyEvent(DWORD uMsg, WPARAM wParam,LPARAM lParam);
+		bool InjectMessage(DWORD uMsg, WPARAM wParam,LPARAM lParam);
 
 		MGUI_Widget * GetWidget(int _x, int _y);
-
-		void SetKeyFocusedWidget(MGUI_Widget * _widget);
-		MGUI_Widget * GetKeyFocusedWidget();
-		MGUI_Widget * GetMouseFocusedWidget();
-
-	protected:
-		bool _injectMouseMove(int _x, int _y);
-		bool _injectMouseWheel(int _z);
-		bool _injectMousePressed(int _x, int _y, MGUI_MouseButton _id);
-		bool _injectMouseReleased(int _x, int _y, MGUI_MouseButton _id);
-		bool _injectKeyPressed(MGUI_KeyCode _key, MGUI_Char _text = 0);
-		bool _injectKeyReleased(MGUI_KeyCode _key);
 
 	protected:
 		MGUI_Helper * mHelper;
@@ -78,15 +67,13 @@ namespace Myway {
 
 		MGUI_Font * mFont;
 
-		// input
-		int mMouseX, mMouseY, mMouseZ;
-		bool mMouseCapture;
-		MGUI_Widget* mMouseFocusWidget;
-		MGUI_Widget* mKeyFocusWidget;
-
-		MGUI_Timer mTimer;
+		MGUI_LookFeelManager mLookFeelManager;
 
 		MGUI_Clipboard mCilpboard;
+
+		MGUI_SkinManager mSkinManager;
+
+		MGUI_InputManager mInputManager;
 	};
 
 }

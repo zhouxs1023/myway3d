@@ -9,6 +9,8 @@ namespace Myway {
 
 	class MGUI_ENTRY MGUI_LookFeel
 	{
+		DECLARE_ALLOC();
+
 	public:
 		MGUI_LookFeel(const TString128 & _name);
 		virtual ~MGUI_LookFeel();
@@ -27,9 +29,6 @@ namespace Myway {
 
 		void SetTextColor(int _state, const Color4 & _color) { mTextColor[_state] = _color; }
 		const Color4 & GetTextColor(int _state) const { return mTextColor[_state]; }
-
-		void SetColor(int _state, const Color4 & _color) { mColor[_state] = _color; }
-		const Color4 & GetColor(int _state) const { return mColor[_state]; }
 
 		void SetClientRect(const MGUI_Rect & _rect) { mClientRect = _rect; }
 		const MGUI_Rect & GetClientRect() const { return mClientRect; }
@@ -52,12 +51,37 @@ namespace Myway {
 		TexturePtr mSkin;
 		MGUI_Shader * mShader;
 
-		tFixedArray<MGUI_Rect, MGUI_WidgetState::MaxState> mUVRect;
-		tFixedArray<Color4, MGUI_WidgetState::MaxState> mTextColor;
-		tFixedArray<Color4, MGUI_WidgetState::MaxState> mColor;
+		tFixedArray<MGUI_Rect, MGUI_WidgetState::Max> mUVRect;
+		tFixedArray<Color4, MGUI_WidgetState::Max> mTextColor;
 		MGUI_Rect mClientRect;
 
 		Array<MGUI_LookFeel *> mChildren;
 	};
 
+
+	class MGUI_ENTRY MGUI_LookFeelManager
+	{
+		DECLARE_SINGLETON (MGUI_LookFeelManager);
+
+	public:
+		MGUI_LookFeelManager();
+		~MGUI_LookFeelManager();
+
+		void Load(const char * source);
+		void Unload();
+
+		bool Save();
+
+		void AddLookFeel(int _type, MGUI_LookFeel * _lookfeel);
+		void RemoveLookFeel(int _type, MGUI_LookFeel * _lookfeel);
+
+		int GetLookFeelCount(int _type);
+		MGUI_LookFeel * GetLookFeel(int _type, int _index);
+		MGUI_LookFeel * GetLookFeel(int _type, const TString128 & _name);
+
+	protected:
+		TString128 mFilename;
+
+		tFixedArray<Array<MGUI_LookFeel*>, MGUI_WidgetType::Max> mLookFeelGroup;
+	};
 }

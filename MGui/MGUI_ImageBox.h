@@ -13,6 +13,9 @@ namespace Myway {
 
 		void SetSkin(TexturePtr _skin, const MGUI_RectF & _rect = MGUI_RectF(0, 0, 1, 1));
 
+		void SetSkin(const TString128 & _skin);
+		void SetUVRect(const MGUI_RectF & _rect);
+
 		TexturePtr GetSkin() { return mSkin; }
 		const MGUI_RectF & GetUVRect() { return mUVRect; }
 

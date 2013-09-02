@@ -25,6 +25,7 @@
 #include "MGUI_ProgressBar.h"
 #include "MGUI_EditBox.h"
 #include "MGUI_ComboBox.h"
+#include "MGUI_ImageBox.h"
 
 
 

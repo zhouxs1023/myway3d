@@ -11,8 +11,10 @@ namespace Myway {
 	{
 		DeclareRTTI();
 
+		friend class MGUI_ListBoxItem;
+
 	public:
-		tEvent2<int, int> eventSelectChanged;
+		tEvent1<int> eventSelectChanged;
 
 	public:
 		MGUI_ListBox(const MGUI_LookFeel * _lookfeel, MGUI_Widget * _parent);
@@ -29,7 +31,7 @@ namespace Myway {
 		MGUI_ListBoxItem * GetItem(int _index);
 
 		void SetItemHeight(int _height) { mItemHeight = _height; }
-		int GetItemHeight() const { return mItemHeight; }
+		int GetItemDY() const { return mItemHeight; }
 
 		void SetSelectIndex(int _index);
 		int GetSelectIndex() const;
@@ -39,17 +41,15 @@ namespace Myway {
 
 		virtual void OnUpdate();
 
+		MGUI_Widget * GetItemWidget() { return mItemWidget; }
+
 	protected:
 		void _updateScroll();
 		void _updateItems();
 
 	protected:
-		virtual void OnMouseLostFocus(MGUI_Widget* _new);
-		virtual void OnMouseMove(int _x, int _y);
-		virtual void OnMousePressed(int _x, int _y, MGUI_MouseButton _id);
-		virtual void OnMouseReleased(int _x, int _y, MGUI_MouseButton _id);
-
 		void OnVScroll_(int _pos);
+		void OnSelect_(MGUI_ListBoxItem * _item);
 
 	protected:
 		int mItemHeight;
@@ -57,6 +57,8 @@ namespace Myway {
 		const MGUI_LookFeel * mItemLookFeel;
 		Array<MGUI_ListBoxItem *> mItems;
 		int mSelectIndex;
+
+		MGUI_Widget * mItemWidget;
 		
 		int mTopIndex;
 		MGUI_VScrollBar * mVScrollBar;

@@ -1,6 +1,7 @@
 #include "MGUI_Widget.h"
 #include "MGUI_Layout.h"
 #include "MGUI_Helper.h"
+#include "MGUI_Engine.h"
 
 namespace Myway {
 
@@ -12,7 +13,8 @@ namespace Myway {
 		, mColor(Color4::White)
 		, mEnable(true)
 		, mVisible(true)
-		, mState(MGUI_WidgetState::Normal)
+		, mOrder(0)
+		, mAbsOrder(0)
 	{
 		if (mParent)
 			mParent->_notifyAttach(this);
@@ -23,11 +25,17 @@ namespace Myway {
 
 	MGUI_Widget::~MGUI_Widget()
 	{
-		if (mParent)
-			mParent->_notifyDetach(this);
+		if (MGUI_InputManager::Instance()->GetMouseFocusedWidget() == this)
+			MGUI_InputManager::Instance()->SetMouseFocusedWidget(NULL);
+
+		if (MGUI_InputManager::Instance()->GetKeyFocusedWidget() == this)
+			MGUI_InputManager::Instance()->SetKeyFocusedWidget(NULL);
 
 		while (mChildren.Size() > 0)
 			delete mChildren[0];
+
+		if (mParent)
+			mParent->_notifyDetach(this);
 	}
 
 	void MGUI_Widget::SetName(const TString128 & _name)
@@ -53,6 +61,15 @@ namespace Myway {
 
 	void MGUI_Widget::_notifyAttach(MGUI_Widget * _child)
 	{
+		for (int i = 0; i < mChildren.Size(); ++i)
+		{
+			if (mChildren[i]->GetOrder() > _child->GetOrder())
+			{
+				mChildren.Insert(i, _child);
+				return ;
+			}
+		}
+
 		mChildren.PushBack(_child);
 	}
 
@@ -87,8 +104,8 @@ namespace Myway {
 
 	void MGUI_Widget::Move(int x, int y)
 	{
-		int x1 = x + mRect.Width();
-		int y1 = y + mRect.Height();
+		int x1 = x + mRect.DX();
+		int y1 = y + mRect.DY();
 
 		SetRect(x, y, x1, y1);
 	}
@@ -148,17 +165,21 @@ namespace Myway {
 
 	void MGUI_Widget::SetOrder(int _order)
 	{
+		if (mOrder == _order)
+			return ;
+
 		mOrder = _order;
+
+		if (mParent)
+		{
+			mParent->_notifyDetach(this);
+			mParent->_notifyAttach(this);
+		}
 	}
 
 	int MGUI_Widget::GetOrder()
 	{
 		return mOrder;
-	}
-
-	int MGUI_Widget::GetAbsOrder()
-	{
-		return mAbsOrder;
 	}
 
 	void MGUI_Widget::_AddRenderItem(MGUI_Layout * _layout)
@@ -169,6 +190,7 @@ namespace Myway {
 		const MGUI_LookFeel * _lookfeel = mLookFeel;
 
 		MGUI_Rect clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		if (_lookfeel)
 		{
@@ -176,11 +198,10 @@ namespace Myway {
 
 			const MGUI_Rect & myRect = this->GetAbsRect();
 			const MGUI_Rect & clRect = this->GetClientRect();
-			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
-			Color4 color = mColor * _lookfeel->GetColor(mState);
+			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 
-			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 		}
 
 		for (int i = 0; i < mChildren.Size(); ++i)
@@ -191,97 +212,60 @@ namespace Myway {
 
 	void  MGUI_Widget::Update()
 	{
+		if (!mVisible)
+			return ;
+
+		eventUpdate();
+
+		// update rect
 		MGUI_Rect client = MGUI_Helper::Instance()->GetParentRect(mParent);
 
 		if (mParent)
 			client = mParent->GetClientRect();
 		
-		int halfSizeX = mRect.Width() / 2;
-		int halfSizeY = mRect.Height() / 2;
-		int centerX = client.Width() / 2;
-		int centerY = client.Height() / 2;
+		int halfSizeX = mRect.DX() / 2;
+		int halfSizeY = mRect.DY() / 2;
+		int centerX = client.DX() / 2;
+		int centerY = client.DY() / 2;
 
-		switch (mAlign._value)
+		if (mAlign._value & MGUI_Align::Left)
 		{
-		case MGUI_Align::None:
-			break;
+			Move(0, mRect.y0);
+		}
+		else if (mAlign._value & MGUI_Align::Right)
+		{
+			Move(client.DX() - mRect.DX(), mRect.y0);
+		}
 
-		case MGUI_Align::HCenter:
+		if (mAlign._value & MGUI_Align::Top)
+		{
+			Move(mRect.x0, 0);
+		}
+		else if (mAlign._value & MGUI_Align::Bottom)
+		{
+			Move(mRect.x0, client.DY() - mRect.DY());
+		}
+
+		if (mAlign._value & MGUI_Align::HCenter)
+		{
 			Move(centerX - halfSizeX, mRect.y0);
-			break;
+		}
 
-		case MGUI_Align::VCenter:
+		if (mAlign._value & MGUI_Align::VCenter)
+		{
 			Move(mRect.x0, centerY - halfSizeY);
-			break;
+		}
 
-		case MGUI_Align::Center:
-			Move(centerX - halfSizeX, centerY - halfSizeY);
-			break;
-
-		case MGUI_Align::Left:
+		if (mAlign._value & MGUI_Align::HStretch)
+		{
 			Move(0, mRect.y0);
-			break;
+			mRect.x1 = client.DX();
+		}
 
-		case MGUI_Align::Right:
-			Move(client.Width() - mRect.Width(), mRect.y0);
-			break;
-
-		case MGUI_Align::HStretch:
-			Move(0, mRect.y0);
-			mRect.x1 = client.Width();
-			break;
-
-		case MGUI_Align::Top:
+		if (mAlign._value & MGUI_Align::VStretch)
+		{
 			Move(mRect.x0, 0);
-			break;
-
-		case MGUI_Align::Bottom:
-			Move(mRect.x0, client.Height() - mRect.Height());
-			break;
-
-		case MGUI_Align::VStretch:
-			Move(mRect.x0, 0);
-			mRect.y1 = client.Height();
-			break;
-
-		case MGUI_Align::Stretch:
-			mRect.x0 = 0;
-			mRect.y0 = 0;
-			mRect.x1 = client.Width();
-			mRect.y1 = client.Height();
-			break;
-
-		case MGUI_Align::LeftTop:
-			Move(0, 0);
-			break;
-
-		case MGUI_Align::LeftBottom:
-			Move(0, client.Height() - mRect.Height());
-			break;
-
-		case MGUI_Align::RightTop:
-			Move(client.Width() - mRect.Width(), 0);
-			break;
-
-		case MGUI_Align::RightBottom:
-			Move(client.Width() - mRect.Width(), client.Height() - mRect.Height());
-			break;
-
-		case MGUI_Align::LeftCenter:
-			Move(0, centerY - halfSizeY);
-			break;
-
-		case MGUI_Align::RightCenter:
-			Move(client.Width() - mRect.Width(), centerY - halfSizeY);
-			break;
-
-		case MGUI_Align::TopCenter:
-			Move(centerX - halfSizeX, 0);
-			break;
-
-		case MGUI_Align::BottomCenter:
-			Move(centerX - halfSizeX, client.Height() - mRect.Height());
-			break;
+			mRect.y1 = client.DY();
 		}
 
 		// update abs rect
@@ -299,7 +283,7 @@ namespace Myway {
 		}
 
 		// update client rect
-		mClientRect = mRect;
+		mClientRect = MGUI_Rect(0, 0, mRect.DX(), mRect.DY());
 
 		if (mLookFeel)
 			mLookFeel->Affect(this);
@@ -308,9 +292,6 @@ namespace Myway {
 		mAbsClientRect.y0 = mClientRect.y0 + mAbsRect.y0;
 		mAbsClientRect.x1 = mClientRect.x1 + mAbsRect.x0;
 		mAbsClientRect.y1 = mClientRect.y1 + mAbsRect.y0;
-
-		if (!mEnable)
-			mState = MGUI_WidgetState::Disabled;
 
 		if (mParent)
 		{
@@ -325,6 +306,11 @@ namespace Myway {
 		{
 			mClipRect = mAbsClientRect;
 		}
+
+		// update order
+		mAbsOrder = mOrder;
+		if (mParent)
+			mAbsOrder += mParent->GetAbsOrder();
 
 		OnUpdate();
 
@@ -344,7 +330,7 @@ namespace Myway {
 			myRect.x0 < _x && _x < myRect.x1 &&
 			myRect.y0 < _y && _y < myRect.y1)
 		{
-			for (int i = 0; i < mChildren.Size(); ++i)
+			for (int i = mChildren.Size() - 1; i >= 0; --i)
 			{
 				widget = mChildren[i]->Pick(_x, _y);
 

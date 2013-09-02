@@ -12,12 +12,17 @@ namespace Myway
 
 		void Reset();
 		unsigned long GetMilliseconds();
-
-	private:
 		unsigned long GetCurrentMilliseconds();
 
 	private:
 		unsigned long mTimeStart;
+	};
+
+	struct MGUI_ENTRY MGUI_Counter
+	{
+		int Id;
+		unsigned long IntervalTime;
+		unsigned long LastTime;
 	};
 
 }

@@ -18,7 +18,7 @@ namespace Myway {
 		const MGUI_String & GetCaption() const { return mCaption; }
 
 		void SetCharHeight(int _height) { mCharHeight = _height; }
-		int GetCharHeight() const { return mCharHeight; }
+		int GetCharDY() const { return mCharHeight; }
 
 		virtual void _AddRenderItem(MGUI_Layout * _layout);
 

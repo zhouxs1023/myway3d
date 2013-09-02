@@ -1,17 +1,20 @@
 #include "MGUI_Layout.h"
 #include "MGUI_Helper.h"
+#include "MGUI_Engine.h"
 
 namespace Myway {
 
 	ImplementRTTI(MGUI_Layout, MGUI_Widget);
 
-	MGUI_Layout::MGUI_Layout(const MGUI_LookFeel * _lookfeel, MGUI_Widget * _parent)
-		: MGUI_Widget(_lookfeel, _parent)
+	MGUI_Layout::MGUI_Layout(const MGUI_LookFeel * _lookfeel)
+		: MGUI_Widget(_lookfeel, NULL)
 	{
+		MGUI_Engine::Instance()->AddLayout(this);
 	}
 
 	MGUI_Layout::~MGUI_Layout()
 	{
+		MGUI_Engine::Instance()->RemoveLayout(this);
 	}
 
 	void MGUI_Layout::_AddRenderItem(MGUI_Layout * _layout)
@@ -21,6 +24,7 @@ namespace Myway {
 
 		MGUI_LookFeel * _lookfeel = (MGUI_LookFeel *)mLookFeel;
 		const MGUI_Rect & clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		if (_lookfeel)
 		{
@@ -28,8 +32,8 @@ namespace Myway {
 
 			const MGUI_Rect & myRect = this->GetAbsRect();
 			const MGUI_Rect & clRect = this->GetClientRect();
-			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
+			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 			const Color4 & color = mColor;
 
 			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);

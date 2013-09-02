@@ -21,11 +21,6 @@ namespace Myway {
 		mRect.y1 = Engine::Instance()->GetDeviceProperty()->Height;
 
 		mFont = new MGUI_Font;
-
-		mMouseX = mMouseY = mMouseZ = 0;
-		mMouseCapture = false;
-		mMouseFocusWidget = NULL;
-		mKeyFocusWidget = NULL;
 	}
 
 	MGUI_Engine::~MGUI_Engine()
@@ -46,31 +41,13 @@ namespace Myway {
 		mLayouts.PushBack(_layout);
 	}
 
-	void MGUI_Engine::RemoveLayout(const TString128 & name)
-	{
-		for (int i = 0; i < mLayouts.Size(); ++i)
-		{
-			if (mLayouts[i]->GetName() == name)
-			{
-				delete mLayouts[i];
-				mLayouts.Erase(i);
-
-				return ;
-			}
-		}
-
-		d_assert (0);
-	}
-
 	void MGUI_Engine::RemoveLayout(MGUI_Layout * _layout)
 	{
 		for (int i = 0; i < mLayouts.Size(); ++i)
 		{
 			if (mLayouts[i] == _layout)
 			{
-				delete mLayouts[i];
 				mLayouts.Erase(i);
-
 				return ;
 			}
 		}
@@ -78,13 +55,14 @@ namespace Myway {
 		d_assert (0);
 	}
 
-	void MGUI_Engine::RemoveAllLayout()
+	void MGUI_Engine::RemoveAllLayout(bool _delete)
 	{
-		for (int i = 0; i < mLayouts.Size(); ++i)
+		if (_delete)
 		{
-			delete mLayouts[i];
+			for (int i = 0; i < mLayouts.Size(); ++i)
+				delete mLayouts[i];
 		}
-
+		
 		mLayouts.Clear();
 	}
 
@@ -111,6 +89,8 @@ namespace Myway {
 
 	void MGUI_Engine::Update()
 	{
+		mInputManager.Update();
+
 		for (int i = 0; i < mLayouts.Size(); ++i)
 		{
 			mLayouts[i]->Update();
@@ -129,8 +109,11 @@ namespace Myway {
 
 		for (int i = 0; i < mLayouts.Size(); ++i)
 		{
-			mLayouts[i]->UpdateRenderItem();
-			mLayouts[i]->DoRender();
+			if (mLayouts[i]->GetVisible())
+			{
+				mLayouts[i]->UpdateRenderItem();
+				mLayouts[i]->DoRender();
+			}
 		}
 	}
 
@@ -160,5 +143,18 @@ namespace Myway {
 		}
 
 		mSerializers.Clear();
+	}
+
+	MGUI_Widget * MGUI_Engine::GetWidget(int _x, int _y)
+	{
+		for (int i = 0; i < mLayouts.Size(); ++i)
+		{
+			MGUI_Widget * item = mLayouts[i]->Pick(_x, _y);
+
+			if (item)
+				return item;
+		}
+
+		return NULL;
 	}
 }

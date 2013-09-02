@@ -42,6 +42,8 @@ namespace Myway {
 		void SetUnknownChar(MGUI_Char _char) { mUnknownChar = _char; }
 		MGUI_Char GetUnknownChar() { return mUnknownChar; }
 
+		int GetWidgetState(MGUI_Widget * _widget);
+
 	protected:
 		Array<MGUI_RenderItem *> mRenderItems;
 		VertexDeclarationPtr mVertexDecl;

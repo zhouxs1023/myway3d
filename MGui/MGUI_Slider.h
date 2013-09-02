@@ -2,7 +2,6 @@
 
 #include "MGUI_Widget.h"
 #include "MGUI_Button.h"
-#include "MGUI_Event.h"
 
 namespace Myway {
 

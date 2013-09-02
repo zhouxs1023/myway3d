@@ -8,7 +8,7 @@ namespace Myway {
 
 	MGUI_ListBoxItem::MGUI_ListBoxItem(MGUI_ListBox * _listBox, const MGUI_LookFeel * _lookfeel,
 									   const MGUI_String & _text, void * _userData)
-		: MGUI_Widget(_lookfeel, NULL)
+		: MGUI_Widget(_lookfeel, _listBox->GetItemWidget())
 	{
 		mListBox = _listBox;
 		mText = _text;
@@ -23,15 +23,10 @@ namespace Myway {
 	{
 		const MGUI_LookFeel * _lookfeel = mLookFeel;
 
-		int _state = mState;
-
-		if (!mListBox->GetEnable())
-			_state = MGUI_WidgetState::Disabled;
-
-		if (mListBox->GetSelectItem() == this)
-		{
-			_state += MGUI_WidgetState::Selected;
-		}
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
+		
+		if (state != MGUI_WidgetState::Disabled && state != MGUI_WidgetState::Focused && mListBox->GetSelectItem() == this)
+			state = MGUI_WidgetState::Selected;
 
 		const MGUI_Rect & clipRect = mListBox->GetClipRect();
 
@@ -41,11 +36,10 @@ namespace Myway {
 
 			const MGUI_Rect & myRect = this->GetAbsRect();
 			const MGUI_Rect & clRect = this->GetClientRect();
-			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(_state), _lookfeel->GetSkin());
-			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(_state), _lookfeel->GetSkin());
-			Color4 color = mColor * _lookfeel->GetColor(_state);
+			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 
-			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 		}
 
 		if (mText.Length() > 0)
@@ -54,8 +48,8 @@ namespace Myway {
 			int length = wcslen(wstr);
 
 			const MGUI_Rect & clRect = this->GetAbsClientRect();
-			Color4 color = mColor * _lookfeel->GetTextColor(_state);
-			float charHeight = (float)clRect.Height();
+			Color4 color = mColor * _lookfeel->GetTextColor(state);
+			float charHeight = (float)clRect.DY();
 			float centerY = (clRect.y0 + clRect.y1) * 0.5f;
 
 			MGUI_RectF myRect;
@@ -64,7 +58,7 @@ namespace Myway {
 			myRect.x1 = (float)clRect.x0;
 			myRect.y1 = centerY + charHeight / 2.0f;
 
-			MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(), 
+			MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(),
 				MGUI_Engine::Instance()->GetDefaultShader(), MGUI_Font::Instance()->GetTexture().c_ptr());
 
 
@@ -93,13 +87,10 @@ namespace Myway {
 		}
 	}
 
-	void MGUI_ListBoxItem::OnMouseLostFocus(MGUI_Widget* _new)
+
+	void MGUI_ListBoxItem::OnMousePressed(int _x, int _y, MGUI_MouseButton _id)
 	{
-		mState = MGUI_WidgetState::Normal;
+		mListBox->OnSelect_(this);
 	}
 
-	void MGUI_ListBoxItem::OnMouseSetFocus(MGUI_Widget* _old)
-	{
-		mState = MGUI_WidgetState::Focused;
-	}
 }

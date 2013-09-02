@@ -38,9 +38,6 @@
     <ClCompile Include="MGUI_Serializer.cpp">
       <Filter>MGUI</Filter>
     </ClCompile>
-    <ClCompile Include="MGUI_Event.cpp">
-      <Filter>MGUI\Event</Filter>
-    </ClCompile>
     <ClCompile Include="MGUI_Font.cpp">
       <Filter>MGUI</Filter>
     </ClCompile>
@@ -104,6 +101,15 @@
     <ClCompile Include="MGUI_Clipboard.cpp">
       <Filter>MGUI</Filter>
     </ClCompile>
+    <ClCompile Include="MGUI_Grid.cpp">
+      <Filter>MGUI\Control\Grid</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_SkinManager.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="MGUI_InputManager.cpp">
+      <Filter>MGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="MGUI_DataManager.h" />
@@ -143,32 +149,8 @@
     <ClInclude Include="MGUI_Serializer.h">
       <Filter>MGUI</Filter>
     </ClInclude>
-    <ClInclude Include="MGUI_Event0.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event1.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event2.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event3.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event4.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event5.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event6.h">
-      <Filter>MGUI\Event</Filter>
-    </ClInclude>
     <ClInclude Include="MGUI_Font.h">
       <Filter>MGUI</Filter>
-    </ClInclude>
-    <ClInclude Include="MGUI_Event.h">
-      <Filter>MGUI\Event</Filter>
     </ClInclude>
     <ClInclude Include="MGUI_Timer.h">
       <Filter>MGUI</Filter>
@@ -230,13 +212,19 @@
     <ClInclude Include="MGUI_Clipboard.h">
       <Filter>MGUI</Filter>
     </ClInclude>
+    <ClInclude Include="MGUI_Grid.h">
+      <Filter>MGUI\Control\Grid</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_SkinManager.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="MGUI_InputManager.h">
+      <Filter>MGUI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="MGUI">
       <UniqueIdentifier>{ef54da1b-fd88-44d4-8aa4-6ef8f5f7de4b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="MGUI\Event">
-      <UniqueIdentifier>{8289af0f-e4d0-4ef8-bb9a-c2cd2cb92a81}</UniqueIdentifier>
     </Filter>
     <Filter Include="MGUI\Control">
       <UniqueIdentifier>{5a86351c-a96c-411a-8030-e06d2879f573}</UniqueIdentifier>
@@ -273,6 +261,9 @@
     </Filter>
     <Filter Include="MGUI\Control\ComboBox">
       <UniqueIdentifier>{d31903c5-1bd1-4c08-a529-89a2d2b97e53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI\Control\Grid">
+      <UniqueIdentifier>{4bcf6d9b-f6b2-4399-a701-4a8f0688f881}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

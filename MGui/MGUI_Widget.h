@@ -13,7 +13,6 @@
 #include "MGUI_Entry.h"
 #include "MGUI_Types.h"
 #include "MGUI_LookFeel.h"
-#include "MGUI_Event.h"
 
 namespace Myway {
 
@@ -32,6 +31,8 @@ namespace Myway {
 	typedef tEvent1<MGUI_Widget*>					EventKeySetFocus;
 	typedef tEvent2<MGUI_KeyCode, MGUI_Char>		EventKeyPressed;
 	typedef tEvent1<MGUI_KeyCode>					EventKeyReleased;
+
+	typedef tEvent0									EventUpdate;
 		 
 	class MGUI_ENTRY MGUI_Widget
 	{
@@ -52,6 +53,8 @@ namespace Myway {
 		EventKeySetFocus eventKeySetFocus;
 		EventKeyPressed eventKeyPressed;
 		EventKeyReleased eventKeyReleased;
+
+		EventUpdate eventUpdate;
 
 	public:
 		MGUI_Widget(const MGUI_LookFeel * _lookfeel, MGUI_Widget * _parent);
@@ -85,7 +88,7 @@ namespace Myway {
 
 		void SetOrder(int _order);
 		int GetOrder();
-		int GetAbsOrder();
+		int GetAbsOrder() { return mAbsOrder; }
 
 		virtual void SetEnable(bool enable) { mEnable = enable; }
 		bool GetEnable() { return mEnable; }
@@ -100,10 +103,9 @@ namespace Myway {
 
 		virtual MGUI_Widget * Pick(int _x, int _y);
 
-		int GetState() const { return mState; }
 		MGUI_Widget * GetChild(const TString128 & _name);
 
-
+		virtual bool CanKeyFoucsed() { return false; }
 
 		// internal
 		void _notifyMouseLostFocus(MGUI_Widget* _new);
@@ -139,6 +141,7 @@ namespace Myway {
 		void _notifyAttach(MGUI_Widget * _child);
 		void _notifyDetach(MGUI_Widget * _child);
 
+
 	protected:
 		TString128 mName;
 
@@ -161,8 +164,6 @@ namespace Myway {
 
 		bool mEnable;
 		bool mVisible;
-
-		int mState;
 	};
 
 

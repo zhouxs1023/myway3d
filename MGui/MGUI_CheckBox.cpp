@@ -24,8 +24,8 @@ namespace Myway {
 			return ;
 
 		MGUI_LookFeel * _lookfeel = (MGUI_LookFeel *)mLookFeel;
-
 		MGUI_Rect clipRect = MGUI_Helper::Instance()->GetClipRect(mParent);
+		int state = MGUI_Helper::Instance()->GetWidgetState(this);
 
 		float textOffX = 0;
 
@@ -35,17 +35,16 @@ namespace Myway {
 
 				  MGUI_Rect   myRect = this->GetAbsRect();
 			const MGUI_Rect & clRect = this->GetClientRect();
-			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(mState), _lookfeel->GetSkin());
-			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(mState), _lookfeel->GetSkin());
-			Color4 color = mColor * _lookfeel->GetColor(mState);
+			const MGUI_RectF & uvRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVRect(state), _lookfeel->GetSkin());
+			const MGUI_RectF & uvClientRect = MGUI_Helper::Instance()->MapUVRect(_lookfeel->GetUVClientRect(state), _lookfeel->GetSkin());
 
-			float acspect = uvRect.Width() / uvRect.Height();
+			float acspect = uvRect.DX() / uvRect.DY();
 
-			myRect.x1 = myRect.x0 + int(acspect * myRect.Height());
+			myRect.x1 = myRect.x0 + int(acspect * myRect.DY());
 
 			textOffX = myRect.x1 + 4.0f;
 
-			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, color, clipRect);
+			MGUI_Helper::Instance()->AddRenderItem(ri, myRect, clRect, uvRect, uvClientRect, mColor, clipRect);
 
 			/*if (mChecked)
 			{
@@ -64,7 +63,7 @@ namespace Myway {
 			int length = wcslen(wstr);
 
 			const MGUI_Rect & clRect = this->GetAbsClientRect();
-			Color4 color = mColor * _lookfeel->GetTextColor(mState);
+			Color4 color = mColor * _lookfeel->GetTextColor(state);
 
 			MGUI_RectF myRect;
 			myRect.x0 = textOffX;
@@ -74,7 +73,7 @@ namespace Myway {
 
 			MGUI_RectF _rect, _uv;
 
-			MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(), 
+			MGUI_RenderItem * ri = _layout->GetRenderItem(GetAbsOrder(),
 				MGUI_Engine::Instance()->GetDefaultShader(), MGUI_Font::Instance()->GetTexture().c_ptr());
 
 			for (int i = 0; i < length; ++i)
@@ -104,28 +103,14 @@ namespace Myway {
 		}
 	}
 
-	void MGUI_CheckBox::OnMouseLostFocus(MGUI_Widget* _new)
-	{
-		mState = MGUI_WidgetState::Normal;
-	}
-
-	void MGUI_CheckBox::OnMouseSetFocus(MGUI_Widget* _old)
-	{
-		mState = MGUI_WidgetState::Focused;
-	}
-
 	void MGUI_CheckBox::OnMousePressed(int _x, int _y, MGUI_MouseButton _id)
 	{
-		if (_id == MGUI_MouseButton::Left)
-			mState = MGUI_WidgetState::Pressed;
 	}
 
 	void MGUI_CheckBox::OnMouseReleased(int _x, int _y, MGUI_MouseButton _id)
 	{
 		if (_id == MGUI_MouseButton::Left)
 		{
-			mState = MGUI_WidgetState::Focused;
-
 			mChecked = !mChecked;
 
 			eventChecked(mChecked);

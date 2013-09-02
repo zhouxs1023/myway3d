@@ -12,6 +12,9 @@
 #include "Myway.h"
 #include "MGUI_Entry.h"
 
+#pragma warning(push)
+#pragma warning(disable : 4996)
+
 namespace Myway {
 
 	typedef Color4 MGUI_Color;
@@ -23,7 +26,7 @@ namespace Myway {
 		MGUI_Size() : w(0), h(0) {}
 	};
 
-	struct MGUI_Rect
+	struct MGUI_ENTRY MGUI_Rect
 	{
 		int x0, y0;
 		int x1, y1;
@@ -35,17 +38,56 @@ namespace Myway {
 			x1 = _x1; y1 = _y1;
 		}
 
+		MGUI_Rect(bool xywh, int _x, int _y, int _w, int _h)
+		{
+			x0 = _x; y0 = _y;
+			x1 = _x + _w - 1; y1 = _y + _h - 1;
+		}
+
 		void Set(int _x0, int _y0, int _x1, int _y1)
 		{
 			x0 = _x0; y0 = _y0;
 			x1 = _x1; y1 = _y1;
 		}
 
-		int Width() const { return x1 - x0; }
-		int Height() const { return y1 - y0; }
+		int DX() const { return x1 - x0; }
+		int DY() const { return y1 - y0; }
 
 		int CenterX() const { return (x0 + x1) / 2; }
 		int CenterY() const { return (y0 + y1) / 2; }
+
+		TString128 ToString() const
+		{
+			TString128 str;
+
+			str.Format("%d,%d,%d,%d", x0, y0, x1, y1);
+
+			return str;
+		}
+
+		void FromString(const TString128 & _string)
+		{
+			sscanf(_string.c_str(), "%d,%d,%d,%d", x0, y0, x1, y1);
+		}
+
+		TString128 ToString_XYWH() const
+		{
+			TString128 str;
+
+			str.Format("%d,%d,%d,%d", x0, y0, DX() + 1, DY() + 1);
+
+			return str;
+		}
+
+		void FromString_XYWH(const TString128 & _string)
+		{
+			int w = 0, h = 0;
+
+			sscanf(_string.c_str(), "%d,%d,%d,%d", &x0, &y0, &w, &h);
+
+			x1 = x0 + w - 1;
+			y1 = y0 + h - 1;
+		}
 	};
 
 	struct MGUI_RectF
@@ -66,8 +108,8 @@ namespace Myway {
 			x1 = _x1; y1 = _y1;
 		}
 
-		float Width() const { return x1 - x0; }
-		float Height() const { return y1 - y0; }
+		float DX() const { return x1 - x0; }
+		float DY() const { return y1 - y0; }
 
 		float CenterX() const { return (x0 + x1) / 2; }
 		float CenterY() const { return (y0 + y1) / 2; }
@@ -79,38 +121,25 @@ namespace Myway {
 		{
 			None,
 
-			HCenter,
-			VCenter,
-			Center,
+			HCenter = 1,
+			VCenter = 2,
+			Center = HCenter | VCenter,
 
-			Left,
-			Right,
-			HStretch,
+			Left =  4,
+			Right = 8,
+			HStretch = 16,
 
-			Top,
-			Bottom,
-			VStretch,
+			Top = 32,
+			Bottom = 64,
+			VStretch = 128,
 
-			Stretch,
-
-			LeftTop,
-			LeftBottom,
-
-			RightTop,
-			RightBottom,
-
-			LeftCenter,
-			RightCenter,
-			TopCenter,
-			BottomCenter,
-
-			eMax
+			Stretch = HStretch | VStretch,
 		};
 
 		int _value;
 
 		MGUI_Align() : _value(None) {}
-		MGUI_Align(int val) : _value(val) { d_assert(val < eMax); }
+		MGUI_Align(int val) : _value(val) {}
 
 		MGUI_Align & operator =(int rk)
 		{
@@ -136,11 +165,6 @@ namespace Myway {
 		bool operator !=(const MGUI_Align & rk) const
 		{
 			return _value != rk._value;
-		}
-
-		bool IsValid() const
-		{
-			return _value >= None && _value < eMax;
 		}
 	};
 
@@ -388,21 +412,57 @@ namespace Myway {
 	};
 
 
-	struct MGUI_WidgetState {
+	struct MGUI_ENTRY MGUI_WidgetState {
 
 		enum {
-			Disabled,
 			Normal,
+			Disabled,
 			Focused,
 			Pressed,
-			SelectedDisabled,
-			SelectedNormal,
-			SelectedFocused,
-			SelectedPressed,
+			Selected,
 
-			MaxState,
-			Selected = 4,
+			Max,
 		};
 
+		static const TString128 StateString[];
+
+		static int GetState(const TString128 & _state);
+		static const TString128 & GetStateString(int _state); 
+	};
+
+
+	struct MGUI_ENTRY MGUI_WidgetType {
+
+		enum {
+			Button,
+			CheckBox,
+			ComboBox,
+			EditBox,
+			ImageBox,
+			Label,
+			ListBox,
+			Panel,
+			ProgressBar,
+			ScrollBar,
+			Slider,
+
+			Reserved0,
+			Reserved1,
+			Reserved2,
+			Reserved3,
+			Reserved4,
+			Reserved5,
+
+			User,
+
+			Max,
+		};
+
+		static const TString128 TypeString[Max];
+
+		static int GetType(const TString128 & _type);
+		static const TString128 & GetTypeString(int _type);
 	};
 }
+
+#pragma warning(pop)

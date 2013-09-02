@@ -18,16 +18,19 @@ namespace Myway {
 		mEditBox->SetStatic(true);
 		mEditBox->SetCaption(L"");
 
-		mBnDrop->SetAlign(MGUI_Align::RightCenter);
+		mBnDrop->SetAlign(MGUI_Align::Right | MGUI_Align::VCenter);
 
 		mListBox = new MGUI_ListBox(_lookfeel->GetChild("ListBox"), _parent);
 		mListBox->SetVisible(false);
+		mListBox->SetOrder(GetOrder() + 1);
 
 		SetItemHeight(mItemHeight);
 
 		mEditBox->eventMouseClick += OnEditBoxClick(this, &MGUI_ComboBox::OnDrop_);
 		mBnDrop->eventMouseClick += OnDropButtonClick(this, &MGUI_ComboBox::OnDrop_);
 		mListBox->eventSelectChanged += OnListBoxSelectChanged(this, &MGUI_ComboBox::OnSelectChanged_);
+		
+		MGUI_InputManager::Instance()->eventMousePressed += OnInputMousePressed(this, &MGUI_ComboBox::OnInputMousePressed_);
 	}
 
 	MGUI_ComboBox::~MGUI_ComboBox()
@@ -52,6 +55,11 @@ namespace Myway {
 	void MGUI_ComboBox::Clear()
 	{
 		mListBox->Clear();
+	}
+
+	int MGUI_ComboBox::GetCount()
+	{
+		return mListBox->GetCount();
 	}
 
 	void MGUI_ComboBox::SetSelectIndex(int _index)
@@ -80,13 +88,15 @@ namespace Myway {
 		mListBox->SetItemHeight(_height);
 	}
 
-	int MGUI_ComboBox::GetItemHeight() const
+	int MGUI_ComboBox::GetItemDY() const
 	{
 		return mItemHeight;
 	}
 
 	void MGUI_ComboBox::OnUpdate()
 	{
+		mListBox->SetOrder(GetOrder() + 1);
+
 		if (mPopuped)
 		{
 			MGUI_Rect myRect;
@@ -119,21 +129,35 @@ namespace Myway {
 	
 	void MGUI_ComboBox::OnDrop_()
 	{
-		mPopuped = !mPopuped;
+		_drop(!mPopuped);
 	}
 
-	void MGUI_ComboBox::OnSelectChanged_(int _old, int _new)
+	void MGUI_ComboBox::_drop(bool popuped)
+	{
+		mPopuped = popuped;
+	}
+
+
+	void MGUI_ComboBox::OnSelectChanged_(int _index)
 	{
 		MGUI_String text;
 
-		if (_new != -1)
-			text = GetText(_new);
+		if (_index != -1)
+			text = GetText(_index);
 
 		mEditBox->SetCaption(text);
 
-		eventSelectChanged(_old, _new);
+		eventSelectChanged(_index);
 
-		OnDrop_();
+		_drop(false);
+	}
+
+	void MGUI_ComboBox::OnInputMousePressed_(int _x, int _y, MGUI_MouseButton _button)
+	{
+		if (mListBox->GetVisible() && this->Pick(_x, _y) == NULL && mListBox->Pick(_x, _y) == NULL)
+		{
+			_drop(false);
+		}
 	}
 
 }

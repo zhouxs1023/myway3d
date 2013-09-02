@@ -22,7 +22,7 @@ namespace Myway {
 		const MGUI_String & GetCaption() const { return mCaption; }
 
 		void SetCharHeight(int _height) { mCharHeight = _height; }
-		int GetCharHeight() const { return mCharHeight; }
+		int GetCharDY() const { return mCharHeight; }
 
 		virtual void _AddRenderItem(MGUI_Layout * _layout);
 
@@ -32,15 +32,17 @@ namespace Myway {
 		void SetStatic(bool _static);
 		bool GetStatic() { return mStatic; }
 
+		virtual bool CanKeyFoucsed() { return !mStatic; }
+
 	protected:
-		virtual void OnMouseLostFocus(MGUI_Widget* _new);
-		virtual void OnMouseSetFocus(MGUI_Widget* _old);
 		virtual void OnMousePressed(int _x, int _y, MGUI_MouseButton _id);
 		virtual void OnMouseDrag(int _x, int _y);
 
 		virtual void OnKeyLostFocus(MGUI_Widget * _new);
 		virtual void OnKeySetFocus(MGUI_Widget* _old);
 		virtual void OnKeyPressed(MGUI_KeyCode _key, MGUI_Char _char);
+
+		void OnTimer_(int _id);
 
 	protected:
 		bool mKeyFocused;
@@ -55,6 +57,10 @@ namespace Myway {
 		bool mStatic;
 
 		Color4 mSelectBackColor;
+
+		bool mSelectVisible;
+		int mTimerId;
+		tListener1<MGUI_EditBox, int> OnTimer;
 	};
 
 
