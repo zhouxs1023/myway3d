@@ -2,8 +2,9 @@
 
 #include "MainMenu.h"
 #include "MainStatusBar.h"
-#include "MainLookFeelPanel.h"
+#include "LookFeelEditor.h"
 #include "AllLookFeel.h"
+#include "ColorDialog.h"
 
 namespace UIEditor {
 
@@ -19,7 +20,9 @@ namespace UIEditor {
 		AllLookFeel * mAllLookFeel;
 		MainMenu * mMainMenu;
 		MainStatusBar * mMainStatusBar;
-		MainLookFeelPanel * mMainLookFeelPanel;
+		LookFeelEditor * mLookFeelEditor;
+
+		ColorDialog * mColorDialog;
 	};
 
 }

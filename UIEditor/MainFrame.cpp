@@ -7,16 +7,22 @@ namespace UIEditor {
 	{
 		mAllLookFeel = new AllLookFeel;
 		mMainMenu = new MainMenu;
-		mMainLookFeelPanel = new MainLookFeelPanel;
 		mMainStatusBar = new MainStatusBar;
+
+		mLookFeelEditor= new LookFeelEditor;
+
+		mColorDialog = new ColorDialog;
 
 		Layout();
 	}
 
 	MainFrame::~MainFrame()
 	{
+		delete mColorDialog;
+
+		delete mLookFeelEditor;
+
 		delete mMainMenu;
-		delete mMainLookFeelPanel;
 		delete mMainStatusBar;
 		delete mAllLookFeel;
 	}
@@ -24,8 +30,9 @@ namespace UIEditor {
 	void MainFrame::Layout()
 	{
 		mMainMenu->Layout();
-		mMainLookFeelPanel->Layout();
 		mMainStatusBar->Layout();
+
+		mLookFeelEditor->Layout();
 	}
 
 

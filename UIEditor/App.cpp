@@ -101,8 +101,7 @@ void App::OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
 		}*/
 	}
 
-	mUIEngine->InjectKeyEvent(iMsg, wParam, lParam);
-	//mUISystem.InjectKeyEvent(iMsg, wParam, lParam);
+	mUIEngine->InjectMessage(iMsg, wParam, lParam);
 }
 
 void App::OnGUIRender_(Event * _sender)

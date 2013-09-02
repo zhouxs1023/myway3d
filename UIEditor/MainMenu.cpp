@@ -7,8 +7,7 @@ namespace UIEditor {
 
 	MainMenu::MainMenu()
 	{
-		mLayout = new MGUI_Layout(AllLookFeel::Instance()->GetMenu(), NULL);
-		MGUI_Engine::Instance()->AddLayout(mLayout);
+		mLayout = new MGUI_Layout(AllLookFeel::Instance()->GetMenu());
 
 		mButton_LookFeelFile = new MGUI_Button(AllLookFeel::Instance()->GetLookFeelFile(), mLayout);
 		mButton_LookFeelFile->SetRect(MGUI_Rect(1, 1, 32, 32));
@@ -16,8 +15,7 @@ namespace UIEditor {
 
 	MainMenu::~MainMenu()
 	{
-		MGUI_Engine::Instance()->RemoveLayout(mLayout);
-		mLayout = NULL;
+		delete mLayout;
 	}
 
 	void MainMenu::Layout()

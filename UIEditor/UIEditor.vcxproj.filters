@@ -7,6 +7,12 @@
     <Filter Include="MGUI Editor\Frame">
       <UniqueIdentifier>{220fd7bf-7cb4-4e40-832f-a3cf17ce496f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="MGUI Editor\Frame\LookFeelEditor">
+      <UniqueIdentifier>{793e8d00-ea25-4993-ad86-8ced01c9e071}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="MGUI Editor\Misc">
+      <UniqueIdentifier>{789a4afe-66eb-48a3-a575-028e12db635d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
@@ -25,14 +31,32 @@
     <ClInclude Include="MainMenu.h">
       <Filter>MGUI Editor\Frame</Filter>
     </ClInclude>
-    <ClInclude Include="MainLookFeelPanel.h">
-      <Filter>MGUI Editor\Frame</Filter>
-    </ClInclude>
     <ClInclude Include="MainStatusBar.h">
       <Filter>MGUI Editor\Frame</Filter>
     </ClInclude>
-    <ClInclude Include="AllLookFeel.h">
+    <ClInclude Include="LookFeelProperty.h">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="LookFeelPanel.h">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="LookFeelEditor.h">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="Helper.h">
       <Filter>MGUI Editor\Frame</Filter>
+    </ClInclude>
+    <ClInclude Include="LookFeelSkinEd.h">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClInclude>
+    <ClInclude Include="RectEd.h">
+      <Filter>MGUI Editor</Filter>
+    </ClInclude>
+    <ClInclude Include="AllLookFeel.h">
+      <Filter>MGUI Editor\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="ColorDialog.h">
+      <Filter>MGUI Editor\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -53,14 +77,32 @@
     <ClCompile Include="MainMenu.cpp">
       <Filter>MGUI Editor\Frame</Filter>
     </ClCompile>
-    <ClCompile Include="MainLookFeelPanel.cpp">
-      <Filter>MGUI Editor\Frame</Filter>
-    </ClCompile>
     <ClCompile Include="MainStatusBar.cpp">
       <Filter>MGUI Editor\Frame</Filter>
     </ClCompile>
-    <ClCompile Include="AllLookFeel.cpp">
+    <ClCompile Include="LookFeelProperty.cpp">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="LookFeelPanel.cpp">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="LookFeelEditor.cpp">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="Helper.cpp">
       <Filter>MGUI Editor\Frame</Filter>
+    </ClCompile>
+    <ClCompile Include="LookFeelSkinEd.cpp">
+      <Filter>MGUI Editor\Frame\LookFeelEditor</Filter>
+    </ClCompile>
+    <ClCompile Include="RectEd.cpp">
+      <Filter>MGUI Editor</Filter>
+    </ClCompile>
+    <ClCompile Include="AllLookFeel.cpp">
+      <Filter>MGUI Editor\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="ColorDialog.cpp">
+      <Filter>MGUI Editor\Misc</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

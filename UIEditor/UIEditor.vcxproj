@@ -99,24 +99,36 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="App.h" />
+    <ClInclude Include="ColorDialog.h" />
     <ClInclude Include="Event.h" />
+    <ClInclude Include="Helper.h" />
+    <ClInclude Include="LookFeelEditor.h" />
+    <ClInclude Include="LookFeelProperty.h" />
+    <ClInclude Include="LookFeelSkinEd.h" />
     <ClInclude Include="MainFrame.h" />
     <ClInclude Include="AllLookFeel.h" />
-    <ClInclude Include="MainLookFeelPanel.h" />
+    <ClInclude Include="LookFeelPanel.h" />
     <ClInclude Include="MainMenu.h" />
     <ClInclude Include="MainStatusBar.h" />
+    <ClInclude Include="RectEd.h" />
     <ClInclude Include="SkinRenderer.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="App.cpp" />
+    <ClCompile Include="ColorDialog.cpp" />
     <ClCompile Include="Event.cpp" />
+    <ClCompile Include="Helper.cpp" />
+    <ClCompile Include="LookFeelSkinEd.cpp" />
+    <ClCompile Include="LookFeelEditor.cpp" />
+    <ClCompile Include="LookFeelProperty.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainFrame.cpp" />
     <ClCompile Include="AllLookFeel.cpp" />
-    <ClCompile Include="MainLookFeelPanel.cpp" />
+    <ClCompile Include="LookFeelPanel.cpp" />
     <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="MainStatusBar.cpp" />
+    <ClCompile Include="RectEd.cpp" />
     <ClCompile Include="SkinRenderer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

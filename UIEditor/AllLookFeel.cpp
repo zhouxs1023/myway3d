@@ -2,7 +2,7 @@
 
 #include "AllLookFeel.h"
 
-namespace UIEditor {
+namespace Myway {
 
 	AllLookFeel * AllLookFeel::msInstance = NULL;
 
@@ -15,6 +15,8 @@ namespace UIEditor {
 		mMenu->SetSkin("EditorSkin.png");
 		mMenu->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(202, 2, 202 + 27, 2 + 26));
 		mMenu->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(202, 2, 202 + 27, 2 + 26));
+		mMenu->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(202, 2, 202 + 27, 2 + 26));
+		mMenu->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(202, 2, 202 + 27, 2 + 26));
 		mMenu->SetClientRect(MGUI_Rect(6, 0, 21, 26));
 
 		// LookFeelFile
@@ -24,17 +26,37 @@ namespace UIEditor {
 		mLookFeelFile->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(0, 0, 127, 127));
 		mLookFeelFile->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(0, 0, 127, 127));
 		mLookFeelFile->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(0, 0, 127, 127));
-		mLookFeelFile->SetColor(MGUI_WidgetState::Normal, Color4::White);
-		mLookFeelFile->SetColor(MGUI_WidgetState::Disabled, Color4::Gray);
-		mLookFeelFile->SetColor(MGUI_WidgetState::Focused, Color4::Blue);
-		mLookFeelFile->SetColor(MGUI_WidgetState::Pressed, Color4::Red);
 		mLookFeelFile->SetClientRect(MGUI_Rect(0, 0, 127, 127));
+
+		// Button
+		mButton = new MGUI_LookFeel("Button");
+		mButton->SetSkin("EditorSkin.png");
+		mButton->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(113, 198, 113 + 18, 198 + 13));
+		mButton->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(113, 183, 113 + 18, 183 + 13));
+		mButton->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(113, 213, 113 + 18, 213 + 13));
+		mButton->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(113, 228, 113 + 18, 228 + 13));
+		mButton->SetTextColor(MGUI_WidgetState::Disabled, Color4(0.5f, 0.5f, 0.5f));
+		mButton->SetTextColor(MGUI_WidgetState::Normal, Color4(1.0f, 1.0f, 1.0f));
+		mButton->SetTextColor(MGUI_WidgetState::Focused, Color4(0.15f, 0.66f, 1));
+		mButton->SetTextColor(MGUI_WidgetState::Pressed, Color4(0, 0, 0));
+		mButton->SetClientRect(MGUI_Rect(4, 4, 8, 10));
 
 		// Panel
 		mPanel =  new MGUI_LookFeel("Panel");
 		mPanel->SetSkin("EditorSkin.png");
 		mPanel->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 2, 341 + 23, 2 + 22));
+		mPanel->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 2, 341 + 23, 2 + 22));
+		mPanel->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 2, 341 + 23, 2 + 22));
+		mPanel->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 2, 341 + 23, 2 + 22));
 		mPanel->SetClientRect(MGUI_Rect(4, 4, 4 + 13, 4 + 12));
+
+		mWhite =  new MGUI_LookFeel("White");
+		mWhite->SetSkin("EditorSkin.png");
+		mWhite->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(true, 454, 6, 2, 2));
+		mWhite->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(true, 454, 6, 2, 2));
+		mWhite->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(true, 454, 6, 2, 2));
+		mWhite->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(true, 454, 6, 2, 2));
+		mWhite->SetClientRect(MGUI_Rect(true, 0, 0, 2, 2));
 
 		// scroll v
 		MGUI_LookFeel * mBnVScrollUp = new MGUI_LookFeel("ScrollUp");
@@ -65,8 +87,8 @@ namespace UIEditor {
 		mVScrollBar->SetSkin("EditorSkin.png");
 		mVScrollBar->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
 		mVScrollBar->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
-		mVScrollBar->SetColor(MGUI_WidgetState::Normal, Color4::White);
-		mVScrollBar->SetColor(MGUI_WidgetState::Disabled, Color4::Gray);
+		mVScrollBar->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
+		mVScrollBar->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
 		mVScrollBar->SetClientRect(MGUI_Rect(2, 2, 13, 17));
 		mVScrollBar->AddChild(mBnVScroll);
 		mVScrollBar->AddChild(mBnVScrollUp);
@@ -101,8 +123,8 @@ namespace UIEditor {
 		mHScrollBar->SetSkin("EditorSkin.png");
 		mHScrollBar->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
 		mHScrollBar->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
-		mHScrollBar->SetColor(MGUI_WidgetState::Normal, Color4::White);
-		mHScrollBar->SetColor(MGUI_WidgetState::Disabled, Color4::Gray);
+		mHScrollBar->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
+		mHScrollBar->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
 		mHScrollBar->SetClientRect(MGUI_Rect(2, 2, 16, 12));
 		mVScrollBar->AddChild(mBnHScroll);
 		mVScrollBar->AddChild(mBnHScrollLeft);
@@ -115,24 +137,21 @@ namespace UIEditor {
 		mListBoxItem->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(204, 160, 204 + 42, 160 + 9));
 		mListBoxItem->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(204, 174, 204 + 42, 174 + 9));
 		mListBoxItem->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(204, 188, 204 + 42, 188 + 9));
-		mListBoxItem->SetUVRect(MGUI_WidgetState::SelectedDisabled, MGUI_Rect(204, 160, 204 + 42, 160 + 9));
-		mListBoxItem->SetUVRect(MGUI_WidgetState::SelectedNormal, MGUI_Rect(204, 188, 204 + 42, 188 + 9));
-		mListBoxItem->SetUVRect(MGUI_WidgetState::SelectedFocused, MGUI_Rect(204, 202, 204 + 42, 202 + 9));
-		mListBoxItem->SetUVRect(MGUI_WidgetState::SelectedPressed, MGUI_Rect(204, 202, 204 + 42, 202 + 9));
+		mListBoxItem->SetUVRect(MGUI_WidgetState::Selected, MGUI_Rect(204, 188, 204 + 42, 188 + 9));
 		mListBoxItem->SetTextColor(MGUI_WidgetState::Disabled, Color4(0.5f, 0.5f, 0.5f));
 		mListBoxItem->SetTextColor(MGUI_WidgetState::Normal, Color4(1.0f, 1.0f, 1.0f));
-		mListBoxItem->SetTextColor(MGUI_WidgetState::Focused, Color4(0.15, 0.66, 1));
+		mListBoxItem->SetTextColor(MGUI_WidgetState::Focused, Color4(0.15f, 0.66f, 1));
 		mListBoxItem->SetTextColor(MGUI_WidgetState::Pressed, Color4(0, 0, 0));
-		mListBoxItem->SetTextColor(MGUI_WidgetState::SelectedDisabled, Color4(0.5, 0.5, 0.5));
-		mListBoxItem->SetTextColor(MGUI_WidgetState::SelectedNormal, Color4(0, 0, 0));
-		mListBoxItem->SetTextColor(MGUI_WidgetState::SelectedFocused, Color4(0, 0, 0));
-		mListBoxItem->SetTextColor(MGUI_WidgetState::SelectedPressed, Color4(0, 0, 0));
+		mListBoxItem->SetTextColor(MGUI_WidgetState::Selected, Color4(0, 0, 0));
 		mListBoxItem->SetClientRect(MGUI_Rect(2, 2, 41, 8));
 
 		mListBox = new MGUI_LookFeel("ListBox");
 		mListBox->SetSkin("EditorSkin.png");
 		mListBox->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 2, 341 + 22, 2 + 21));
 		mListBox->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 2, 341 + 22, 2 + 21));
+		mListBox->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 2, 341 + 22, 2 + 21));
+		mListBox->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 2, 341 + 22, 2 + 21));
+		mListBox->SetUVRect(MGUI_WidgetState::Selected, MGUI_Rect(341, 2, 341 + 22, 2 + 21));
 		mListBox->SetClientRect(MGUI_Rect(4, 4, 4 + 13, 4 + 12));
 		mListBox->AddChild(mListBoxItem);
 		mListBox->AddChild(mVScrollBar->Clone("VScrollBar"));
@@ -150,8 +169,8 @@ namespace UIEditor {
 		mVSlider->SetSkin("EditorSkin.png");
 		mVSlider->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
 		mVSlider->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
-		mVSlider->SetColor(MGUI_WidgetState::Normal, Color4::White);
-		mVSlider->SetColor(MGUI_WidgetState::Disabled, Color4::Gray);
+		mVSlider->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
+		mVSlider->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 73, 341 + 15, 73 + 19));
 		mVSlider->SetClientRect(MGUI_Rect(2, 2, 13, 17));
 		mVSlider->AddChild(mBnVSliderTrack);
 
@@ -167,8 +186,8 @@ namespace UIEditor {
 		mHSlider->SetSkin("EditorSkin.png");
 		mHSlider->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
 		mHSlider->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
-		mHSlider->SetColor(MGUI_WidgetState::Normal, Color4::White);
-		mHSlider->SetColor(MGUI_WidgetState::Disabled, Color4::Gray);
+		mHSlider->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
+		mHSlider->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
 		mHSlider->SetClientRect(MGUI_Rect(2, 2, 16, 12));
 		mHSlider->AddChild(mBnHSliderTrack);
 
@@ -186,8 +205,8 @@ namespace UIEditor {
 		mProgressBar->SetSkin("EditorSkin.png");
 		mProgressBar->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
 		mProgressBar->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
-		mProgressBar->SetColor(MGUI_WidgetState::Normal, Color4::White);
-		mProgressBar->SetColor(MGUI_WidgetState::Disabled, Color4::Gray);
+		mProgressBar->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
+		mProgressBar->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(341, 54, 341 + 18, 54 + 14));
 		mProgressBar->SetClientRect(MGUI_Rect(2, 2, 16, 12));
 		mProgressBar->AddChild(mProgressBarTrack);
 		
@@ -198,6 +217,7 @@ namespace UIEditor {
 		mEditBox->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(169, 2, 169 + 28, 2 + 25));
 		mEditBox->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(169, 56, 169 + 28, 56 + 25));
 		mEditBox->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(169, 164, 169 + 28, 164 + 25));
+		mEditBox->SetUVRect(MGUI_WidgetState::Selected, MGUI_Rect(169, 164, 169 + 28, 164 + 25));
 		mEditBox->SetClientRect(MGUI_Rect(8, 3, 8 + 11, 10 + 13));
 
 
@@ -206,6 +226,26 @@ namespace UIEditor {
 		mComboBox->AddChild(mEditBox->Clone("EditBox"));
 		mComboBox->AddChild(mListBox->Clone("ListBox"));
 		mComboBox->AddChild(mBnVScrollDown->Clone("DropButton"));
+
+		
+		// Dialog
+		mDialog = new MGUI_LookFeel("Dialog");
+		mDialog->SetSkin("EditorSkin.png");
+		mDialog->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(true, 296, 197, 21, 20));
+		mDialog->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(true, 296, 197, 21, 20));
+		mDialog->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(true, 296, 197, 21, 20));
+		mDialog->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(true, 296, 197, 21, 20));
+		mDialog->SetUVRect(MGUI_WidgetState::Selected, MGUI_Rect(true, 296, 197, 21, 20));
+		mDialog->SetClientRect(MGUI_Rect(5, 2, 16, 13));
+
+		mDialogCaption = new MGUI_LookFeel("Dialog");
+		mDialogCaption->SetSkin("EditorSkin.png");
+		mDialogCaption->SetUVRect(MGUI_WidgetState::Normal, MGUI_Rect(true, 268, 36, 68, 28));
+		mDialogCaption->SetUVRect(MGUI_WidgetState::Disabled, MGUI_Rect(true, 268, 36, 68, 28));
+		mDialogCaption->SetUVRect(MGUI_WidgetState::Focused, MGUI_Rect(true, 268, 36, 68, 28));
+		mDialogCaption->SetUVRect(MGUI_WidgetState::Pressed, MGUI_Rect(true, 268, 36, 68, 28));
+		mDialogCaption->SetUVRect(MGUI_WidgetState::Selected, MGUI_Rect(true, 268, 36, 68, 28));
+		mDialogCaption->SetClientRect(MGUI_Rect(true, 16, 0, 34, 28));
 	}
 
 	AllLookFeel::~AllLookFeel()
@@ -213,7 +253,10 @@ namespace UIEditor {
 		delete mMenu;
 		delete mLookFeelFile;
 
+		delete mButton;
+
 		delete mPanel;
+		delete mWhite;
 
 		delete mVScrollBar;
 		delete mHScrollBar;
@@ -228,6 +271,9 @@ namespace UIEditor {
 		delete mEditBox;
 
 		delete mComboBox;
+
+		delete mDialog;
+		delete mDialogCaption;
 
 		msInstance = NULL;
 	}
