@@ -22,11 +22,15 @@ void GmRoot::Init()
 
 	mUIUtil.Init();
 
+	mDataManager.Init();
+
 	mCurrentMode = NULL;
 }
 
 void GmRoot::Shutdown()
 {
+	mDataManager.Shutdown();
+
 	mUIUtil.Shutdown();
 
 	if (mCurrentMode)

@@ -18,30 +18,47 @@ GmActor::GmActor()
 {
 	for (int i = 0; i < PT_Max; ++i)
 	{
-		mActor[i] = NULL;
+		mEntity[i] = NULL;
 	}
+
+	mMoveSpeed = 30.0f;
+	mRotateSpeed = 360.0f;
+	mDirection = 0;
+
+	mInitOrt.FromAxis(Vec3::UnitY, Math::PI_1);
+
+	mCompAI = new GmCompAI;
+	mCompMove = new GmCompMove;
+	mCompRotate = new GmCompRotate;
+
+	AddComponent(mCompAI);
+	AddComponent(mCompMove);
+	AddComponent(mCompRotate);
 }
 
 GmActor::~GmActor()
 {
 	for (int i = 0; i < PT_Max; ++i)
 	{
-		if (mActor[i])
-			World::Instance()->DestroyActor(mActor[i]);
+		if (mEntity[i] != NULL)
+			World::Instance()->DestroyEntity(mEntity[i]);
 	}
 }
 
-GmCompAI * GmActor::GetAGmComponent()
+GmCompAI * GmActor::GetAIComponent()
 {
-	for (int i = 0; i < mComponents.Size(); ++i)
-	{
-		if (RTTI_KindOf(GmCompAI, mComponents[i]))
-			return RTTI_StaticCast(GmCompAI, mComponents[i]);
-	}
-
-	return NULL;
+	return mCompAI;
 }
 
+GmCompMove * GmActor::GetMoveComponent()
+{
+	return mCompMove;
+}
+
+GmCompRotate * GmActor::GetRotateComponent()
+{
+	return mCompRotate;
+}
 
 void GmActor::Init()
 {
@@ -54,42 +71,96 @@ void GmActor::Init()
 
 void GmActor::Idle()
 {
-	GmCompAI * pAIComp = GetAGmComponent();
-
-	d_assert (pAIComp != NULL);
-
-	pAIComp->ChangeState(new AIState_Idle);
+	if (!RTTI_TypeOf(AIState_Move, mCompAI->GetCurrentState()))
+		mCompAI->ChangeState(new AIState_Idle);
 }
 
-void GmActor::MoveTo(const Vec3 & pos)
+void GmActor::Run()
 {
-	GmCompAI * pAIComp = GetAGmComponent();
+	if (!RTTI_TypeOf(AIState_Move, mCompAI->GetCurrentState()))
+		mCompAI->ChangeState(new AIState_Move);
+}
+
+void GmActor::MoveTo(const Vec3 & tarPos)
+{
+	GmCompAI * pAIComp = GetAIComponent();
 
 	d_assert (pAIComp != NULL);
 
-	pAIComp->ChangeState(new AIState_Move(pos));
+	const Vec3 & myPos = GetPosition();
+	Vec3 dir = tarPos - myPos;
+
+	if (dir.NormalizeL() > 0.01f)
+	{
+		float dt = dir.Dot(Vec3::UnitZ);
+		float deg = Math::ACos(dt);
+
+		if (tarPos.x < myPos.x)
+			deg = -deg;
+
+		RotateTo(Math::RadianToDegree(deg));
+
+		mCompMove->SetTargetPos(tarPos);
+
+		Run();
+	}
+}
+
+void GmActor::RotateTo(float dir)
+{
+	dir = Math::DegreeNormalize(dir);
+	mCompRotate->SetTargetDir(dir);
+}
+
+void GmActor::ForceMove(const Vec3 & pos)
+{
+	SetPosition(pos);
+	mCompMove->SetTargetPos(pos);
+}
+
+void GmActor::ForceRotate(float dir)
+{
+	dir = Math::DegreeNormalize(dir);
+	SetDirection(dir);
+	mCompRotate->SetTargetDir(dir);
 }
 
 void GmActor::SetPart(PartType type, const char * mesh)
 {
-	if (mActor[type])
+	if (mEntity[type])
 	{
-		World::Instance()->DestroyActor(mActor[type]);
-		mActor[type] = NULL;
+		World::Instance()->DestroyEntity(mEntity[type]);
+		mEntity[type] = NULL;
 	}
 
 	if (strcmp(mesh, "") == 0)
 		return ;
 
-	TString128 uname = mName + "_" + mId + _ActorPartName[type];
+	TString128 uname = mName + "_" + mId + "_" + _ActorPartName[type];
 
-	mActor[type] = World::Instance()->CreateActor(uname, mesh);
+	mEntity[type] = World::Instance()->CreateEntity(uname, mesh);
 
-	mNode->Attach(mActor[type]);
+	mNode->Attach(mEntity[type]);
 }
 
 void GmActor::PlayAnimation(const char * anim, const MotionBlendInfo & mbi)
 {
-	d_assert (mActor[Main] != NULL);
-	mActor[GmActor::Main]->PlayAnimation(anim, mbi);
+	d_assert (mEntity[Main] != NULL);
+	mEntity[GmActor::Main]->PlayAnimation(anim, mbi);
+}
+
+void GmActor::Update(float dtime)
+{
+	GmObj::Update(dtime);
+
+	mEntity[GmActor::Main]->UpdateAnimation(dtime);
+}
+
+void GmActor::SetDirection(float dir)
+{
+	mDirection = Math::DegreeNormalize(dir);
+
+	Quat quat = Quat::S_FromAxis(Vec3::UnitY, Math::DegreeToRadian(mDirection));
+
+	SetOrientation(mInitOrt * quat);
 }

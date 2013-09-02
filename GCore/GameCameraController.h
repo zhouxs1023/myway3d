@@ -14,16 +14,22 @@ public:
 	virtual void SetObject(GmObj * obj);
 	virtual void Update(float frameTime);
 
+	void Yaw(float degree);
+	void Pitch(float degree);
+	void Scroll(float dist);
+
 protected:
-	float mMinDist, mMaxDist;
-	float mMoveSpeed, mScrollSpeed;
-	float mRotationSpeed;
+	float mMinDist;
+	float mMaxDist;
 
-	Vec3 mTargetPos;
-	Quat mTargetOrt;
+	float mMinPitchAngle;
+	float mMaxPitchAngle;
 
-	Vec3 mCurrentPos;
-	Quat mCurrentOrt;
+	float mHeadHeight;
+
+	float mDist;
+	float mYawDegree;
+	float mPitchDegree;
 };
 
 

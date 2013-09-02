@@ -68,6 +68,7 @@
     <ClCompile Include="EditorExport.cpp" />
     <ClCompile Include="EditorGameMode.cpp" />
     <ClCompile Include="EditorPreViewer.cpp" />
+    <ClCompile Include="Helper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Npc.cpp" />
     <ClCompile Include="Plugin.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="EditorExport.h" />
     <ClInclude Include="EditorGameMode.h" />
     <ClInclude Include="EditorPreViewer.h" />
+    <ClInclude Include="Helper.h" />
     <ClInclude Include="Npc.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="stdafx.h" />

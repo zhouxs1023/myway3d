@@ -4,8 +4,6 @@
 #include "EditorGameMode.h"
 #include "MainWorkSpace.h"
 
-namespace game {
-
 xPreViewerPlayer::xPreViewerPlayer()
 	: GmNpc(0)
 {
@@ -103,4 +101,3 @@ void xPreViewerListener::_OnGameModeChanged(Event * sender)
 	}
 }
 
-}

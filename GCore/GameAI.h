@@ -71,14 +71,11 @@ class GCORE_ENTRY AIState_Move : public GmAIState
 	DeclareRTTI();
 
 public:
-	AIState_Move(const Vec3 & pos);
+	AIState_Move();
 	virtual ~AIState_Move();
 
 	virtual void Enter();
 	virtual void Exit();
 
 	virtual void Think(float frameTime);
-
-protected:
-	Vec3 mTargetPos;
 };

@@ -5,6 +5,8 @@
 
 class GCORE_ENTRY GmMode
 {
+	DeclareRootRTTI(GmMode);
+
 public:
 	GmMode();
 	virtual ~GmMode();
@@ -13,6 +15,9 @@ public:
 
 	virtual void Init() = 0;
 	virtual void Shutdown() = 0;
+
+	virtual void ProcessMouseEvent() {}
+	virtual void ProcessKeyEvent() {}
 
 	virtual void Update(float frameTime);
 

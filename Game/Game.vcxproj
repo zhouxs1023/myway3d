@@ -42,7 +42,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>../GCore;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../GCore;../Shared;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -64,14 +64,41 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\GameDefine.cpp" />
+    <ClCompile Include="..\Shared\NetPack.cpp" />
     <ClCompile Include="App.cpp" />
-    <ClCompile Include="cMainMode.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="GMCommand.cpp" />
+    <ClCompile Include="LoginDlg.cpp" />
+    <ClCompile Include="LoginMode.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MainMode.cpp" />
+    <ClCompile Include="NetPackCL.cpp" />
+    <ClCompile Include="Npc.cpp" />
+    <ClCompile Include="Pack_AddNpcSV.cpp" />
+    <ClCompile Include="Pack_LoginCL.cpp" />
+    <ClCompile Include="Pack_LoginSV.cpp" />
+    <ClCompile Include="Pack_PlayerEnterCL.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="SelectRoleMode.cpp" />
     <ClCompile Include="stdafx.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Shared\GameDefine.h" />
+    <ClInclude Include="..\Shared\NetPack.h" />
     <ClInclude Include="App.h" />
-    <ClInclude Include="cMainMode.h" />
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="GMCommand.h" />
+    <ClInclude Include="LoginDlg.h" />
+    <ClInclude Include="LoginMode.h" />
+    <ClInclude Include="MainMode.h" />
+    <ClInclude Include="Npc.h" />
+    <ClInclude Include="Pack_AddNpcSV.h" />
+    <ClInclude Include="Pack_LoginCL.h" />
+    <ClInclude Include="Pack_LoginSV.h" />
+    <ClInclude Include="Pack_PlayerEnterCL.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="SelectRoleMode.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

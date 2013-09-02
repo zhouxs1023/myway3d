@@ -2,6 +2,7 @@
 
 #include "Plugin.h"
 #include "Npc.h"
+#include "Helper.h"
 #include "EditorExport.h"
 
 namespace game {
@@ -27,6 +28,7 @@ namespace game {
 	void GamePlugin::_OnInit(Event * _sender)
 	{
 		ShapeManager::Instance()->AddFactory(new NpcFactory);
+		ShapeManager::Instance()->AddFactory(new HelperFactory);
 
 		mGameMain = new EditorGameMode();
 

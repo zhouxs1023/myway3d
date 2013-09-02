@@ -1,62 +1,55 @@
 #pragma once
 
-#include "Shape.h"
-#include "GameCore.h"
 
-namespace game {
+class Npc : public Shape
+{
+	DECLARE_PROPERTY(Shape);
 
-	using namespace Infinite;
+public:
+	Vec3 Position;
+	Quat Orientation;
+	float Scale;
 
-	class Npc : public Shape
-	{
-		DECLARE_PROPERTY(Shape);
+public:
+	Npc(const TString128 & name);
+	virtual ~Npc();
 
-	public:
-		Vec3 Position;
-		Quat Orientation;
-		float Scale;
+	virtual TString128 GetTypeName() { return "Npc"; }
 
-	public:
-		Npc(const TString128 & name);
-		virtual ~Npc();
+	virtual void SetName(const TString128 & name);
 
-		virtual TString128 GetTypeName() { return "Npc"; }
+	virtual Shape * Clone();
+	virtual bool IsSceneNode(SceneNode * node);
 
-		virtual void SetName(const TString128 & name);
+	virtual void SetPosition(const Vec3 & p);
+	virtual void SetOrientation(const Quat & q);
+	virtual void SetScale(float s);
 
-		virtual Shape * Clone();
-		virtual bool IsSceneNode(SceneNode * node);
+	virtual Vec3 GetPosition() { return Position; }
+	virtual Quat GetOrientation() { return Orientation; }
+	virtual float GetScale() { return Scale; }
 
-		virtual void SetPosition(const Vec3 & p);
-		virtual void SetOrientation(const Quat & q);
-		virtual void SetScale(float s);
+	virtual void Serialize(xSerializer & serializer);
 
-		virtual Vec3 GetPosition() { return Position; }
-		virtual Quat GetOrientation() { return Orientation; }
-		virtual float GetScale() { return Scale; }
+	virtual Aabb GetBound();
 
-		virtual void Serialize(xSerializer & serializer);
+	virtual bool OnPropertyChanged(const Property * p);
 
-		virtual Aabb GetBound();
-
-		virtual bool OnPropertyChanged(const Property * p);
-
-	protected:
-		GmNpc * mNpc;
-	};
+protected:
+	GmNpc * mNpc;
+};
 
 
-	class NpcFactory : public ShapeFactory
-	{
-	public:
-		NpcFactory() {};
-		virtual ~NpcFactory() {};
+class NpcFactory : public ShapeFactory
+{
+public:
+	NpcFactory() {};
+	virtual ~NpcFactory() {};
 
-		virtual Shape * Create(const char * name) { return new Npc(name); }
+	virtual Shape * Create(const char * name) { return new Npc(name); }
 
-		virtual const char * GetGroupName()		{ return "Entity"; }
-		virtual const char * GetTypeName()		{ return "Npc"; }
-		virtual const char * GetExternName()	{ return "npc"; }
-	};
+	virtual const char * GetGroupName()		{ return "Game"; }
+	virtual const char * GetTypeName()		{ return "Npc"; }
+	virtual const char * GetExternName()	{ return "npc"; }
+};
 
-}

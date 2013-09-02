@@ -7,12 +7,17 @@ ImplementRTTI(GmCameraController, GmController);
 
 GmCameraController::GmCameraController()
 {
-	mMinDist = 50;
-	mMaxDist = 100;
+	mMinDist = 0;
+	mMaxDist = 200;
 
-	mMoveSpeed = 2;
-	mScrollSpeed = 5;
-	mRotationSpeed = 1;
+	mMinPitchAngle = 0;
+	mMaxPitchAngle = 60;
+
+	mHeadHeight = 0;
+
+	mDist = 50;
+	mYawDegree = 0;
+	mPitchDegree = 45;
 }
 
 GmCameraController::~GmCameraController()
@@ -24,47 +29,47 @@ void GmCameraController::SetObject(GmObj * obj)
 	d_assert (RTTI_KindOf(GmActor, obj));
 
 	GmController::SetObject(obj);
-
-	Actor * pActor = RTTI_StaticCast(Actor, obj);
-
-	mCurrentPos = World::Instance()->MainCamera()->GetPosition();
-	mCurrentOrt = World::Instance()->MainCamera()->GetOrientation();
-
-	mTargetPos = pActor->GetPosition();
-	mTargetOrt = pActor->GetOrientation();
-
-	Quat quat;
-	quat.FromAxis(Vec3::UnitX, Math::PI_1_4);
-
-	mTargetOrt = quat * mTargetOrt;
-	mTargetPos = mTargetPos - 0.5f * (mMinDist + mMaxDist) * quat.AxisZ();
-
-	mCurrentOrt = mTargetOrt;
-
-	World::Instance()->MainCamera()->SetOrientation(mCurrentOrt);
 }
 
 void GmCameraController::Update(float frameTime)
 {
-	float dist = mTargetPos.Distance(mCurrentPos);
+	GmActor * pActor = RTTI_StaticCast(GmActor, mObject);
 
-	if (dist < frameTime * mMoveSpeed)
-	{
-		mCurrentPos = mTargetPos;
-	}
-	else
-	{
-		float speed = Math::Maximum(mMoveSpeed, (dist / mMaxDist) * mMoveSpeed);
+	Vec3 targetPos = pActor->GetPosition();
+	Quat targetOrt = Quat::Identity;
 
-		float k = frameTime * speed * dist;
+	float dist = mDist;
+	float pitch = Math::DegreeToRadian(mPitchDegree);
+	float yaw = Math::DegreeToRadian(mYawDegree);
 
-		mCurrentPos = mCurrentPos + k * (mTargetPos - mCurrentPos).Normalize();
-	}
+	Quat q0, q1;
 
-	World::Instance()->MainCamera()->SetPosition(mCurrentPos);
+	q0.FromAxis(Vec3::UnitX, pitch);
+	q1.FromAxis(Vec3::UnitY, yaw);
+
+	targetOrt = q1 * (q0 * targetOrt);
+	targetPos = targetPos - mDist * targetOrt.AxisZ();
+
+	World::Instance()->MainCamera()->SetOrientation(targetOrt);
+	World::Instance()->MainCamera()->SetPosition(targetPos);
 }
 
+void GmCameraController::Yaw(float rads)
+{
+	mYawDegree += rads;
+	mYawDegree = Math::DegreeNormalize(mYawDegree);
+}
 
+void GmCameraController::Pitch(float rads)
+{
+	mPitchDegree += rads;
+	mPitchDegree = Math::DegreeNormalize(mPitchDegree);
+}
+
+void GmCameraController::Scroll(float dist)
+{
+	mDist = Math::Clamp(mDist + dist, mMinDist, mMaxDist);
+}
 
 
 
@@ -112,7 +117,7 @@ void GmCameraControllerTest::Update(float frameTime)
 	}
 
 	// camera
-	if (IMouse::Instance()->MouseMoved() && IMouse::Instance()->KeyPressed(MKC_BUTTON1))
+	if (IMouse::Instance()->MouseMoved() && IMouse::Instance()->KeyPressed(MKC_BUTTON0))
 	{
 		Point2i pt = IMouse::Instance()->GetPositionDiff();
 

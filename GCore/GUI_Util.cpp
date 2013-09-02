@@ -61,6 +61,7 @@ void MGUI_Util::Shutdown()
 
 void MGUI_Util::RenderText3D(const char * str, const char * fontName, const Vec3 & position, float charHeight, const Color4 & color)
 {
+	return ;
 	int len = strlen(str);
 	if (len == 0 && len >= MAX_TEXT_SIZE)
 		return ;

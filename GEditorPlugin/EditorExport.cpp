@@ -3,6 +3,7 @@
 #include "EditorExport.h"
 #include "Shape.h"
 #include "xMesh.h"
+#include "Helper.h"
 
 using namespace Infinite;
 
@@ -21,6 +22,11 @@ void EditorExport::Export(const char * filename)
 	SaveSound(file);
 
 	file.Close();
+
+	//TString128 helperFile = File::RemoveExternName(filename);
+	//helperFile += ".sv_map";
+	//ServerExport svExport;
+	//svExport.Export(helperFile.c_str());
 }
 
 void EditorExport::SaveHead(File & file)
@@ -120,4 +126,72 @@ void EditorExport::SaveParticle(File & file)
 
 void EditorExport::SaveSound(File & file)
 {
+}
+
+
+
+
+
+void ServerExport::Export(const char * filename)
+{
+	File file;
+
+	file.Open(filename);
+
+	SaveHead(file);
+	SaveHelper(file);
+
+	file.Close();
+}
+
+void ServerExport::SaveHead(File & file)
+{
+	int Magic = K_FILE_MAGIC;
+	int Version = K_FILE_VERSION;
+
+	file.Write(&Magic, sizeof(int));
+	file.Write(&Version, sizeof(int));
+}
+
+void ServerExport::SaveHelper(File & file)
+{
+	int ckId = FCI_Helper;
+	int ckVr = K_Helper_Version;
+
+	file.Write(&ckId, sizeof(int));
+	file.Write(&ckVr, sizeof(int));
+
+	int shapeCount = ShapeManager::Instance()->GetShapeCount();
+
+	int helperCount = 0;
+
+	for (int i = 0; i < shapeCount; ++i)
+	{
+		Shape * shape = ShapeManager::Instance()->GetShape(i);
+
+		if (RTTI_TypeOf(Helper, shape))
+			++helperCount;
+	}
+
+	file.Write(&helperCount, sizeof(int));
+
+	for (int i = 0; i < shapeCount; ++i)
+	{
+		Shape * shape = ShapeManager::Instance()->GetShape(i);
+
+		if (RTTI_TypeOf(Helper, shape))
+		{
+			Helper * helper = (Helper *)shape;
+
+			TString128 Name = helper->GetName();
+			Vec3 Position = helper->GetPosition();
+			float Radius = helper->GetScale();
+			TString128 UserString = helper->GetUserString();
+
+			file.Write(Name.c_str(), 128);
+			file.Write(&Position, sizeof(Vec3));
+			file.Write(&Radius, sizeof(float));
+			file.Write(UserString.c_str(), 128);
+		}
+	}
 }

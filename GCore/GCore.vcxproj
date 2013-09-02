@@ -73,6 +73,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameAI.cpp" />
     <ClCompile Include="GameCameraController.cpp" />
+    <ClCompile Include="GameComp.cpp" />
     <ClCompile Include="GameHelper.cpp" />
     <ClCompile Include="GameMesh.cpp" />
     <ClCompile Include="GameMessage.cpp" />
@@ -94,6 +95,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameAI.h" />
     <ClInclude Include="GameCameraController.h" />
+    <ClInclude Include="GameComp.h" />
     <ClInclude Include="GameHelper.h" />
     <ClInclude Include="GameMesh.h" />
     <ClInclude Include="GameMessage.h" />

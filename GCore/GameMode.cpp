@@ -2,6 +2,8 @@
 
 #include "GameMode.h"
 
+ImplementRootRTTI(GmMode);
+
 GmMode::GmMode()
 {
 }

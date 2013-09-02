@@ -6,3 +6,10 @@
 #include <MWDeferredRenderer.h>
 
 using namespace Myway;
+
+#include "GameCore.h"
+#include "Shape.h"
+
+using namespace Infinite;
+
+

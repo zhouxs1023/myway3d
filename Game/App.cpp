@@ -1,16 +1,19 @@
 #include "stdafx.h"
 #include "App.h"
-#include "cMainMode.h"
+#include "MainMode.h"
+#include "LoginMode.h"
+#include "SelectRoleMode.h"
 
-Application::Application()
+App::App()
+	: OnGUIRender(RenderEvent::OnRenderGUI2, this, &App::OnGUIRender_)
 {
 }
 
-Application::~Application()
+App::~App()
 {
 }
 
-bool Application::Init()
+bool App::Init()
 {
 	SetResourceConfig("game_res.ini");
 	SetPluginConfig("game_plugin.ini");
@@ -21,33 +24,58 @@ bool Application::Init()
 
 	Engine::Instance()->SetRenderScheme(mRenderer);
 
+	mUIEngine = new MGUI_Engine;
+
+	MGUI_Font::Instance()->Load("Game.Font");
+
+	mClient = new Client;
+
 	mGame.Init();
 
-	mGame.SetMode(new Game::cMainMode());
+	mGame.SetMode(new cSelectRoleMode);
 
 	return true;
 }
 
-void Application::Shutdown()
+void App::Shutdown()
 {
+	delete mClient;
+
 	mGame.Shutdown();
 
+	delete mUIEngine;
 
 	delete mRenderer;
 
 	App_Win32::Shutdown();
 }
 
-void Application::Update()
+void App::Update()
 {
-	App_Win32::Update();
-
 	InputSystem::Instance()->Update();
 
+	mUIEngine->InjectMouseEvent();
+
+	if (mUIEngine->GetMouseFocusedWidget() == NULL)
+	{
+		mGame.GetMode()->ProcessMouseEvent();
+	}
+
+	if (mUIEngine->GetKeyFocusedWidget() == NULL)
+	{
+		mGame.GetMode()->ProcessKeyEvent();
+	}
+
+	mUIEngine->Update();
+
+	mClient->Update();
+
 	mGame.Update();
+
+	App_Win32::Update();
 }
 
-void Application::OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
+void App::OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
 {
 	if (mhWnd == hWnd && iMsg == WM_SIZE)
 	{
@@ -61,6 +89,11 @@ void Application::OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam)
 			mRenderer->Resize(rc.right - rc.left, rc.bottom - rc.top);
 		}
 	}
+
+	mUIEngine->InjectKeyEvent(iMsg, wParam, lParam);
 }
 
-
+void App::OnGUIRender_(Event * _sender)
+{
+	mUIEngine->Render();
+}

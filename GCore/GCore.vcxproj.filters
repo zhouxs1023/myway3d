@@ -48,6 +48,9 @@
     <ClCompile Include="GameMesh.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="GameComp.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Entity">
@@ -115,6 +118,9 @@
     </ClInclude>
     <ClInclude Include="GameMesh.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComp.h">
+      <Filter>Entity</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

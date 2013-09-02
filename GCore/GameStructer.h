@@ -24,3 +24,10 @@ struct GCORE_ENTRY GmNpcInfo
 		id = -1;
 	}
 };
+
+struct GCORE_ENTRY GmMapInfo
+{
+	int				MapId;
+	TString32		Name;
+	TString128		MapSource;
+};

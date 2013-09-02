@@ -22,16 +22,16 @@ void GmNpc::_init(int templateId)
 	SetPart(GmActor::Main, mNpcInfo->part_main.c_str());
 
 	if (mNpcInfo->anim_Idle0 != "")
-		mActor[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Idle0.c_str(), mNpcInfo->anim_Idle0.c_str());
+		mEntity[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Idle0.c_str(), mNpcInfo->anim_Idle0.c_str());
 
 	if (mNpcInfo->anim_Idle1 != "")
-		mActor[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Idle1.c_str(), mNpcInfo->anim_Idle1.c_str());
+		mEntity[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Idle1.c_str(), mNpcInfo->anim_Idle1.c_str());
 
 	if (mNpcInfo->anim_Walk != "")
-		mActor[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Walk.c_str(), mNpcInfo->anim_Walk.c_str());
+		mEntity[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Walk.c_str(), mNpcInfo->anim_Walk.c_str());
 
 	if (mNpcInfo->anim_Run != "")
-		mActor[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Run.c_str(), mNpcInfo->anim_Run.c_str());
+		mEntity[GmActor::Main]->LoadAnimation(GmHelper::S_Anim_Run.c_str(), mNpcInfo->anim_Run.c_str());
 }
 
 

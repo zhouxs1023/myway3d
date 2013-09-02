@@ -97,8 +97,7 @@ void AIState_Idle::Think(float frameTime)
 //
 ImplementRTTI(AIState_Move, GmAIState);
 
-AIState_Move::AIState_Move(const Vec3 & pos)
-	: mTargetPos(pos)
+AIState_Move::AIState_Move()
 {
 }
 
@@ -119,4 +118,10 @@ void AIState_Move::Exit()
 
 void AIState_Move::Think(float frameTime)
 {
+	GmActor * pActor = mComponent->GetActor();
+
+	if (pActor->GetMoveComponent()->GetTargetPos().DistanceSq(pActor->GetPosition()) < 0.0001f)
+	{
+		pActor->Idle();
+	}
 }

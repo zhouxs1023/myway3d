@@ -32,8 +32,6 @@ namespace Infinite {
 		virtual void Update();
 		virtual void OnMessage(HWND hWnd,UINT iMsg,WPARAM wParam,LPARAM lParam);
 
-		
-
 	protected:
 		MGUI_System mUISystem;
 		input::PointerManager mPointManager;

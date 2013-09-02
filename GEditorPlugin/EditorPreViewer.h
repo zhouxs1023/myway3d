@@ -5,32 +5,28 @@
 #include "GameNpc.h"
 #include "GameCameraController.h"
 
-namespace game {
+class xPreViewerPlayer : public GmNpc
+{
+public:
+	xPreViewerPlayer();
+	virtual ~xPreViewerPlayer();
 
-	using namespace Infinite;
-
-	class xPreViewerPlayer : public GmNpc
-	{
-	public:
-		xPreViewerPlayer();
-		virtual ~xPreViewerPlayer();
-
-	protected:
-	};
+protected:
+};
 
 
-	class xPreViewerCameraController : public GmCameraController
-	{
-	public:
-		xPreViewerCameraController();
-		~xPreViewerCameraController();
+class xPreViewerCameraController : public GmCameraController
+{
+public:
+	xPreViewerCameraController();
+	~xPreViewerCameraController();
 
-		virtual void SetObject(GmObj * obj);
+	virtual void SetObject(GmObj * obj);
 
-	protected:
-		Vec3 mOrigPos;
-		Quat mOrigOrt;
-	};
+protected:
+	Vec3 mOrigPos;
+	Quat mOrigOrt;
+};
 
 
 
@@ -54,4 +50,3 @@ namespace game {
 		xPreViewerCameraController * mCameraContoller;
 	};
 
-}

@@ -2,6 +2,7 @@
 
 #include "MWApp_Win32.h"
 #include "GameMode.h"
+#include "GameData.h"
 #include "GUI_Util.h"
 
 
@@ -25,7 +26,7 @@ public:
 protected:
 	ShaderLib * mShaderLib;
 	MGUI_Util mUIUtil;
-
+	GmDataManager mDataManager;
 	GmMode * mCurrentMode;
 };
 

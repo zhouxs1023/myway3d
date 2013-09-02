@@ -4,36 +4,123 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp" />
     <ClCompile Include="App.cpp">
-      <Filter>GameApp</Filter>
+      <Filter>App</Filter>
     </ClCompile>
-    <ClCompile Include="cMainMode.cpp">
-      <Filter>游戏模式\游戏</Filter>
+    <ClCompile Include="Client.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\NetPack.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginMode.cpp">
+      <Filter>Mode\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMode.cpp">
+      <Filter>Mode\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginDlg.cpp">
+      <Filter>Mode\Login</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_LoginCL.cpp">
+      <Filter>Mode\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_LoginSV.cpp">
+      <Filter>Mode\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="NetPackCL.cpp">
+      <Filter>Mode\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_PlayerEnterCL.cpp">
+      <Filter>Mode\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectRoleMode.cpp">
+      <Filter>Mode\SelectRole</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\GameDefine.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_AddNpcSV.cpp">
+      <Filter>Mode\Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>App</Filter>
+    </ClCompile>
+    <ClCompile Include="GMCommand.cpp">
+      <Filter>Mode\Main\GMCommand</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="App.h">
-      <Filter>GameApp</Filter>
+      <Filter>App</Filter>
     </ClInclude>
-    <ClInclude Include="cMainMode.h">
-      <Filter>游戏模式\游戏</Filter>
+    <ClInclude Include="Client.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\NetPack.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginMode.h">
+      <Filter>Mode\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMode.h">
+      <Filter>Mode\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginDlg.h">
+      <Filter>Mode\Login</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_LoginCL.h">
+      <Filter>Mode\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_LoginSV.h">
+      <Filter>Mode\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_PlayerEnterCL.h">
+      <Filter>Mode\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectRoleMode.h">
+      <Filter>Mode\SelectRole</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\GameDefine.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_AddNpcSV.h">
+      <Filter>Mode\Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>App</Filter>
+    </ClInclude>
+    <ClInclude Include="GMCommand.h">
+      <Filter>Mode\Main\GMCommand</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="GameApp">
+    <Filter Include="App">
       <UniqueIdentifier>{9c68a6ef-cd57-4e27-831a-7d7d644d27c3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="游戏模式">
+    <Filter Include="Mode">
       <UniqueIdentifier>{2bc808fd-8912-4195-b056-8b4bd4222231}</UniqueIdentifier>
     </Filter>
-    <Filter Include="游戏模式\角色">
-      <UniqueIdentifier>{69cd2ad6-b2d2-4c9e-8597-712b2dc983bc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="游戏模式\游戏">
+    <Filter Include="Mode\Main">
       <UniqueIdentifier>{b86a9f7a-05ed-48dc-ab98-ce5c1747f55b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="游戏模式\登陆">
+    <Filter Include="Mode\Login">
       <UniqueIdentifier>{7c4c540e-2e0b-4e72-883c-918a68eecff2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mode\SelectRole">
+      <UniqueIdentifier>{69cd2ad6-b2d2-4c9e-8597-712b2dc983bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mode\Packet">
+      <UniqueIdentifier>{4d7c2871-3d44-42c1-b92d-9a89173354fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mode\Main\GMCommand">
+      <UniqueIdentifier>{3e7c883e-7340-4dc7-8217-54091ecde7d5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

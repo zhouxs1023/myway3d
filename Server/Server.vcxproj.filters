@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Game">
+      <UniqueIdentifier>{38095095-d30c-4624-84ae-c6f4f71fa161}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Packet">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Shared">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Packet\GM">
+      <UniqueIdentifier>{e8000bb3-0bc1-4401-94b8-9c5bd5c119c8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Pack_LoginCL.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_LoginSV.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\NetPack.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="StdAfx.cpp" />
+    <ClCompile Include="UserManager.cpp" />
+    <ClCompile Include="User.cpp" />
+    <ClCompile Include="Server.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="NetPackSV.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\GameDefine.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_PlayerEnterCL.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+    <ClCompile Include="World.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\DBConnector.cpp">
+      <Filter>Shared</Filter>
+    </ClCompile>
+    <ClCompile Include="Npc.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
+    <ClCompile Include="Pack_AddNpcSV.cpp">
+      <Filter>Packet</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Pack_LoginCL.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_LoginSV.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\NetPack.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="StdAfx.h" />
+    <ClInclude Include="UserManager.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Server.h" />
+    <ClInclude Include="Actor.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\GameDefine.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_PlayerEnterCL.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+    <ClInclude Include="World.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\DBConnector.h">
+      <Filter>Shared</Filter>
+    </ClInclude>
+    <ClInclude Include="Npc.h">
+      <Filter>Game</Filter>
+    </ClInclude>
+    <ClInclude Include="Pack_AddNpcSV.h">
+      <Filter>Packet</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

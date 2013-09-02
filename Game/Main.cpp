@@ -14,7 +14,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	SetCurrentDirectory(fileDir.c_str());
 
-	Application app;
+	App app;
 
 	app.Run(hInstance);
 
