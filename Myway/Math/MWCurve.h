@@ -171,7 +171,7 @@ namespace Myway {
 			else if (t > 1)
 				t = 1;
 
-			mPoints[i] = mControl[0] * (1 - t) * (1 - t) * (1 - t) + 
+			return = mControl[0] * (1 - t) * (1 - t) * (1 - t) + 
 				mControl[1] * (1 - t) * (1 - t) * t +
 				mControl[2] * (1 - t) * t * t +
 				mControl[3] * t * t * t;
