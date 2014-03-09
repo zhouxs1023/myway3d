@@ -25,7 +25,6 @@ class RS_ENTRY D3D9Texture : public Texture
 
 public:
     D3D9Texture(IDirect3DDevice9 * Device);
-
     virtual ~D3D9Texture();
 
     virtual void Lock(int iLevel, LockedBox * pLockedBox, const Boxi * pBox, int LockFlags);
